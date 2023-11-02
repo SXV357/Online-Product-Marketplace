@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<!-- saved from url=(0163)https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&ou=831870&d2l_body_type=3 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Basic Page - No Banner</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./fonts.css"><script>function lti_launch( vars, target ) {
+						var query = '';
+						var new_tab = false;
+
+						for(var key in vars) {
+							if(query.length == 0) {
+								query += '?' + key + '=' + encodeURIComponent(vars[key]);
+							}
+							else {
+								query += '&' + key + '=' + encodeURIComponent(vars[key]);
+							}
+						}
+
+						var url = '/d2l/customization/pearsonlti/831870/Launch' + query;(target == '_blank') ? window.open( url, '_blank' ) : location.replace( url );}</script><script src="./mathjax.js.download" type="module"></script><script>document.addEventListener('DOMContentLoaded', function() {
+					if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
+						document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+							elm.setAttribute('style', 'display: block; height: 0.5rem;');
+						});
+
+						window.D2L.MathJax.loadMathJax({
+							'outputScale': 1.5,
+							'renderLatex': true
+						});
+					}
+				});</script><script src="./prism.js.download" type="module"></script><script>document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.d2l-code').forEach(code => {
+						window.D2L.Prism.formatCodeElement(code);
+					});
+				});</script><script>window.addEventListener('message', function(event) { 
+					if( !event.data ) {
+						return;
+					}
+
+					var params;
+					try {
+						params = JSON.parse( event.data );
+					}
+					catch {
+						return;
+					}
+					if( !params.subject || params.subject !== 'lti.frameResize' ) {
+						return;
+					}
+
+					const MAX_FRAME_HEIGHT = 10000
+					if( !params.height || params.height < 1 || params.height > MAX_FRAME_HEIGHT ) {
+						console.warn( 'Invalid height value received, aborting' );
+						return;
+					}
+					var el = document.getElementsByTagName( 'iframe' );
+					for ( var i=0; i < el.length; i++ ) {
+						if( el[i].contentWindow === event.source ) {
+							el[i].style.height = params.height + 'px';
+							el[i].style.width = '100%';
+							console.info( 'Setting iFrame height to ' + params.height );
+							console.info( 'Setting iFrame width to 100%' );
+						}
+					}
+				});</script></head><body class="content layout-2" role="document" style="overflow-y: hidden;"><div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="container-fluid"><main>
+<div class="row">
+<div class="col-xs-12 col-sm-offset-2 col-sm-8">
+<h1 style="color: #b1810b; text-align: left;"><span style="font-family: Lato, sans-serif; font-size: 19px;">PJ04 - Handout</span></h1>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<p></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#11">Read This First</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#1">Description</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#2">Team Work Expectations</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#3">Option 1</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#4">Option 2</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#5">Option 3</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#6" style="background-color: #ffffff;">Testing</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#7">Presentation</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#8">Report</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#9">Documentation&nbsp;</a></span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;"><a href="https://purdue.brightspace.com/content/enforced/831870-wl.202410.CS.18000.BLK/PJ04%20Handout.html?d2lSessionVal=b0D0NIxWVYI8rni8f0EXFOTJX&amp;ou=831870&amp;d2l_body_type=3#10">Submit</a></span></li>
+</ul>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2><span style="font-family: Lato, sans-serif; font-size: 19px;">Read This First</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">This is a team project. You must contact your team members on your chosen communication platform to verify your participation status by Friday, November 3. Failure to do so will result in removal from the team and a 0 on both Project 4 and Project 5. There is no option to complete the project individually. We highly recommend that you start early and communicate with your team members far before the deadline. Peer reviews will have a significant impact on your score.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Additionally, you and your entire team should be attending lab for the rest of the semester. Your lab GTA will help you as a Project Manager, checking in and making sure things stay on track.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Start early!&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Contact your lab GTA and CC the head TA if you have any concerns. For team-related issues, reach out <b>as soon as possible</b>. There might not be much that can be done if you reach out at the last moment.&nbsp;</span></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="1"><span style="font-family: Lato, sans-serif; font-size: 19px;">Description</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Project 4 is the first part of a two part project. Both Project 4 and Project 5 are team projects focusing on the same topics. You'll be working on the initial solution with your team over the next two weeks. In Project 4, we'll establish the foundational implementation requirements and core functionality. Project 5 will expand upon that foundation with new features. Not only are these team projects, but they are also an opportunity to explore every aspect of software development independently. Think of it like the capstone for your CS 18000 experience.&nbsp;</span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">This project is worth 11% of your final grade. We recommend that you take it, along with the other projects in the class, very seriously.&nbsp;</span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">This is an open-ended project. Before beginning, your team will need to make two choices. First, you'll need to select the target industry for your project (described in <strong>The Sharing Economy</strong> below). Next, your team will select one of the three implementation prompts to focus on. These prompts have implementation requirements, as well as optional features. You must implement the required features. Implementing optional features may earn you bonus points, depending on their complexity and polish. Bonus points are capped at the maximum possible earned points for the project (that is, your score will not exceed 100, regardless of bonus points earned). Note: The optional features we list are only suggestions. If you have ideas about other features to implement, feel free to do so.&nbsp;</span></p>
+<p></p>
+<h3>The Sharing Economy</h3>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">You will be developing a limited form of a sharing economy marketplace. Make sure to select an approach that allows you to specialize in the aspects of the course you find interesting. For Project 4, you'll be implementing an application that utilizes the keyboard (System.in) for input and the screen (System.out) for output.</span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;"></span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">The sharing economy connects customers with something they need. It might be a person with a specific skill (make an app! Fix my car!) or an object that they need to access (renting a scooter or apartment). It's common to find new apps that aim to service these markets frequently. Select one potential option for your project. It can be anything you like, provided it is appropriate for an education environment (you should be able to share the idea with the class, professors, potential employers, and family members).&nbsp;</span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;"></span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">You can choose your own target market and product. Want a tutoring match service? A scooter rental platform? Connecting volunteers with service work? The possibilities are endless, so pick one to differentiate your product. You could even develop a platform that connects users &nbsp;to other platforms, but the level of abstraction may be difficult to maintain. The implementation requirements for your platform are included in subsequent sections of the handout.&nbsp;<br>&nbsp; &nbsp;&nbsp;</span><span style="font-family: Lato, sans-serif; font-size: 19px;"></span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Note: Several features of your implementation involve users interacting with one another. For Project 4, you can assume that users are using the same machine, logging into and out of accounts sequentially. That is, only one user accesses the application at a time.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Lastly, this project will be manually graded after submission. We'll post scores as soon as possible to ensure you have adequate time to consider feedback while working on Project 5.&nbsp;</span></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">The requirements for each option are grouped into two categories: Core and Selections. Each team must implement the core requirements, and select the appropriate number of selective requirements based on the number of students in their team. Teams with 5 members should select 3 selective requirements, 4 member teams should select 2, and 3 member teams should select 1. Leftover requirements will count towards the "optional" requirements for extra credit.&nbsp;</span></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Note: 5 points of your grade is based on Coding Style.&nbsp; Use the "Run" button to check your Coding Style without using a submission.&nbsp;</span></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="2"><span style="font-family: Lato, sans-serif; font-size: 19px;">Team Work Expectations</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">There will be 3, 4, or 5 team members on each team.&nbsp; We expect each member of every team to contribute to the project. You are permitted to divide the work in any way you see fit as long as responsibilities are evenly distributed and every team member contributes to the project source code. You will be required to document your contributions to the project in the planning document.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Each of you must send a message to your teammates by Friday, November 3, 11:59 pm. &nbsp;If a team member misses this deadline and is reported for doing so, a team meeting will be scheduled with the project manager. The individual who was reported for missing the deadline will be required to provide evidence of sending a message before the deadline. If they are unable to do so, they will receive a 0 on both Project 4 and Project 5. There are no exceptions to this policy.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">You may use any chat or communication platform to coordinate your development efforts. Regardless of your choice of communication tool, you must contact your teammates by Friday, November 3, 11:59 pm.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Any team member who fails to contribute will receive a 0 on the project.</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Be aware that team collaboration is limited to the members of your team. You should not be sharing code with individuals outside of your team. All work must be your own. Copying code from the internet is academic dishonesty, as is requesting help from someone who is not on your team. Any team member who is caught copying code will receive a 0 on the project and the other team members will be given an opportunity to continue without them.&nbsp; Remember to follow the course academic honesty policy. If you have concerns about whether or not something is okay, just ask us.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">To simplify collaboration, you must make use of a Code Repository on <a href="https://gitlab.com/">Gitlab </a>or <a href="https://github.com/">Github</a>. It will make sharing code, tracking changes, and debugging significantly easier. However, keep in mind that any repository you use must be private, with access limited only to members of your team. Code made available publicly is academic dishonesty. You will be required to submit a copy of your repository on Vocareum by cloning it into your work folder.&nbsp;</span></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Cloning the repository on Vocareum follows the same process as cloning it locally. Use the Linux terminal in your workspace and enter the appropriate commands!&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Alternatively, you may upload a zip folder with the repository.&nbsp;</span></li>
+</ul>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Note: Every team member must commit to the repository. A lack of commits may be used as evidence that a team member did not participate.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">We reserve the right to modify your grade based on participation. You may receive a 0 for not contributing at all, or you may receive a 75% deduction on your team score for only contributing superficial content. If you wait until the last minute to work on the assignment, you will receive a 0 or a significant deduction as well. These cases will be judged on a case-by-case basis using evidence provided by teams.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Your team will share a workspace on Vocareum. Every team member MUST access the Vocareum workspace at least once to receive a grade on the project. However, only one team member needs to submit the project.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">In the event of a team disagreement, dispute, or lack of participation from any individual, you should contact your project manager as soon as possible. We can only help if we are aware of the situation. Please reach out, even if it is only to notify us that you are worried that an issue may develop.&nbsp;</span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;"></span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Details about Peer Evaluations will be announced after you begin working.&nbsp;</span></p>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Role Distribution</span></h3>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Every team member needs to work on this project. Before you begin coding, we highly recommend that you meet and identify roles for everyone. For example:&nbsp;</span></p>
+<p></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Role 1: Develop menus and application control flow.</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Role 2: Develop log in details and user permissions.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Role 3: Develop option specific requirements.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Role 4: Develop option specific requirements.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Role 5: Develop data persistence solutions and test cases.&nbsp;</span></li>
+</ul>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">You can define the roles in any way that your team prefers. Two team members may work on the same topic, as we note above. Alternatively, you may find it simpler to have everyone complete a specific task separately. Communication will be key!&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;"><strong>Remember, this is a team project. Your project score will reflect your contribution to the team.&nbsp;</strong></span></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2><span style="font-family: Lato, sans-serif; font-size: 19px;">Common Features</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">While the specifics of each implementation will be related to the option you select, there are several common features for every project.&nbsp;</span></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">User Interactions</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All Project 4 input and output should be handled via the keyboard (System.in) and screen (System.out), just as with all of your previous projects. There is no GUI for this project.&nbsp;</span></li>
+</ul>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Data&nbsp;</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Data must persist regardless of whether or not a user is connected. If a user disconnects and reconnects, their data should still be present.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">If a user creates an account and then closes the application (it is no longer running), they should still be able to log in when running it again. </span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Descriptive errors should appear as appropriate. For example, if someone tries to log in with an invalid account. The application should not crash under any circumstances.&nbsp;</span></li>
+</ul>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Roles</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">There will be two defined roles in the application: Sellers and Customers.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers will be able to create stores to sell their products and maintain relationships with customers.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers will be able to purchase products and contact sellers.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Users will select their role&nbsp; while creating an account, with permissions associated with their actions accordingly.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Permissions details will be noted in the option requirements.&nbsp;</span><span style="font-family: Lato, sans-serif; font-size: 19px;"></span></li>
+</ul>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Accounts</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Users can create, edit, and delete accounts for themselves.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The attributes you collect as part of account creation are up to you. At a minimum, there should be an email and password associated with each account.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Users should be required to either create an account or sign in before gaining access to the application.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Whichever identifier you maintain for the user must be unique.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">During account creation, a user will specify their role.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Stores</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Each application must support multiple stores.</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers will be able to create as many stores as they like.</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can access any store that has been created.&nbsp;</span></li>
+</ul>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Note: The term "user" is used to refer to any user of the application, including both customers and sellers.&nbsp;</span></p>
+<hr>
+<h2 id="3"><span style="font-family: Lato, sans-serif; font-size: 19px;">Option 1</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">The first option is to implement a marketplace calendar. The calendar will allow for booking and managing appointments between sellers and customers.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Looking for an example? Try commonly scheduled services, such as salons or car maintenance. Moreover, remember that booking a window of time is applicable to all industries (renting a scooter for a number of hours, meeting with a tutor, consulting a lawyer, etc.).&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Reminder: You can assume that only one user is accessing the application at a time. A customer might log in, make an appointment, then log out. Another customer on the same machine can then log in, view the new availability schedule, and make an appointment of their own.&nbsp;</span></p>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Your implementation must have the following:&nbsp;</span></h3>
+<h4><span style="font-family: Lato, sans-serif; font-size: 19px;">Core</span></h4>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Calendar</span><br>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Any number of appointment calendars may be added to a store.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A calendar title and description must be listed at the top of the page.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Appointment windows will be listed below the title ordered by time.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Details on the appointments will appear beneath each entry.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Title of the appointment</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Maximum number of attendees. </span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Current number of approved bookings.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Start and end time</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All created text content must display a timestamp tracking the most recent modification.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can create, edit, and delete calendars with individual appointment windows.</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can approve or decline customer appointment requests.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can view a list of currently approved appointments by store.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can view any of the created calendars for a store.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can make or cancel appointment requests.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can view a list of their currently approved appointments.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+<h4><span style="font-family: Lato, sans-serif; font-size: 19px;">Selections</span></h4>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Files</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All file imports must occur as a prompt to enter the file path.&nbsp;&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can import a csv file with a calendar to automatically create a calendar and appointment window list.&nbsp;&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can export a file with all of their approved appointments.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Statistics</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can view a dashboard that lists statistics for each of their stores.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Data will include a list of customers with the number of approved appointments they made and the most popular appointment windows by store.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can choose to sort the dashboard.</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can view a dashboard with store and seller information.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Data will include a list of stores by number of customers and the most popular appointment windows by store.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can choose to sort the dashboard.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Rescheduling</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can search for a specific customer and move their appointment to a different time at the same store.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can search for a specific appointment and move it to a different time at the same store.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Optional Features:&nbsp;</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Add rosters by appointment window, listing approved and requested bookings for sellers. Customers can view a roster with all approved bookings for that appointment. Both customers and sellers can export rosters.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Prevent customers from booking two appointments at the same time.&nbsp; Warn customers when they attempt to do so and offer a choice for which to select.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Waitlists that allow customers to add themselves to a list on full appointment windows, with sellers being able to override the enrollment limit and allow specific users to book the session. Customers can view their current position on the waitlist.&nbsp;</span></li>
+</ul>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;"></div>
+<h2 id="4"><span style="font-family: Lato, sans-serif; font-size: 19px;">Option 2</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">The second option is to implement a marketplace messaging system. The messenger will allow for communication between sellers and customers.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Looking for an example? Try checking out the messaging features in large online marketplaces with third party sellers, such as eBay or Etsy.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Reminder: You can assume that only one user is accessing the application at a time. A customer might log in, send a message then log out. A seller could then log in and read the message.&nbsp;&nbsp;</span></p>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Your implementation must have the following:&nbsp;</span></h3>
+<h4><span style="font-family: Lato, sans-serif; font-size: 19px;">Core</span></h4>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Messages</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Any customer can message any Seller, and any Seller may message any customer.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers cannot message another customer. Sellers cannot message another seller.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All users must have accounts to participate in a message.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">No user may start a message to a user that does not exist. </span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Access to a specific message must be limited to the participants in the conversation.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Users will have create, edit, and delete access to their personal conversation history.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Creating a message will create it for both the sender and the recipient.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Editing a message will update the contents for both the sender and the recipient.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Deleting a message will only delete it for the user who initiated the delete operation.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Individual messages should be labeled with the senders name in the conversation.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers should be able to view a list of customers to select an individual to message. </span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers should be able to search for a specific customer to message.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers should be able to view a list of stores to select a message recipient. Selecting a store will send a message to the seller associated with that store.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers should be able to search for a specific seller to message.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+<h4><span style="font-family: Lato, sans-serif; font-size: 19px;">Selections</span></h4>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Files</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All file imports must occur as a prompt to enter the file path. &nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Users can export details for one or more of their conversations using a csv file.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All message details should be preserved: Participants, Message sender, timestamp, and contents.</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Users can import a text file (.txt) to an existing conversation.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The file text will be sent as a message to the recipient.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Statistics</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can view a dashboard that lists statistics for each of their stores.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Data will include a list of customers with the number of messages they have sent and the most common words in overall messages.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can choose to sort the dashboard.</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can view a dashboard with store and seller information.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Data will include a list of stores by number of messages received and a list of stores by the number of messages that particular customer has sent.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can choose to sort the dashboard.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Blocking</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif;"><span style="font-size: 19px;">Users may choose to block another user or become invisible to them.</span></span></li>
+<li><span style="font-family: Lato, sans-serif;"><span style="font-size: 19px;">An individual who has been blocked by another user may not send messages to the one who blocked them.&nbsp;</span></span><span style="font-family: Lato, sans-serif;"><span style="font-size: 19px;"></span></span></li>
+<li><span style="font-family: Lato, sans-serif;"><span style="font-size: 19px;">An individual who has become invisible to another user will not appear on the application when the other user searches for them.&nbsp;</span></span></li>
+</ul>
+</li>
+</ul>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Optional Features:&nbsp;</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Notify users of new messages when they log in. Move conversations with new messages to the top of the conversation history.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Add an elective filtering mode where users can specify words or phrases they wish to be censored in their personal view. Users may enter replacement phrases or use a default **** to replace the text they wish to avoid. Filters are user-specific, one user's filter will not affect any other user.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Users may create a special form of message as a disappearing conversation. Conversations in this mode will have no history, a message will disappear immediately after the recipient reads it.&nbsp;</span></li>
+</ul>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="5"><span style="font-family: Lato, sans-serif; font-size: 19px;">Option 3</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">The third option is to implement the official marketplace of the application. The marketplace will allow sellers to list their products and customers to purchase them.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Looking for an example? Review the listing pages for any online store.&nbsp;</span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;"></span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Reminder: You can assume that only one user is accessing the application at a time. A seller might log in, list a product, then log out. A customer could then log in and purchase the item.&nbsp;</span></p>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Your implementation must have the following:&nbsp;</span></h3>
+<h4><span style="font-family: Lato, sans-serif; font-size: 19px;">Core</span></h4>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Market</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The marketplace will be a centralized page listing available products for purchase.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Products will include the following information:&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Name of the product</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The store selling the product.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A description of the product</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The quantity available for purchase</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The price</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The marketplace listing page will show the store, product name, and price of the available goods. Customers can select a specific product to be taken to that product's page, which will include a description and the quantity available.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">When items are purchased, the quantity available for all users decreases by the amount being purchased.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can create, edit, or delete products associated with their stores.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can view a list of their sales by store, including customer information and revenues from the sale.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can view the overall marketplace listing products for sale, search for specific products using terms that match the name, store, or description, and sort the marketplace on price or quantity available.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can purchase items from the product page and review a history of their previously purchased items.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+<h4><span style="font-family: Lato, sans-serif; font-size: 19px;">Selections</span></h4>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Files</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All file imports must occur as a prompt to enter the file path. &nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can import or export products for their stores using a csv file.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All product details should be included, with one row per product.&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can export a file with their purchase history. </span><span style="font-family: Lato, sans-serif; font-size: 19px;">&nbsp;</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Statistics</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can view a dashboard that lists statistics for each of their stores.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Data will include a list of customers with the number of items that they have purchased and a list of products with the number of sales.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can choose to sort the dashboard.</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can view a dashboard with store and seller information.</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Data will include a list of stores by number of products sold and a list of stores by the products purchased by that particular customer.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can choose to sort the dashboard. </span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Shopping cart</span><br>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Customers can add products from different stores to a shopping cart to purchase all at once, and can remove any product if they choose to do so. The shopping cart is preserved between sessions, so a customer may choose to sign out and return to make the purchase later.&nbsp;&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Sellers can view the number of products currently in customer shopping carts, along with the store and details associated with the products.&nbsp;</span></li>
+</ul>
+</li>
+</ul>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Optional Features:&nbsp;</span></h3>
+<ul>
+<li><span style="font-family: Lato, sans-serif;"><span style="font-size: 19px;">Sellers can elect to hold sales that reduce the price of a product until a specified number of units are sold. Customers will be informed of the original and sale price when browsing the marketplace.&nbsp;</span></span></li>
+<li><span style="font-family: Lato, sans-serif;"><span style="font-size: 19px;">Customers can leave reviews associated with specific products from sellers. Other customers can view the reviews after they post. Sellers may view reviews on their products.&nbsp;</span></span></li>
+<li><span style="font-family: Lato, sans-serif;"><span style="font-size: 19px;">Sellers may set a per product order quantity limit that prohibits customers from ordering more units than the limit. Customers will not be able to place any additional orders for a product after they reach the limit, unless the seller increases or removes it.&nbsp;</span></span></li>
+</ul>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="6"><span style="font-family: Lato, sans-serif; font-size: 19px;">Testing</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">There are no public test cases for this project. Each implementation will look different, and we do not want to restrict your creativity in any way.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">However, you are expected to write your own custom test cases, specific to your team's implementation. We've given you examples of what this looks like in all your previous assignments.&nbsp; Here's an example from one of the Homework assignments:&nbsp;</span></p>
+<p></p>
+<pre><span style="font-family: Lato, sans-serif; font-size: 19px;">@Test(timeout = 1000)</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">public void testExpectedOne() {</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    // Set the input        </span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    // Separate each input with a newline (\n). </span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    String input = "Line One\nLine Two\n"; </span><br><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    // Pair the input with the expected result</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    String expected = "Insert the expected output here" </span><br><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    // Runs the program with the input values</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    // Replace TestProgram with the name of the class with the main method</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    receiveInput(input);</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    TestProgram.main(new String[0]);</span><br><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    // Retrieves the output from the program</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    String stuOut = getOutput();</span><br><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    // Trims the output and verifies it is correct. </span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    stuOut = stuOut.replace("\r\n", "\n");</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">    assertEquals("Error message if output is incorrect, customize as needed",</span><br><span style="font-family: Lato, sans-serif; font-size: 19px;">                    expected.trim(), stuOut.trim());</span><br><br><span style="font-family: Lato, sans-serif; font-size: 19px;">}</span></pre>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Alternatively, you can choose to create a main method to accomplish a similar goal. Simply call each method being tested and save the result, then compare it to an expected value. You should pair each class created in your solution with a corresponding testing class.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Your test cases should do the following:&nbsp;</span></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Each requirement must have a test verifying it functions properly.</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Each requirement should have an error test to verify it does not crash when receiving invalid input.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Hint: For the requirements that verify data persists between runs, you can check the file contents in the test case.&nbsp;</span></li>
+</ul>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">When designing your implementation, be sure to use methods appropriately. It will be challenging to design test cases for overly complex methods.&nbsp;</span></p>
+<p></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="7"><span style="font-family: Lato, sans-serif; font-size: 19px;">Project 5 Preview</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Project 5 will be a better version of Project 4. You'll be improving your solution with new features and making it more accessible to users.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">There are three core improvements included in Project 5:&nbsp;</span></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Concurrency - Your program will support concurrent use by multiple users.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Network IO - Your program will support networked use with a server and client.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">GUI - Your program will have a fully-featured GUI that allows users to perform all the tasks they could do in the command line.&nbsp;</span></li>
+</ul>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">You don't have to worry about any of these yet, but you should keep them in mind while working on Project 4. The design decisions you make now will affect how easy it is to implement these features later!</span></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="8"><span style="font-family: Lato, sans-serif; font-size: 19px;">Review and Planning Report</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Your team must submit a project review and planning document for Project 4. In it, you'll consider lessons learned from Project 4 and document how you will approach Project 5.&nbsp;</span></p>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Part One</span></h3>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Part One is a minimum of 500 words and requires the following:&nbsp;</span></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Describing your project and the functionality you implemented. Include both required and optional features, along with descriptions of each.&nbsp;</span></li>
+</ul>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Part Two</span></h3>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Each team member must write a minimum of 300 words on the following:</span></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A minimum of 200 words describing your contributions to Project 4.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A minimum of 100 words on what you would do differently, if anything, if you were given the opportunity to start over again. If you would do something differently, note how you will apply that knowledge in Project 5. If you would not do anything differently, explain why.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Each team member's section should be labelled with that individual's name.&nbsp;</span></li>
+</ul>
+<p></p>
+<h3><span style="font-family: Lato, sans-serif; font-size: 19px;">Part Three</span></h3>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Part Three is a minimum of 400 words and requires the following:&nbsp;</span></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A minimum of 200 words describing your collaboration strategy for Project 5, including how work will be assigned and how team members will communicate.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A minimum of 100 words containing a list of tasks you believe will be necessary to complete Project 5, along with the individuals assigned to complete them and when they should be done. You may use a list or paragraph for this section.&nbsp;</span>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">&nbsp;For example, "Develop Server class" - Completed by 07/26/2021 - Student One.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Note: There must be an even distribution of work among the team members.</span></li>
+</ul>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A minimum of 100 words describing your conflict mitigation strategy. What will you do to prevent team conflict? How will you handle disagreements if they do arise?&nbsp;</span></li>
+</ul>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Note: Be sure your document does not have any major grammar or structural errors. You are not required to adhere to any writing style guide (for example, APA), but your document should be organized following the guidelines listed above.&nbsp; You can use the following structure for a general outline:&nbsp;</span></p>
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A cover page with the report title and all team member names listed</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A section labelled "Part 1" on a new page with the information described above (including as many pages as necessary).&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A section labelled "Part 2" on a new page with the information described above (including as many pages as necessary).&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A section labelled "Part 3" on a new page with the information described above (including as many pages as necessary).&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">We recommend using a 12 point font such as Times New Roman and double spacing. All section and subsection labels should be bolded.&nbsp;</span></li>
+</ul>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="9"><span style="font-family: Lato, sans-serif; font-size: 19px;">Documentation</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Your project must follow Coding Style (it will be 5 points of your solution grade). You should also document your code with comments explaining the functionality you implement. Not only will your teammates appreciate it if they have to debug, but you will also make it simpler to explain why you chose to implement it that way if asked by your Project Manager.&nbsp;</span></p>
+<p></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Additionally, your project will need to have a README document. This document will include the following in order:</span></p>
+<ol>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Instructions on how to compile and run your project.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A list of who submitted which parts of the assignment on Brightspace and Vocareum.&nbsp;</span>
+<ol>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">For example: Student 1 - Submitted Report on Brightspace. Student 2 - Submitted Vocareum workspace.</span></li>
+</ol>
+</li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A detailed description of each class. This should include the functionality included in the class, the testing done to verify it works properly, and its relationship to other classes in the project.&nbsp;</span></li>
+</ol>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;"></span></p>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">You can format the README however you like, provided it is written as markdown file (.md).&nbsp;</span></p>
+<p></p>
+<hr style="width: 100%; height: auto; color: #ffffff; border: 1px inset #cccccc;">
+<h2 id="10"><span style="font-family: Lato, sans-serif; font-size: 19px;">Submit</span></h2>
+<p><span style="font-family: Lato, sans-serif; font-size: 19px;">Here's a breakdown of grading:&nbsp;</span></p>
+<ul>
+<li style="list-style-type: none;">
+<ul>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">All solution code, test cases, and documentation must be submitted on Vocareum by cloning the repository. (80 points). All required files should be included in the repository.&nbsp;</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">A written report must be submitted via Brightspace. (10 points).</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">The peer evaluation form. (5 points).</span></li>
+<li><span style="font-family: Lato, sans-serif; font-size: 19px;">Coding Style (5 points)</span></li>
+</ul>
+</li>
+</ul>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+</div>
+</main></div>
+<div class="container-fluid"><main><footer></footer></main></div></body></html>
