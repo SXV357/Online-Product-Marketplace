@@ -132,7 +132,8 @@ public class Database {
         }
     }
 
-    public ArrayList<ArrayList<String>> getStoreEntries() {
+    // gets all the enntries from the stores.csv, products.csv, shoppingcart.csv and purchasehistory.csv databases
+    public ArrayList<ArrayList<String>> getDatabaseEntries() {
         ArrayList<ArrayList<String>> storeEntries = new ArrayList<>();
         for (String fileName: stores) {
             File currFile = new File(DATABASES_DIRECTORY + fileName);
