@@ -14,13 +14,16 @@ import java.util.regex.Matcher;
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 2, 2023
+ * @version November 3, 2023
  */
 public class Database {
-    private static final String DATABASES_DIRECTORY = "databases/";
+    private static final String DATABASES_DIRECTORY = "databases/"; // the overarching folder containing all databases
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
     private static final String PASSWORD_REGEX = "^[a-zA-Z0-9]{6,15}$";
-    private static final String[] stores = {"stores.csv", "products.csv", "purchaseHistory.csv", "shoppingCart.csv"};
+    private static final String[] stores = {"stores.csv", "products.csv"};
+        // 1: directory where customers' shopping carts exist
+        // 2: directory where customers' purchaseHistories exist
+    // private static final String[] databaseSubDirs = {"shoppingCarts/", "purchaseHistories/"};
     private ArrayList<String> database;
 
     public Database() {
@@ -44,99 +47,106 @@ public class Database {
     }
 
     // user string in form of ID,Email,Password,Role (Could have a toString method in the User class for this)
-    public void addUser(String user) throws IOException {
+    public boolean addUser(String user) throws IOException {
         String email = user.split(",")[1];
         String password = user.split(",")[2];
+        // can accordingly display an error message in the client class for this
         if (!validateEmail(email) || !validatePassword(password)) {
-            System.out.println("Either your email is not in the right format, or your password is not between 6 and 15 characters long. Please try again");
-        } else { // email and password match the required format specifications
-            this.database.add(user);
-            save();
+            return false;
         }
+        this.database.add(user);
+        updateUsersDatabase();
+        return true;
     }
 
-    // maybe have user enter their password again to confirm they would like to delete their account
-    public void removeUser(String verificationEmail, String verificationPassword) {
-        // only proceed if the password they enter is associated with an existing account
-            // catch: two users could have the same password so just can't check for password equality
+    // search for an entry in the database that matches the ID of the user that wants to delete their account
+    public void removeUser(int userID) {
         for (int i = 0; i < this.database.size(); i++) {
             String[] userInformation = this.database.get(i).split(",");
-            if (verificationPassword.equals(userInformation[2]) && verificationEmail.equals(userInformation[1])) {
+            if (userID == Integer.parseInt(userInformation[0])) {
                 this.database.remove(i);
             }
         }
-        save();
+        updateUsersDatabase();
     }
 
-    public void updateDatabase(String attribute, String target, String modifiedValue) {
-        boolean matched = false;
+    // if the user specifies they would like to modify their account
+        // for now, we will give them the option of modifying either their email or their password
+    public boolean updateDatabase(User modifier, String attribute, String newValue) {
+        boolean hasBeenModified = false;
+        String userRepresentation = modifier.toString();
+        // at this point the user is logged in and there's an entry in the database for which a match exists
+        int matchedIndex = this.database.indexOf(userRepresentation);
         if (attribute.toLowerCase().equals("email")) {
-            // both values are emails
-            if (validateEmail(target) && validateEmail(modifiedValue)) {
-                matched = true;
-            } else if ((validateEmail(target) && !validateEmail(modifiedValue)) || (!validateEmail(target) && validateEmail(modifiedValue)) || (!validateEmail(target) && !validateEmail(modifiedValue))) {
-                System.out.println("You specified you wanted to modify your email, but the original and the modified values that you provided are not necessarily emails. Please check the format and try again!");
-                matched = false;
+            if (this.validateEmail(newValue)) {
+                // update the entry in the database with the new email
+                User modifiedUser = new User(modifier.getUserID(), modifier.getPassword(), newValue, modifier.getRole());
+                this.database.set(matchedIndex, modifiedUser.toString());
+                updateUsersDatabase();
+                hasBeenModified = true;
+            } else {
+                hasBeenModified = false;
             }
         } else if (attribute.toLowerCase().equals("password")) {
-            if (validatePassword(modifiedValue)) {
-                matched = true;
+            if (this.validatePassword(newValue)) {
+                User modifiedUser = new User(modifier.getUserID(), newValue, modifier.getEmail(), modifier.getRole());
+                this.database.set(matchedIndex, modifiedUser.toString());
+                updateUsersDatabase();
+                hasBeenModified = true;
             } else {
-                System.out.println("Please check the new password you provided and make sure that is it between 6-15 characters long.");
-                matched = false;
+                hasBeenModified = false;
             }
         }
-        // only do this if target and modifiedValue are of the attribute type passed in
-        // if (matched) {
-        //     String matchedUser = retrieveUser(attribute, target);
-        //     int matchedIndex = this.database.indexOf(matchedUser);
-        //     String[] userInfo = matchedUser.split(",");
-        //     if (attribute.toLowerCase().equals("email")) {
-        //         userInfo[1] = modifiedValue;
-        //     } else if (attribute.toLowerCase().equals("password")) {
-        //         userInfo[2] = modifiedValue;
-        //     }
-        //     this.database.set(matchedIndex, String.join(",", userInfo));
-        //     save();
-        // }
+        return hasBeenModified;
     }
 
     // used when logging into the application to verify that there's a match
-    public String retrieveUser(String email, String password) {
-        String matchedUser = "";
+        // prevent the user from logging in if matchedUser equals null
+    public boolean retrieveUser(String email, String password) {
         for (int i = 0; i < this.database.size(); i++) {
             String[] userEntry = this.database.get(i).split(",");
             if (email.equals(userEntry[1]) && password.equals(userEntry[2])) {
-                matchedUser = this.database.get(i);
+                return true;
             }
         }
-        return matchedUser;
+        return false;
     }
 
-    public void save() {
-        File output = new File(DATABASES_DIRECTORY + "users.csv");
-        try {
-            if (!output.exists()) {
-                output.createNewFile();
+    // when sellers elect to view sales by store, where theyll reference a customer's purchase history in which the customer's ID exists, so based on the ID retrieving customer info from the main database(whether we want to display customer email or not can be decided later)
+    public String retrieveCustomerEmail(int customerID) {
+        for (int k = 0; k < this.database.size(); k++) {
+            String[] userEntry = this.database.get(k).split(",");
+            if (customerID == Integer.parseInt(userEntry[0])) {
+                return userEntry[1];
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(output))) {
+        return null; // error can be handled accordingly in the runner class when processing user input
+    }
+
+    public void updateUsersDatabase() {
+        File dir = new File(DATABASES_DIRECTORY);
+        try {
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File output = new File(dir, "users.csv");
+            output.createNewFile();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(output));
             bw.write("ID,Email,Password,Role\n");
             for (int j = 0; j < this.database.size(); j++) {
                 bw.write(this.database.get(j) + "\n");
             }
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // gets all the enntries from the stores.csv, products.csv, shoppingcart.csv and purchasehistory.csv databases
+    // gets all the entries from the stores.csv, products.csv databases
     public ArrayList<ArrayList<String>> getDatabaseEntries() {
-        ArrayList<ArrayList<String>> storeEntries = new ArrayList<>();
+        ArrayList<ArrayList<String>> storeAndProductEntries = new ArrayList<>();
         for (String fileName: stores) {
-            File currFile = new File(DATABASES_DIRECTORY + fileName);
+            File currFile = new File(DATABASES_DIRECTORY, fileName);
             try {
                 if (!currFile.exists()) {
                     currFile.createNewFile();
@@ -152,27 +162,11 @@ public class Database {
                     databaseEntries.add(line);
                     line = br.readLine();
                 }
-                storeEntries.add(databaseEntries);
+                storeAndProductEntries.add(databaseEntries);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return storeEntries;
-    }
-
-    public static void main(String[] args) throws IOException {
-        String user1 = "141094,random_email1@example.com,v8s091lW23,Customer";
-        String user2 = "985390,user1234@gmail.com,Ak9X0iSdL7, Seller";
-        String user3 = "739813,john.doe@yahoo.com,gD457zE7si,Customer";
-        String user4 = "676277,my_email@domain.net,8i5XIFm4SV,Seller";
-        String user5 = "456604,j.smith@hotmail.com,cxV0vk7kQ4,Customer";
-        Database db = new Database();
-        db.addUser(user1);
-        db.addUser(user2);
-        db.addUser(user3);
-        db.addUser(user4);
-        db.addUser(user5);
-        db.removeUser("random_email1@example.com", "v8s091lW23");
-
+        return storeAndProductEntries;
     }
 }
