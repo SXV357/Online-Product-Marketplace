@@ -33,6 +33,7 @@ public class Database {
         return this.database;
     }
 
+    // logic for validating the user's email and password when they try creating an account
     public boolean validateEmail(String email) {
         Pattern emailPattern = Pattern.compile(EMAIL_REGEX);
         Matcher emailMatcher = emailPattern.matcher(email);
@@ -145,6 +146,8 @@ public class Database {
         return null; // error can be handled accordingly in the runner class when processing user input
     }
 
+
+    // updates the main users.csv file with updated information about all users in response to a new user being created, a user choosing to delete their account, or a user choosing to modify their account
     public void updateUsersDatabase() {
         File dir = new File(DATABASES_DIRECTORY);
         try {
@@ -164,7 +167,7 @@ public class Database {
         }
     }
     
-    // given the sub-directory in the databases directory and the user ID, the function searches the directory for a file match, then extracts all of its contents line by line and returns it in the form of an arraylist
+    // given the sub-directory in the databases directory and the user ID, the function searches the directory for a file match, then returns the file
     public File extractMatchedFile(String targetDirectory, String userID) {
         // (for products, shopping cart, and purchase hist); expected input in form: databases/targetdirectory/
         File match = null;
@@ -181,6 +184,7 @@ public class Database {
         return match;
     }
 
+    // extracts the contents of the file in the directory targetDirectory and its name starting with userID and returns its contents in the form of an arraylist
     public ArrayList<String> extractProdShopCartHistoryEntries(String targetDirectory, String userID) {
         ArrayList<String> databaseContents = new ArrayList<>();
         File matchedFile = extractMatchedFile(targetDirectory, userID);
@@ -197,7 +201,7 @@ public class Database {
         }
     }
 
-
+    // extracts the // extracts the contents of the file in the directory targetDirectory and its name starting with userID and then overwrites its contents with the contents of the arraylist updatedContents
     public void updateProdShopCartHistoryEntries(String targetDirectory, String userID, ArrayList<String> updatedContents) {
         // headers of csv will vary depending on taretDirectory passed in
         // for products sub-dir: Product Name, Quantity, Price, Description
