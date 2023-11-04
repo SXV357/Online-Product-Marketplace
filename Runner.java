@@ -15,7 +15,7 @@ public class Runner {
     private static User currentUser;  //This field stores the user object for the current User of the program
 
 
-    //Welcomes the user and asks them whether they would like to: Log-in, Create Acount, or Quit
+    //Welcomes the user and asks them whether they would like to: Log-in, Create Account, or Quit
     //Takes only the Scanner as a Parameter
     public static int welcomeUser(Scanner scan) {
         System.out.println("Welcome!\nWhat would you like to do?");
