@@ -18,12 +18,11 @@ import java.util.regex.Matcher;
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/"; // the overarching folder containing all databases
+    // 1: directory where customers' shopping carts exist
+        // 2: directory where customers' purchaseHistories exist
+    private static final String[] databaseSubDirs = {"products/", "shoppingCarts/", "purchaseHistories/"};
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
     private static final String PASSWORD_REGEX = "^[a-zA-Z0-9]{6,15}$";
-    private static final String[] stores = {"stores.csv", "products.csv"};
-        // 1: directory where customers' shopping carts exist
-        // 2: directory where customers' purchaseHistories exist
-    // private static final String[] databaseSubDirs = {"shoppingCarts/", "purchaseHistories/"};
     private ArrayList<String> database;
 
     public Database() {
@@ -47,16 +46,39 @@ public class Database {
     }
 
     // user string in form of ID,Email,Password,Role (Could have a toString method in the User class for this)
-    public boolean addUser(String user) throws IOException {
-        String email = user.split(",")[1];
-        String password = user.split(",")[2];
+    public boolean addUser(User user) {
+        String userRepresentation = user.toString();
         // can accordingly display an error message in the client class for this
-        if (!validateEmail(email) || !validatePassword(password)) {
+        if (!validateEmail(user.getEmail()) || !validatePassword(user.getPassword())) {
             return false;
         }
-        this.database.add(user);
+        this.database.add(userRepresentation);
         updateUsersDatabase();
+        boolean instantiatedResult = instantiateUserEntries(String.valueOf(user.getUserID()), user.getRole());
+        if (!instantiatedResult) {
+            return false;
+        }
         return true;
+    }
+
+    // when a customer creates an account, this will create two empty files associated with that user in the databases directory: one corresponding to their shopping cart and one corresponding to their purchase history
+    public boolean instantiateUserEntries(String userID, UserRole userRole) {
+        try {
+            if (userRole == UserRole.CUSTOMER) {
+                String[] relatedSubDirs = {databaseSubDirs[1], databaseSubDirs[2]};
+                for (String subDir: relatedSubDirs) {
+                    File sub = new File(DATABASES_DIRECTORY, subDir);
+                    if (!sub.exists()) {
+                        sub.mkdir();
+                    }
+                    File output = subDir.equals("shoppingCarts/") ? new File(sub, userID + "-" + "shoppingCart.csv") : new File(sub, userID + "-" + "purchaseHistory.csv");
+                    output.createNewFile();
+                }
+            } // have the similar logic in the seller class instead
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     // search for an entry in the database that matches the ID of the user that wants to delete their account
@@ -141,32 +163,64 @@ public class Database {
             e.printStackTrace();
         }
     }
-
-    // gets all the entries from the stores.csv, products.csv databases
-    public ArrayList<ArrayList<String>> getDatabaseEntries() {
-        ArrayList<ArrayList<String>> storeAndProductEntries = new ArrayList<>();
-        for (String fileName: stores) {
-            File currFile = new File(DATABASES_DIRECTORY, fileName);
-            try {
-                if (!currFile.exists()) {
-                    currFile.createNewFile();
+    
+    // given the sub-directory in the databases directory and the user ID, the function searches the directory for a file match, then extracts all of its contents line by line and returns it in the form of an arraylist
+    public File extractMatchedFile(String targetDirectory, String userID) {
+        // (for products, shopping cart, and purchase hist); expected input in form: databases/targetdirectory/
+        File match = null;
+        File dir = new File(targetDirectory);
+        if (dir.isDirectory() && dir.exists()) {
+            File[] files = dir.listFiles();
+            for (File f: files) {
+                if (f.getName().startsWith(userID)) { // we have that associated file
+                    match = f;
+                    break;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            ArrayList<String> databaseEntries = new ArrayList<>();
-            try (BufferedReader br = new BufferedReader(new FileReader(currFile))) {
-                br.readLine(); // skip the header section
-                String line;
-                while ((line = br.readLine()) != null) {
-                    databaseEntries.add(line);
-                    line = br.readLine();
-                }
-                storeAndProductEntries.add(databaseEntries);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-        return storeAndProductEntries;
+        return match;
+    }
+
+    public ArrayList<String> extractProdShopCartHistoryEntries(String targetDirectory, String userID) {
+        ArrayList<String> databaseContents = new ArrayList<>();
+        File matchedFile = extractMatchedFile(targetDirectory, userID);
+        try(BufferedReader br = new BufferedReader(new FileReader(matchedFile))) {
+            br.readLine(); // skip the first line(header of csv)
+            String line;
+            while ((line = br.readLine()) != null) {
+                databaseContents.add(line);
+                line = br.readLine();
+            }
+            return databaseContents;
+        } catch (IOException e) {
+            return new ArrayList<String>();
+        }
+    }
+
+
+    public void updateProdShopCartHistoryEntries(String targetDirectory, String userID, ArrayList<String> updatedContents) {
+        // headers of csv will vary depending on taretDirectory passed in
+        // for products sub-dir: Product Name, Quantity, Price, Description
+        // for purchase history sub-dir: CustomerID, StoreName, Item, Quantity, Expenses
+        // for shopping cart sub-dir: CustomerID, StoreName, Product Name, Quantity, Cost, Description
+        String dirCheck = targetDirectory.split("/")[1];
+        String csvHeader = "";
+        switch (dirCheck) {
+            case "products" -> csvHeader = "ProductName,Quantity,Price,Description";
+            case "shoppingCarts" -> csvHeader = "CustomerID,StoreName,Item,Quantity,Expenses";
+            case "purchaseHistories" -> csvHeader = "CustomerID,StoreName,ProductName, Quantity,Cost,Description";
+        }
+        File output = extractMatchedFile(targetDirectory, userID);
+        try {
+            output.createNewFile();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+            bw.write(csvHeader);
+            for (int j = 0; j < updatedContents.size(); j++) {
+                bw.write(updatedContents.get(j) + "\n");
+            }
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
