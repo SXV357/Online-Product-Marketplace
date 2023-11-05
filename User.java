@@ -10,19 +10,19 @@ import java.util.Random;
  */
 public class User {
     //Fields
-    private int userID;  //Each user has a unique ID
     private String email;  //Each user has a unique email
     private String password;  // Password
     private UserRole role;  //Each user has a role (Seller or Customer);
+    private int userID;  //Each user has a unique ID
     private Random rand = new Random();  //This is used to generate a random int from 100000-999999(inclusive) for IDs
 
     //Constructor for a CHECKING for a user
     //You already know the userID for this one
-    public User(int userID, String email, String password, UserRole role) {
-        this.userID = rand.nextInt(900000) + 100000;
+    public User(String email, String password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.userID = rand.nextInt(900000) + 100000;
     }
 
     //Constructor for a CREATING a new user
@@ -49,15 +49,6 @@ public class User {
 
     public UserRole getRole() {
         return this.role;
-    }
-
-    //Setters
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     // this is what's being received by the addUsersToDatabase method in the database class

@@ -13,8 +13,8 @@ public class Seller extends User{
 
     private Store[] stores;
 
-    public Seller(int ID, String email, String password, UserRole role) {
-        super(ID, email, password, role);
+    public Seller(String email, String password, UserRole role) {
+        super(email, password, role);
     }
 
     public void addStore(String storeName){
