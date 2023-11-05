@@ -1,4 +1,4 @@
-import java.util.Random;
+
 /**
  * Project 4 - User.java
  * 
@@ -14,15 +14,29 @@ public class User {
     private String password;  // Password
     private UserRole role;  //Each user has a role (Seller or Customer);
     private int userID;  //Each user has a unique ID
-    private Random rand = new Random();  //This is used to generate a random int from 100000-999999(inclusive) for IDs
 
-    //Constructor for a CHECKING for a user
-    //You already know the userID for this one
+    //Constructor for when a user creates their account (userID must be created)
     public User(String email, String password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.userID = rand.nextInt(900000) + 100000;
+        this.userID = createID();
+    }
+
+    //Constructor for when you create a user with a KNOWN userID
+    public User(int userID, String email, String password, UserRole role) {
+        this.userID = userID;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    //Blank Constructor for currentUser in runner
+    public User() {
+        this.userID = 0;
+        this.email = "";
+        this.password = "";
+        this.role = null;
     }
 
     //Getters
@@ -40,6 +54,29 @@ public class User {
 
     public UserRole getRole() {
         return this.role;
+    }
+
+    //Setters
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public int createID() {
+        int newID = 100000;  //This would be the first user's ID
+
+        //TODO implement a database method to check for existing userIDs
+/*        while (*//* Check Database users to see if someone already has this ID*//*) {
+            newID++;
+        }*/
+        return newID;
     }
 
     // this is what's being received by the addUsersToDatabase method in the database class
