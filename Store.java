@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  *
- * @version November 2, 2023
+ * @version November 5, 2023
  */
 public class Store {
 
