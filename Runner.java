@@ -14,13 +14,13 @@ public class Runner {
     private static Database db = new Database();  //Makes a Database object
     private static boolean running = true;  //This boolean is used to see if the user wishes to quit
     private static boolean userLoggedIn = false;  //This boolean is used to check if the user has logged in successfully
-    private static User currentUser;  //This field stores the user object for the current User of the program
+    private static User curUser = new User();  //This field stores the user object for the current User of the program
 
 
-    //Welcomes the user and asks them whether they would like to: Log-in, Create Acount, or Quit
+    //Welcomes the user and asks them whether they would like to: Log-in, Create Account, or Quit
     //Takes only the Scanner as a Parameter
     public static int welcomeUser(Scanner scan) {
-        System.out.println("Welcome!\nWhat would you like to do?");
+        System.out.println("What would you like to do?");
         do {
             System.out.println("1) Log-in\n2) Create Account\n3) Quit");
             try {
@@ -48,22 +48,45 @@ public class Runner {
             System.out.println("Login successful!");
             userLoggedIn = true;
         } else {
-            System.out.println("User does not exist");
+            System.out.println("Username or password is incorrect");
         }
     }
 
+    //This method creates a new user object,
     public static void createUser(Scanner scan){
         System.out.println("Enter your E-mail: ");
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-
-
-        userLoggedIn = true;
+        if (db.retrieveUser(uEmail, uPassword)) {  //Check to see if there is a user with the email already
+            System.out.println("User already exists");
+        } else {
+            UserRole uRole = UserRole.UNDECIDED;  //New user is defaulted to undecided until they set it
+            while (uRole.equals(UserRole.UNDECIDED)) {
+                System.out.println("Which would you like to be? \n1) Seller\n2) Customer");
+                try {
+                    int input = Integer.parseInt(scan.nextLine());
+                    if (input == 1) {
+                        uRole = UserRole.SELLER;
+                    } else if (input == 2) {
+                        uRole = UserRole.CUSTOMER;
+                    } else {
+                        System.out.println("Please enter your choice's corresponding Integer");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Please enter your choice's corresponding Integer");
+                }
+            }
+            User newU = new User(uEmail, uPassword, uRole);
+            curUser = newU;
+            db.addUser(curUser);
+            userLoggedIn = true;
+        }
     }
 
 
     public static void main(String[] args) {
+        System.out.println("Welcome!");
         Scanner scan = new Scanner(System.in);
         do {
             int welcomeResponse = welcomeUser(scan);
@@ -72,7 +95,7 @@ public class Runner {
                     loginUser(scan);
                     break;
                 case 2:
-                    //TODO create user
+                    createUser(scan);
                     break;
                 case 3:
                     System.out.println("Thank you!");
