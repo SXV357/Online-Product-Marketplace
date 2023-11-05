@@ -6,20 +6,20 @@ import java.util.Random;
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 4, 2023
+ * @version November 5, 2023
  */
 public class User {
     //Fields
+    private int userID;  //Each user has a unique ID
     private String email;  //Each user has a unique email
-    private String password;  //Each user has a password (could be the same as another user)
-    private int userID;  //Each user has a unique ID that is 6 digits long
+    private String password;  // Password
     private UserRole role;  //Each user has a role (Seller or Customer);
-    private Random rdmID = new Random();  //This is used to generate a random int from 0-999999 for IDs
+    private Random rand = new Random();  //This is used to generate a random int from 100000-999999(inclusive) for IDs
 
     //Constructor for a CHECKING for a user
     //You already know the userID for this one
     public User(int userID, String email, String password, UserRole role) {
-        this.userID = userID;
+        this.userID = rand.nextInt(900000) + 100000;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -33,12 +33,6 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
-    private int generateID () {
-        int newID = rdmID.nextInt(999999);
-        return newID;
-    }
-    // TO DO: Implement equals method to compare two User objects
 
     //Getters
     public String getEmail() {
