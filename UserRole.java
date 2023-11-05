@@ -10,5 +10,6 @@
 
 public enum UserRole {
     CUSTOMER,
-    SELLER
+    SELLER,
+    UNDECIDED
 }
