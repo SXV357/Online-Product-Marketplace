@@ -25,15 +25,6 @@ public class User {
         this.userID = rand.nextInt(900000) + 100000;
     }
 
-    //Constructor for a CREATING a new user
-    //You need to make a new userID for this one
-    public User(String email, String password, UserRole role) {
-        this.userID = generateID();
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
     //Getters
     public String getEmail() {
         return this.email;
