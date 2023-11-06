@@ -12,15 +12,15 @@ import java.util.ArrayList;
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 5, 2023
+ * @version November 6, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
     private static final String usersDatabaseHeaders = "ID,Email,Password,Role";
-    private static final String storesDatabaseHeaders = "Seller ID,Store Name,Number of Products";
-    private static final String productsDatabaseHeaders = "Seller ID,Store Name,Product Name,Available Quantity,Price,Description";
-    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store Name,Product Name,Purchase Quantity,Price";
-    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store Name,Product Name,Purchase Quantity,Price";
+    private static final String storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
+    private static final String productsDatabaseHeaders = "Store ID,Seller ID,Store Name,Product ID,Product Name,Available Quantity,Price,Description";
+    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Store Name,Product ID,Product Name,Purchase Quantity,Price";
+    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Store Name,Product ID,Product Name,Purchase Quantity,Price";
 
     private ArrayList<String> userEntries;
     private ArrayList<String> storeEntries;
@@ -68,18 +68,32 @@ public class Database {
     }
 
     /**
-     * Takes in an ID, then compares it with all entries in the users.csv database to check if there's a match. Used for assigning an ID to a new user.
+     * Takes in an ID and a file name and checks whether that ID is already associated with an entry
      * 
-     * @param id The ID to compare with an existing entry in the users.csv database
-     * @return Returns whether the ID already exists in the users.csv database
+     * @param idToCheck The ID to compare with the entries in the file
+     * @param fileName The file to check for the existence of the ID
+     * @return The existence of the ID in the specified file
      */
-    public boolean checkUserIDMatch(int id) {
-        if (!(String.valueOf(id).length() == 6)) {
-            return false;
+    public boolean checkIDMatch(int idToCheck, String fileName) {
+        ArrayList<String> correspondingEntries = new ArrayList<>();
+        int comparisonIndex = 0;
+        switch (fileName) {
+            case "users.csv" -> {
+                correspondingEntries = this.userEntries;
+                comparisonIndex = 0;
+            }
+            case "stores.csv" -> {
+                correspondingEntries = this.storeEntries;
+                comparisonIndex = 0;
+            }
+            case "products.csv" -> {
+                correspondingEntries = this.productEntries;
+                comparisonIndex = 3;
+            }
         }
-        for (int i = 0; i < this.userEntries.size(); i++) {
+        for (int i = 0; i < correspondingEntries.size(); i++) {
             String[] userRepresentation = this.userEntries.get(i).split(",");
-            if (id == Integer.parseInt(userRepresentation[0])) {
+            if (idToCheck == Integer.parseInt(userRepresentation[comparisonIndex])) {
                 return true;
             }
         }

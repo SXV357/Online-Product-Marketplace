@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 /**
  * Project 4 - Store.java
  *
@@ -6,56 +7,53 @@ import java.util.ArrayList;
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  *
- * @version November 5, 2023
+ * @version November 6, 2023
  */
 public class Store {
 
-    private String name;
-    private ArrayList <Product> products;
+    private static Database db = new Database();
+    private String storeIdentificationNumber;
+    private String storeName;
+    private ArrayList<Product> products;
 
-    public Store(String name) {
-        this.name = name;
-        products = null;
+    public Store(String storeName) {
+        this.storeIdentificationNumber = "ST" + String.valueOf(generateStoreIdentificationNumber());
+        this.storeName = storeName;
+        this.products = new ArrayList<Product>();
     }
 
-    public String getName() {
-        return name;
+    // Getters
+    public String getStoreIdentificationNumber() {
+        return this.storeIdentificationNumber;
     }
 
-    public void  setName(String name) {
-        this.name = name;
+    public String getStoreName() {
+        return this.storeName;
     }
 
-    public void setProducts(ArrayList <Product> products) {
-        this.products = products;
-    }
-
-    public ArrayList <Product> getProducts() {
+    public ArrayList<Product> getProducts() {
         return products;
     }
 
-    public boolean deleteProduct(String productName) {
-        int e = -1;
-        for (int i = 0; i < products.size(); i++){
-            if (products.get(i).getName().equals(productName)){
-                e = i;
-            }
-        }
-
-        if (e > 0) {
-            products.remove(e);
-            return true;
-        }
-        return false;
+    // Setters(If a seller wants to modify the name of one of their stores)
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
-    public boolean addProduct(Product newProduct) {
-        for (Product e: products) {
-            if(e.getName().equals(newProduct.getName())) {
-                return false;
-            }
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
+    }
+
+    /**
+     * Returns a unique 7-digit ID as long as the current ID is not already associated with an existing account in the stores.csv database
+     * 
+     * @return A unique 7-digit ID
+     */
+    public int generateStoreIdentificationNumber() {
+        int currentID = 1000000; // the first store created will have this ID
+        while (db.checkIDMatch(currentID, "stores.csv")) {
+            currentID += 1;
         }
-        products.add(newProduct);
-        return true;
+        return currentID;
     }
 }

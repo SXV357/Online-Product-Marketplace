@@ -156,9 +156,7 @@ public class TestDatabase {
 
     static void testMatchedUserIDs(Database db) {
         // one for an ID that exists in the user's database and one for an ID that doesn't exist
-        assert db.checkUserIDMatch(100000) && !db.checkUserIDMatch(123456);
-        // one if an ID is passed in that is not 6-digits long
-        assert !db.checkUserIDMatch(1234567);
+        assert db.checkIDMatch(100000, "users.csv") && !db.checkIDMatch(123456, "users.csv");
     }
 
     static void testUserRetrievalFromDatabase(Database db) {
