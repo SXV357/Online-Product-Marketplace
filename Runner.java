@@ -7,7 +7,7 @@ import java.util.Scanner;
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  *
- * @version November 3, 2023
+ * @version November 5, 2023
  */
 
 public class Runner {
@@ -43,7 +43,7 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (db.retrieveUser(uEmail, uPassword)) {
+        if (!(db.retrieveUser(uEmail, uPassword).equals(""))) {
             System.out.println("Login successful!");
             //TODO set curUser to the one that just logged in
             userLoggedIn = true;
@@ -58,7 +58,7 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (db.retrieveUser(uEmail, uPassword)) {  //Check to see if there is a user with the email already
+        if (!(db.retrieveUser(uEmail, uPassword).equals(""))) {  //Check to see if there is a user with the email already
             System.out.println("User already exists");
         } else {
             UserRole uRole = UserRole.UNDECIDED;  //New user is defaulted to undecided until they set it
@@ -79,10 +79,11 @@ public class Runner {
             }
             User newU = new User(uEmail, uPassword, uRole);
             curUser = newU;
-            db.addUser(curUser);
+            db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
             userLoggedIn = true;
         }
     }
+
 
     public static int sellerPrompt(Scanner scan) {
         System.out.println("Welcome Seller");
@@ -119,7 +120,6 @@ public class Runner {
             }
         } while (true);
     }
-
 
     public static void main(String[] args) {
         System.out.println("Welcome!");

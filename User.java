@@ -1,4 +1,3 @@
-
 /**
  * Project 4 - User.java
  * 
@@ -6,37 +5,46 @@
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 5, 2023
+ * @version November 6, 2023
  */
 public class User {
     //Fields
-    private String email;  //Each user has a unique email
-    private String password;  // Password
-    private UserRole role;  //Each user has a role (Seller or Customer);
-    private int userID;  //Each user has a unique ID
+    private static Database db = new Database();
+    private String email;
+    private String password;
+    private UserRole role; // User's role in the application (Seller or Customer);
+    private String userID;  //Each user has a unique ID
 
-    //Constructor for when a user creates their account (userID must be created)
+    //Blank Constructor for currentUser in runner
+    public User() {
+        this.userID = "";
+        this.email = "";
+        this.password = "";
+        this.role = null;
+    }
+
+    //Constructor to initialize a new user when they create an account(Adds an identifier marker)
     public User(String email, String password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.userID = createID();
+        int generatedID = generateUserIdentificationNumber();
+        switch (role) {
+            case CUSTOMER: this.userID = "C" + String.valueOf(generatedID);
+                                        break;
+            case SELLER: this.userID = "S" + String.valueOf(generatedID);
+                                        break;
+            case UNDECIDED: this.userID = "";
+                            break;
+        }
     }
 
-    //Constructor for when you create a user with a KNOWN userID
-    public User(int userID, String email, String password, UserRole role) {
+    //Constructor to re-initialize a user when they log back in with the correct credentials
+    public User(String userID, String email, String password, UserRole role) {
         this.userID = userID;
         this.email = email;
         this.password = password;
         this.role = role;
-    }
-
-    //Blank Constructor for currentUser in runner
-    public User() {
-        this.userID = 0;
-        this.email = "";
-        this.password = "";
-        this.role = null;
     }
 
     //Getters
@@ -48,7 +56,7 @@ public class User {
         return this.password;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return this.userID;
     }
 
@@ -56,7 +64,7 @@ public class User {
         return this.role;
     }
 
-    //Setters
+    //Setters (when the user wants to modify their account)
     public void setEmail(String email) {
         this.email = email;
     }
@@ -65,36 +73,22 @@ public class User {
         this.password = password;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public int createID() {
-        int newID = 100000;  //This would be the first user's ID
-
-        //TODO implement a database method to check for existing userIDs
-/*        while (*//* Check Database users to see if someone already has this ID*//*) {
-            newID++;
-        }*/
-        return newID;
+    /**
+     * Returns a unique 7-digit ID as long as the current ID is not already associated with an existing account in the users.csv database
+     * 
+     * @return A unique 7-digit ID
+     */
+    public int generateUserIdentificationNumber() {
+        int currentID = 1000000;  //This would be the first user's ID
+        while (db.checkIDMatch(currentID, "users.csv")) {
+            currentID++;
+        }
+        return currentID;
     }
 
     // this is what's being received by the addUsersToDatabase method in the database class
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s", this.userID, this.email, this.password, this.role);
-    }
-
-    //This compares the current user's email and password to another user's passed in as a parameter
-    //Used to log user in
-    @Override
-    public boolean equals(Object o){
-        if (o instanceof User) {
-            User user = (User) o;
-            if (this.email.equals(user.getEmail()) && this.password.equals(user.getPassword())) {
-                return true;
-            }
-        }
-        return false;
+        return String.format("%s,%s,%s,%s", this.userID, this.email, this.password, this.role);
     }
 }
