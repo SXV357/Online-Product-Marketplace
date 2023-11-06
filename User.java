@@ -5,7 +5,7 @@
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 5, 2023
+ * @version November 6, 2023
  */
 public class User {
     //Fields
@@ -13,26 +13,34 @@ public class User {
     private String email;
     private String password;
     private UserRole role; // User's role in the application (Seller or Customer);
-    private int userID;  //Each user has a unique ID
+    private String userID;  //Each user has a unique ID
 
     //Blank Constructor for currentUser in runner
     public User() {
-        this.userID = 0;
+        this.userID = "";
         this.email = "";
         this.password = "";
         this.role = null;
     }
 
-    //Constructor to initialize a new user when they create an account
+    //Constructor to initialize a new user when they create an account(Adds an identifier marker)
     public User(String email, String password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.userID = createID();
+        int generatedID = createID();
+        switch (role) {
+            case CUSTOMER: this.userID = "C" + String.valueOf(generatedID);
+                                        break;
+            case SELLER: this.userID = "S" + String.valueOf(generatedID);
+                                        break;
+            case UNDECIDED: this.userID = "";
+                            break;
+        }
     }
 
     //Constructor to re-initialize a user when they log back in with the correct credentials
-    public User(int userID, String email, String password, UserRole role) {
+    public User(String userID, String email, String password, UserRole role) {
         this.userID = userID;
         this.email = email;
         this.password = password;
@@ -48,7 +56,7 @@ public class User {
         return this.password;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return this.userID;
     }
 
@@ -65,6 +73,11 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * Returns a unique 6-digit ID as long as the current ID is not already associated with an existing account in the database
+     * 
+     * @return A unique 6-digit ID
+     */
     public int createID() {
         int currentID = 100000;  //This would be the first user's ID
         while (db.checkUserIDMatch(currentID)) {
@@ -76,6 +89,6 @@ public class User {
     // this is what's being received by the addUsersToDatabase method in the database class
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s", this.userID, this.email, this.password, this.role);
+        return String.format("%s,%s,%s,%s", this.userID, this.email, this.password, this.role);
     }
 }
