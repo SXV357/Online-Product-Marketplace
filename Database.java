@@ -74,6 +74,9 @@ public class Database {
      * @return Returns whether the ID already exists in the users.csv database
      */
     public boolean checkUserIDMatch(int id) {
+        if (!(String.valueOf(id).length() == 6)) {
+            return false;
+        }
         for (int i = 0; i < this.userEntries.size(); i++) {
             String[] userRepresentation = this.userEntries.get(i).split(",");
             if (id == Integer.parseInt(userRepresentation[0])) {
@@ -140,24 +143,34 @@ public class Database {
     public void removeFromDatabase(String fileName, String entry) {
         switch (fileName) {
             case "users.csv": 
-                            this.userEntries.remove(entry);
-                            updateDatabaseContents(fileName, this.userEntries);
+                            boolean userRemoved = this.userEntries.remove(entry);
+                            if (userRemoved) {
+                                updateDatabaseContents(fileName, this.userEntries);
+                            }
                             break;
             case "stores.csv":
-                            this.storeEntries.remove(entry);
-                            updateDatabaseContents(fileName, storeEntries);
+                            boolean storeRemoved = this.storeEntries.remove(entry);
+                            if (storeRemoved) {
+                                updateDatabaseContents(fileName, storeEntries);
+                            }
                             break;
             case "products.csv":
-                            this.productEntries.remove(entry);
-                            updateDatabaseContents(fileName, productEntries);
+                            boolean productRemoved = this.productEntries.remove(entry);
+                            if (productRemoved) {
+                                updateDatabaseContents(fileName, productEntries);
+                            }
                             break;
             case "shoppingCarts.csv":
-                            this.shoppingCartEntries.remove(entry);
-                            updateDatabaseContents(fileName, shoppingCartEntries);
+                            boolean shoppingCartRemoved = this.shoppingCartEntries.remove(entry);
+                            if (shoppingCartRemoved) {
+                                updateDatabaseContents(fileName, shoppingCartEntries);
+                            }
                             break;
             case "purchaseHistories.csv":
-                            this.purchaseHistoryEntries.remove(entry);
-                            updateDatabaseContents(fileName, purchaseHistoryEntries);
+                            boolean purchaseHistoryRemoved = this.purchaseHistoryEntries.remove(entry);
+                            if (purchaseHistoryRemoved) {
+                                updateDatabaseContents(fileName, purchaseHistoryEntries);
+                            }
                             break;
         }
     }
