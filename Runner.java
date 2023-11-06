@@ -12,7 +12,6 @@ import java.util.Scanner;
 
 public class Runner {
     private static Database db = new Database();  //Makes a Database object
-    private static boolean running = true;  //This boolean is used to see if the user wishes to quit
     private static boolean userLoggedIn = false;  //This boolean is used to check if the user has logged in successfully
     private static User curUser = new User();  //This field stores the user object for the current User of the program
 
@@ -46,6 +45,7 @@ public class Runner {
         String uPassword = scan.nextLine();
         if (db.retrieveUser(uEmail, uPassword)) {
             System.out.println("Login successful!");
+            //TODO set curUser to the one that just logged in
             userLoggedIn = true;
         } else {
             System.out.println("Username or password is incorrect");
@@ -84,6 +84,42 @@ public class Runner {
         }
     }
 
+    public static int sellerPrompt(Scanner scan) {
+        System.out.println("Welcome Seller");
+        int sellerChoice = 0;
+        do {
+            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n 5)Sign Out");
+            try {
+                sellerChoice = Integer.parseInt(scan.nextLine());
+                if (sellerChoice > 0 && sellerChoice < 6) {
+                    return sellerChoice;
+                } else {
+                    System.out.println("Please enter your choice's corresponding Integer");
+                }
+            } catch (Exception e) {
+                System.out.println("Please enter your choice's corresponding Integer");
+            }
+        } while (true);
+    }
+
+    public static int customerPrompt(Scanner scan) {
+        System.out.println("Welcome Customer");
+        int customerChoice = 0;
+        do {
+            System.out.println(""); //TODO
+            try {
+                customerChoice = Integer.parseInt(scan.nextLine());
+                if (customerChoice > 0 && customerChoice < 6) {
+                    return customerChoice;
+                } else {
+                    System.out.println("Please enter your choice's corresponding Integer");
+                }
+            } catch (Exception e) {
+                System.out.println("Please enter your choice's corresponding Integer");
+            }
+        } while (true);
+    }
+
 
     public static void main(String[] args) {
         System.out.println("Welcome!");
@@ -99,10 +135,21 @@ public class Runner {
                     break;
                 case 3:
                     System.out.println("Thank you!");
-                    running = false;
                     return;  //ends the program
             }
-        } while (running && !userLoggedIn);
-
+        } while (!userLoggedIn);
+        if (curUser.getRole().equals(UserRole.SELLER)) {  //code for if the current user is a seller
+            int sellerChoice = sellerPrompt(scan);
+            switch (sellerChoice) {
+                //TODO add all of the seller choices
+                case 1:
+            }
+        } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
+            int customerChoice = customerPrompt(scan);
+            switch (customerChoice) {
+                //TODO add all of the seller choices
+                case 1:
+            }
+        }
     }
 }
