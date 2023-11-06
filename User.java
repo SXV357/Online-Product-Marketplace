@@ -28,7 +28,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
-        int generatedID = createID();
+        int generatedID = generateUserIdentificationNumber();
         switch (role) {
             case CUSTOMER: this.userID = "C" + String.valueOf(generatedID);
                                         break;
@@ -74,13 +74,13 @@ public class User {
     }
 
     /**
-     * Returns a unique 6-digit ID as long as the current ID is not already associated with an existing account in the database
+     * Returns a unique 7-digit ID as long as the current ID is not already associated with an existing account in the users.csv database
      * 
-     * @return A unique 6-digit ID
+     * @return A unique 7-digit ID
      */
-    public int createID() {
-        int currentID = 100000;  //This would be the first user's ID
-        while (db.checkUserIDMatch(currentID)) {
+    public int generateUserIdentificationNumber() {
+        int currentID = 1000000;  //This would be the first user's ID
+        while (db.checkIDMatch(currentID, "users.csv")) {
             currentID++;
         }
         return currentID;
