@@ -45,7 +45,17 @@ public class Runner {
         String uPassword = scan.nextLine();
         if (!(db.retrieveUser(uEmail, uPassword).equals(""))) {
             System.out.println("Login successful!");
-            //TODO set curUser to the one that just logged in
+            String userAsString = db.retrieveUser(uEmail, uPassword);
+            String[] userFromDB = userAsString.split(",");
+            String uID = userFromDB[0];
+            UserRole uRole = UserRole.UNDECIDED;
+            if (userFromDB.equals("SELLER")) {
+                uRole = UserRole.SELLER;
+            } else if (userFromDB.equals("CUSTOMER")) {
+                uRole = UserRole.CUSTOMER;
+            }
+            User newUser = new User(uID, uEmail, uPassword, uRole);
+            curUser = newUser;
             userLoggedIn = true;
         } else {
             System.out.println("Username or password is incorrect");
@@ -84,15 +94,19 @@ public class Runner {
         }
     }
 
+    public static void setCurUser() {
+        //TODO
+    }
+
 
     public static int sellerPrompt(Scanner scan) {
         System.out.println("Welcome Seller");
-        int sellerChoice = 0;
+        int sellerChoice;
         do {
-            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n 5)Sign Out");
+            System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Sign Out");
             try {
                 sellerChoice = Integer.parseInt(scan.nextLine());
-                if (sellerChoice > 0 && sellerChoice < 6) {
+                if (sellerChoice > 0 && sellerChoice < 5) {
                     return sellerChoice;
                 } else {
                     System.out.println("Please enter your choice's corresponding Integer");
@@ -105,9 +119,9 @@ public class Runner {
 
     public static int customerPrompt(Scanner scan) {
         System.out.println("Welcome Customer");
-        int customerChoice = 0;
+        int customerChoice;
         do {
-            System.out.println(""); //TODO
+            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n5) Sign Out");
             try {
                 customerChoice = Integer.parseInt(scan.nextLine());
                 if (customerChoice > 0 && customerChoice < 6) {
@@ -127,13 +141,13 @@ public class Runner {
         do {
             int welcomeResponse = welcomeUser(scan);
             switch (welcomeResponse) {
-                case 1:
+                case 1:  //Log user in
                     loginUser(scan);
                     break;
-                case 2:
+                case 2:  //Create new user
                     createUser(scan);
                     break;
-                case 3:
+                case 3:  //Quit Program
                     System.out.println("Thank you!");
                     return;  //ends the program
             }
@@ -141,14 +155,38 @@ public class Runner {
         if (curUser.getRole().equals(UserRole.SELLER)) {  //code for if the current user is a seller
             int sellerChoice = sellerPrompt(scan);
             switch (sellerChoice) {
-                //TODO add all of the seller choices
-                case 1:
+                case 1:  //Market
+                    //TODO add market UI
+                    break;
+                case 2:  //Purchase History
+                    //TODO add Purchase History UI
+                    break;
+                case 3:  //Dashboard
+                    //TODO add Dashboard UI
+                    break;
+                case 4:  //Shopping Cart
+                    //TODO add Shopping Cart UI
+                    break;
+                case 5:  //Sign Out
+                    System.out.println("Thank you!");
+                    return;  //ends the program
             }
         } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
             int customerChoice = customerPrompt(scan);
             switch (customerChoice) {
                 //TODO add all of the seller choices
-                case 1:
+                case 1:  //Stores
+                    //TODO add Store UI
+                    break;
+                case 2:  //Dashboard
+                    //TODO add Dashboard UI
+                    break;
+                case 3:  //Customer Shopping Carts
+                    //TODO add Customer Shopping Cart UI
+                    break;
+                case 4:  //Sign Out
+                    System.out.println("Thank you!");
+                    return;  //ends the program
             }
         }
     }
