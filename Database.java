@@ -30,11 +30,11 @@ public class Database {
     
     // Initializing all local arraylists for usage when adding, updating, or removing entries from each of the databases
     public Database() {
-        this.userEntries = new ArrayList<>();
-        this.storeEntries = new ArrayList<>();
-        this.productEntries = new ArrayList<>();
-        this.shoppingCartEntries = new ArrayList<>();
-        this.purchaseHistoryEntries = new ArrayList<>();
+        this.userEntries = getDatabaseContents("users.csv");
+        this.storeEntries = getDatabaseContents("stores.csv");
+        this.productEntries = getDatabaseContents("products.csv");
+        this.shoppingCartEntries = getDatabaseContents("shoppingCarts.csv");
+        this.purchaseHistoryEntries = getDatabaseContents("purchaseHistories.csv");
     }
 
     /**
@@ -93,7 +93,7 @@ public class Database {
         }
         for (int i = 0; i < correspondingEntries.size(); i++) {
             String[] userRepresentation = this.userEntries.get(i).split(",");
-            if (idToCheck == Integer.parseInt(userRepresentation[comparisonIndex])) {
+            if (idToCheck == Integer.parseInt(userRepresentation[comparisonIndex].substring(1))) {
                 return true;
             }
         }
