@@ -12,15 +12,15 @@ import java.util.ArrayList;
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 6, 2023
+ * @version November 7, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
     private static final String usersDatabaseHeaders = "ID,Email,Password,Role";
     private static final String storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
-    private static final String productsDatabaseHeaders = "Store ID,Seller ID,Store Name,Product ID,Product Name,Available Quantity,Price,Description";
-    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Store Name,Product ID,Product Name,Purchase Quantity,Price";
-    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Store Name,Product ID,Product Name,Purchase Quantity,Price";
+    private static final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description";
+    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
+    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
 
     private ArrayList<String> userEntries;
     private ArrayList<String> storeEntries;
@@ -77,23 +77,25 @@ public class Database {
     public boolean checkIDMatch(int idToCheck, String fileName) {
         ArrayList<String> correspondingEntries = new ArrayList<>();
         int comparisonIndex = 0;
+        int startIDSubstring = 0;
         switch (fileName) {
-            case "users.csv" -> {
-                correspondingEntries = this.userEntries;
-                comparisonIndex = 0;
-            }
-            case "stores.csv" -> {
-                correspondingEntries = this.storeEntries;
-                comparisonIndex = 0;
-            }
-            case "products.csv" -> {
-                correspondingEntries = this.productEntries;
-                comparisonIndex = 3;
-            }
+            case "users.csv":   correspondingEntries = this.userEntries;
+                                comparisonIndex = 0;
+                                startIDSubstring = 1;
+                                break;
+            case "stores.csv": correspondingEntries = this.storeEntries;
+                                comparisonIndex = 0;
+                                startIDSubstring = 2;
+                                break;
+            case "products.csv": correspondingEntries = this.productEntries;
+                                comparisonIndex = 2;
+                                startIDSubstring = 2;
+                                break;
         }
         for (int i = 0; i < correspondingEntries.size(); i++) {
-            String[] userRepresentation = this.userEntries.get(i).split(",");
-            if (idToCheck == Integer.parseInt(userRepresentation[comparisonIndex].substring(1))) {
+            String[] userRepresentation = correspondingEntries.get(i).split(",");
+            String matchedID = userRepresentation[comparisonIndex].substring(startIDSubstring);
+            if (idToCheck == Integer.parseInt(matchedID)) {
                 return true;
             }
         }
@@ -114,7 +116,7 @@ public class Database {
                 return this.userEntries.get(j);
             }
         }
-        return "";
+        return null;
     }
 
     /**
@@ -126,24 +128,34 @@ public class Database {
     public void addToDatabase(String fileName, String entry) {
         switch (fileName) {
             case "users.csv": 
-                            this.userEntries.add(entry);
-                            updateDatabaseContents(fileName, this.userEntries);
+                            if (!checkEntryExists(fileName, entry)) {
+                                this.userEntries.add(entry);
+                                updateDatabaseContents(fileName, this.userEntries);
+                            }
                             break;
             case "stores.csv":
-                            this.storeEntries.add(entry);
-                            updateDatabaseContents(fileName, storeEntries);
+                            if (!checkEntryExists(fileName, entry)) {
+                                this.storeEntries.add(entry);
+                                updateDatabaseContents(fileName, this.storeEntries);
+                            }
                             break;
             case "products.csv":
-                            this.productEntries.add(entry);
-                            updateDatabaseContents(fileName, productEntries);
+                            if (!checkEntryExists(fileName, entry)) {
+                                this.productEntries.add(entry);
+                                updateDatabaseContents(fileName, this.productEntries);
+                            }
                             break;
             case "shoppingCarts.csv":
-                            this.shoppingCartEntries.add(entry);
-                            updateDatabaseContents(fileName, shoppingCartEntries);
+                            if (!checkEntryExists(fileName, entry)) {
+                                this.shoppingCartEntries.add(entry);
+                                updateDatabaseContents(fileName, this.shoppingCartEntries);
+                            }
                             break;
             case "purchaseHistories.csv":
-                            this.purchaseHistoryEntries.add(entry);
-                            updateDatabaseContents(fileName, purchaseHistoryEntries);
+                            if (!checkEntryExists(fileName, entry)) {
+                                this.purchaseHistoryEntries.add(entry);
+                                updateDatabaseContents(fileName, this.purchaseHistoryEntries);
+                            }
                             break;
         }
     }
@@ -253,7 +265,7 @@ public class Database {
     public boolean checkEntryExists(String fileName, String entry) {
         File target = new File(DATABASES_DIRECTORY + fileName);
         try (BufferedReader br = new BufferedReader(new FileReader(target))) {
-            br.readLine();
+            br.readLine(); // skip the header
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.equals(entry)) {
@@ -309,7 +321,6 @@ public class Database {
             String line;
             while ((line = br.readLine()) != null) {
                 fileContents.add(line);
-                line = br.readLine();
             }
             br.close();
         } catch (IOException e) {

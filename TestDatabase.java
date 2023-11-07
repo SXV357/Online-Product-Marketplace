@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Project 4 - TestDatabase.java
  * 
@@ -5,26 +7,29 @@
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 6, 2023
+ * @version November 7, 2023
  */
 public class TestDatabase {
+    static final String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,Seller";
+    static final String nonExistentStoreEntry = "100912,Store100,90";
+    static final String nonExistentProductEntry = "100912,Store100,Apple,10,2,This is an apple";
+    static final String nonExistentShoppingCartEntry = "100678,100912,Store100,Apple,5,10";
+    static final String nonExistentPurchaseHistoryEntry = "100678,100912,Store100,Apple,5,10";
+
     public static void main(String[] args) {
         Database db = new Database();
-        // test for getting file headers given the filename
-        testGetFileHeaders(db);
-        // test for database column index
-        testDatabaseColumnBounds(db);
-        // tests for adding entries to the databases
-        testAddInitialDatabaseEntries(db);
-        testAddAdditionalDatabaseEntries(db);
-        // tests for updating entries in the databases
-        testSuccessfulDatabaseModification(db);
-        testUnsuccessfulDatabaseModification(db);
-        // tests for removing entries in the databases
-        testSuccessfulDatabaseRemoval(db);
-        testUnsuccessfulDatabaseRemoval(db);
-        // test for user ID match
-        testMatchedUserIDs(db);
+        // testGetFileHeaders(db); --> OK
+        // testDatabaseColumnBounds(db); --> OK
+        // testAddInitialDatabaseEntries(db); --> OK
+        // testAddAdditionalDatabaseEntries(db); --> OK
+        // testSuccessfulDatabaseModification(db); --> OK
+        // testUnsuccessfulDatabaseModification(db); --> OK
+        // testSuccessfulDatabaseRemoval(db); --> OK
+        // testUnsuccessfulDatabaseRemoval(db); --> OK
+        // testMatchedUserIDs(db); --> OK
+        // testUserRetrievalFromDatabase(db); --> OK
+        // testFileEntryExists(db); --> OK
+        // testGetDatabaseContents(db); --> OK
     }
 
     static void testGetFileHeaders(Database db) {
@@ -37,11 +42,11 @@ public class TestDatabase {
                 result += db.getFileHeaders(fileNames[i]);
             }
         }
-        assert result.equals("Seller ID,Store Name,Number of Products\n" +
-                            "Customer ID,Seller ID,Store Name,Product Name,Purchase Quantity,Price\n" +
+        assert result.equals("Store ID,Seller ID,Store Name,Number of Products\n" +
+                            "Customer ID,Seller ID,Store ID,Store Name,Product ID,Product Name,Purchase Quantity,Price\n" +
                             "ID,Email,Password,Role\n" +
-                            "Customer ID,Seller ID,Store Name,Product Name,Purchase Quantity,Price\n" +
-                            "Seller ID,Store Name,Product Name,Available Quantity,Price,Description");
+                            "Customer ID,Seller ID,Store ID,Store Name,Product ID,Product Name,Purchase Quantity,Price\n" +
+                            "Store ID,Seller ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description");
     }
 
     static void testDatabaseColumnBounds(Database db) {
@@ -65,11 +70,11 @@ public class TestDatabase {
 
     static void testAddInitialDatabaseEntries(Database db) {
         // initially adding one entry to each of the databases
-        String userEntry = "100000,blabla@yahoo.com,abc123,Customer";
-        String storeEntry = "100001,Store1,5";
-        String productEntry = "100001,Store1,Burrito,50,5.99,This is a breakfast burrito";
-        String shoppingCartEntry = "100000,100001,Store1,Burrito,10,59.9";
-        String purchaseHistoryEntry = "100000,100001,Store1,Burrito,10,59.9";
+        String userEntry = "C100000,blabla@yahoo.com,abc123,CUSTOMER";
+        String storeEntry = "ST100000,S1000000,Store1,5";
+        String productEntry = "S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito";
+        String shoppingCartEntry = "C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9";
+        String purchaseHistoryEntry = "C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9";
         db.addToDatabase("users.csv", userEntry);
         db.addToDatabase("stores.csv", storeEntry);
         db.addToDatabase("products.csv", productEntry);
@@ -79,11 +84,11 @@ public class TestDatabase {
 
     static void testAddAdditionalDatabaseEntries(Database db) {
         // adding an additional entry to each of the databases
-        String newUserEntry = "100001,blabla@gmail.com,abc123,Customer";
-        String newStoreEntry = "100002,Store2,10";
-        String newProductEntry = "100002,Store2,Apple,10,2,This is an apple";
-        String newShoppingCartEntry = "100001,100002,Store2,Apple,5,10";
-        String newPurchaseHistoryEntry = "100001,100002,Store2,Apple,5,10";
+        String newUserEntry = "C100001,blabla@gmail.com,abc123,CUSTOMER";
+        String newStoreEntry = "ST100001,S1000001,Store2,10";
+        String newProductEntry = "S1000001,ST1000001,PR1000001,Store2,Apple,10,5.99,This is an apple";
+        String newShoppingCartEntry = "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,5,29.95";
+        String newPurchaseHistoryEntry = "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,5,29.95";
         db.addToDatabase("users.csv", newUserEntry);
         db.addToDatabase("stores.csv", newStoreEntry);
         db.addToDatabase("products.csv", newProductEntry);
@@ -93,31 +98,23 @@ public class TestDatabase {
 
     static void testSuccessfulDatabaseModification(Database db) {
         // modifying entries that already exist within the database
-        String currUserEntry = "100001,blabla@gmail.com,abc123,Customer";
-        String currStoreEntry = "100002,Store2,10";
-        String currProductEntry = "100002,Store2,Apple,10,2,This is an apple";
-        String currShoppingCartEntry = "100001,100002,Store2,Apple,5,10";
-        String currPurchaseHistoryEntry = "100001,100002,Store2,Apple,5,10";
-        // if user for example chooses to modify their email
-        boolean userModified = db.modifyDatabase("users.csv", currUserEntry, "100001,hello123@yahoo.com,abc123,Customer");
-        // if for example, a seller chooses to add more products to one of their existing stores
-        boolean storeModified = db.modifyDatabase("stores.csv", currStoreEntry, "100002,Store2,20");
-        // if for example, a seller chooses to modify certain details associated with one of the products in their store
-        boolean productModified = db.modifyDatabase("products.csv", currProductEntry, "100002,Store2,Apple,20,5,This is an apple");
-        // if the customer wants to update the quantity of the item in their existing shopping cart
-        boolean shoppingCartModified = db.modifyDatabase("shoppingCarts.csv", currShoppingCartEntry, "100001,100002,Store2,Apple,10,50");
-        boolean purchaseHistoryModified = db.modifyDatabase("purchaseHistories.csv", currPurchaseHistoryEntry, "100001,100002,Store2,Apple,10,50");
+        String currUserEntry = "C100001,blabla@gmail.com,abc123,CUSTOMER";
+        String currStoreEntry = "ST100001,S1000001,Store2,10";
+        String currProductEntry = "S1000001,ST1000001,PR1000001,Store2,Apple,10,5.99,This is an apple";
+        String currShoppingCartEntry = "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,5,29.95";
+        String currPurchaseHistoryEntry = "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,5,29.95";
+
+        boolean userModified = db.modifyDatabase("users.csv", currUserEntry, "C100001,blabla123@gmail.com,abc123,CUSTOMER");
+        boolean storeModified = db.modifyDatabase("stores.csv", currStoreEntry, "ST100001,S1000001,StoreSomething,10");
+        boolean productModified = db.modifyDatabase("products.csv", currProductEntry, "S1000001,ST1000001,PR1000001,Store2,Apple,10,5.99,Green apple");
+        boolean shoppingCartModified = db.modifyDatabase("shoppingCarts.csv", currShoppingCartEntry, "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,6,35.94");
+        boolean purchaseHistoryModified = db.modifyDatabase("purchaseHistories.csv", currPurchaseHistoryEntry, "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,6,35.94");
+
         assert userModified && storeModified && productModified && shoppingCartModified && purchaseHistoryModified;
     }
 
     static void testUnsuccessfulDatabaseModification(Database db) {
         // modifying entries that don't exist in the database
-        String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,Seller";
-        String nonExistentStoreEntry = "100912,Store100,90";
-        String nonExistentProductEntry = "100912,Store100,Apple,10,2,This is an apple";
-        String nonExistentShoppingCartEntry = "100678,100912,Store100,Apple,5,10";
-        String nonExistentPurchaseHistoryEntry = "100678,100912,Store100,Apple,5,10";
-        // no changes should be reflected in any of the databases since none of the entries exist
         boolean userModified = db.modifyDatabase("users.csv", nonExistentUserEntry, "100678,hello@yahoo.com,jhghgf,Seller");
         boolean storeModified = db.modifyDatabase("stores.csv", nonExistentStoreEntry, "100912,Store102,90");
         boolean productModified = db.modifyDatabase("products.csv", nonExistentProductEntry, "100912,Store100,Apple,10,3,This is an apple");
@@ -128,39 +125,76 @@ public class TestDatabase {
 
     static void testSuccessfulDatabaseRemoval(Database db) {
         // removing entries that exist in the databases
-        String currUserEntry = "100001,hello123@yahoo.com,abc123,Customer";
-        String currStoreEntry = "100002,Store2,20";
-        String currProductEntry = "100002,Store2,Apple,20,5,This is an apple";
-        String currShoppingCartEntry = "100001,100002,Store2,Apple,10,50";
-        String currPurchaseHistoryEntry = "100001,100002,Store2,Apple,10,50";
-        db.removeFromDatabase("users.csv", currUserEntry); // OK
-        db.removeFromDatabase("stores.csv", currStoreEntry); // OK
-        db.removeFromDatabase("products.csv", currProductEntry); // OK
-        db.removeFromDatabase("shoppingCarts.csv", currShoppingCartEntry); // OK
-        db.removeFromDatabase("purchaseHistories.csv", currPurchaseHistoryEntry); // OK
+        String currUserEntry = "C100001,blabla123@gmail.com,abc123,CUSTOMER";
+        String currStoreEntry = "ST100001,S1000001,StoreSomething,10";
+        String currProductEntry = "S1000001,ST1000001,PR1000001,Store2,Apple,10,5.99,Green apple";
+        String currShoppingCartEntry = "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,6,35.94";
+        String currPurchaseHistoryEntry = "C1000001,S1000001,ST1000001,PR1000001,Store2,Apple,6,35.94";
+        db.removeFromDatabase("users.csv", currUserEntry);
+        db.removeFromDatabase("stores.csv", currStoreEntry);
+        db.removeFromDatabase("products.csv", currProductEntry);
+        db.removeFromDatabase("shoppingCarts.csv", currShoppingCartEntry);
+        db.removeFromDatabase("purchaseHistories.csv", currPurchaseHistoryEntry);
     }
 
     static void testUnsuccessfulDatabaseRemoval(Database db) {
         // removing entries that don't exist in the database
-        String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,Seller";
-        String nonExistentStoreEntry = "100912,Store100,90";
-        String nonExistentProductEntry = "100912,Store100,Apple,10,2,This is an apple";
-        String nonExistentShoppingCartEntry = "100678,100912,Store100,Apple,5,10";
-        String nonExistentPurchaseHistoryEntry = "100678,100912,Store100,Apple,5,10";
-        db.removeFromDatabase("users.csv", nonExistentUserEntry); // OK
-        db.removeFromDatabase("stores.csv", nonExistentStoreEntry); // OK
-        db.removeFromDatabase("products.csv", nonExistentProductEntry); // OK
-        db.removeFromDatabase("shoppingCarts.csv", nonExistentShoppingCartEntry); // OK
-        db.removeFromDatabase("purchaseHistories.csv", nonExistentPurchaseHistoryEntry); // OK
+        db.removeFromDatabase("users.csv", nonExistentUserEntry);
+        db.removeFromDatabase("stores.csv", nonExistentStoreEntry);
+        db.removeFromDatabase("products.csv", nonExistentProductEntry);
+        db.removeFromDatabase("shoppingCarts.csv", nonExistentShoppingCartEntry);
+        db.removeFromDatabase("purchaseHistories.csv", nonExistentPurchaseHistoryEntry);
     }
 
     static void testMatchedUserIDs(Database db) {
-        // one for an ID that exists in the user's database and one for an ID that doesn't exist
-        assert db.checkIDMatch(100000, "users.csv") && !db.checkIDMatch(123456, "users.csv");
+        // for users.csv
+        boolean userIDMatch = db.checkIDMatch(100000, "users.csv");
+        boolean userIDNonMatch = db.checkIDMatch(123456, "users.csv");
+        // for stores.csv
+        boolean storeIDMatch = db.checkIDMatch(100000, "stores.csv");
+        boolean storeIDNonMatch = db.checkIDMatch(123456, "stores.csv");
+        // for products.csv
+        boolean productIDMatch = db.checkIDMatch(1000000, "products.csv");
+        boolean productIDNonMatch = db.checkIDMatch(1234567, "products.csv");
+        assert (userIDMatch && storeIDMatch && productIDMatch) && (!userIDNonMatch && !storeIDNonMatch && !productIDNonMatch);
     }
 
     static void testUserRetrievalFromDatabase(Database db) {
-        
+        String matchedUser = db.retrieveUser("blabla@yahoo.com", "abc123");
+        String noMatchedUser = db.retrieveUser("hello@gmail.com", "123456");
+        assert matchedUser.equals("C100000,blabla@yahoo.com,abc123,CUSTOMER") && noMatchedUser == null;
+    }
+
+    static void testFileEntryExists(Database db) {
+        // for users.csv
+        assert db.checkEntryExists("users.csv", "C100000,blabla@yahoo.com,abc123,CUSTOMER");
+        assert !(db.checkEntryExists("users.csv", nonExistentUserEntry));
+        // for stores.csv
+        assert db.checkEntryExists("stores.csv", "ST100000,S1000000,Store1,5");
+        assert !(db.checkEntryExists("stores.csv", nonExistentStoreEntry));
+        // for products.csv
+        assert db.checkEntryExists("products.csv", "S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito");
+        assert !(db.checkEntryExists("products.csv", nonExistentProductEntry));
+        // for shoppingCarts.csv
+        assert db.checkEntryExists("shoppingCarts.csv", "C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9");
+        assert !(db.checkEntryExists("shoppingCarts.csv", nonExistentShoppingCartEntry));
+        // for purchaseHistories.csv
+        assert db.checkEntryExists("purchaseHistories.csv", "C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9");
+        assert !(db.checkEntryExists("purchaseHistories.csv", nonExistentPurchaseHistoryEntry));
+    }
+
+    static void testGetDatabaseContents(Database db) {
+        ArrayList<String> users = db.getDatabaseContents("users.csv");
+        ArrayList<String> stores = db.getDatabaseContents("stores.csv");
+        ArrayList<String> products = db.getDatabaseContents("products.csv");
+        ArrayList<String> shoppingCarts = db.getDatabaseContents("shoppingCarts.csv");
+        ArrayList<String> purchaseHistories = db.getDatabaseContents("purchaseHistories.csv");
+        System.out.println(users);
+        System.out.println(stores);
+        System.out.println(products);
+        System.out.println(shoppingCarts);
+        System.out.println(purchaseHistories);
+
     }
 
 }
