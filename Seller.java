@@ -235,9 +235,9 @@ public class Seller extends User{
 
                 if (!cartsByStore.containsKey(storeIdentifier)) {
                     cartsByStore.put(storeIdentifier, new ArrayList<String>());
-                } else {
-                    cartsByStore.get(storeIdentifier).add(salesInformation);
-                }
+                } //else {
+                cartsByStore.get(storeIdentifier).add(salesInformation);
+                //}
             }
             for (String store: cartsByStore.keySet()) {
                 System.out.println(store);
