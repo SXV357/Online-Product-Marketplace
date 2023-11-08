@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Project 4 - Store.java
  *
@@ -7,19 +5,18 @@ import java.util.ArrayList;
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  *
- * @version November 6, 2023
+ * @version November 8, 2023
  */
 public class Store {
 
     private static Database db = new Database();
     private String storeIdentificationNumber;
     private String storeName;
-    private ArrayList<Product> products;
 
+    // creating a store for the very first time
     public Store(String storeName) {
         this.storeIdentificationNumber = "ST" + String.valueOf(generateStoreIdentificationNumber());
         this.storeName = storeName;
-        this.products = new ArrayList<Product>();
     }
 
     // Getters
@@ -29,19 +26,6 @@ public class Store {
 
     public String getStoreName() {
         return this.storeName;
-    }
-
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
-
-    // Setters(If a seller wants to modify the name of one of their stores)
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
     }
 
     /**
