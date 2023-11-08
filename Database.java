@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 7, 2023
+ * @version November 8, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
@@ -21,21 +21,6 @@ public class Database {
     private static final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description";
     private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
     private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
-
-    private ArrayList<String> userEntries;
-    private ArrayList<String> storeEntries;
-    private ArrayList<String> productEntries;
-    private ArrayList<String> shoppingCartEntries;
-    private ArrayList<String> purchaseHistoryEntries;
-    
-    // Initializing all local arraylists for usage when adding, updating, or removing entries from each of the databases
-    public Database() {
-        this.userEntries = getDatabaseContents("users.csv");
-        this.storeEntries = getDatabaseContents("stores.csv");
-        this.productEntries = getDatabaseContents("products.csv");
-        this.shoppingCartEntries = getDatabaseContents("shoppingCarts.csv");
-        this.purchaseHistoryEntries = getDatabaseContents("purchaseHistories.csv");
-    }
 
     /**
      * Takes in the name of the file as input and returns a string containing all the headers associated with that file.
@@ -79,15 +64,15 @@ public class Database {
         int comparisonIndex = 0;
         int startIDSubstring = 0;
         switch (fileName) {
-            case "users.csv":   correspondingEntries = this.userEntries;
+            case "users.csv":   correspondingEntries = getDatabaseContents("users.csv");
                                 comparisonIndex = 0;
                                 startIDSubstring = 1;
                                 break;
-            case "stores.csv": correspondingEntries = this.storeEntries;
+            case "stores.csv": correspondingEntries = getDatabaseContents("stores.csv");
                                 comparisonIndex = 0;
                                 startIDSubstring = 2;
                                 break;
-            case "products.csv": correspondingEntries = this.productEntries;
+            case "products.csv": correspondingEntries = getDatabaseContents("products.csv");
                                 comparisonIndex = 2;
                                 startIDSubstring = 2;
                                 break;
@@ -110,10 +95,11 @@ public class Database {
      * @return A comma-separated string containing the matched user's information in the users.csv database
      */
     public String retrieveUser(String email, String password) {
-        for (int j = 0; j < this.userEntries.size(); j++) {
-            String[] userRepresentation = this.userEntries.get(j).split(",");
+        ArrayList<String> userEntries = getDatabaseContents("users.csv");
+        for (int j = 0; j < userEntries.size(); j++) {
+            String[] userRepresentation = userEntries.get(j).split(",");
             if (email.equals(userRepresentation[1]) && password.equals(userRepresentation[2])) {
-                return this.userEntries.get(j);
+                return userEntries.get(j);
             }
         }
         return null;
@@ -126,35 +112,36 @@ public class Database {
      * @param entry The entry to be appended to the file
      */
     public void addToDatabase(String fileName, String entry) {
+        ArrayList<String> relevantContents = getDatabaseContents(fileName);
         switch (fileName) {
             case "users.csv": 
                             if (!checkEntryExists(fileName, entry)) {
-                                this.userEntries.add(entry);
-                                updateDatabaseContents(fileName, this.userEntries);
+                                relevantContents.add(entry);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "stores.csv":
                             if (!checkEntryExists(fileName, entry)) {
-                                this.storeEntries.add(entry);
-                                updateDatabaseContents(fileName, this.storeEntries);
+                                relevantContents.add(entry);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "products.csv":
                             if (!checkEntryExists(fileName, entry)) {
-                                this.productEntries.add(entry);
-                                updateDatabaseContents(fileName, this.productEntries);
+                                relevantContents.add(entry);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "shoppingCarts.csv":
                             if (!checkEntryExists(fileName, entry)) {
-                                this.shoppingCartEntries.add(entry);
-                                updateDatabaseContents(fileName, this.shoppingCartEntries);
+                                relevantContents.add(entry);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "purchaseHistories.csv":
                             if (!checkEntryExists(fileName, entry)) {
-                                this.purchaseHistoryEntries.add(entry);
-                                updateDatabaseContents(fileName, this.purchaseHistoryEntries);
+                                relevantContents.add(entry);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
         }
@@ -167,35 +154,36 @@ public class Database {
      * @param entry The entry to be removed from the file
      */
     public void removeFromDatabase(String fileName, String entry) {
+        ArrayList<String> relevantContents = getDatabaseContents(fileName);
         switch (fileName) {
             case "users.csv": 
-                            boolean userRemoved = this.userEntries.remove(entry);
+                            boolean userRemoved = relevantContents.remove(entry);
                             if (userRemoved) {
-                                updateDatabaseContents(fileName, this.userEntries);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "stores.csv":
-                            boolean storeRemoved = this.storeEntries.remove(entry);
+                            boolean storeRemoved = relevantContents.remove(entry);
                             if (storeRemoved) {
-                                updateDatabaseContents(fileName, storeEntries);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "products.csv":
-                            boolean productRemoved = this.productEntries.remove(entry);
+                            boolean productRemoved = relevantContents.remove(entry);
                             if (productRemoved) {
-                                updateDatabaseContents(fileName, productEntries);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "shoppingCarts.csv":
-                            boolean shoppingCartRemoved = this.shoppingCartEntries.remove(entry);
+                            boolean shoppingCartRemoved = relevantContents.remove(entry);
                             if (shoppingCartRemoved) {
-                                updateDatabaseContents(fileName, shoppingCartEntries);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
             case "purchaseHistories.csv":
-                            boolean purchaseHistoryRemoved = this.purchaseHistoryEntries.remove(entry);
+                            boolean purchaseHistoryRemoved = relevantContents.remove(entry);
                             if (purchaseHistoryRemoved) {
-                                updateDatabaseContents(fileName, purchaseHistoryEntries);
+                                updateDatabaseContents(fileName, relevantContents);
                             }
                             break;
         }
@@ -209,45 +197,46 @@ public class Database {
      * @param newEntry The entry that will replace the previous entry in the specified file
      */
     public boolean modifyDatabase(String fileName, String prevEntry, String newEntry) {
+        ArrayList<String> relevantContents = getDatabaseContents(fileName);
         boolean databaseModified = false;
         switch (fileName) {
             case "users.csv": 
-                            int prevUserIdx = this.userEntries.indexOf(prevEntry);
+                            int prevUserIdx = relevantContents.indexOf(prevEntry);
                             if (prevUserIdx != -1) {
-                                this.userEntries.set(prevUserIdx, newEntry);
-                                updateDatabaseContents(fileName, this.userEntries);
+                                relevantContents.set(prevUserIdx, newEntry);
+                                updateDatabaseContents(fileName, relevantContents);
                                 databaseModified = true;
                             }
                             break;
             case "stores.csv":
-                            int prevStoreIdx = this.storeEntries.indexOf(prevEntry);
+                            int prevStoreIdx = relevantContents.indexOf(prevEntry);
                             if (prevStoreIdx != -1) {
-                                this.storeEntries.set(prevStoreIdx, newEntry);
-                                updateDatabaseContents(fileName, storeEntries);
+                                relevantContents.set(prevStoreIdx, newEntry);
+                                updateDatabaseContents(fileName, relevantContents);
                                 databaseModified = true;
                             }
                             break;
             case "products.csv":
-                            int prevProductIdx = this.productEntries.indexOf(prevEntry);
+                            int prevProductIdx = relevantContents.indexOf(prevEntry);
                             if (prevProductIdx != -1) {
-                                this.productEntries.set(prevProductIdx, newEntry);
-                                updateDatabaseContents(fileName, productEntries);
+                                relevantContents.set(prevProductIdx, newEntry);
+                                updateDatabaseContents(fileName, relevantContents);
                                 databaseModified = true;
                             }
                             break;
             case "shoppingCarts.csv":
-                            int prevShoppingCartIdx = this.shoppingCartEntries.indexOf(prevEntry);
+                            int prevShoppingCartIdx = relevantContents.indexOf(prevEntry);
                             if (prevShoppingCartIdx != -1) {
-                                this.shoppingCartEntries.set(prevShoppingCartIdx, newEntry);
-                                updateDatabaseContents(fileName, shoppingCartEntries);
+                                relevantContents.set(prevShoppingCartIdx, newEntry);
+                                updateDatabaseContents(fileName, relevantContents);
                                 databaseModified = true;
                             }
                             break;
             case "purchaseHistories.csv":
-                            int prevPurchaseHistoryIdx = this.purchaseHistoryEntries.indexOf(prevEntry);
+                            int prevPurchaseHistoryIdx = relevantContents.indexOf(prevEntry);
                             if (prevPurchaseHistoryIdx != -1) {
-                                this.purchaseHistoryEntries.set(prevPurchaseHistoryIdx, newEntry);
-                                updateDatabaseContents(fileName, purchaseHistoryEntries);
+                                relevantContents.set(prevPurchaseHistoryIdx, newEntry);
+                                updateDatabaseContents(fileName, relevantContents);
                                 databaseModified = true;
                             }
                             break;
