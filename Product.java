@@ -5,23 +5,24 @@
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 6, 2023
+ * @version November 8, 2023
  */
 public class Product {
 
     private static Database db = new Database();
     private String productIdentificationNumber;
     private String name;
-    private String description;
     private int availableQuantity;
     private double price;
+    private String description;
 
-    public Product(String name, String description, int availableQuantity, double price) {
+    // creating a product for the very first time
+    public Product(String name, int availableQuantity, double price, String description) {
         this.productIdentificationNumber = "PR" + String.valueOf(generateProductIdentificationNumber());
         this.name = name;
-        this.description = description;
         this.availableQuantity = availableQuantity;
         this.price = price;
+        this.description = description;
     }
 
     // Getters
@@ -45,21 +46,9 @@ public class Product {
         return this.price;
     }
 
-    // Setters(Used for modifying an existing product in a given store)
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setAvailableQuantity(int availableQuantity) {
-        this.availableQuantity = availableQuantity;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
+    @Override
+    public String toString() {
+        return String.format("%s,%d,%.2f,%s", this.name, this.availableQuantity, this.price, this.description);
     }
 
     /**
