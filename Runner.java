@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 
 public class Runner {
-    private static Database db = new Database();  //Makes a Database object
+    private static final Database db = new Database();  //Makes a Database object
     private static boolean userLoggedIn = false;  //This boolean is used to check if the user has logged in successfully
     private static User curUser = new User();  //This field stores the user object for the current User of the program
 
@@ -43,23 +43,22 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (!(db.retrieveUser(uEmail, uPassword).equals(""))) {
-            System.out.println("Login successful!");
-            String userAsString = db.retrieveUser(uEmail, uPassword);
-            String[] userFromDB = userAsString.split(",");
-            String uID = userFromDB[0];
-            UserRole uRole = UserRole.UNDECIDED;
-            if (userFromDB[3].equals("SELLER")) {
-                uRole = UserRole.SELLER;
-            } else if (userFromDB[3].equals("CUSTOMER")) {
-                uRole = UserRole.CUSTOMER;
+            if (db.retrieveUser(uEmail, uPassword) != null) {
+                System.out.println("Login successful!");
+                String userAsString = db.retrieveUser(uEmail, uPassword);
+                String[] userFromDB = userAsString.split(",");
+                String uID = userFromDB[0];
+                UserRole uRole = UserRole.UNDECIDED;
+                if (userFromDB[3].equals("SELLER")) {
+                    uRole = UserRole.SELLER;
+                } else if (userFromDB[3].equals("CUSTOMER")) {
+                    uRole = UserRole.CUSTOMER;
+                }
+                curUser = new User(uID, uEmail, uPassword, uRole);
+                userLoggedIn = true;
+            } else {
+                System.out.println("Username or password is incorrect");
             }
-            User newUser = new User(uID, uEmail, uPassword, uRole);
-            curUser = newUser;
-            userLoggedIn = true;
-        } else {
-            System.out.println("Username or password is incorrect");
-        }
     }
 
     //This method creates a new user object,
@@ -68,7 +67,7 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (!(db.retrieveUser(uEmail, uPassword).equals(""))) {  //Check to see if there is a user with the email already
+        if (db.retrieveUser(uEmail, uPassword) != null) {  //Check to see if there is a user with the email already
             System.out.println("User already exists");
         } else {
             UserRole uRole = UserRole.UNDECIDED;  //New user is defaulted to undecided until they set it
@@ -87,8 +86,7 @@ public class Runner {
                     System.out.println("Please enter your choice's corresponding Integer");
                 }
             }
-            User newU = new User(uEmail, uPassword, uRole);
-            curUser = newU;
+            curUser = new User(uEmail, uPassword, uRole);
             db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
             userLoggedIn = true;
         }
@@ -137,7 +135,8 @@ public class Runner {
             System.out.println("1) Select Store\n2) Create Store\n3) Go Back");
             ArrayList<Store> curSellerStores = curSeller.getStores();
             try {
-                switch (Integer.parseInt(scan.nextLine())) {
+                int storeUIChoice = Integer.parseInt(scan.nextLine());
+                switch (storeUIChoice) {
                     case 1:  //Select a Store
                         while (true) {  //loops until seller selects "Go Back"
                             System.out.println("Select a store or go back:");
@@ -165,9 +164,7 @@ public class Runner {
                         System.out.println("What would you like to name the store?");
                         //TODO implement a way to check unique store name
                         String newStoreName = scan.nextLine();
-                        Store newStore = new Store(newStoreName);
-                        curSellerStores.add(newStore);
-                        curSeller.setStores(curSellerStores);
+                        curSeller.createNewStore(newStoreName);
                         System.out.println(newStoreName + " has been created.");
                         break;
                     case 3:  //sends seller back to initial SellerUI
@@ -189,7 +186,32 @@ public class Runner {
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1:  //Create Product
-
+                        System.out.println("What would you like to name the product?");
+                        String productName = scan.nextLine();
+                        int availableQuantity;
+                        while (true) {
+                            System.out.println("How many are for sale?");
+                            try {
+                                availableQuantity = Integer.parseInt(scan.nextLine());
+                                break;
+                            } catch (Exception e) {
+                                System.out.println("Error: Please enter an integer");
+                            }
+                        }
+                        double price;
+                        while (true) {
+                            System.out.println("What is the price per product in dollars?");
+                            try {
+                                price = Double.parseDouble(scan.nextLine());
+                                break;
+                            } catch (Exception e) {
+                                System.out.println("Error: Please enter an double");
+                            }
+                        }
+                        System.out.println("Describe the product please");
+                        String description = scan.nextLine();
+                        curSeller.createNewProduct(curStore.getStoreIdentificationNumber(), productName,
+                                availableQuantity, price, description);
                         break;
                     case 2:  //Edit Product
 
