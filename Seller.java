@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class Seller extends User{
 
     private static Database db = new Database();
+    private ArrayList<Store> stores;
 
 
     // creating a seller for the very first time(They haven't created any stores yet so initializing arraylist to empty sequence)
@@ -30,6 +31,10 @@ public class Seller extends User{
         super(userID, email, password, role);
     }
 
+
+    public ArrayList<Store> getStores() {
+        return this.stores;
+    }
     public void setStores (ArrayList<Store> stores) {
         this.stores = stores;
     }
