@@ -201,9 +201,8 @@ public class Seller extends User{
 
                 if (!salesByStore.containsKey(storeIdentifier)) {
                     salesByStore.put(storeIdentifier, new ArrayList<String>());
-                } else {
-                    salesByStore.get(storeIdentifier).add(salesInformation);
-                }
+                } 
+                salesByStore.get(storeIdentifier).add(salesInformation);
             }
             for (String store: salesByStore.keySet()) {
                 System.out.println(store);
@@ -283,9 +282,8 @@ public class Seller extends User{
 
                 if (!cartsByStore.containsKey(storeIdentifier)) {
                     cartsByStore.put(storeIdentifier, new ArrayList<String>());
-                } //else {
+                }
                 cartsByStore.get(storeIdentifier).add(salesInformation);
-                //}
             }
             for (String store: cartsByStore.keySet()) {
                 System.out.println(store);
