@@ -22,9 +22,8 @@ public class Seller extends User{
 
         //database.add should add a new line to the appropriate database
 
-        String storeLine = String.join(",", String.valueOf(super.getUserID()),storeName);
+        //String storeLine = String.join(",", String.valueOf(super.getUserID()),storeName);
         //database.add(STORE,storeLine);
-
     }
 
     public void modifyStore(String oldName, String newName){
