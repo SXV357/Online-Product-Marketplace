@@ -5,61 +5,62 @@
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 2, 2023
+ * @version November 8, 2023
  */
 public class Product {
 
+    private static Database db = new Database();
+    private String productIdentificationNumber;
     private String name;
-    private String store;
-    private String description;
-    private int quantity;
+    private int availableQuantity;
     private double price;
+    private String description;
 
-    public Product(String name, String store, String description, int quantity, double price) {
+    // creating a product for the very first time
+    public Product(String name, int availableQuantity, double price, String description) {
+        this.productIdentificationNumber = "PR" + String.valueOf(generateProductIdentificationNumber());
         this.name = name;
-        this.store = store;
-        this.description = description;
-        this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
         this.price = price;
+        this.description = description;
+    }
+
+    // Getters
+    public String getProductIdentificationNumber() {
+        return this.productIdentificationNumber;
     }
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStore() {
-        return store;
-    }
-
-    public void setStore(String store) {
-        this.store = store;
+        return this.name;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public int getAvailableQuantity() {
+        return this.availableQuantity;
     }
 
     public double getPrice() {
-        return price;
+        return this.price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    @Override
+    public String toString() {
+        return String.format("%s,%d,%.2f,%s", this.name, this.availableQuantity, this.price, this.description);
+    }
+
+    /**
+     * Returns a unique 7-digit ID as long as the current ID is not already associated with an existing account in the products.csv database
+     * 
+     * @return A unique 7-digit ID
+     */
+    public int generateProductIdentificationNumber() {
+        int currentID = 1000000; // the first store created will have this ID
+        while (db.checkIDMatch(currentID, "products.csv")) {
+            currentID += 1;
+        }
+        return currentID;
     }
 }
