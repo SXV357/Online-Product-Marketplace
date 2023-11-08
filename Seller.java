@@ -31,7 +31,7 @@ public class Seller extends User{
         super(userID, email, password, role);
     }
 
-
+    // needs some review since everything can be accomplished without utilizing these methods in runner
     public ArrayList<Store> getStores() {
         return this.stores;
     }
@@ -40,91 +40,139 @@ public class Seller extends User{
     }
 
     // 1. Create a new store
-    public boolean createNewStore(String storeName) {
-        if (storeName == null || storeName.isEmpty()) {
-            return false;
+    public boolean createNewStore(String newStoreName) {
+        boolean storeCreated = false;
+        ArrayList<String> matchedStoreEntries = db.getMatchedEntries("stores.csv", 2, newStoreName);
+        // Checking to make sure there's not already a store with the same name
+        if (newStoreName == null || newStoreName.isEmpty() || !matchedStoreEntries.isEmpty()) {
+            storeCreated =  false;
         }
-        Store newStore = new Store(storeName);
-        String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(), super.getUserID(), newStore.getStoreName(), 0); // a new store will start with 0 products by default
-        db.addToDatabase("stores.csv", newStoreEntry);
-        return true;
+        if (matchedStoreEntries.isEmpty()) { // there are no stores that already exist with the name
+            Store newStore = new Store(newStoreName);
+            String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(), super.getUserID(), newStore.getStoreName(), 0); // a new store will start with 0 products by default
+            db.addToDatabase("stores.csv", newStoreEntry);
+            storeCreated = true;
+        }
+        return storeCreated;
     }
 
-    // 2. Delete an existing store(in its entirety); Takes in ID because multiple stores could have the same name
-    public boolean deleteStore(String storeID) {
-        // There should only be one matched store since all IDs will be unique
+    // 2. Delete an existing store(in its entirety)
+    public boolean deleteStore(String storeName) {
         try {
-            String matchedStore = db.getMatchedEntries("stores.csv", 0, storeID).get(0);
-            db.removeFromDatabase("stores.csv", matchedStore);
+            String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
+            db.removeFromDatabase("stores.csv", matchedStore); // remove the store first
+            // then remove all products associated with that particular store
+            for (int i = 0; i < matchedProducts.size(); i++) {
+                db.removeFromDatabase("products.csv", matchedProducts.get(i));
+            }
             return true;
-        } catch (IndexOutOfBoundsException e) { // if there are no entries
+        } catch (IndexOutOfBoundsException e) { // if the seller wants to delete a store that doesn't exist
             return false;
         }
     }
 
     // 3. Modify the name of an existing store
-    public boolean modifyStoreName(String storeID, String newStoreName) {
-        if (newStoreName == null || newStoreName.isEmpty()) {
+    public boolean modifyStoreName(String prevStoreName, String newStoreName) {
+        if (prevStoreName == null || prevStoreName.isEmpty() || newStoreName == null || newStoreName.isEmpty()) {
             return false;
         }
         try {
-            String matchedStore = db.getMatchedEntries("stores.csv", 0, storeID).get(0);
-            String[] storeRepresentation = matchedStore.split(",");
-            storeRepresentation[2] = newStoreName;
-            db.modifyDatabase("users.csv", matchedStore, String.join(",", storeRepresentation));
-            return true;
-        } catch (IndexOutOfBoundsException e) {
+            String matchedPrevStoreName = db.getMatchedEntries("stores.csv", 2, prevStoreName).get(0);
+            ArrayList<String> matchedNewStoreName = db.getMatchedEntries("stores.csv", 2, newStoreName);
+            if (matchedNewStoreName.isEmpty()) { // there are no already existing stores with the name newStoreName
+                String[] newStoreRepresentation = matchedPrevStoreName.split(",");
+                newStoreRepresentation[2] = newStoreName;
+                db.modifyDatabase("stores.csv", matchedPrevStoreName, String.join(",", newStoreRepresentation));
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) { // will handle if the store specified by prevStoreName is non-existent
             return false;
         }
     }
 
     // 4. Add a new product to any store of their choosing
-    public boolean createNewProduct(String storeID, String productName, int availableQuantity, double price, String productDescription) {
+    public boolean createNewProduct(String storeName, String productName, int availableQuantity, double price, String productDescription) {
+        // update stores.csv database with updated number of products
         if (productName == null || productName.isEmpty() || availableQuantity < 0 || price < 0 || productDescription == null || productDescription.isEmpty()) {
             return false;
         }
-        String matchedStoreEntry = db.getMatchedEntries("stores.csv", 0, storeID).get(0);
         try {
-            // making sure the store exists before creating a product associated with it
-            Product newProduct = new Product(productName, availableQuantity, price, productDescription);
-            String entry = String.format("%s,%s,%s,%s", super.getUserID(),storeID,newProduct.getProductIdentificationNumber(), matchedStoreEntry.split(",")[2]) + "," + newProduct.toString();
-            db.addToDatabase("products.csv", entry);
-            return true;
-        } catch (IndexOutOfBoundsException e) {
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 4, productName);
+            if (!matchedProducts.isEmpty()) { // product already exists with the given name
+                return false;
+            } else {
+                String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
+
+                Product newProduct = new Product(productName, availableQuantity, price, productDescription);
+
+                String entry = String.format("%s,%s,%s,%s", super.getUserID(),matchedStoreEntry.split(",")[0],newProduct.getProductIdentificationNumber(), storeName) + "," + newProduct.toString();
+
+                db.addToDatabase("products.csv", entry);
+
+                // Since stores.csv contains count of number of individual products in a store, update that count when a new product has been created
+                String[] newStoreRepresentation = matchedStoreEntry.split(",");
+                int previousNumProducts = Integer.parseInt(newStoreRepresentation[3]);
+                newStoreRepresentation[3] = String.valueOf(previousNumProducts + 1);
+                db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",", newStoreRepresentation));
+
+                return true;
+            }
+        } catch (IndexOutOfBoundsException e) { // if the storeName doesn't exist
             return false;
         } 
     }
 
     // 5. Edit an existing product in any store of their choosing
-    public boolean editProduct(String productID, String editParam, String newValue) {
+    public boolean editProduct(String productName, String editParam, String newValue) {
         // the seller can only edit name, price, and description of product and nothing else
+        // quantity updates will take place within customer since it is attached to customer add to shopping cart and purchase functionalities
         if (!editParam.equals("name") && !editParam.equals("price") && !editParam.equals("description")) {
             return false;
         }
         try {
-            String matchedProduct = db.getMatchedEntries("products.csv", 2, productID).get(0);
-            String[] productRepresentation = matchedProduct.split(",");
+            String matchedProduct = db.getMatchedEntries("products.csv", 4, productName).get(0);
+            String[] newProductRepresentation = matchedProduct.split(",");
             switch (editParam) {
-                case "name" -> productRepresentation[4] = newValue;
-                case "price" -> productRepresentation[6] = newValue;
-                case "description" -> productRepresentation[7] = newValue;
+                // if the editParam is name, need to check whether that newName is not already associated with an existing product
+                case "name" -> {
+                    ArrayList<String> matchedProductName = db.getMatchedEntries("products.csv", 4, newValue);
+                    if (matchedProductName.isEmpty()) { // no existing products have same name as newValue
+                        newProductRepresentation[4] = newValue;
+                    } else {
+                        return false;
+                    }
+                }
+                case "price" -> newProductRepresentation[6] = newValue;
+                case "description" -> newProductRepresentation[7] = newValue;
             }
-            db.modifyDatabase("products.csv", matchedProduct, String.join(",", productRepresentation));
+            db.modifyDatabase("products.csv", matchedProduct, String.join(",", newProductRepresentation));
             return true;
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) { // if the product specified by productName doesn't exist in the database
             return false;
         }
     }
 
     // 6. Delete an existing product in any store of their choosing
-    public boolean deleteProduct(String storeID, String productID) {
+    public boolean deleteProduct(String storeName, String productName) {
         boolean productDeleted = false;
         try {
-            ArrayList<String> matchedStores = db.getMatchedEntries("products.csv", 0, storeID);
-            for (int i = 0; i < matchedStores.size(); i++) {
-                String[] productEntry = matchedStores.get(i).split(",");
-                if (productEntry[2].equals(productID)) {
-                    db.removeFromDatabase("products.csv", matchedStores.get(i));
+            // gets all products associated with the given storeName then searches for a match for the productname to be deleted
+            String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
+            ArrayList<String> matchedProductsForGivenStore = db.getMatchedEntries("products.csv", 3, storeName);
+            for (int i = 0; i < matchedProductsForGivenStore.size(); i++) {
+                String[] productEntry = matchedProductsForGivenStore.get(i).split(",");
+                if (productEntry[4].equals(productName)) {
+                    db.removeFromDatabase("products.csv", matchedProductsForGivenStore.get(i));
+
+                    // since stores.csv contains how many products the store has individually, modify that count after deleting a product
+                    String[] newStoreRepresentation = matchedStore.split(",");
+                    int previousNumProducts = Integer.parseInt(newStoreRepresentation[3]);
+                    newStoreRepresentation[3] = String.valueOf(previousNumProducts - 1);
+                    db.modifyDatabase("stores.csv", matchedStore, String.join(",", newStoreRepresentation));
+
                     productDeleted =  true;
                     break;
                 }
