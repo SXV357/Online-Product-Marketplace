@@ -26,7 +26,7 @@ public class User {
             case CUSTOMER: this.userID = "C" + String.valueOf(generatedID);
                                         break;
             case SELLER: this.userID = "S" + String.valueOf(generatedID);
-                                        break;
+                                          break;
             case UNDECIDED: this.userID = "";
                             break;
         }

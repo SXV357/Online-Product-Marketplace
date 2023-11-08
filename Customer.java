@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * @version November 2, 2023
  */
 
+<<<<<<< Updated upstream
 public class Customer extends User{
 
     private ArrayList<String> shoppingCart;
@@ -140,4 +141,8 @@ public class Customer extends User{
         }
         return productsFound;
     }
+=======
+public class Customer{
+
+>>>>>>> Stashed changes
 }
