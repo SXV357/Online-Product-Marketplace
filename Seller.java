@@ -18,8 +18,7 @@ import java.util.HashMap;
 public class Seller extends User{
 
     private static Database db = new Database();
-    private ArrayList<Store> stores;
-
+    // private ArrayList<Store> stores;
 
     // creating a seller for the very first time(They haven't created any stores yet so initializing arraylist to empty sequence)
     public Seller(String email, String password, UserRole role) {
@@ -31,12 +30,22 @@ public class Seller extends User{
         super(userID, email, password, role);
     }
 
-    // needs some review since everything can be accomplished without utilizing these methods in runner
-    public ArrayList<Store> getStores() {
-        return this.stores;
+    public ArrayList<String> getStores() {
+        ArrayList<String> storeNames = new ArrayList<>();
+        ArrayList<String> storeEntries = db.getDatabaseContents("stores.csv");
+        for (int i = 0; i < storeEntries.size(); i++) {
+            String[] storeEntry = storeEntries.get(i).split(",");
+            storeNames.add(storeEntry[2]);
+        }
+        return storeNames;
     }
-    public void setStores (ArrayList<Store> stores) {
-        this.stores = stores;
+    
+    public String retrieveStoreName(int index) {
+        ArrayList<String> storeEntries = db.getDatabaseContents("stores.csv");
+        if (index >= 0 && index <= storeEntries.size() - 1) {
+            return storeEntries.get(index).split(",")[2];
+        }
+        return "";
     }
 
     // 1. Create a new store
