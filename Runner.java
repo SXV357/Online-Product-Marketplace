@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Driver class for the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
- * @version November 5, 2023
+  * @version November 5, 2023
  */
 
 public class Runner {
@@ -43,22 +43,22 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-            if (db.retrieveUser(uEmail, uPassword) != null) {
-                System.out.println("Login successful!");
-                String userAsString = db.retrieveUser(uEmail, uPassword);
-                String[] userFromDB = userAsString.split(",");
-                String uID = userFromDB[0];
-                UserRole uRole = UserRole.UNDECIDED;
-                if (userFromDB[3].equals("SELLER")) {
-                    uRole = UserRole.SELLER;
-                } else if (userFromDB[3].equals("CUSTOMER")) {
-                    uRole = UserRole.CUSTOMER;
-                }
-                curUser = new User(uID, uEmail, uPassword, uRole);
-                userLoggedIn = true;
-            } else {
-                System.out.println("Username or password is incorrect");
+        if (db.retrieveUser(uEmail, uPassword) != null) {
+            System.out.println("Login successful!");
+            String userAsString = db.retrieveUser(uEmail, uPassword);
+            String[] userFromDB = userAsString.split(",");
+            String uID = userFromDB[0];
+            UserRole uRole = UserRole.UNDECIDED;
+            if (userFromDB[3].equals("SELLER")) {
+                uRole = UserRole.SELLER;
+            } else if (userFromDB[3].equals("CUSTOMER")) {
+                uRole = UserRole.CUSTOMER;
             }
+            curUser = new User(uID, uEmail, uPassword, uRole);
+                        userLoggedIn = true;
+        } else {
+            System.out.println("Username or password is incorrect");
+        }
     }
 
     //This method creates a new user object,
@@ -87,12 +87,12 @@ public class Runner {
                 }
             }
             curUser = new User(uEmail, uPassword, uRole);
-            db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
+                        db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
             userLoggedIn = true;
         }
     }
 
-
+    
     public static int sellerPrompt(Scanner scan) {
         System.out.println("Welcome Seller");
         int sellerChoice;
@@ -256,12 +256,12 @@ public class Runner {
             }
         } while (!userLoggedIn);
         if (curUser.getRole().equals(UserRole.SELLER)) {  //code for if the current user is a seller
-            Seller curSeller = new Seller(curUser.getUserID(), curUser.getEmail(),
+Seller curSeller = new Seller(curUser.getUserID(), curUser.getEmail(),
                     curUser.getPassword(), curUser.getRole()); //makes a seller object with same ID as user
             while (true) {  //loops until Seller signs out
-                int sellerChoice = sellerPrompt(scan);
-                switch (sellerChoice) {
-                    case 1:  //Stores
+            int sellerChoice = sellerPrompt(scan);
+            switch (sellerChoice) {
+case 1:  //Stores
                         storeUI(scan, curSeller);
                         break;
                     case 2:  //Dashboard
@@ -298,6 +298,6 @@ public class Runner {
                     System.out.println("Thank you!");
                     return;  //ends the program
             }
-        }
+                }
     }
 }
