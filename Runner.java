@@ -1,12 +1,12 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Project 4 - Runner.java
- *
+ * <p>
  * Driver class for the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
- *
  * @version November 5, 2023
  */
 
@@ -38,7 +38,7 @@ public class Runner {
     //Prompts the user to enter email and then password, if they match with an existing user, they log in. If they don't
     //match the user is told that either the email or password was incorrect, and they are prompted again.
     //Takes scanner as a parameter
-    public static void loginUser (Scanner scan) {
+    public static void loginUser(Scanner scan) {
         System.out.println("Enter your E-mail: ");
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
@@ -49,9 +49,9 @@ public class Runner {
             String[] userFromDB = userAsString.split(",");
             String uID = userFromDB[0];
             UserRole uRole = UserRole.UNDECIDED;
-            if (userFromDB.equals("SELLER")) {
+            if (userFromDB[3].equals("SELLER")) {
                 uRole = UserRole.SELLER;
-            } else if (userFromDB.equals("CUSTOMER")) {
+            } else if (userFromDB[3].equals("CUSTOMER")) {
                 uRole = UserRole.CUSTOMER;
             }
             User newUser = new User(uID, uEmail, uPassword, uRole);
@@ -63,7 +63,7 @@ public class Runner {
     }
 
     //This method creates a new user object,
-    public static void createUser(Scanner scan){
+    public static void createUser(Scanner scan) {
         System.out.println("Enter your E-mail: ");
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
@@ -92,10 +92,6 @@ public class Runner {
             db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
             userLoggedIn = true;
         }
-    }
-
-    public static void setCurUser() {
-        //TODO
     }
 
 
@@ -135,6 +131,91 @@ public class Runner {
         } while (true);
     }
 
+    public static void storeUI(Scanner scan, Seller curSeller) {
+        while (true) {  //loops until seller returns
+            System.out.println("What would you like to do?");
+            System.out.println("1) Select Store\n2) Create Store\n3) Go Back");
+            ArrayList<Store> curSellerStores = curSeller.getStores();
+            try {
+                switch (Integer.parseInt(scan.nextLine())) {
+                    case 1:  //Select a Store
+                        while (true) {  //loops until seller selects "Go Back"
+                            System.out.println("Select a store or go back:");
+                            for (int i = 0; i <= curSellerStores.size(); i++) {
+                                if (i < curSellerStores.size()) {
+                                    System.out.println((i + 1) + ") " + curSellerStores.get(i).getStoreName());
+                                } else {
+                                    System.out.println((i + 1) + ") " + "Go Back");
+                                }
+                            }
+                            try {
+                                int storeChoice = Integer.parseInt(scan.nextLine());
+                                if (storeChoice == curSellerStores.size() + 1) {
+                                    break;
+                                } else {
+                                    Store curStore = curSellerStores.get(storeChoice - 1);
+                                    manageStore(scan, curSeller, curStore);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Please enter your choice's corresponding Integer");
+                            }
+                        }
+                        break;
+                    case 2:  //Create Store
+                        System.out.println("What would you like to name the store?");
+                        //TODO implement a way to check unique store name
+                        String newStoreName = scan.nextLine();
+                        Store newStore = new Store(newStoreName);
+                        curSellerStores.add(newStore);
+                        curSeller.setStores(curSellerStores);
+                        System.out.println(newStoreName + " has been created.");
+                        break;
+                    case 3:  //sends seller back to initial SellerUI
+                        return;
+                    default:
+                        System.out.println("Please enter your choice's corresponding Integer");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Please enter your choice's corresponding Integer");
+            }
+        }
+    }
+
+    public static void manageStore(Scanner scan, Seller curSeller, Store curStore) {
+        while (true) {  //loops until seller goes back
+            System.out.println(curStore.getStoreName() + "Options:\n1) Create Product\n2) Edit Product\n" +
+                    "3) Delete Product\n4) Import Products\n5) Export Products\n6) Go Back");
+            try {
+                switch (Integer.parseInt(scan.nextLine())) {
+                    case 1:  //Create Product
+
+                        break;
+                    case 2:  //Edit Product
+
+                        break;
+                    case 3:  //Delete Product
+
+                        break;
+                    case 4:  //Import Products
+
+                        break;
+                    case 5:  //Export Products
+
+                        break;
+                    case 6:  //Go Back
+                        return;
+                    default:  //integer is out of range
+                        System.out.println("Please enter your choice's corresponding Integer");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Please enter your choice's corresponding Integer");
+            }
+
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("Welcome!");
         Scanner scan = new Scanner(System.in);
@@ -153,8 +234,32 @@ public class Runner {
             }
         } while (!userLoggedIn);
         if (curUser.getRole().equals(UserRole.SELLER)) {  //code for if the current user is a seller
-            int sellerChoice = sellerPrompt(scan);
-            switch (sellerChoice) {
+            Seller curSeller = new Seller(curUser.getUserID(), curUser.getEmail(),
+                    curUser.getPassword(), curUser.getRole()); //makes a seller object with same ID as user
+            while (true) {  //loops until Seller signs out
+                int sellerChoice = sellerPrompt(scan);
+                switch (sellerChoice) {
+                    case 1:  //Stores
+                        storeUI(scan, curSeller);
+                        break;
+                    case 2:  //Dashboard
+                        //TODO add Dashboard UI
+                        break;
+                    case 3:  //Customer Shopping Carts
+                        //TODO add Customer Shopping Cart UI
+                        break;
+                    case 4:  //Sign Out
+                        System.out.println("Thank you!");
+                        return;  //ends the program
+                }
+            }
+        } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
+/* add when customer has a constructor
+            Customer curCustomer = new Seller(curUser.getUserID(), curUser.getEmail(),
+                    curUser.getPassword(), curUser.getRole()); //makes a customer object with same ID as user
+            */
+            int customerChoice = customerPrompt(scan);
+            switch (customerChoice) {
                 case 1:  //Market
                     //TODO add market UI
                     break;
@@ -168,23 +273,6 @@ public class Runner {
                     //TODO add Shopping Cart UI
                     break;
                 case 5:  //Sign Out
-                    System.out.println("Thank you!");
-                    return;  //ends the program
-            }
-        } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
-            int customerChoice = customerPrompt(scan);
-            switch (customerChoice) {
-                //TODO add all of the seller choices
-                case 1:  //Stores
-                    //TODO add Store UI
-                    break;
-                case 2:  //Dashboard
-                    //TODO add Dashboard UI
-                    break;
-                case 3:  //Customer Shopping Carts
-                    //TODO add Customer Shopping Cart UI
-                    break;
-                case 4:  //Sign Out
                     System.out.println("Thank you!");
                     return;  //ends the program
             }

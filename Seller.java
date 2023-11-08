@@ -19,6 +19,7 @@ public class Seller extends User{
 
     private static Database db = new Database();
 
+
     // creating a seller for the very first time(They haven't created any stores yet so initializing arraylist to empty sequence)
     public Seller(String email, String password, UserRole role) {
         super(email, password, role);
@@ -27,6 +28,10 @@ public class Seller extends User{
     // re-initializing a seller once they log into the application
     public Seller(String userID, String email, String password, UserRole role) {
         super(userID, email, password, role);
+    }
+
+    public void setStores (ArrayList<Store> stores) {
+        this.stores = stores;
     }
 
     // 1. Create a new store
