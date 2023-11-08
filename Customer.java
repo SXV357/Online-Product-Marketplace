@@ -1,7 +1,4 @@
-import javax.xml.crypto.Data;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -20,14 +17,19 @@ public class Customer extends User{
     private ArrayList<String> purchasehistory;
     private Database db = new Database();
     private String userID;
+
     public Customer(String userID, String email, String password) throws IOException {
         super(Integer.parseInt(userID), email, password, UserRole.CUSTOMER);
-        shoppingCart = db.extractProdShopCartHistoryEntries("shoppingCarts", userID);
-        purchasehistory = db.extractProdShopCartHistoryEntries("shoppingHistories", userID);
+        shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, userID);
+        purchasehistory = db.getMatchedEntries("shoppingHistories.csv", 0, userID);
 
     }
 
-
+    /**
+     * Converts arrays to list of strings
+     * 
+     * @return String of array's contents
+    */
     public String arrToString(ArrayList<String> array) {
         StringBuilder output = new StringBuilder();
         String[] splitArr;
@@ -46,32 +48,60 @@ public class Customer extends User{
         return output.toString();
     }
 
-    public String getShoppingHistory() {
-        return arrToString(shoppingCart);
+    /**
+     * Returns the user's shopping history
+     * 
+     * @return The shopping history as an ArrayList
+    */
+    public ArrayList<String> getShoppingHistory() {
+        return shoppingCart;
     }
 
+    /**
+     * Removes a given item from the cart
+     * 
+     * @param index the index of the cart the remove
+     */
     public void removeFromCart(int index) throws IOException {
+        db.removeFromDatabase("shoppingCarts", shoppingCart.get(index));
         shoppingCart.remove(index);
-        //db.updateProdShopCartHistoryEntries("shoppingCarts", userID, shoppingCart);
     }
 
-    public void addToCart(int sellerID) {
-       // db.updateShoppingCart("shoppingCarts", userID, shoppingCart.add());
+    /**
+     * Adds a given item from the cart
+     * 
+     * @param productID the index of the product the add
+     */
+    public void addToCart(int index) {
+        ArrayList<String> products = db.getDatabaseContents("products.csv");
+        shoppingCart.add(products.get(index));
+        db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size()-1));
     }
 
+    /**
+     * Purchases the items in the cart
+     * 
+     */
     public void purchaseItems() throws IOException {
-        db.updateProdShopCartHistoryEntries("purchaseHistories", userID, shoppingCart);
+        db.updateDatabaseContents("purchaseHistories.csv", shoppingCart);
+        for (String entry : shoppingCart) {
+            db.removeFromDatabase("shoppingCarts.csv", entry);
+            shoppingCart.add(entry);
+        }
         shoppingCart.clear();
-        db.updateProdShopCartHistoryEntries("shoppingCarts", userID, shoppingCart);
     }
 
-    public String getStoresByPurchased() {
+    /**
+     * Sorts stores by purchase history
+     * 
+     * @return Returns a sorted array of these stores
+     */
+    public ArrayList<String> getStoresByPurchased() {
         ArrayList<String> storeSorted = purchasehistory;
         ArrayList<String> sorted = new ArrayList<>();
         int n = sorted.size();
         String temp = "";
         int searchIndex = 4;
-        //sorted = db.extractProdShopCartHistoryEntries("", temp);
  
         //Bubble Sort
         for (int i = 0; i < n; i++) {
@@ -84,20 +114,30 @@ public class Customer extends User{
                 }
             }
         }
-        return arrToString(sorted);
+        return sorted;
     }
 
-    public String getHistory() throws IOException {
-        return arrToString(db.extractProdShopCartHistoryEntries("shoppingCarts", userID));
+    /**
+     * Retreives the user's purchase history
+     * 
+     * @return Returns the user's purchase history
+     */
+    public ArrayList<String> getHistory() throws IOException {
+        return db.getMatchedEntries("purchaseHistories.csv", 0, userID);
     }
 
-    public String searchProducts(String query) {
-        StringBuilder productsFound = new StringBuilder();
-        for (String product : new String[2]) {
+    /**
+     * Searches for all products containing a given query
+     * 
+     * @return Returns the products found
+     */
+    public ArrayList<String> searchProducts(String query) {
+        ArrayList<String> productsFound = new ArrayList<>();
+        for (String product : db.getDatabaseContents("prducts.csv")) {
             if (product.contains(query)) {
-                productsFound.append(product).append(System.getProperty("line.separator"));
+                productsFound.add(product);
             }
         }
-        return productsFound.toString();
+        return productsFound;
     }
 }
