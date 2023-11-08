@@ -14,13 +14,17 @@ public class Seller extends User{
     private static Database db = new Database();
     private ArrayList<Store> stores;
 
-    public Seller(String email, String password, UserRole role) {
-        super(email, password, role);
+    public Seller(String userID, String email, String password, UserRole role) {
+        super(userID, email, password, role);
         this.stores = new ArrayList<Store>();
     }
 
     public ArrayList<Store> getStores() {
         return this.stores;
+    }
+
+    public void setStores (ArrayList<Store> stores) {
+        this.stores = stores;
     }
 
     // 1. Create a new store
