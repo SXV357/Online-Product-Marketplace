@@ -43,22 +43,22 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-            if (db.retrieveUser(uEmail, uPassword) != null) {
-                System.out.println("Login successful!");
-                String userAsString = db.retrieveUser(uEmail, uPassword);
-                String[] userFromDB = userAsString.split(",");
-                String uID = userFromDB[0];
-                UserRole uRole = UserRole.UNDECIDED;
-                if (userFromDB[3].equals("SELLER")) {
-                    uRole = UserRole.SELLER;
-                } else if (userFromDB[3].equals("CUSTOMER")) {
-                    uRole = UserRole.CUSTOMER;
-                }
-                curUser = new User(uID, uEmail, uPassword, uRole);
-                userLoggedIn = true;
-            } else {
-                System.out.println("Username or password is incorrect");
+        if (db.retrieveUser(uEmail, uPassword) != null) {
+            System.out.println("Login successful!");
+            String userAsString = db.retrieveUser(uEmail, uPassword);
+            String[] userFromDB = userAsString.split(",");
+            String uID = userFromDB[0];
+            UserRole uRole = UserRole.UNDECIDED;
+            if (userFromDB[3].equals("SELLER")) {
+                uRole = UserRole.SELLER;
+            } else if (userFromDB[3].equals("CUSTOMER")) {
+                uRole = UserRole.CUSTOMER;
             }
+            curUser = new User(uID, uEmail, uPassword, uRole);
+            userLoggedIn = true;
+        } else {
+            System.out.println("Username or password is incorrect");
+        }
     }
 
     //This method creates a new user object,
@@ -205,7 +205,7 @@ public class Runner {
                                 price = Double.parseDouble(scan.nextLine());
                                 break;
                             } catch (Exception e) {
-                                System.out.println("Error: Please enter an double");
+                                System.out.println("Error: Please enter a double");
                             }
                         }
                         System.out.println("Describe the product please");
@@ -214,16 +214,56 @@ public class Runner {
                                 availableQuantity, price, description);
                         break;
                     case 2:  //Edit Product
-
+                        Product curProduct = pickProduct(scan, curSeller, curStore);
+                        if (curProduct == null) {
+                            break;
+                        }
+                        String editParam;
+                        while (true) {
+                            System.out.println("Would you like to change the product's name, price, or description?");
+                            editParam = scan.nextLine();
+                            if (editParam.equals("name") || editParam.equals("price")
+                                    || editParam.equals("description")) {
+                                break;
+                            } else {
+                                System.out.println("Please enter one of the three options.");
+                            }
+                        }
+                        String newValue;
+                        while (true) {  //loops until newValue is not null
+                            System.out.println("What would you like the new value to be?");
+                            newValue = scan.nextLine();
+                            if (newValue != null) {
+                                break;
+                            }
+                        }
+                        curSeller.editProduct(curProduct.getProductIdentificationNumber(), editParam, newValue);
                         break;
                     case 3:  //Delete Product
-
+                        curProduct = pickProduct(scan, curSeller, curStore);
+                        curSeller.deleteProduct(curStore.getStoreIdentificationNumber(),
+                                curProduct.getProductIdentificationNumber());
+                        System.out.println("Product has been deleted");
                         break;
                     case 4:  //Import Products
-
-                        break;
+                        while (true) {  //loop until import is successful
+                            System.out.println("Please enter the file path for the import\n Enter \"Quit\" to exit");
+                            String filePath = scan.nextLine();
+                            if (filePath.equals("Quit")) {
+                                break;
+                            }
+                            boolean successfulImport = curSeller.importProducts(filePath,
+                                    curStore.getStoreIdentificationNumber());
+                            if (successfulImport) {
+                                break;
+                            } else {
+                                System.out.println("file path is incorrect");
+                            }
+                        }
                     case 5:  //Export Products
-
+                        curSeller.exportProducts(curStore.getStoreIdentificationNumber());
+                        System.out.println("Products have been exported to " + "exportedProducts/"
+                                + curStore.getStoreName() + ".csv");
                         break;
                     case 6:  //Go Back
                         return;
@@ -236,6 +276,39 @@ public class Runner {
             }
 
         }
+    }
+
+    public static Product pickProduct(Scanner scan, Seller curSeller, Store curStore) {
+        ArrayList<Product> productList = curStore.getProducts();  //NEED THIS TO BE IMPLEMENTED UNDER STORE CLASS
+        System.out.println("Which product would you like to adjust?");
+        for (int i = 0; i <= productList.size(); i++) {
+            if (i < productList.size()) {
+                System.out.println((i + 1) + ") " + productList.get(i).getName());
+            } else {
+                System.out.println((i + 1) + ") " + "Go Back");
+            }
+        }
+        int editProductChoice;
+        Product chosenProduct = new Product("", 0, 0, "");  //Where is the empty constructor
+        try {
+            editProductChoice = Integer.parseInt(scan.nextLine());
+            if (editProductChoice == productList.size() + 1) {
+                return null;
+            } else {
+                chosenProduct = productList.get(editProductChoice - 1);
+            }
+        } catch (Exception e) {
+            System.out.println("Please enter your choice's corresponding Integer");
+        }
+        return chosenProduct;
+    }
+
+    public static void marketUI (Scanner scan, Customer curCustomer)  {
+        //TODO
+    }
+
+    public static void showAllProducts() {
+        //TODO
     }
 
     public static void main(String[] args) {
@@ -276,14 +349,14 @@ public class Runner {
                 }
             }
         } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
-/* add when customer has a constructor
-            Customer curCustomer = new Seller(curUser.getUserID(), curUser.getEmail(),
+/* ADD when customer constructor works
+            Customer curCustomer = new Customer(curUser.getUserID(), curUser.getEmail(),
                     curUser.getPassword(), curUser.getRole()); //makes a customer object with same ID as user
-            */
+*/
             int customerChoice = customerPrompt(scan);
             switch (customerChoice) {
                 case 1:  //Market
-                    //TODO add market UI
+                    //marketUI(scan, curCustomer);  add when customer constructor works
                     break;
                 case 2:  //Purchase History
                     //TODO add Purchase History UI
