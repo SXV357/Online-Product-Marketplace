@@ -1,2 +1,5 @@
 ID,Email,Password,Role
-141094,random_email1@example.com,v8s091lW23,CUSTOMER
+C100000,blabla@yahoo.com,abc123,CUSTOMER
+C100001,hello@hotmail.com,123456,CUSTOMER
+S100002,sel@gmail.com,whdgwej,SELLER
+C100003,qjkwdh@yahoo.com,2764i7yj,CUSTOMER
