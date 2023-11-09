@@ -1,20 +1,18 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
 /**
  * Project 4 - Runner.java
- * <p>
- * Driver class for the application.
- *
+ * 
+ * Driver class for the application
+ * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
-  * @version November 5, 2023
+ * 
+ * @version November 8, 2023
  */
-
 public class Runner {
     private static final Database db = new Database();  //Makes a Database object
     private static boolean userLoggedIn = false;  //This boolean is used to check if the user has logged in successfully
     private static User curUser = new User();  //This field stores the user object for the current User of the program
-
 
     //Welcomes the user and asks them whether they would like to: Log-in, Create Account, or Quit
     //Takes only the Scanner as a Parameter
@@ -163,7 +161,6 @@ public class Runner {
                         break;
                     case 2:  //Create Store
                         System.out.println("What would you like to name the store?");
-                        //TODO implement a way to check unique store name
                         String newStoreName = scan.nextLine();
                         curSeller.createNewStore(newStoreName);
                         System.out.println(newStoreName + " has been created.");
