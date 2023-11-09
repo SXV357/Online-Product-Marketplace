@@ -167,6 +167,7 @@ public class Seller extends User{
     * @param newValue The new value of the property to modify
     * @return An indication of whether the product in the given store was modified successfully
     */
+    @SuppressWarnings("unused")
     public boolean editProduct(String storeName, String productName, String editParam, String newValue) {
         if (!editParam.equals("name") && !editParam.equals("price") && !editParam.equals("description") && !editParam.equals("quantity")) {
             return false;
@@ -220,6 +221,10 @@ public class Seller extends User{
         try {
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProductsForGivenStore = db.getMatchedEntries("products.csv", 3, storeName);
+            // If the store exists but it doesn't contain any products
+            if (matchedProductsForGivenStore.isEmpty()) {
+                return false;
+            }
             for (int i = 0; i < matchedProductsForGivenStore.size(); i++) {
                 String[] productEntry = matchedProductsForGivenStore.get(i).split(",");
                 if (productEntry[4].equals(productName)) {
@@ -287,12 +292,21 @@ public class Seller extends User{
             BufferedReader br = new BufferedReader(new FileReader(productFile));
             br.readLine(); // skip the headers
             String line;
+            int numProducts = 0;
             while ((line = br.readLine()) != null) {
                 String[] productLine = line.split(",");
                 Product newProduct = new Product(productLine[0], Integer.parseInt(productLine[1]), Double.parseDouble(productLine[2]), productLine[3]);
                 String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0], newProduct.getProductIdentificationNumber(), matchedStoreEntry.split(",")[2]) + "," + newProduct.toString();
+                // If the seller tries importing the same file again, the count will not change
+                if (!(db.checkEntryExists("products.csv", entry))) {
+                    numProducts += 1;
+                }
                 db.addToDatabase("products.csv", entry);
             }
+            String[] matchedStore = matchedStoreEntry.split(",");
+            int prevNumProducts = Integer.parseInt(matchedStore[3]);
+            matchedStore[3] = String.valueOf(prevNumProducts + numProducts);
+            db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",", matchedStore));
             br.close();
             return true;
         } catch (Exception e) {
@@ -306,9 +320,11 @@ public class Seller extends User{
      * @param storeName The name of the store whose products the seller wants to export
      * @return An indication whether the export took place successfully.
      */
+    @SuppressWarnings("unused")
     public boolean exportProducts(String storeName) {
-        ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
         try {
+            String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
             if (!(matchedProducts.isEmpty())) {
                 File targetDir = new File("exportedProducts");
                 if (!targetDir.exists()) {
@@ -336,7 +352,7 @@ public class Seller extends User{
             } else {
                 return false;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             return false;
         }
     }
