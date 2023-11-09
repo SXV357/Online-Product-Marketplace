@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 /**
  * Project 4 - Store.java
  *
@@ -17,6 +18,26 @@ public class Store {
     public Store(String storeName) {
         this.storeIdentificationNumber = "ST" + String.valueOf(generateStoreIdentificationNumber());
         this.storeName = storeName;
+    }
+
+    // re-initialize an already existing store
+    public Store(String storeIdentificationNumber, String storeName) {
+        this.storeIdentificationNumber = storeIdentificationNumber;
+        this.storeName = storeName;
+    }
+
+    public ArrayList<Product> getProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1, this.storeIdentificationNumber);
+        if (matchedProducts.isEmpty()) {
+            return null;
+        }
+        for (int i = 0; i < matchedProducts.size(); i++) {
+            String[] productEntry = matchedProducts.get(i).split(",");
+            Product product = new Product(productEntry[2], productEntry[4], Integer.parseInt(productEntry[5]), Double.parseDouble(productEntry[6]), productEntry[7]);
+            products.add(product);
+        }
+        return products;
     }
 
     // Getters

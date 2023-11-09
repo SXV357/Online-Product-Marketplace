@@ -25,6 +25,15 @@ public class Product {
         this.description = description;
     }
 
+    // re-initialize an already existing product
+    public Product(String productIdentificationNumber, String name, int availableQuantity, double price, String description) {
+        this.productIdentificationNumber = productIdentificationNumber;
+        this.name = name;
+        this.availableQuantity = availableQuantity;
+        this.price = price;
+        this.description = description;
+    }
+
     // Getters
     public String getProductIdentificationNumber() {
         return this.productIdentificationNumber;

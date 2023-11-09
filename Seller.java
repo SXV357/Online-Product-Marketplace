@@ -18,7 +18,6 @@ import java.util.HashMap;
 public class Seller extends User{
 
     private static Database db = new Database();
-    // private ArrayList<Store> stores;
 
     // creating a seller for the very first time(They haven't created any stores yet so initializing arraylist to empty sequence)
     public Seller(String email, String password, UserRole role) {
@@ -30,22 +29,17 @@ public class Seller extends User{
         super(userID, email, password, role);
     }
 
-    public ArrayList<String> getStores() {
-        ArrayList<String> storeNames = new ArrayList<>();
-        ArrayList<String> storeEntries = db.getDatabaseContents("stores.csv");
+    public ArrayList<Store> getStores() {
+        ArrayList<Store> stores = new ArrayList<>();
+        ArrayList<String> storeEntries = db.getMatchedEntries("stores.csv", 1, super.getUserID());
+        if (storeEntries.isEmpty()) {
+            return null;
+        }
         for (int i = 0; i < storeEntries.size(); i++) {
             String[] storeEntry = storeEntries.get(i).split(",");
-            storeNames.add(storeEntry[2]);
+            stores.add(new Store(storeEntry[0], storeEntry[2]));
         }
-        return storeNames;
-    }
-    
-    public String retrieveStoreName(int index) {
-        ArrayList<String> storeEntries = db.getDatabaseContents("stores.csv");
-        if (index >= 0 && index <= storeEntries.size() - 1) {
-            return storeEntries.get(index).split(",")[2];
-        }
-        return "";
+        return stores;
     }
 
     // 1. Create a new store
