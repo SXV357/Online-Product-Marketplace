@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * @version November 2, 2023
  */
 
-<<<<<<< Updated upstream
 public class Customer extends User{
 
     private ArrayList<String> shoppingCart;
@@ -20,7 +19,7 @@ public class Customer extends User{
     private String userID;
 
     public Customer(String userID, String email, String password) throws IOException {
-        super(Integer.parseInt(userID), email, password, UserRole.CUSTOMER);
+        super(userID, email, password, UserRole.CUSTOMER);
         shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, userID);
         purchasehistory = db.getMatchedEntries("shoppingHistories.csv", 0, userID);
 
@@ -141,8 +140,4 @@ public class Customer extends User{
         }
         return productsFound;
     }
-=======
-public class Customer{
-
->>>>>>> Stashed changes
 }
