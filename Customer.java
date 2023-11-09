@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -91,17 +94,27 @@ public class Customer extends User{
         shoppingCart.clear();
     }
 
+
     /**
-     * Sorts stores by purchase history
+     * Sorts based on user's choice of price or quantity
      * 
-     * @return Returns a sorted array of these stores
+     * @return Returns the sorted array
      */
-    public ArrayList<String> getStoresByPurchased() {
-        ArrayList<String> storeSorted = purchasehistory;
+    public ArrayList<String> sortStores(String choice) {
+        ArrayList<String> storeSorted = db.getDatabaseContents("stores.csv");
         ArrayList<String> sorted = new ArrayList<>();
         int n = sorted.size();
         String temp = "";
-        int searchIndex = 4;
+        int searchIndex;
+        if (choice.equals("price")) {
+            searchIndex = 7;
+        } else if (choice.equals("personalPurchases")) {
+            searchIndex = 4;
+            storeSorted = purchasehistory;
+        } else {
+            searchIndex = 6;
+        }
+        
  
         //Bubble Sort
         for (int i = 0; i < n; i++) {
@@ -124,6 +137,36 @@ public class Customer extends User{
      */
     public ArrayList<String> getHistory() throws IOException {
         return db.getMatchedEntries("purchaseHistories.csv", 0, userID);
+    }
+
+    /**
+     * Exports the user's purchase history
+     * 
+     * @return Returns true if the process is successful
+     */
+    public boolean exportPurchaseHistory() {
+        try {
+            if (!(purchasehistory.isEmpty())) {
+                File targetDir = new File("exportedHistory");
+                if (!targetDir.exists()) {
+                    targetDir.mkdir();
+                }
+                File output = new File(targetDir, userID + ".csv");
+                output.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+                String headers = db.getFileHeaders("purchaseHistories.csv");
+                bw.write(headers + "\n");
+                for (int i = 0; i < purchasehistory.size(); i++) {
+                    bw.write(purchasehistory.get(i) + "\n");
+                }
+                bw.close();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     /**
