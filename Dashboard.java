@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
+import java.util.HashMap;
 /**
  * Project 4 - Dashboard.java
  * 
@@ -18,30 +18,41 @@ public class Dashboard {
 
     //Can sort product purchases by price and quantity
     //Returns the purchase history relevant to a single store
-    //Each line is a purchase
-    public String[] getSellerCustomersDashboard(Seller seller, Store store, String sortType, boolean sortAscending){
-        
-        
+    //Each line is a relevant purchase
+    public static String[] getSellerCustomersDashboard(Seller seller, Store store, String sortType, boolean sortAscending){
         //Format: "Seller ID,Store Name,Number of Products"
         Database database = new Database();
 
         //TODO: ensure this is how users is formatted
         ArrayList<String> allCustomers = database.getMatchedEntries("users.csv", 3, "Customer");
-        ArrayList<ArrayList<String>> customerActivity = new ArrayList<>();
+        //Each element of customer activity is an array containing a customer's purchase history 
+        ArrayList<double[]> customerStatistics = new ArrayList<>();
 
+        //for each customer, find their purchases and sum the data
         for (String customer:allCustomers){
             String customerID = customer.split(",")[0];
+
             //get all purchases this customer has made
             ArrayList<String> customerPurchases = database.getMatchedEntries("purchaseHistories.csv", 0, customerID);
-            customerActivity.add(customerPurchases);
+            //Accumulate all this customer's purchase data into total purchases and total spending
+            double totalQuantity = 0;
+            double totalSpent = 0;
+            for (String purchase:customerPurchases) {
+                String[] splitPurchase = purchase.split(",");
+
+                double purchaseQuantity = Double.parseDouble(splitPurchase[6]);
+                totalQuantity += purchaseQuantity;
+                double purchaseCost = Double.parseDouble(splitPurchase[7]) * purchaseQuantity;
+                totalSpent += purchaseCost;
+            }
+
+            customerStatistics.add(new double[]{totalQuantity,totalSpent});
 
         }
-
-        ArrayList<String[]> splitCustomerData = new ArrayList<>();
-        for (String line: allCustomers){
-            splitCustomerData.add(line.split(","));
-        }
-
+        /*
+         * 
+        //Sorts the processed data
+        //See here for allowed values of sortType
         switch(sortType){
             case "Price":
                 //Using a lambda function to compare only the price collumn after casting to double
@@ -52,7 +63,7 @@ public class Dashboard {
                 
                 break;
 
-            case "Alphabetical":
+            case "ProductNamesAlphabetical":
                 break;
 
             case "Quantity":
@@ -60,20 +71,22 @@ public class Dashboard {
 
         }
 
+         */
+
         return new String[0];
     }
 
-    public String[] getSellerProductsDashboard(Customer customer, Store store, String sortType, boolean ascending){
-        return new String[0];
-
-    }
-
-    public String[] getCustomerPersonalDashboard(Customer customer, Store store, String sortType, boolean ascending){
+    public static String[] getSellerProductsDashboard(Customer customer, Store store, String sortType, boolean ascending){
         return new String[0];
 
     }
 
-    public String[] getCustomerOverallDashboard(Customer customer, Store store, String sortType, boolean ascending){
+    public static String[] getCustomerPersonalDashboard(Customer customer, Store store, String sortType, boolean ascending){
+        return new String[0];
+
+    }
+
+    public static String[] getCustomerOverallDashboard(Customer customer, Store store, String sortType, boolean ascending){
         return new String[0];
 
     }
