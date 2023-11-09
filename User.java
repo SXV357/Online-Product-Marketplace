@@ -15,9 +15,16 @@ public class User {
     private UserRole role; // User's role in the application (Seller or Customer);
     private String userID;  //Each user has a unique ID
 
-    //Constructor for a CHECKING for a user
-    //You already know the userID for this one
-    public User(int userID, String email, String password, UserRole role) {
+    //Blank Constructor for currentUser in runner
+    public User() {
+        this.userID = "";
+        this.email = "";
+        this.password = "";
+        this.role = null;
+    }
+
+    //Constructor to initialize a new user when they create an account(Adds an identifier marker)
+    public User(String email, String password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -26,7 +33,7 @@ public class User {
             case CUSTOMER: this.userID = "C" + String.valueOf(generatedID);
                                         break;
             case SELLER: this.userID = "S" + String.valueOf(generatedID);
-                                          break;
+                                        break;
             case UNDECIDED: this.userID = "";
                             break;
         }

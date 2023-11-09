@@ -340,71 +340,7 @@ public class Database {
             bw.close();
             System.out.println("The contents of " + fileName + " were updated successfully!");
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    // given the sub-directory in the databases directory and the user ID, the function searches the directory for a file match, then returns the file
-    // THIS IS ONLY APPLICABLE TO FILES LOCATED IN THE PRODUCTS, SHOPPINGCARTS, AND PURCHASEHISTORIES SUBDIRECTORIES
-    public File extractMatchedFile(String targetDirectory, String userID) throws IOException {
-        // (for products, shopping cart, and purchase hist); expected input in form: databases/targetdirectory/
-        File match = null;
-        File dir = new File(targetDirectory);
-        if (dir.isDirectory() && dir.exists()) {
-            File[] files = dir.listFiles();
-            for (File f: files) {
-                if (f.getName().startsWith(userID)) { // we have that associated file
-                    match = f; 
-                    break;
-                }
-            }
-        }
-        return match;
-    }
-
-    // extracts the contents of the file in the directory targetDirectory and its name starting with userID and returns its contents in the form of an arraylist
-    // THIS IS ONLY APPLICABLE TO FILES LOCATED IN THE PRODUCTS, SHOPPINGCARTS, AND PURCHASEHISTORIES SUBDIRECTORIES
-    public ArrayList<String> extractProdShopCartHistoryEntries(String targetDirectory, String userID) throws IOException {
-        ArrayList<String> databaseContents = new ArrayList<>();
-        File matchedFile = extractMatchedFile(targetDirectory, userID);
-        try(BufferedReader br = new BufferedReader(new FileReader(matchedFile))) {
-            br.readLine(); // skip the first line(header of csv)
-            String line;
-            while ((line = br.readLine()) != null) {
-                databaseContents.add(line);
-                line = br.readLine();
-            }
-            return databaseContents;
-        } catch (IOException e) {
-            return new ArrayList<String>();
-        }
-    }
-
-    // extracts the // extracts the contents of the file in the directory targetDirectory and its name starting with userID and then overwrites its contents with the contents of the arraylist updatedContents
-    // THIS IS ONLY APPLICABLE TO FILES LOCATED IN THE PRODUCTS, SHOPPINGCARTS, AND PURCHASEHISTORIES SUBDIRECTORIES
-    public void updateProdShopCartHistoryEntries(String targetDirectory, String userID, ArrayList<String> updatedContents) throws IOException {
-        // headers of csv will vary depending on taretDirectory passed in
-        // for products sub-dir: Product Name, Quantity, Price, Description
-        // for purchase history sub-dir: CustomerID, StoreName, Item, Quantity, Expenses
-        // for shopping cart sub-dir: CustomerID, StoreName, Product Name, Quantity, Cost, Description
-        String dirCheck = targetDirectory.split("/")[1];
-        String csvHeader = "";
-        switch (dirCheck) {
-            case "products" -> csvHeader = "ProductName,Quantity,Price,Description";
-            case "shoppingCarts" -> csvHeader = "CustomerID,StoreName,Item,Quantity,Expenses";
-            case "purchaseHistories" -> csvHeader = "CustomerID,StoreName,ProductName, Quantity,Cost,Description";
-        }
-        File output = extractMatchedFile(targetDirectory, userID);
-        try {
-            output.createNewFile();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(output));
-            bw.write(csvHeader);
-            for (int j = 0; j < updatedContents.size(); j++) {
-                bw.write(updatedContents.get(j) + "\n");
-            }
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("There was an error when updating the contents of " + fileName);
         }
     }
 }
