@@ -133,7 +133,7 @@ public class Customer extends User{
      */
     public ArrayList<String> searchProducts(String query) {
         ArrayList<String> productsFound = new ArrayList<>();
-        for (String product : db.getDatabaseContents("prducts.csv")) {
+        for (String product : db.getDatabaseContents("products.csv")) {
             if (product.contains(query)) {
                 productsFound.add(product);
             }
