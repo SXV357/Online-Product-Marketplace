@@ -216,7 +216,7 @@ public class Customer extends User{
                 if (!targetDir.exists()) {
                     targetDir.mkdir();
                 }
-                File output = new File(targetDir, userID + ".csv");
+                File output = new File(targetDir, getEmail() + ".csv");
                 output.createNewFile();
                 BufferedWriter bw = new BufferedWriter(new FileWriter(output));
                 String headers = db.getFileHeaders("purchaseHistories.csv");
