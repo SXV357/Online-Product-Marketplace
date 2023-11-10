@@ -178,30 +178,33 @@ public class Customer extends User{
         ArrayList<String> sorted = db.getDatabaseContents("products.csv");
         int n = sorted.size();
         String temp = "";
-        int searchIndex;
+        int searchIndex = -1;
         if (choice.equals("price")) {
             searchIndex = 6;
         } else if (choice.equals("quantity")) {
             searchIndex = 5;
+        }
+        
+        if (searchIndex != -1) {
+            if (sorted.size() > 1) {
+                for (int i = 0; i < n; i++) {
+                    for (int j = 1; j < (n - i); j++) {
+                        if (Double.parseDouble(sorted.get(j - 1).split(",")[searchIndex])
+                               > Double.parseDouble(sorted.get(j).split(",")[searchIndex])) {
+                            temp = sorted.get(j - 1);
+                            sorted.set(j - 1, sorted.get(j));
+                            sorted.set(j, temp);
+                     }
+                   }
+                }
+            }
+            return arrToString(sorted);
         } else {
-            searchIndex = 6;
-            sorted = purchasehistory;
+            return "Invalid search!";
         }
         
-        if (sorted.size() > 1) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 1; j < (n - i); j++) {
-                    if (Double.parseDouble(sorted.get(j - 1).split(",")[searchIndex])
-                           > Double.parseDouble(sorted.get(j).split(",")[searchIndex])) {
-                       temp = sorted.get(j - 1);
-                       sorted.set(j - 1, sorted.get(j));
-                        sorted.set(j, temp);
-                  }
-               }
-          }
-        }
+    
         
-        return arrToString(sorted);
     }
 
     /**
