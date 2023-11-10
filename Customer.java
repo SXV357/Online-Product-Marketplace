@@ -43,7 +43,7 @@ public class Customer extends User {
         StringBuilder output = new StringBuilder();
         String[] splitArr;
         for (int i = 0; i < array.size(); i++) {
-            output.append(i + 1).append(". ").append(array.get(i)).append(System.getProperty("line.separator"));
+            output.append(i + 1).append(") ").append(array.get(i)).append(System.getProperty("line.separator"));
         }
         return output.toString();
     }
@@ -63,29 +63,79 @@ public class Customer extends User {
      * @return The product's info
      */
     public String getProductInfo(int index) {
-        index -= 1;
-        StringBuilder sb = new StringBuilder();
-        String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
+        try {
+            index -= 1;
+            StringBuilder sb = new StringBuilder();
+            String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
 
-        sb.append("Store Name: ").append(prodInfo[3]).append(System.getProperty("line.separator"));
-        sb.append("Product Name: ").append(prodInfo[4]).append(System.getProperty("line.separator"));
-        sb.append("Available Quantity: ").append(prodInfo[5]).append(System.getProperty("line.separator"));
-        sb.append("Price: ").append(prodInfo[6]).append(System.getProperty("line.separator"));
-        sb.append("Description: ").append(prodInfo[7]);
-        for (int i = 8; i < prodInfo.length; i++) {
-            sb.append(prodInfo[i]);
+            sb.append("Store Name: ").append(prodInfo[3]).append(System.getProperty("line.separator"));
+            sb.append("Product Name: ").append(prodInfo[4]).append(System.getProperty("line.separator"));
+            sb.append("Available Quantity: ").append(prodInfo[5]).append(System.getProperty("line.separator"));
+            sb.append("Price: ").append(prodInfo[6]).append(System.getProperty("line.separator"));
+            sb.append("Description: ").append(prodInfo[7]);
+            for (int i = 8; i < prodInfo.length; i++) {
+                sb.append(prodInfo[i]);
+            }
+
+            return sb.toString();
+        } catch (IndexOutOfBoundsException e) {
+            return "Invalid Product";
         }
 
-        return sb.toString();
     }
-
     /**
-     * Returns the all the products
+     * Returns the all the products in the csv
      * 
      * @return The products listed as a string
      */
     public String getAllProducts() {
-        return arrToString(db.getDatabaseContents("products.csv"));
+        ArrayList<String> productList = db.getDatabaseContents("products.csv");
+        StringBuilder sb = new StringBuilder();
+        String[] info;
+        ArrayList<String> output = new ArrayList<>();
+        System.out.println("Product Name - Store Name - Price"); 
+        System.out.println("------------------------------------");
+        if (productList.isEmpty()) {
+            return "No Products Available";
+        } else {
+            sb = new StringBuilder();
+            for (String product : productList) {
+                info = product.split(",");
+                sb.append(info[4]).append("     ");
+                sb.append(info[3]).append("     ");
+                sb.append(info[6]).append("     ");
+            }
+            output.add(sb.toString());
+        }
+        return arrToString(output);
+
+    }
+
+    /**
+     * Returns the all inputted products in a the formatted method
+     * 
+     * @return The products listed as a string
+     */
+    public String getAllProducts(ArrayList<String> productList) {
+        StringBuilder sb = new StringBuilder();
+        String[] info;
+        ArrayList<String> output = new ArrayList<>();
+        System.out.println("Product Name - Store Name - Price"); 
+        System.out.println("------------------------------------");
+        if (productList.isEmpty()) {
+            return "No Products Available";
+        } else {
+            sb = new StringBuilder();
+            for (String product : productList) {
+                info = product.split(",");
+                sb.append(info[4]).append("     ");
+                sb.append(info[3]).append("     ");
+                sb.append(info[6]).append("     ");
+            }
+            output.add(sb.toString());
+        }
+        return arrToString(output);
+
     }
 
     /**
@@ -120,7 +170,7 @@ public class Customer extends User {
      * @param productID the index of the product the add
      */
     public boolean addToCart(int index, int quantity) {
-        index -=1;
+        index -= 1;
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
@@ -215,7 +265,7 @@ public class Customer extends User {
                     }
                 }
             }
-            return arrToString(sorted);
+            return getAllProducts(sorted);
         } else {
             return "Invalid search!";
         }
@@ -267,7 +317,7 @@ public class Customer extends User {
         if (productsFound.isEmpty()) {
             return "Query has returned no results!";
         } else {
-            return arrToString(productsFound);
+            return getAllProducts(productsFound);
         }
 
     }
