@@ -246,6 +246,11 @@ public class Customer extends User{
                 productsFound.add(product);
             }
         }
-        return arrToString(productsFound);
+        if (productsFound.isEmpty()) {
+            return "Query has returned no results!";
+        } else {
+            return arrToString(productsFound);
+        }
+        
     }
 }
