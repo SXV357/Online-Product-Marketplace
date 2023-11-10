@@ -1,2 +1,3 @@
 Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description
-S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito
+S1000000,ST1000000,PR1000000,Store1,Burrito,20,5.99,This is a breakfast burrito
+S1000000,ST1000000,PR1000000,Store1,Burrito,50,3.99,This is a burrito
