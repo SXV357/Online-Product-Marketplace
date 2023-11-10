@@ -181,7 +181,7 @@ public class Runner {
 
     public static void manageStore(Scanner scan, Seller curSeller, Store curStore) {
         while (true) {  //loops until seller goes back
-            System.out.println(curStore.getStoreName() + "Options:\n1) Create Product\n2) Edit Product\n" +
+            System.out.println(curStore.getStoreName() + " Options:\n1) Create Product\n2) Edit Product\n" +
                     "3) Delete Product\n4) Import Products\n5) Export Products\n6) Go Back");
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
@@ -221,7 +221,8 @@ public class Runner {
                         }
                         String editParam;
                         while (true) {
-                            System.out.println("Would you like to change the product's name, price, or description?");
+                            System.out.println("Would you like to change the product's name, quantity, " +
+                                    "price, or description?");
                             editParam = scan.nextLine();
                             if (editParam.equals("name") || editParam.equals("price")
                                     || editParam.equals("description")) {
@@ -238,7 +239,11 @@ public class Runner {
                                 break;
                             }
                         }
-                        curSeller.editProduct(curStore.getStoreName(), curProduct.getProductIdentificationNumber(), editParam, newValue);
+                        if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam, newValue)) {
+                            System.out.println("Product successfully edited");
+                        } else {
+                            System.out.println("Error editing product");  //fix to be more specific
+                        }
                         break;
                     case 3:  //Delete Product
                         curProduct = pickProduct(scan, curSeller, curStore);
@@ -318,16 +323,8 @@ public class Runner {
                     //TODO  search for a product
                     System.out.println("What would you like to search for?");
                     String query = scan.nextLine();
-                    ArrayList<String> allProducts = curCustomer.searchProducts(query);
-                    if (allProducts.isEmpty()) {
-                        System.out.println("Query has returned no results");
-                        break;
-                    } else {
-                        for (String product : allProducts) {
-                            System.out.println(product);
-                        }
-                        break;
-                    }
+                    System.out.println(curCustomer.searchProducts(query));
+                    break;
                 case 3:  //Go Back
                     return;
                 default: //marketChoice was out of range
@@ -383,7 +380,7 @@ public class Runner {
             }
         } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
             Customer curCustomer = new Customer(curUser.getUserID(), curUser.getEmail(),
-                    curUser.getPassword());
+                    curUser.getPassword(), UserRole.CUSTOMER);
             System.out.println("Welcome Customer");
             while (true) {  //loops until the user signs out
                 int customerChoice = customerPrompt(scan);
@@ -398,16 +395,14 @@ public class Runner {
                         //TODO add Dashboard UI
                         break;
                     case 4:  //Shopping Cart
-                        ArrayList<String> productsInCart = curCustomer.getShoppingHistory();
-                        for (String product : productsInCart) {
-                            System.out.println(product);
-                        }
+                        System.out.println(curCustomer.getShoppingHistory());
                         break;
                     case 5:  //Sign Out
                         System.out.println("Thank you!");
                         return;  //ends the program
                 }
             }
-        } while (true);
+        }
+        while (true) ;
     }
 }
