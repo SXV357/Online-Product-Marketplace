@@ -43,7 +43,7 @@ public class Customer extends User {
         StringBuilder output = new StringBuilder();
         String[] splitArr;
         for (int i = 0; i < array.size(); i++) {
-            output.append(i).append(". ").append(array.get(i)).append(System.getProperty("line.separator"));
+            output.append(i + 1).append(". ").append(array.get(i)).append(System.getProperty("line.separator"));
         }
         return output.toString();
     }
@@ -58,27 +58,34 @@ public class Customer extends User {
     }
 
     /**
-     * Returns the user's shopping history
+     * Returns a specific products's info
      * 
-     * @return The shopping history as a string
+     * @return The product's info
      */
     public String getProductInfo(int index) {
+        index -= 1;
         StringBuilder sb = new StringBuilder();
         String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
 
         sb.append("Store Name: ").append(prodInfo[3]).append(System.getProperty("line.separator"));
         sb.append("Product Name: ").append(prodInfo[4]).append(System.getProperty("line.separator"));
-        ;
         sb.append("Available Quantity: ").append(prodInfo[5]).append(System.getProperty("line.separator"));
-        ;
         sb.append("Price: ").append(prodInfo[6]).append(System.getProperty("line.separator"));
-        ;
         sb.append("Description: ").append(prodInfo[7]);
         for (int i = 8; i < prodInfo.length; i++) {
             sb.append(prodInfo[i]);
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Returns the all the products
+     * 
+     * @return The products listed as a string
+     */
+    public String getAllProducts() {
+        return arrToString(db.getDatabaseContents("products.csv"));
     }
 
     /**
@@ -96,6 +103,7 @@ public class Customer extends User {
      * @param index the index of the cart the remove
      */
     public boolean removeFromCart(int index) {
+        index -= 1;
         try {
             db.removeFromDatabase("shoppingCarts.csv", shoppingCart.get(index));
             shoppingCart.remove(index);
@@ -112,6 +120,7 @@ public class Customer extends User {
      * @param productID the index of the product the add
      */
     public boolean addToCart(int index, int quantity) {
+        index -=1;
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
