@@ -12,7 +12,7 @@ import java.util.HashMap;
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 9, 2023
+ * @version November 10, 2023
  */
 public class Seller extends User{
 
@@ -207,7 +207,11 @@ public class Seller extends User{
                             case "description" -> productRep[7] = newValue;
                             case "quantity" -> {
                                 int prevQuantity = Integer.parseInt(productRep[5]);
-                                productRep[5] = String.valueOf(prevQuantity + Integer.parseInt(newValue));
+                                // Prevent from modifying to a negative quantity
+                                if (Integer.parseInt(newValue) < 0) {
+                                    return false;
+                                }
+                                productRep[5] = String.valueOf(newValue);
                             }
                         }
                         db.modifyDatabase("products.csv", productMatches.get(i), String.join(",", productRep));
