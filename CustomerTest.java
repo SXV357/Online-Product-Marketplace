@@ -7,6 +7,7 @@ public class CustomerTest {
         c = new Customer( "nathanmiller@gmail.com", "1212", UserRole.CUSTOMER);
        
         
+        System.out.println(c.getProductInfo(0));
         //c.addToCart(0, 10);
         //System.out.println(c.getCart());
         //System.out.println(c.getShoppingHistory());
