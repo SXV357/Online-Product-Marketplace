@@ -175,7 +175,7 @@ public class Customer extends User {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
                     .split(",");
-            if (Integer.parseInt(target[5]) < quantity) {
+            if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
                 return false;
             } else {
                 target[5] = String.valueOf(Integer.parseInt(target[5]) - quantity);

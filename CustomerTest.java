@@ -1,7 +1,6 @@
 public class CustomerTest {
     public static void main(String[] args) {
-        Customer c;
-        c = new Customer("nathanmiller@gmail.com", "1212", UserRole.CUSTOMER);
+        Customer c = new Customer("nathanmiller@gmail.com", "1212", UserRole.CUSTOMER);
 
         System.out.println(c.getAllProducts());
         System.out.println(c.getProductInfo(0));
@@ -18,6 +17,19 @@ public class CustomerTest {
     }
 
     public static void testGetProductInfo(Customer c) {
+        //Out of Bounds -> Returns "Invalid Product"
         System.out.println(c.getProductInfo(0));
+        //Prints out the first product in shopping cart
+        System.out.println(c.getProductInfo(1));
+    }
+
+    public static void testAddToCart(Customer c) {
+        boolean quantityBelowBounds = c.addToCart(0, 0);
+        boolean quantityAboveBounds = c.addToCart(0, 100);
+
+        boolean indexBelowBounds = c.addToCart(-1, 1);
+        boolean indexAboveBounds = c.addToCart(100, 1);
+
+        assert quantityAboveBounds & quantityBelowBounds & indexAboveBounds & indexBelowBounds;
     }
 }
