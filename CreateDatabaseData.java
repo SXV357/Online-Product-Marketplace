@@ -2,6 +2,39 @@ import java.util.ArrayList;
 
 public class CreateDatabaseData {
 
+    public static void clearData(){
+        Database database = new Database();
+        //Users
+        {
+        ArrayList<String> testUsers = new ArrayList<>();
+        database.updateDatabaseContents("users.csv", testUsers);
+        }
+
+        //Stores
+        {
+        ArrayList<String> testStores = new ArrayList<>();
+        database.updateDatabaseContents("stores.csv", testStores);
+        }
+
+        //Products
+        {
+        ArrayList<String> testProducts = new ArrayList<>();
+        database.updateDatabaseContents("products.csv", testProducts);
+        }
+
+
+        //Purchases
+        {
+        ArrayList<String> testPurchases = new ArrayList<>();
+        database.updateDatabaseContents("purchaseHistories.csv", testPurchases);
+        }
+
+        {
+        ArrayList<String> testShoppingcarts = new ArrayList<>();
+        database.updateDatabaseContents("shoppingCarts.csv", testShoppingcarts);    
+        }
+    }
+    
     public static void createData(){
         Database database = new Database();
 
