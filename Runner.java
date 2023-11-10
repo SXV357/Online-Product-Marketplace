@@ -235,7 +235,7 @@ public class Runner {
                                 break;
                             }
                         }
-                        curSeller.editProduct(curProduct.getProductIdentificationNumber(), editParam, newValue);
+                        curSeller.editProduct(curStore.getStoreName(), curProduct.getProductIdentificationNumber(), editParam, newValue);
                         break;
                     case 3:  //Delete Product
                         curProduct = pickProduct(scan, curSeller, curStore);
