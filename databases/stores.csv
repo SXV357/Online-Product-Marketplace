@@ -1,2 +1,4 @@
 Store ID,Seller ID,Store Name,Number of Products
-ST100000,S1000000,Store1,5
+ST100001,S100001,myStore,2
+ST100002,S100002,otherStore,1
+ST100003,S100002,thirdStore,1

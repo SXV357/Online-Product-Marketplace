@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -13,18 +12,31 @@ import java.util.HashMap;
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 9, 2023
+ * @version November 10, 2023
  */
 public class Seller extends User{
 
     private static Database db = new Database();
 
-    // Constructor to initialize a new Seller
+    /**
+     * Constructor to initialize a new seller when they create an account. Generates a unique ID for the seller and adds a marker to it signifying that the user is a seller.
+     * 
+     * @param email The seller's new email
+     * @param password The seller's new password
+     * @param role The seller's role
+     */
     public Seller(String email, String password, UserRole role) {
         super(email, password, role);
     }
 
-    // Constructor to initialize an already existing Seller
+    /**
+     * Customer to re-initialize a seller when they log back into the application. Sets the values of all fields to the ones passed to the constructor.
+     * 
+     * @param userID The seller's existing ID
+     * @param email The seller's existing email
+     * @param password The seller's existing password
+     * @param role The seller's existing role
+     */
     public Seller(String userID, String email, String password, UserRole role) {
         super(userID, email, password, role);
     }
@@ -167,6 +179,7 @@ public class Seller extends User{
     * @param newValue The new value of the property to modify
     * @return An indication of whether the product in the given store was modified successfully
     */
+    @SuppressWarnings("unused")
     public boolean editProduct(String storeName, String productName, String editParam, String newValue) {
         if (!editParam.equals("name") && !editParam.equals("price") && !editParam.equals("description") && !editParam.equals("quantity")) {
             return false;
@@ -194,7 +207,11 @@ public class Seller extends User{
                             case "description" -> productRep[7] = newValue;
                             case "quantity" -> {
                                 int prevQuantity = Integer.parseInt(productRep[5]);
-                                productRep[5] = String.valueOf(prevQuantity + Integer.parseInt(newValue));
+                                // Prevent from modifying to a negative quantity
+                                if (Integer.parseInt(newValue) < 0) {
+                                    return false;
+                                }
+                                productRep[5] = String.valueOf(newValue);
                             }
                         }
                         db.modifyDatabase("products.csv", productMatches.get(i), String.join(",", productRep));
@@ -220,6 +237,10 @@ public class Seller extends User{
         try {
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProductsForGivenStore = db.getMatchedEntries("products.csv", 3, storeName);
+            // If the store exists but it doesn't contain any products
+            if (matchedProductsForGivenStore.isEmpty()) {
+                return false;
+            }
             for (int i = 0; i < matchedProductsForGivenStore.size(); i++) {
                 String[] productEntry = matchedProductsForGivenStore.get(i).split(",");
                 if (productEntry[4].equals(productName)) {
@@ -287,12 +308,21 @@ public class Seller extends User{
             BufferedReader br = new BufferedReader(new FileReader(productFile));
             br.readLine(); // skip the headers
             String line;
+            int numProducts = 0;
             while ((line = br.readLine()) != null) {
                 String[] productLine = line.split(",");
                 Product newProduct = new Product(productLine[0], Integer.parseInt(productLine[1]), Double.parseDouble(productLine[2]), productLine[3]);
                 String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0], newProduct.getProductIdentificationNumber(), matchedStoreEntry.split(",")[2]) + "," + newProduct.toString();
+                // If the seller tries importing the same file again, the count will not change
+                if (!(db.checkEntryExists("products.csv", entry))) {
+                    numProducts += 1;
+                }
                 db.addToDatabase("products.csv", entry);
             }
+            String[] matchedStore = matchedStoreEntry.split(",");
+            int prevNumProducts = Integer.parseInt(matchedStore[3]);
+            matchedStore[3] = String.valueOf(prevNumProducts + numProducts);
+            db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",", matchedStore));
             br.close();
             return true;
         } catch (Exception e) {
@@ -306,9 +336,11 @@ public class Seller extends User{
      * @param storeName The name of the store whose products the seller wants to export
      * @return An indication whether the export took place successfully.
      */
+    @SuppressWarnings("unused")
     public boolean exportProducts(String storeName) {
-        ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
         try {
+            String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
             if (!(matchedProducts.isEmpty())) {
                 File targetDir = new File("exportedProducts");
                 if (!targetDir.exists()) {
@@ -336,7 +368,7 @@ public class Seller extends User{
             } else {
                 return false;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -372,5 +404,4 @@ public class Seller extends User{
             }
         }
     }
-
 }
