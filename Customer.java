@@ -57,6 +57,27 @@ public class Customer extends User{
     }
 
     /**
+     * Returns the user's shopping history
+     * 
+     * @return The shopping history as a string
+    */
+    public String getProductInfo(int index) {
+        StringBuilder sb = new StringBuilder();
+        String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
+
+        sb.append("Store Name: ").append(prodInfo[3]).append(System.getProperty("line.separator"));
+        sb.append("Product Name: ").append(prodInfo[4]).append(System.getProperty("line.separator"));;
+        sb.append("Available Quantity: ").append(prodInfo[5]).append(System.getProperty("line.separator"));;
+        sb.append("Price: ").append(prodInfo[6]).append(System.getProperty("line.separator"));;
+        sb.append("Description: ").append(prodInfo[7]);
+        for (int i = 8; i < prodInfo.length; i++) {
+            sb.append(prodInfo[i]);
+        }
+
+        return sb.toString();
+    }
+
+    /**
      * Returns the user's shopping cart
      * 
      * @return The shopping cart as a string
