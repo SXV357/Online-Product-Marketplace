@@ -5,14 +5,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
 /**
  * Project 4 - Database.java
  * 
- * Class that handles all database access and modification functionality related to the application.
+ * Class that handles all database access and modification functionality related
+ * to the application.
  * 
- * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
+ * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
+ *         Miller, Oliver Long
  * 
- * @version November 8, 2023
+ * @version November 10, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
@@ -23,7 +26,8 @@ public class Database {
     private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
 
     /**
-     * Takes in the name of the file as input and returns a string containing all the headers associated with that file.
+     * Takes in the name of the file as input and returns a string containing all
+     * the headers associated with that file.
      * 
      * @param fileName The name of the file that the user wants to update
      * @return The headers that are associated with that specific CSV file.
@@ -41,11 +45,14 @@ public class Database {
     }
 
     /**
-     * Takes in the name of the file and a column index and returns whether that index is within bounds of how many ever columns exist in the given file
+     * Takes in the name of the file and a column index and returns whether that
+     * index is within bounds of how many ever columns exist in the given file
      * 
-     * @param fileName The file using which the validity of the index will be determined
-     * @param index The index of the specified column
-     * @return If the column index is within bounds of the total number of columns in the file
+     * @param fileName The file using which the validity of the index will be
+     *                 determined
+     * @param index    The index of the specified column
+     * @return If the column index is within bounds of the total number of columns
+     *         in the file
      */
     public boolean checkColumnBounds(String fileName, int index) {
         String[] columns = getFileHeaders(fileName).split(",");
@@ -53,10 +60,11 @@ public class Database {
     }
 
     /**
-     * Takes in an ID and a file name and checks whether that ID is already associated with an entry
+     * Takes in an ID and a file name and checks whether that ID is already
+     * associated with an entry
      * 
      * @param idToCheck The ID to compare with the entries in the file
-     * @param fileName The file to check for the existence of the ID
+     * @param fileName  The file to check for the existence of the ID
      * @return The existence of the ID in the specified file
      */
     public boolean checkIDMatch(int idToCheck, String fileName) {
@@ -64,18 +72,21 @@ public class Database {
         int comparisonIndex = 0;
         int startIDSubstring = 0;
         switch (fileName) {
-            case "users.csv":   correspondingEntries = getDatabaseContents("users.csv");
-                                comparisonIndex = 0;
-                                startIDSubstring = 1;
-                                break;
-            case "stores.csv": correspondingEntries = getDatabaseContents("stores.csv");
-                                comparisonIndex = 0;
-                                startIDSubstring = 2;
-                                break;
-            case "products.csv": correspondingEntries = getDatabaseContents("products.csv");
-                                comparisonIndex = 2;
-                                startIDSubstring = 2;
-                                break;
+            case "users.csv":
+                correspondingEntries = getDatabaseContents("users.csv");
+                comparisonIndex = 0;
+                startIDSubstring = 1;
+                break;
+            case "stores.csv":
+                correspondingEntries = getDatabaseContents("stores.csv");
+                comparisonIndex = 0;
+                startIDSubstring = 2;
+                break;
+            case "products.csv":
+                correspondingEntries = getDatabaseContents("products.csv");
+                comparisonIndex = 2;
+                startIDSubstring = 2;
+                break;
         }
         for (int i = 0; i < correspondingEntries.size(); i++) {
             String[] userRepresentation = correspondingEntries.get(i).split(",");
@@ -88,17 +99,24 @@ public class Database {
     }
 
     /**
-     * Takes in the user's email and password and retrieves a match for the credentials in the users.csv database.
+     * Takes in the user's email and password and retrieves a match for the
+     * credentials in the users.csv database. Used for when the user is logging into
+     * the application. A null value signifies that no user with the given
+     * credentials was found in the database.
      * 
-     * @param email The user's email to compare with an existing entry in the users.csv database
-     * @param password The user's password to compare with an existing entry in the users.csv database
-     * @return A comma-separated string containing the matched user's information in the users.csv database
+     * @param email    The user's email to compare with an existing entry in the
+     *                 users.csv database
+     * @param password The user's password to compare with an existing entry in the
+     *                 users.csv database
+     * @return A comma-separated string containing the matched user's information in
+     *         the users.csv database
      */
     public String retrieveUser(String email, String password) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
         for (int j = 0; j < userEntries.size(); j++) {
             String[] userRepresentation = userEntries.get(j).split(",");
-            if (email.equals(userRepresentation[1]) && password.equals(userRepresentation[2])) {
+            if (email.toLowerCase().equals(userRepresentation[1])
+                    && password.toLowerCase().equals(userRepresentation[2])) {
                 return userEntries.get(j);
             }
         }
@@ -106,149 +124,177 @@ public class Database {
     }
 
     /**
-     * Takes in a comma-separated string as an entry and appends it to the file specified by the file name
+     * Takes in the user's email and retrieves a match for the credential in the
+     * users.csv database. Used for when the user is creating a new account. A null
+     * value signifies that no user with the given email was found in the database.
+     * 
+     * @param email The user's email to compare with an existing entry in the
+     *              users.csv database
+     * @return A comma-separated string containing the matched user's information in
+     *         the users.csv database
+     */
+    public String checkEmail(String email) {
+        ArrayList<String> userEntries = getDatabaseContents("users.csv");
+        for (int j = 0; j < userEntries.size(); j++) {
+            String[] userRepresentation = userEntries.get(j).split(",");
+            if (email.toLowerCase().equals(userRepresentation[1])) {
+                return userEntries.get(j);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Takes in a comma-separated string as an entry and appends it to the file
+     * specified by the file name
      * 
      * @param fileName The name of the file to append the entry to
-     * @param entry The entry to be appended to the file
+     * @param entry    The entry to be appended to the file
      */
     public void addToDatabase(String fileName, String entry) {
         ArrayList<String> relevantContents = getDatabaseContents(fileName);
         switch (fileName) {
-            case "users.csv": 
-                            if (!checkEntryExists(fileName, entry)) {
-                                relevantContents.add(entry);
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+            case "users.csv":
+                if (!checkEntryExists(fileName, entry)) {
+                    relevantContents.add(entry);
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "stores.csv":
-                            if (!checkEntryExists(fileName, entry)) {
-                                relevantContents.add(entry);
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                if (!checkEntryExists(fileName, entry)) {
+                    relevantContents.add(entry);
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "products.csv":
-                            if (!checkEntryExists(fileName, entry)) {
-                                relevantContents.add(entry);
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                if (!checkEntryExists(fileName, entry)) {
+                    relevantContents.add(entry);
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "shoppingCarts.csv":
-                            if (!checkEntryExists(fileName, entry)) {
-                                relevantContents.add(entry);
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                if (!checkEntryExists(fileName, entry)) {
+                    relevantContents.add(entry);
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "purchaseHistories.csv":
-                            if (!checkEntryExists(fileName, entry)) {
-                                relevantContents.add(entry);
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                if (!checkEntryExists(fileName, entry)) {
+                    relevantContents.add(entry);
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
         }
     }
 
     /**
-     * Takes in a comma-separated string as an entry and removes it from the file specified by the file name
+     * Takes in a comma-separated string as an entry and removes it from the file
+     * specified by the file name
      * 
      * @param fileName The name of the file to remove the entry from
-     * @param entry The entry to be removed from the file
+     * @param entry    The entry to be removed from the file
      */
     public void removeFromDatabase(String fileName, String entry) {
         ArrayList<String> relevantContents = getDatabaseContents(fileName);
         switch (fileName) {
-            case "users.csv": 
-                            boolean userRemoved = relevantContents.remove(entry);
-                            if (userRemoved) {
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+            case "users.csv":
+                boolean userRemoved = relevantContents.remove(entry);
+                if (userRemoved) {
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "stores.csv":
-                            boolean storeRemoved = relevantContents.remove(entry);
-                            if (storeRemoved) {
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                boolean storeRemoved = relevantContents.remove(entry);
+                if (storeRemoved) {
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "products.csv":
-                            boolean productRemoved = relevantContents.remove(entry);
-                            if (productRemoved) {
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                boolean productRemoved = relevantContents.remove(entry);
+                if (productRemoved) {
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "shoppingCarts.csv":
-                            boolean shoppingCartRemoved = relevantContents.remove(entry);
-                            if (shoppingCartRemoved) {
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                boolean shoppingCartRemoved = relevantContents.remove(entry);
+                if (shoppingCartRemoved) {
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
             case "purchaseHistories.csv":
-                            boolean purchaseHistoryRemoved = relevantContents.remove(entry);
-                            if (purchaseHistoryRemoved) {
-                                updateDatabaseContents(fileName, relevantContents);
-                            }
-                            break;
+                boolean purchaseHistoryRemoved = relevantContents.remove(entry);
+                if (purchaseHistoryRemoved) {
+                    updateDatabaseContents(fileName, relevantContents);
+                }
+                break;
         }
     }
 
     /**
-     * Takes in two comma separated strings, one representing the previous entry in the file specified and one representing the modified entry and updates that specified entry in the file with the modified entry
+     * Takes in two comma separated strings, one representing the previous entry in
+     * the file specified and one representing the modified entry and updates that
+     * specified entry in the file with the modified entry
      * 
-     * @param fileName The name of the file to be updated with the modified entry
+     * @param fileName  The name of the file to be updated with the modified entry
      * @param prevEntry The entry that already exists in the file
-     * @param newEntry The entry that will replace the previous entry in the specified file
+     * @param newEntry  The entry that will replace the previous entry in the
+     *                  specified file
      */
     public boolean modifyDatabase(String fileName, String prevEntry, String newEntry) {
         ArrayList<String> relevantContents = getDatabaseContents(fileName);
         boolean databaseModified = false;
         switch (fileName) {
-            case "users.csv": 
-                            int prevUserIdx = relevantContents.indexOf(prevEntry);
-                            if (prevUserIdx != -1) {
-                                relevantContents.set(prevUserIdx, newEntry);
-                                updateDatabaseContents(fileName, relevantContents);
-                                databaseModified = true;
-                            }
-                            break;
+            case "users.csv":
+                int prevUserIdx = relevantContents.indexOf(prevEntry);
+                if (prevUserIdx != -1) {
+                    relevantContents.set(prevUserIdx, newEntry);
+                    updateDatabaseContents(fileName, relevantContents);
+                    databaseModified = true;
+                }
+                break;
             case "stores.csv":
-                            int prevStoreIdx = relevantContents.indexOf(prevEntry);
-                            if (prevStoreIdx != -1) {
-                                relevantContents.set(prevStoreIdx, newEntry);
-                                updateDatabaseContents(fileName, relevantContents);
-                                databaseModified = true;
-                            }
-                            break;
+                int prevStoreIdx = relevantContents.indexOf(prevEntry);
+                if (prevStoreIdx != -1) {
+                    relevantContents.set(prevStoreIdx, newEntry);
+                    updateDatabaseContents(fileName, relevantContents);
+                    databaseModified = true;
+                }
+                break;
             case "products.csv":
-                            int prevProductIdx = relevantContents.indexOf(prevEntry);
-                            if (prevProductIdx != -1) {
-                                relevantContents.set(prevProductIdx, newEntry);
-                                updateDatabaseContents(fileName, relevantContents);
-                                databaseModified = true;
-                            }
-                            break;
+                int prevProductIdx = relevantContents.indexOf(prevEntry);
+                if (prevProductIdx != -1) {
+                    relevantContents.set(prevProductIdx, newEntry);
+                    updateDatabaseContents(fileName, relevantContents);
+                    databaseModified = true;
+                }
+                break;
             case "shoppingCarts.csv":
-                            int prevShoppingCartIdx = relevantContents.indexOf(prevEntry);
-                            if (prevShoppingCartIdx != -1) {
-                                relevantContents.set(prevShoppingCartIdx, newEntry);
-                                updateDatabaseContents(fileName, relevantContents);
-                                databaseModified = true;
-                            }
-                            break;
+                int prevShoppingCartIdx = relevantContents.indexOf(prevEntry);
+                if (prevShoppingCartIdx != -1) {
+                    relevantContents.set(prevShoppingCartIdx, newEntry);
+                    updateDatabaseContents(fileName, relevantContents);
+                    databaseModified = true;
+                }
+                break;
             case "purchaseHistories.csv":
-                            int prevPurchaseHistoryIdx = relevantContents.indexOf(prevEntry);
-                            if (prevPurchaseHistoryIdx != -1) {
-                                relevantContents.set(prevPurchaseHistoryIdx, newEntry);
-                                updateDatabaseContents(fileName, relevantContents);
-                                databaseModified = true;
-                            }
-                            break;
+                int prevPurchaseHistoryIdx = relevantContents.indexOf(prevEntry);
+                if (prevPurchaseHistoryIdx != -1) {
+                    relevantContents.set(prevPurchaseHistoryIdx, newEntry);
+                    updateDatabaseContents(fileName, relevantContents);
+                    databaseModified = true;
+                }
+                break;
         }
         return databaseModified;
     }
 
     /**
-     * Searches for the entry parameter in the file specified by filename and returns whether it exists or not
+     * Searches for the entry parameter in the file specified by filename and
+     * returns whether it exists or not
      * 
      * @param fileName The name of the file to within which to look for
-     * @param entry A comma-separated string representing a possible entry in the file
+     * @param entry    A comma-separated string representing a possible entry in the
+     *                 file
      * @return The existence of the entry in the specified file
      */
     public boolean checkEntryExists(String fileName, String entry) {
@@ -268,11 +314,14 @@ public class Database {
     }
 
     /**
-     * Searches the column specified by the index in the specified file and returns all rows where the value in that column matches the value of the search parameter
+     * Searches the column specified by the index in the specified file and returns
+     * all rows where the value in that column matches the value of the search
+     * parameter
      * 
-     * @param fileName The file to search for
-     * @param index The index of the column to search for
-     * @param searchParam The parameter to compare a value in the specified column to
+     * @param fileName    The file to search for
+     * @param index       The index of the column to search for
+     * @param searchParam The parameter to compare a value in the specified column
+     *                    to
      * @return An arraylist of the matched rows
      */
     public ArrayList<String> getMatchedEntries(String fileName, int index, String searchParam) {
@@ -287,7 +336,7 @@ public class Database {
                     if (contents[index].equals(searchParam)) {
                         matchedEntries.add(line);
                     }
-                } 
+                }
             } catch (IOException e) {
                 return new ArrayList<String>();
             }
@@ -296,7 +345,8 @@ public class Database {
     }
 
     /**
-     * Takes in the name of the file as input and extracts all of its contents line-by-line
+     * Takes in the name of the file as input and extracts all of its contents
+     * line-by-line
      * 
      * @param fileName The filename to extract the contents from
      * @return An arraylist containing all the entries in the specified file
@@ -319,10 +369,12 @@ public class Database {
     }
 
     /**
-     * Takes in the name of the file and overwrites it completely with the contents specified by the contents in the arraylist
+     * Takes in the name of the file and overwrites it completely with the contents
+     * specified by the contents in the arraylist
      * 
      * @param fileName The name of the file whose contents need to be updated
-     * @param contents An arraylist representing the modified contents to be written to the file
+     * @param contents An arraylist representing the modified contents to be written
+     *                 to the file
      */
     public void updateDatabaseContents(String fileName, ArrayList<String> contents) {
         File dir = new File(DATABASES_DIRECTORY);
