@@ -9,12 +9,13 @@ import java.util.ArrayList;
  *
  * Class to represent the permissions and details associated with a customer
  *
- * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
+ * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
+ *         Miller, Oliver Long
  *
  * @version November 2, 2023
  */
 
-public class Customer extends User{
+public class Customer extends User {
 
     private ArrayList<String> shoppingCart;
     private ArrayList<String> purchasehistory;
@@ -37,7 +38,7 @@ public class Customer extends User{
      * Converts arrays to list of strings
      * 
      * @return String of array's contents
-    */
+     */
     public String arrToString(ArrayList<String> array) {
         StringBuilder output = new StringBuilder();
         String[] splitArr;
@@ -51,7 +52,7 @@ public class Customer extends User{
      * Returns the user's shopping history
      * 
      * @return The shopping history as a string
-    */
+     */
     public String getShoppingHistory() {
         return arrToString(purchasehistory);
     }
@@ -60,15 +61,18 @@ public class Customer extends User{
      * Returns the user's shopping history
      * 
      * @return The shopping history as a string
-    */
+     */
     public String getProductInfo(int index) {
         StringBuilder sb = new StringBuilder();
         String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
 
         sb.append("Store Name: ").append(prodInfo[3]).append(System.getProperty("line.separator"));
-        sb.append("Product Name: ").append(prodInfo[4]).append(System.getProperty("line.separator"));;
-        sb.append("Available Quantity: ").append(prodInfo[5]).append(System.getProperty("line.separator"));;
-        sb.append("Price: ").append(prodInfo[6]).append(System.getProperty("line.separator"));;
+        sb.append("Product Name: ").append(prodInfo[4]).append(System.getProperty("line.separator"));
+        ;
+        sb.append("Available Quantity: ").append(prodInfo[5]).append(System.getProperty("line.separator"));
+        ;
+        sb.append("Price: ").append(prodInfo[6]).append(System.getProperty("line.separator"));
+        ;
         sb.append("Description: ").append(prodInfo[7]);
         for (int i = 8; i < prodInfo.length; i++) {
             sb.append(prodInfo[i]);
@@ -81,7 +85,7 @@ public class Customer extends User{
      * Returns the user's shopping cart
      * 
      * @return The shopping cart as a string
-    */
+     */
     public String getCart() {
         return arrToString(shoppingCart);
     }
@@ -99,7 +103,7 @@ public class Customer extends User{
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
-        
+
     }
 
     /**
@@ -110,23 +114,26 @@ public class Customer extends User{
     public boolean addToCart(int index, int quantity) {
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
-            String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0).split(",");
+            String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
+                    .split(",");
             if (Integer.parseInt(target[5]) < quantity) {
                 return false;
             } else {
                 target[5] = String.valueOf(Integer.parseInt(target[5]) - quantity);
-                db.modifyDatabase("products.csv", db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0), String.join(",", target));
+                db.modifyDatabase("products.csv",
+                        db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0),
+                        String.join(",", target));
             }
-            
+
             StringBuilder output = new StringBuilder();
             int updatedQuant = quantity;
             output.append(getUserID()).append(",");
             for (String item : shoppingCart) {
-                if (item.contains(target[2])) {    
+                if (item.contains(target[2])) {
                     updatedQuant = Integer.parseInt(item.split(",")[6]) + quantity;
                     db.removeFromDatabase("shoppingCarts.csv", item);
                     shoppingCart.remove(item);
-                    break; 
+                    break;
                 }
             }
             for (int i = 0; i < 5; i++) {
@@ -134,14 +141,14 @@ public class Customer extends User{
             }
             output.append(updatedQuant).append(",");
             output.append(Double.parseDouble(target[6]) * updatedQuant);
-    
+
             shoppingCart.add(output.toString());
-            db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size()-1));
+            db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size() - 1));
             return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
-        
+
     }
 
     /**
@@ -149,25 +156,26 @@ public class Customer extends User{
      * 
      */
     public void purchaseItems() {
-            StringBuilder output = new StringBuilder();
-            String[] updatedEntry;
-            output.append(getUserID()).append(",");
-            for (String item : shoppingCart) {
-                for (String entry : purchasehistory) {
-                    if (item.split(",")[2].equals(entry.split(",")[2])) {  
-                        updatedEntry = entry.split(",");
-                        updatedEntry[6] = String.valueOf(Integer.parseInt(updatedEntry[6]) + Integer.parseInt(item.split(",")[6]));
-                        updatedEntry[7] = String.valueOf(Double.parseDouble(updatedEntry[7]) + Double.parseDouble(item.split(",")[7]));
-                        db.modifyDatabase("purchaseHistories.csv", entry, String.join(",", updatedEntry));
-                    } else {
-                        db.addToDatabase("purchaseHistories.csv", item);
-                    }
-                    db.removeFromDatabase("shoppingCarts.csv", item);
+        StringBuilder output = new StringBuilder();
+        String[] updatedEntry;
+        output.append(getUserID()).append(",");
+        for (String item : shoppingCart) {
+            for (String entry : purchasehistory) {
+                if (item.split(",")[2].equals(entry.split(",")[2])) {
+                    updatedEntry = entry.split(",");
+                    updatedEntry[6] = String
+                            .valueOf(Integer.parseInt(updatedEntry[6]) + Integer.parseInt(item.split(",")[6]));
+                    updatedEntry[7] = String
+                            .valueOf(Double.parseDouble(updatedEntry[7]) + Double.parseDouble(item.split(",")[7]));
+                    db.modifyDatabase("purchaseHistories.csv", entry, String.join(",", updatedEntry));
+                } else {
+                    db.addToDatabase("purchaseHistories.csv", item);
                 }
+                db.removeFromDatabase("shoppingCarts.csv", item);
             }
-       
-    }
+        }
 
+    }
 
     /**
      * Sorts based on user's choice of price or quantity
@@ -184,27 +192,25 @@ public class Customer extends User{
         } else if (choice.equals("quantity")) {
             searchIndex = 5;
         }
-        
+
         if (searchIndex != -1) {
             if (sorted.size() > 1) {
                 for (int i = 0; i < n; i++) {
                     for (int j = 1; j < (n - i); j++) {
-                        if (Double.parseDouble(sorted.get(j - 1).split(",")[searchIndex])
-                               > Double.parseDouble(sorted.get(j).split(",")[searchIndex])) {
+                        if (Double.parseDouble(sorted.get(j - 1).split(",")[searchIndex]) > Double
+                                .parseDouble(sorted.get(j).split(",")[searchIndex])) {
                             temp = sorted.get(j - 1);
                             sorted.set(j - 1, sorted.get(j));
                             sorted.set(j, temp);
-                     }
-                   }
+                        }
+                    }
                 }
             }
             return arrToString(sorted);
         } else {
             return "Invalid search!";
         }
-        
-    
-        
+
     }
 
     /**
@@ -254,6 +260,6 @@ public class Customer extends User{
         } else {
             return arrToString(productsFound);
         }
-        
+
     }
 }
