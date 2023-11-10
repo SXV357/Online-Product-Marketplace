@@ -1,14 +1,18 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+
 /**
  * Project 4 - Runner.java
- * 
+ * <p>
  * Driver class for the application
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
- * 
  * @version November 8, 2023
  */
+
+
+//TODO MAKE ALL PROMPTS UNIFORM (like capitalization)
+
 public class Runner {
     private static final Database db = new Database();  //Makes a Database object
     private static boolean userLoggedIn = false;  //This boolean is used to check if the user has logged in successfully
@@ -86,14 +90,13 @@ public class Runner {
                 }
             }
             curUser = new User(uEmail, uPassword, uRole);
-                        db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
+            db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
             userLoggedIn = true;
         }
     }
 
-    
+
     public static int sellerPrompt(Scanner scan) {
-        System.out.println("Welcome Seller");
         int sellerChoice;
         do {
             System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Sign Out");
@@ -111,7 +114,6 @@ public class Runner {
     }
 
     public static int customerPrompt(Scanner scan) {
-        System.out.println("Welcome Customer");
         int customerChoice;
         do {
             System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n5) Sign Out");
@@ -208,8 +210,9 @@ public class Runner {
                         }
                         System.out.println("Describe the product please");
                         String description = scan.nextLine();
-                        curSeller.createNewProduct(curStore.getStoreIdentificationNumber(), productName,
+                        boolean worked = curSeller.createNewProduct(curStore.getStoreName(), productName,
                                 availableQuantity, price, description);
+                        System.out.println(worked);
                         break;
                     case 2:  //Edit Product
                         Product curProduct = pickProduct(scan, curSeller, curStore);
@@ -277,7 +280,7 @@ public class Runner {
     }
 
     public static Product pickProduct(Scanner scan, Seller curSeller, Store curStore) {
-        ArrayList<Product> productList = curStore.getProducts();  //NEED THIS TO BE IMPLEMENTED UNDER STORE CLASS
+        ArrayList<Product> productList = curStore.getProducts();
         System.out.println("Which product would you like to adjust?");
         for (int i = 0; i <= productList.size(); i++) {
             if (i < productList.size()) {
@@ -301,12 +304,41 @@ public class Runner {
         return chosenProduct;
     }
 
-    public static void marketUI (Scanner scan, Customer curCustomer)  {
-        //TODO
+    public static void marketUI(Scanner scan, Customer curCustomer) {
+        while (true) {  //loops until user selects to go back
+            System.out.println("What would you like to do?\n1) View All Products\n2) Search for a Product\n" +
+                    "3) Return");
+            int marketChoice = Integer.parseInt(scan.nextLine());
+            switch (marketChoice) {
+                case 1:  //View Products
+                    //TODO  View all products
+                    showAllProducts();
+                    break;
+                case 2:  //Search for product
+                    //TODO  search for a product
+                    System.out.println("What would you like to search for?");
+                    String query = scan.nextLine();
+                    ArrayList<String> allProducts = curCustomer.searchProducts(query);
+                    if (allProducts.isEmpty()) {
+                        System.out.println("Query has returned no results");
+                        break;
+                    } else {
+                        for (String product : allProducts) {
+                            System.out.println(product);
+                        }
+                        break;
+                    }
+                case 3:  //Go Back
+                    return;
+                default: //marketChoice was out of range
+            }
+        }
     }
 
     public static void showAllProducts() {
-        //TODO
+        //TODO  Select a product
+
+        //TODO  Sort Market (price or quantity)
     }
 
     public static void main(String[] args) {
@@ -323,23 +355,26 @@ public class Runner {
                     break;
                 case 3:  //Quit Program
                     System.out.println("Thank you!");
+                    scan.close();
                     return;  //ends the program
             }
         } while (!userLoggedIn);
         if (curUser.getRole().equals(UserRole.SELLER)) {  //code for if the current user is a seller
-Seller curSeller = new Seller(curUser.getUserID(), curUser.getEmail(),
+            Seller curSeller = new Seller(curUser.getUserID(), curUser.getEmail(),
                     curUser.getPassword(), curUser.getRole()); //makes a seller object with same ID as user
+            System.out.println("Welcome Seller");
             while (true) {  //loops until Seller signs out
-            int sellerChoice = sellerPrompt(scan);
-            switch (sellerChoice) {
-case 1:  //Stores
+                int sellerChoice = sellerPrompt(scan);
+                switch (sellerChoice) {
+                    case 1:  //Stores
                         storeUI(scan, curSeller);
                         break;
                     case 2:  //Dashboard
-                        //TODO add Dashboard UI
+                        //TODO fix Dashboard UI
+                        Dashboard.sellerGetCustomersDashboard(0, false);
                         break;
                     case 3:  //Customer Shopping Carts
-                        //TODO add Customer Shopping Cart UI
+                        curSeller.viewCustomerShoppingCarts();
                         break;
                     case 4:  //Sign Out
                         System.out.println("Thank you!");
@@ -347,28 +382,32 @@ case 1:  //Stores
                 }
             }
         } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
-/* ADD when customer constructor works
             Customer curCustomer = new Customer(curUser.getUserID(), curUser.getEmail(),
-                    curUser.getPassword(), curUser.getRole()); //makes a customer object with same ID as user
-*/
-            int customerChoice = customerPrompt(scan);
-            switch (customerChoice) {
-                case 1:  //Market
-                    //marketUI(scan, curCustomer);  add when customer constructor works
-                    break;
-                case 2:  //Purchase History
-                    //TODO add Purchase History UI
-                    break;
-                case 3:  //Dashboard
-                    //TODO add Dashboard UI
-                    break;
-                case 4:  //Shopping Cart
-                    //TODO add Shopping Cart UI
-                    break;
-                case 5:  //Sign Out
-                    System.out.println("Thank you!");
-                    return;  //ends the program
-            }
+                    curUser.getPassword());
+            System.out.println("Welcome Customer");
+            while (true) {  //loops until the user signs out
+                int customerChoice = customerPrompt(scan);
+                switch (customerChoice) {
+                    case 1:  //Market
+                        marketUI(scan, curCustomer);
+                        break;
+                    case 2:  //Purchase History
+                        curCustomer.exportPurchaseHistory();
+                        break;
+                    case 3:  //Dashboard
+                        //TODO add Dashboard UI
+                        break;
+                    case 4:  //Shopping Cart
+                        ArrayList<String> productsInCart = curCustomer.getShoppingHistory();
+                        for (String product : productsInCart) {
+                            System.out.println(product);
+                        }
+                        break;
+                    case 5:  //Sign Out
+                        System.out.println("Thank you!");
+                        return;  //ends the program
                 }
+            }
+        } while (true);
     }
 }
