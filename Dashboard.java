@@ -16,9 +16,34 @@ import java.util.HashMap;
  */
 public class Dashboard {
     
+    //To display a dashboard to the terminal with a relevant header.
+    //Input the type of dashbard to display and the dashboard array returned by one of the other functions
+    public static void printDashboardData(String dashboardType, ArrayList<String> dashboardData){
+        //Print the relevant header for the data 
+        switch (dashboardType) {
+            case "Customers":
+                System.out.println("Email, Quantity Purchased, Money Spent");
+                break;
+            case "Products":
+                System.out.println("Product, Quantity Sold,Total Revenue");
+                break;
+            case "Stores":
+                System.out.println("Store, Product Sales,Total Revenue");
+
+                break;
+            case "PersonalPurchases":
+                System.out.println("Product, Amount bought, Amount spent:");
+                break;
+        }
+
+        for(String line:dashboardData){
+            System.out.println(line);
+        }
+    }
+
     //Seller's method to view all customers
     //Return line format: email,totalQuantity,totalSpent
-    public static ArrayList<String> sellerGetCustomersDashboard(int sortIndex, boolean sortAscending){
+    public static ArrayList<String> sellerGetCustomersDashboard(int sortIndex, boolean sortDescending){
         Database database = new Database();
 
         //Get all customer Users
@@ -51,18 +76,18 @@ public class Dashboard {
             String customerEmail = customerDataList[1];
             //Add customer's stats to the list
             //Format: email, totalQuantity, totalSpent
-            String StatsString = String.format("%s,%f,%f",customerEmail,totalQuantity,totalSpent);
+            String StatsString = String.format("%s,%.2f,%.2f",customerEmail,totalQuantity,totalSpent);
             customerStatisticsStrings.add(StatsString);
         }
 
         //Sorts the processed data
         //See here for allowed values of sortType
-        return sortResults(sortIndex,sortAscending, customerStatisticsStrings);
+        return sortResults(sortIndex,sortDescending, customerStatisticsStrings);
     }
 
     //Seller's method to view all products
     //Return line format: productName,TotalSales,Total Revenue
-    public static ArrayList<String> sellerGetProductsDashboard(int sortIndex, boolean sortAscending){
+    public static ArrayList<String> sellerGetProductsDashboard(int sortIndex, boolean sortDescending){
         Database database = new Database();
         //Get all products:Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description
         ArrayList<String> allProducts = database.getDatabaseContents("products.csv");
@@ -101,12 +126,12 @@ public class Dashboard {
             productStatisticsStrings.add(StatsString);
         }
 
-        return sortResults(sortIndex,sortAscending, productStatisticsStrings);
+        return sortResults(sortIndex,sortDescending, productStatisticsStrings);
     }
 
     //Customer's method to view all stores and their products sold
     //Return line format: storeName, Products Sold, Total Revenue
-    public static ArrayList<String> customerGetStoresDashboard(int sortIndex, boolean sortAscending){
+    public static ArrayList<String> customerGetStoresDashboard(int sortIndex, boolean sortDescending){
         Database database = new Database();
         //Get all stores:Store ID,Seller ID,Store Name,Number of Products
         ArrayList<String> allStores = database.getDatabaseContents("stores.csv");
@@ -145,12 +170,13 @@ public class Dashboard {
             storeStatisticsStrings.add(StatsString);
         }
 
-       return sortResults(sortIndex,sortAscending, storeStatisticsStrings);
+       return sortResults(sortIndex,sortDescending, storeStatisticsStrings);
     }
 
     //Personal Dashboard requires CustomerID
+    //Returns all products purchased by the customer with customer ID
     //Return line format: storeName, Products Bought, Total Spent
-    public static ArrayList<String> customerGetPersonalPurchasesDashboard(int sortIndex, boolean sortAscending, String customerID){
+    public static ArrayList<String> customerGetPersonalPurchasesDashboard(int sortIndex, boolean sortDescending, String customerID){
         Database database = new Database();
         //Get all stores:Store ID,Seller ID,Store Name,Number of Products
         ArrayList<String> allStores = database.getDatabaseContents("stores.csv");
@@ -193,11 +219,11 @@ public class Dashboard {
             String StatsString = String.format("%s,%.2f,%.2f",storeName,totalProductsBought,totalSpent);
             storeStatisticsStrings.add(StatsString);
         }
-        return sortResults(sortIndex,sortAscending, storeStatisticsStrings);
+        return sortResults(sortIndex,sortDescending, storeStatisticsStrings);
     }
 
     //Assuming strings are in format: String, Double, Double
-    private static ArrayList<String> sortResults(int sortIndex, boolean sortAscending, ArrayList<String> arrayList){
+    private static ArrayList<String> sortResults(int sortIndex, boolean sortDescending, ArrayList<String> arrayList){
         switch(sortIndex){
             case 0:
                 Collections.sort(arrayList,
@@ -213,7 +239,7 @@ public class Dashboard {
 
         }
 
-        if (!sortAscending) Collections.reverse(arrayList);
+        if (!sortDescending) Collections.reverse(arrayList);
 
         return arrayList;
     }
