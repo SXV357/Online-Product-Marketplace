@@ -24,12 +24,19 @@ public class CustomerTest {
     }
 
     public static void testAddToCart(Customer c) {
-        boolean quantityBelowBounds = c.addToCart(0, 0);
+        boolean quantityBelowBounds = c.addToCart(0, -1);
         boolean quantityAboveBounds = c.addToCart(0, 100);
 
         boolean indexBelowBounds = c.addToCart(-1, 1);
         boolean indexAboveBounds = c.addToCart(100, 1);
 
-        assert quantityAboveBounds & quantityBelowBounds & indexAboveBounds & indexBelowBounds;
+        assert !quantityAboveBounds & !quantityBelowBounds & !indexAboveBounds & !indexBelowBounds;
+    }
+
+    public static void testRemoveFromCart(Customer c) {
+        boolean indexBelowBounds = c.removeFromCart(-1);
+        boolean indexAboveBounds = c.removeFromCart(100);
+
+        assert !indexAboveBounds & !indexBelowBounds;
     }
 }
