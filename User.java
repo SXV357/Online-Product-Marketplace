@@ -5,17 +5,20 @@
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
  * 
- * @version November 6, 2023
+ * @version November 9, 2023
  */
 public class User {
-    //Fields
+    
     private static Database db = new Database();
+
     private String email;
     private String password;
-    private UserRole role; // User's role in the application (Seller or Customer);
-    private String userID;  //Each user has a unique ID
+    private UserRole role;
+    private String userID;
 
-    //Blank Constructor for currentUser in runner
+    /**
+     * Blank constructor to initialize a non-existent user until the user creates an account or logs in
+     */
     public User() {
         this.userID = "";
         this.email = "";
@@ -23,23 +26,33 @@ public class User {
         this.role = null;
     }
 
-    //Constructor to initialize a new user when they create an account(Adds an identifier marker)
+    /**
+     * Constructor to initialize a new user when they create an account. Generates a unique ID for the user and adds a marker to it signifying whether the user is a customer or a seller.
+     * 
+     * @param email The user's new email
+     * @param password The user's new password
+     * @param role The user's role
+     */
     public User(String email, String password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
         int generatedID = generateUserIdentificationNumber();
         switch (role) {
-            case CUSTOMER: this.userID = "C" + String.valueOf(generatedID);
-                                        break;
-            case SELLER: this.userID = "S" + String.valueOf(generatedID);
-                                        break;
-            case UNDECIDED: this.userID = "";
-                            break;
+            case CUSTOMER -> this.userID = "C" + String.valueOf(generatedID);
+            case SELLER -> this.userID = "S" + String.valueOf(generatedID);
+            case UNDECIDED -> this.userID = "";
         }
     }
 
-    //Constructor to re-initialize a user when they log back in with the correct credentials
+    /**
+     * Customer to re-initialize a user when they log back into the application. Sets the values of all fields to the ones passed to the constructor.
+     * 
+     * @param userID The user's existing ID
+     * @param email The user's existing email
+     * @param password The user's existing password
+     * @param role The user's existing role
+     */
     public User(String userID, String email, String password, UserRole role) {
         this.userID = userID;
         this.email = email;
@@ -47,28 +60,56 @@ public class User {
         this.role = role;
     }
 
-    //Getters
+    /**
+     * Gets the current user's email
+     * 
+     * @return The email associated with this user
+     */
     public String getEmail() {
         return this.email;
     }
 
+    /**
+     * Gets the current user's password
+     * 
+     * @return The password associated with this user
+     */
     public String getPassword() {
         return this.password;
     }
 
+    /**
+     * Gets the current user's ID
+     * 
+     * @return The ID associated with this user
+     */
     public String getUserID() {
         return this.userID;
     }
 
+    /**
+     * Gets the current user's role
+     * 
+     * @return The role associated with this user
+     */
     public UserRole getRole() {
         return this.role;
     }
 
-    //Setters (when the user wants to modify their account)
+    /**
+     * Sets the user's current email to the email passed into the method
+     * 
+     * @param email The email to modify the current email to
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Sets the user's current email to the password passed into the method
+     * 
+     * @param password The password to modify the current password to
+     */
     public void setPassword(String password) {
         this.password = password;
     }
@@ -86,7 +127,9 @@ public class User {
         return currentID;
     }
 
-    // this is what's being received by the addUsersToDatabase method in the database class
+    /**
+     * Represents an entry associated with a specific user in the users.csv database
+     */
     @Override
     public String toString() {
         return String.format("%s,%s,%s,%s", this.userID, this.email, this.password, this.role);
