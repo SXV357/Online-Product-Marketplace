@@ -6,6 +6,7 @@ From the root directory of the project, compile Runner.java and then execute it 
 # Project Submission Details
 
 Student 1 - Submitted Report on Brightspace
+
 Student 2 - Submitted project on Vocareum's workspace
 
 # Class Information
