@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -19,12 +18,25 @@ public class Seller extends User{
 
     private static Database db = new Database();
 
-    // Constructor to initialize a new Seller
+    /**
+     * Constructor to initialize a new seller when they create an account. Generates a unique ID for the seller and adds a marker to it signifying that the user is a seller.
+     * 
+     * @param email The seller's new email
+     * @param password The seller's new password
+     * @param role The seller's role
+     */
     public Seller(String email, String password, UserRole role) {
         super(email, password, role);
     }
 
-    // Constructor to initialize an already existing Seller
+    /**
+     * Customer to re-initialize a seller when they log back into the application. Sets the values of all fields to the ones passed to the constructor.
+     * 
+     * @param userID The seller's existing ID
+     * @param email The seller's existing email
+     * @param password The seller's existing password
+     * @param role The seller's existing role
+     */
     public Seller(String userID, String email, String password, UserRole role) {
         super(userID, email, password, role);
     }
@@ -388,5 +400,4 @@ public class Seller extends User{
             }
         }
     }
-
 }
