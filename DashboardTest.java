@@ -1,5 +1,3 @@
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 
 public class DashboardTest {
@@ -20,8 +18,8 @@ public class DashboardTest {
     public static void main(String[] args) {
         CreateDatabaseData.createData();
 
-        //testSellerGetCustomersDashboard();
-        testSellerGetProductsDashboard();
+        testSellerGetCustomersDashboard();
+        //testSellerGetProductsDashboard();
         
         //testCustomerGetStoresDashboard();
         //testCustomerGetPersonalPurchasesDashboard();
