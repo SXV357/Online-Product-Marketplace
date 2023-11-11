@@ -427,6 +427,7 @@ public class Seller extends User {
                             productName, availableQuantity, price, description);
                     bw.write(formattedProduct + "\n");
                 }
+                bw.flush();
                 bw.close();
                 return true;
             } else {
