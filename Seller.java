@@ -5,44 +5,50 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 /**
  * Project 4 - Seller.java
  * 
  * Class to represent the permissions and details associated with a seller
  * 
- * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
+ * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
+ *         Miller, Oliver Long
  * 
  * @version November 10, 2023
  */
-public class Seller extends User{
+public class Seller extends User {
 
     private static Database db = new Database();
 
     /**
-     * Constructor to initialize a new seller when they create an account. Generates a unique ID for the seller and adds a marker to it signifying that the user is a seller.
+     * Constructor to initialize a new seller when they create an account. Generates
+     * a unique ID for the seller and adds a marker to it signifying that the user
+     * is a seller.
      * 
-     * @param email The seller's new email
+     * @param email    The seller's new email
      * @param password The seller's new password
-     * @param role The seller's role
+     * @param role     The seller's role
      */
     public Seller(String email, String password, UserRole role) {
         super(email, password, role);
     }
 
     /**
-     * Customer to re-initialize a seller when they log back into the application. Sets the values of all fields to the ones passed to the constructor.
+     * Customer to re-initialize a seller when they log back into the application.
+     * Sets the values of all fields to the ones passed to the constructor.
      * 
-     * @param userID The seller's existing ID
-     * @param email The seller's existing email
+     * @param userID   The seller's existing ID
+     * @param email    The seller's existing email
      * @param password The seller's existing password
-     * @param role The seller's existing role
+     * @param role     The seller's existing role
      */
     public Seller(String userID, String email, String password, UserRole role) {
         super(userID, email, password, role);
     }
 
     /**
-     * Retrieves all the stores associated with this seller and returns the entries in the form of an arraylist of store objects
+     * Retrieves all the stores associated with this seller and returns the entries
+     * in the form of an arraylist of store objects
      * 
      * @return An arraylist of store objects corresponding to this seller
      */
@@ -60,7 +66,8 @@ public class Seller extends User{
     }
 
     /**
-     * Creates a new store associated with this seller. If another store exists with the same name, the seller is prevented from creating the store.
+     * Creates a new store associated with this seller. If another store exists with
+     * the same name, the seller is prevented from creating the store.
      * 
      * @param newStoreName The name of the new store
      * @return An indication of whether or not the store was created successfully.
@@ -69,11 +76,12 @@ public class Seller extends User{
         boolean storeCreated = false;
         ArrayList<String> matchedStoreEntries = db.getMatchedEntries("stores.csv", 2, newStoreName);
         if (newStoreName == null || newStoreName.isEmpty() || !matchedStoreEntries.isEmpty()) {
-            storeCreated =  false;
+            storeCreated = false;
         }
         if (matchedStoreEntries.isEmpty()) {
             Store newStore = new Store(newStoreName);
-            String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(), super.getUserID(), newStore.getStoreName(), 0);
+            String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(),
+                    super.getUserID(), newStore.getStoreName(), 0);
             db.addToDatabase("stores.csv", newStoreEntry);
             storeCreated = true;
         }
@@ -81,10 +89,13 @@ public class Seller extends User{
     }
 
     /**
-     * Deletes an existing store associated with this seller, including all of the store's associated products. In an event where the seller chooses to delete a store that doesn't exist, the deletion doesn't take place.
+     * Deletes an existing store associated with this seller, including all of the
+     * store's associated products. In an event where the seller chooses to delete a
+     * store that doesn't exist, the deletion doesn't take place.
      * 
      * @param storeName The name of the store to remove
-     * @return An indication of whether or not the store, including all associated products were deleted successfully.
+     * @return An indication of whether or not the store, including all associated
+     *         products were deleted successfully.
      */
     public boolean deleteStore(String storeName) {
         try {
@@ -101,11 +112,17 @@ public class Seller extends User{
     }
 
     /**
-     * Modifies the name of an existing store associated with this seller. If the seller attempts to modify the name of a store that doesn't exist or attempts to modify the name of an existing store to a name that either corresponds to one of this sellers' other stores or one that corresponds to another seller's stores, they are prevented from doing so.
+     * Modifies the name of an existing store associated with this seller. If the
+     * seller attempts to modify the name of a store that doesn't exist or attempts
+     * to modify the name of an existing store to a name that either corresponds to
+     * one of this sellers' other stores or one that corresponds to another seller's
+     * stores, they are prevented from doing so.
      * 
-     * @param prevStoreName The name of the seller's existing store whose name they choose to modify.
-     * @param newStoreName The store's new name.
-     * @return An indication of whether the store name modification took place successfully.
+     * @param prevStoreName The name of the seller's existing store whose name they
+     *                      choose to modify.
+     * @param newStoreName  The store's new name.
+     * @return An indication of whether the store name modification took place
+     *         successfully.
      */
     public boolean modifyStoreName(String prevStoreName, String newStoreName) {
         if (prevStoreName == null || prevStoreName.isEmpty() || newStoreName == null || newStoreName.isEmpty()) {
@@ -128,23 +145,30 @@ public class Seller extends User{
     }
 
     /**
-     * Creates a new product in any of the store's associated with this seller. If the seller tries adding a product to a store that doesn't exist or adds a product to an existing store that already contains the same product, the seller is prevented from doing so.
+     * Creates a new product in any of the store's associated with this seller. If
+     * the seller tries adding a product to a store that doesn't exist or adds a
+     * product to an existing store that already contains the same product, the
+     * seller is prevented from doing so.
      * 
-     * @param storeName The name of the store to add the product to
-     * @param productName The new product's name.
-     * @param availableQuantity The number of products going on sale
-     * @param price The price of the product
+     * @param storeName          The name of the store to add the product to
+     * @param productName        The new product's name.
+     * @param availableQuantity  The number of products going on sale
+     * @param price              The price of the product
      * @param productDescription A description associated with the product
-     * @return An indication of whether the product was succcessfully added to the selected store or not.
+     * @return An indication of whether the product was succcessfully added to the
+     *         selected store or not.
      */
-    public boolean createNewProduct(String storeName, String productName, int availableQuantity, double price, String productDescription) {
-        if (productName == null || productName.isEmpty() || availableQuantity < 0 || price < 0 || productDescription == null || productDescription.isEmpty()) {
+    public boolean createNewProduct(String storeName, String productName, int availableQuantity, double price,
+            String productDescription) {
+        if (productName == null || productName.isEmpty() || availableQuantity < 0 || price < 0
+                || productDescription == null || productDescription.isEmpty()) {
             return false;
         }
         try {
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
 
-            // To ensure that the seller doesn't try adding a product with the same name in one of their existing stores
+            // To ensure that the seller doesn't try adding a product with the same name in
+            // one of their existing stores
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
             for (int i = 0; i < matchedProducts.size(); i++) {
                 String[] productEntry = matchedProducts.get(i).split(",");
@@ -155,7 +179,8 @@ public class Seller extends User{
 
             Product newProduct = new Product(productName, availableQuantity, price, productDescription);
 
-            String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0],newProduct.getProductIdentificationNumber(), storeName) + "," + newProduct.toString();
+            String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0],
+                    newProduct.getProductIdentificationNumber(), storeName) + "," + newProduct.toString();
 
             db.addToDatabase("products.csv", entry);
 
@@ -167,21 +192,28 @@ public class Seller extends User{
             return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
-        } 
+        }
     }
 
-   /**
-    * Edit a product's properties in any of the seller's stores. If the seller tries editing a product in a STORE that doesn't exist, or the seller tries editing a product that doesn't exist in a store that exists, the seller is prevented from doing so.
-    *
-    * @param storeName The name of the store in which the seller wants to edit a product
-    * @param productName The name of the product in the given store to edit
-    * @param editParam Represents which of the products' properties the seller wants to edit(Name, Price, Quantity, Description)
-    * @param newValue The new value of the property to modify
-    * @return An indication of whether the product in the given store was modified successfully
-    */
+    /**
+     * Edit a product's properties in any of the seller's stores. If the seller
+     * tries editing a product in a STORE that doesn't exist, or the seller tries
+     * editing a product that doesn't exist in a store that exists, the seller is
+     * prevented from doing so.
+     *
+     * @param storeName   The name of the store in which the seller wants to edit a
+     *                    product
+     * @param productName The name of the product in the given store to edit
+     * @param editParam   Represents which of the products' properties the seller
+     *                    wants to edit(Name, Price, Quantity, Description)
+     * @param newValue    The new value of the property to modify
+     * @return An indication of whether the product in the given store was modified
+     *         successfully
+     */
     @SuppressWarnings("unused")
     public boolean editProduct(String storeName, String productName, String editParam, String newValue) {
-        if (!editParam.equals("name") && !editParam.equals("price") && !editParam.equals("description") && !editParam.equals("quantity")) {
+        if (!editParam.equals("name") && !editParam.equals("price") && !editParam.equals("description")
+                && !editParam.equals("quantity")) {
             return false;
         }
         try {
@@ -195,7 +227,8 @@ public class Seller extends User{
                     if (productRep[4].equals(productName)) { // found a match
                         switch (editParam) {
                             case "name" -> {
-                                // check if any products associated with that given store have same name as newValue
+                                // check if any products associated with that given store have same name as
+                                // newValue
                                 for (int j = 0; j < productMatches.size(); j++) {
                                     if (productMatches.get(j).split(",")[4].equals(newValue)) {
                                         return false;
@@ -226,11 +259,14 @@ public class Seller extends User{
     }
 
     /**
-     * Deletes the product associated with the given store. In an event when the seller tries removing a product from a non-existent store or a non-existent product from a given store, the seller is prevented from doing so.
+     * Deletes the product associated with the given store. In an event when the
+     * seller tries removing a product from a non-existent store or a non-existent
+     * product from a given store, the seller is prevented from doing so.
      * 
-     * @param storeName The name of the store to delete the product from
+     * @param storeName   The name of the store to delete the product from
      * @param productName The name of the product to delete from the store
-     * @return An indication whether the specified product was deleted from the specified store successfully
+     * @return An indication whether the specified product was deleted from the
+     *         specified store successfully
      */
     public boolean deleteProduct(String storeName, String productName) {
         boolean productDeleted = false;
@@ -252,54 +288,76 @@ public class Seller extends User{
                     newStoreRepresentation[3] = String.valueOf(previousNumProducts - 1);
                     db.modifyDatabase("stores.csv", matchedStore, String.join(",", newStoreRepresentation));
 
-                    productDeleted =  true;
+                    productDeleted = true;
                     break;
                 }
             }
         } catch (Exception e) {
-            productDeleted =  false;
+            productDeleted = false;
         }
         return productDeleted;
     }
 
     /**
-     * View a list of sales by store, where the seller can view customer information, product details, how many items the customer purchased, and the revenues per sale.
+     * View a list of sales by store, where the seller can view customer
+     * information, product details, how many items the customer purchased, and the
+     * revenues per sale.
      */
     public void viewStoreSales() {
-        ArrayList<String> purchaseHistoryEntries = db.getMatchedEntries("purchaseHistories.csv", 1, super.getUserID());
-        if (purchaseHistoryEntries.size() == 0) {
-            System.out.println("Either no stores have been created with products for sale, or no sales have taken place in any of your existing stores.");
+        ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, super.getUserID());
+        if (matchedStores.isEmpty()) {
+            System.out.println("You haven't created any stores yet!");
         } else {
-            HashMap<String, ArrayList<String>> salesByStore = new HashMap<>();
-            for (int i = 0; i < purchaseHistoryEntries.size(); i++) {
-                String[] purchaseHistoryEntry = purchaseHistoryEntries.get(i).split(",");
-                String storeIdentifier = String.format("Store %s-%s Sales\n", purchaseHistoryEntry[2], purchaseHistoryEntry[4]);
-                String customer = purchaseHistoryEntry[0];
-                int purchaseQuantity = Integer.parseInt(purchaseHistoryEntry[6]);
-                double revenues = Double.parseDouble(purchaseHistoryEntry[7]);
+            // The seller has stores. Check if there are products associated with any of the
+            // stores
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, super.getUserID());
+            if (matchedProducts.isEmpty()) {
+                System.out.println("No products have been added to any of your stores!");
+            } else { // Products are associated with the seller's store(s)
+                ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv", 1,
+                        super.getUserID());
+                if (matchedPurchaseHistories.isEmpty()) {
+                    System.out.println("Customers have not purchased items from any of your stores!");
+                } else {
+                    HashMap<String, ArrayList<String>> salesByStore = new HashMap<>();
+                    for (int i = 0; i < matchedPurchaseHistories.size(); i++) {
+                        String[] purchaseHistoryEntry = matchedPurchaseHistories.get(i).split(",");
+                        String storeIdentifier = String.format("Store %s-%s Sales\n", purchaseHistoryEntry[2],
+                                purchaseHistoryEntry[4]);
+                        String customer = purchaseHistoryEntry[0];
+                        int purchaseQuantity = Integer.parseInt(purchaseHistoryEntry[6]);
+                        double revenues = Double.parseDouble(purchaseHistoryEntry[7]);
 
-                String salesInformation = String.format("Customer: %s, Product: %s-%s, Quantity Purchased: %d, Revenues: %.2f", customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5], purchaseQuantity, revenues);
+                        String salesInformation = String.format(
+                                "Customer: %s, Product: %s-%s, Quantity: %d, Price: %.2f",
+                                customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5], purchaseQuantity, revenues);
 
-                if (!salesByStore.containsKey(storeIdentifier)) {
-                    salesByStore.put(storeIdentifier, new ArrayList<String>());
-                } 
-                salesByStore.get(storeIdentifier).add(salesInformation);
-            }
-            for (String store: salesByStore.keySet()) {
-                System.out.println(store);
-                for (String saleInformation: salesByStore.get(store)) {
-                    System.out.println("\t" + saleInformation);
+                        if (!salesByStore.containsKey(storeIdentifier)) {
+                            salesByStore.put(storeIdentifier, new ArrayList<String>());
+                        }
+                        salesByStore.get(storeIdentifier).add(salesInformation);
+                    }
+                    for (String store : salesByStore.keySet()) {
+                        System.out.println(store);
+                        for (String saleInformation : salesByStore.get(store)) {
+                            System.out.println("\t" + saleInformation);
+                        }
+                    }
                 }
             }
         }
     }
-    
+
     /**
-     * Allows the seller to import a CSV file containing product entries in the form Product Name, Available Quantity, Price, Description into any store of their choice.
+     * Allows the seller to import a CSV file containing product entries in the form
+     * Product Name, Available Quantity, Price, Description into any store of their
+     * choice.
      * 
-     * @param filePath The file containing the products to be imported into the store
+     * @param filePath  The file containing the products to be imported into the
+     *                  store
      * @param storeName The name of the store to add the products to
-     * @return An indication whether the product import took place successfully or not.
+     * @return An indication whether the product import took place successfully or
+     *         not.
      */
     public boolean importProducts(String filePath, String storeName) {
         try {
@@ -311,8 +369,11 @@ public class Seller extends User{
             int numProducts = 0;
             while ((line = br.readLine()) != null) {
                 String[] productLine = line.split(",");
-                Product newProduct = new Product(productLine[0], Integer.parseInt(productLine[1]), Double.parseDouble(productLine[2]), productLine[3]);
-                String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0], newProduct.getProductIdentificationNumber(), matchedStoreEntry.split(",")[2]) + "," + newProduct.toString();
+                Product newProduct = new Product(productLine[0], Integer.parseInt(productLine[1]),
+                        Double.parseDouble(productLine[2]), productLine[3]);
+                String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0],
+                        newProduct.getProductIdentificationNumber(), matchedStoreEntry.split(",")[2]) + ","
+                        + newProduct.toString();
                 // If the seller tries importing the same file again, the count will not change
                 if (!(db.checkEntryExists("products.csv", entry))) {
                     numProducts += 1;
@@ -331,9 +392,11 @@ public class Seller extends User{
     }
 
     /**
-     * Allows a seller to export the products associated with any of their stores to a separate CSV file.
+     * Allows a seller to export the products associated with any of their stores to
+     * a separate CSV file.
      * 
-     * @param storeName The name of the store whose products the seller wants to export
+     * @param storeName The name of the store whose products the seller wants to
+     *                  export
      * @return An indication whether the export took place successfully.
      */
     @SuppressWarnings("unused")
@@ -360,7 +423,8 @@ public class Seller extends User{
                     int availableQuantity = Integer.parseInt(productEntry[5]);
                     double price = Double.parseDouble(productEntry[6]);
                     String description = productEntry[7];
-                    String formattedProduct = String.format("%s,%s,%s,%s,%d,%.2f,%s", sellerID, storeID,productID,productName,availableQuantity,price,description);
+                    String formattedProduct = String.format("%s,%s,%s,%s,%d,%.2f,%s", sellerID, storeID, productID,
+                            productName, availableQuantity, price, description);
                     bw.write(formattedProduct + "\n");
                 }
                 bw.close();
@@ -374,32 +438,52 @@ public class Seller extends User{
     }
 
     /**
-     * View customer's shopping carts associated with this sellers' stores, where the seller can view customer information, product details, quantity added, and price the customer will have to incur should they purchase it.
+     * View customer's shopping carts associated with this sellers' stores, where
+     * the seller can view customer information, product details, quantity added,
+     * and price the customer will have to incur should they purchase it.
      */
     public void viewCustomerShoppingCarts() {
-        ArrayList<String> matchedCarts = db.getMatchedEntries("shoppingCarts.csv", 1, super.getUserID());
-        if (matchedCarts.isEmpty()) {
-            System.out.println("Either no stores have been created with products for sale, or there are no customers who have products added to their shopping cart from any of your stores!");
+        ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, super.getUserID());
+        if (matchedStores.isEmpty()) {
+            System.out.println("You haven't created any stores yet!");
         } else {
-            HashMap<String, ArrayList<String>> cartsByStore = new HashMap<>();
-            for (int i = 0; i < matchedCarts.size(); i++) {
-                String[] purchaseHistoryEntry = matchedCarts.get(i).split(",");
-                String storeIdentifier = String.format("Store %s-%s Sales\n", purchaseHistoryEntry[2], purchaseHistoryEntry[4]);
-                String customer = purchaseHistoryEntry[0];
-                int purchaseQuantity = Integer.parseInt(purchaseHistoryEntry[6]);
-                double revenues = Double.parseDouble(purchaseHistoryEntry[7]);
+            // The seller has stores. Check if there are products associated with any of the
+            // stores
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, super.getUserID());
+            if (matchedProducts.isEmpty()) {
+                System.out.println("No products have been added to any of your stores!");
+            } else { // The seller has products associated with their stores
+                ArrayList<String> matchedCarts = db.getMatchedEntries("shoppingCarts.csv", 1, super.getUserID());
+                if (matchedCarts.isEmpty()) {
+                    System.out.println(
+                            "No customers have added products to their shopping cart from any of your stores!");
+                } else {
+                    // "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase
+                    // Quantity,Price"
+                    HashMap<String, ArrayList<String>> cartsByStore = new HashMap<>();
+                    for (int i = 0; i < matchedCarts.size(); i++) {
+                        String[] shoppingCartEntry = matchedCarts.get(i).split(",");
+                        String storeIdentifier = String.format("Store %s-%s Shopping Carts\n", shoppingCartEntry[2],
+                                shoppingCartEntry[4]);
+                        String customer = shoppingCartEntry[0];
+                        int addedQuantity = Integer.parseInt(shoppingCartEntry[6]);
+                        double price = Double.parseDouble(shoppingCartEntry[7]);
 
-                String salesInformation = String.format("Customer: %s, Product: %s-%s, Quantity: %d, Price: %.2f", customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5], purchaseQuantity, revenues);
+                        String shoppingCartInformation = String.format(
+                                "Customer: %s, Product: %s-%s, Quantity: %d, Estimated Costs: %.2f",
+                                customer, shoppingCartEntry[3], shoppingCartEntry[5], addedQuantity, price);
 
-                if (!cartsByStore.containsKey(storeIdentifier)) {
-                    cartsByStore.put(storeIdentifier, new ArrayList<String>());
-                }
-                cartsByStore.get(storeIdentifier).add(salesInformation);
-            }
-            for (String store: cartsByStore.keySet()) {
-                System.out.println(store);
-                for (String saleInformation: cartsByStore.get(store)) {
-                    System.out.println("\t" + saleInformation);
+                        if (!cartsByStore.containsKey(storeIdentifier)) {
+                            cartsByStore.put(storeIdentifier, new ArrayList<String>());
+                        }
+                        cartsByStore.get(storeIdentifier).add(shoppingCartInformation);
+                    }
+                    for (String store : cartsByStore.keySet()) {
+                        System.out.println(store);
+                        for (String saleInformation : cartsByStore.get(store)) {
+                            System.out.println("\t" + saleInformation);
+                        }
+                    }
                 }
             }
         }
