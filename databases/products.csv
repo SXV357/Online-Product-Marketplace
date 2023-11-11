@@ -1,3 +1,5 @@
 Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description
-S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!
-S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!
+S100001,ST100001,PR100001,myStore,myProduct,1000,25,Its a product!
+S100001,ST100001,PR100002,myStore,mySecondProduct,1000,1000,Its a product!
+S100002,ST100002,PR100003,otherStore,otherProduct,1000,1,Its a product!
+S100002,ST100003,PR100004,otherStore,productamondo,1000,5,Its a product!

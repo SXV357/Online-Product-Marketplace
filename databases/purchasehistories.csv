@@ -1,1 +1,6 @@
 Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
+C100001,S100001,ST100001,PR100001,myStore,myProduct,10,25
+C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,1,1000
+C100001,S100002,ST100002,PR100003,otherStore,otherProduct,1,1
+C100002,S100002,ST100002,PR100003,otherStore,otherProduct,500,1
+C100002,S100002,ST100002,PR100004,otherStore,productamondo,10,5
