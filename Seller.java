@@ -303,21 +303,22 @@ public class Seller extends User {
      * information, product details, how many items the customer purchased, and the
      * revenues per sale.
      */
-    public void viewStoreSales() {
+    public String viewStoreSales() {
+        String result = "";
         ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, super.getUserID());
         if (matchedStores.isEmpty()) {
-            System.out.println("You haven't created any stores yet!");
+            return "You haven't created any stores yet!";
         } else {
             // The seller has stores. Check if there are products associated with any of the
             // stores
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, super.getUserID());
             if (matchedProducts.isEmpty()) {
-                System.out.println("No products have been added to any of your stores!");
+                return "No products have been added to any of your stores!";
             } else { // Products are associated with the seller's store(s)
                 ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv", 1,
                         super.getUserID());
                 if (matchedPurchaseHistories.isEmpty()) {
-                    System.out.println("Customers have not purchased items from any of your stores!");
+                    return "Customers have not purchased items from any of your stores!";
                 } else {
                     HashMap<String, ArrayList<String>> salesByStore = new HashMap<>();
                     for (int i = 0; i < matchedPurchaseHistories.size(); i++) {
@@ -329,7 +330,7 @@ public class Seller extends User {
                         double revenues = Double.parseDouble(purchaseHistoryEntry[7]);
 
                         String salesInformation = String.format(
-                                "Customer: %s, Product: %s-%s, Quantity: %d, Price: %.2f",
+                                "\tCustomer: %s, Product: %s-%s, Quantity Purchased: %d, Revenues: %.2f",
                                 customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5], purchaseQuantity, revenues);
 
                         if (!salesByStore.containsKey(storeIdentifier)) {
@@ -338,14 +339,15 @@ public class Seller extends User {
                         salesByStore.get(storeIdentifier).add(salesInformation);
                     }
                     for (String store : salesByStore.keySet()) {
-                        System.out.println(store);
+                        result += store;
                         for (String saleInformation : salesByStore.get(store)) {
-                            System.out.println("\t" + saleInformation);
+                            result += saleInformation;
                         }
                     }
                 }
             }
         }
+        return result;
     }
 
     /**
@@ -369,21 +371,17 @@ public class Seller extends User {
             int numProducts = 0;
             while ((line = br.readLine()) != null) {
                 String[] productLine = line.split(",");
-                Product newProduct = new Product(productLine[0], Integer.parseInt(productLine[1]),
-                        Double.parseDouble(productLine[2]), productLine[3]);
-                String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0],
-                        newProduct.getProductIdentificationNumber(), matchedStoreEntry.split(",")[2]) + ","
-                        + newProduct.toString();
-                // If the seller tries importing the same file again, the count will not change
-                if (!(db.checkEntryExists("products.csv", entry))) {
+                boolean productAdded = this.createNewProduct(storeName, productLine[0], Integer.parseInt(productLine[1]), Double.parseDouble(productLine[2]), productLine[3]);
+                if (productAdded) {
                     numProducts += 1;
                 }
-                db.addToDatabase("products.csv", entry);
             }
             String[] matchedStore = matchedStoreEntry.split(",");
             int prevNumProducts = Integer.parseInt(matchedStore[3]);
-            matchedStore[3] = String.valueOf(prevNumProducts + numProducts);
-            db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",", matchedStore));
+            if (!(numProducts == 0)) {
+                matchedStore[3] = String.valueOf(prevNumProducts + numProducts);
+                db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",", matchedStore));
+            }
             br.close();
             return true;
         } catch (Exception e) {
@@ -443,24 +441,22 @@ public class Seller extends User {
      * the seller can view customer information, product details, quantity added,
      * and price the customer will have to incur should they purchase it.
      */
-    public void viewCustomerShoppingCarts() {
+    public String viewCustomerShoppingCarts() {
+        String result = "";
         ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, super.getUserID());
         if (matchedStores.isEmpty()) {
-            System.out.println("You haven't created any stores yet!");
+            return "You haven't created any stores yet!";
         } else {
             // The seller has stores. Check if there are products associated with any of the
             // stores
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, super.getUserID());
             if (matchedProducts.isEmpty()) {
-                System.out.println("No products have been added to any of your stores!");
+                return "No products have been added to any of your stores!";
             } else { // The seller has products associated with their stores
                 ArrayList<String> matchedCarts = db.getMatchedEntries("shoppingCarts.csv", 1, super.getUserID());
                 if (matchedCarts.isEmpty()) {
-                    System.out.println(
-                            "No customers have added products to their shopping cart from any of your stores!");
+                   return "No customers have added products to their shopping cart from any of your stores!";
                 } else {
-                    // "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase
-                    // Quantity,Price"
                     HashMap<String, ArrayList<String>> cartsByStore = new HashMap<>();
                     for (int i = 0; i < matchedCarts.size(); i++) {
                         String[] shoppingCartEntry = matchedCarts.get(i).split(",");
@@ -471,7 +467,7 @@ public class Seller extends User {
                         double price = Double.parseDouble(shoppingCartEntry[7]);
 
                         String shoppingCartInformation = String.format(
-                                "Customer: %s, Product: %s-%s, Quantity: %d, Estimated Costs: %.2f",
+                                "\tCustomer: %s, Product: %s-%s, Quantity: %d, Estimated Costs: %.2f",
                                 customer, shoppingCartEntry[3], shoppingCartEntry[5], addedQuantity, price);
 
                         if (!cartsByStore.containsKey(storeIdentifier)) {
@@ -480,13 +476,14 @@ public class Seller extends User {
                         cartsByStore.get(storeIdentifier).add(shoppingCartInformation);
                     }
                     for (String store : cartsByStore.keySet()) {
-                        System.out.println(store);
+                        result += store;
                         for (String saleInformation : cartsByStore.get(store)) {
-                            System.out.println("\t" + saleInformation);
+                            result += saleInformation;
                         }
                     }
                 }
             }
         }
+        return result;
     }
 }
