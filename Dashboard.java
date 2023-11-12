@@ -36,7 +36,6 @@ public class Dashboard {
                 break;
             case "Stores":
                 System.out.println("Store, Product Sales,Total Revenue");
-
                 break;
             case "PersonalPurchases":
                 System.out.println("Product, Amount bought, Amount spent:");

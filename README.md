@@ -27,7 +27,8 @@ Class that encompasses functionality for customers to view store and seller info
 - Sellers can sort the dashboard in alphabetical ascending and reverse order as well as numerically ascending and reverse order for all data
 - Customers can view store and seller information which include list of stores by number of products sold and list of stores with products purchased by that customer.
 - Customers can sort the dashboard in alphabetical ascending and reverse order as well as numerically ascending and reverse order
-
+- Dashboard has implemented the extra functionality of displaying the total revenue for each type of dashboard.
+(Ex: Sellers can view how much a customer has spent in total when viewing customers.)
 Relationship to other classes: Dashboard contains four static methods that generate a list that can be printed to display a database. It also contains a method to display the resulting data to the terminal. Other classes call Dashboard's methods to generate the data required to display a dashboard.
 
 ## Database

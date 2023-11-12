@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 public class DashboardTest {
@@ -26,14 +27,32 @@ public class DashboardTest {
     // Uses users.csv and purchasehistories.csv
     private static void testSellerGetCustomersDashboard() {
         //System.out.println("Testing SellerGetCustomersDashboard\n _____________");
+
         //System.out.println("Alphabetical Descending:");
-        printResults(Dashboard.sellerGetCustomersDashboard(0, false));
-        //assertEquals(Dashboard.sellerGetCustomersDashboard(0, false), );
-        //System.out.println("Quantity Ascending:");
-        //printResults(Dashboard.sellerGetCustomersDashboard(1, true));
+        //printResults(Dashboard.sellerGetCustomersDashboard(0, false));
+        ArrayList<String> test1 = new ArrayList<>();
+        test1.add("apple@gmail.com,0.00,0.00");
+        test1.add("banana@gmail.com,510.00,250250.00");
+        test1.add("cherry@gmail.com,12.00,3501.00");
+        if(!test1.equals(Dashboard.sellerGetCustomersDashboard(0, false))){
+            System.out.println("Test 1 failed");
+        }
+
+        ArrayList<String> test2 = new ArrayList<>();
+        test2.add("apple@gmail.com,0.00,0.00");
+        test2.add("banana@gmail.com,510.00,250250.00");
+        test2.add("cherry@gmail.com,12.00,3501.00");
+        if(!test2.equals(Dashboard.sellerGetCustomersDashboard(0, false))){
+            System.out.println("Test 2 failed");
+        }
+
+        System.out.println("Quantity Ascending:");
+        printResults(Dashboard.sellerGetCustomersDashboard(1, true));
 
         //System.out.println("Spending Descending:");
         //printResults(Dashboard.sellerGetCustomersDashboard(2, false));
+
+        System.out.println("Testing completed without errors!");
 
 
     }

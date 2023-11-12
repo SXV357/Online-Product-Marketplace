@@ -413,8 +413,9 @@ public class Runner {
                     storeUI(scan, curSeller);
                     break;
                 case 2:  //Dashboard
-                    //TODO fix Dashboard UI
-                    System.out.println("What would you like to view?\n1) Sales to Customers\n2) Product Sales");
+                    sellerDashboard(scan, curSeller);
+                    /* System.out.println("What would you like to view?\n1) Sales to Customers\n2) Product Sales");
+                    
                     try {
                         switch (Integer.parseInt(scan.nextLine())) {
                             case 1:  //sales to customers
@@ -430,6 +431,7 @@ public class Runner {
                     } catch (Exception e) {
                         System.out.println("Please enter your choice's corresponding Integer");
                     }
+                    */
                     break;
                 case 3:  //Customer Shopping Carts
                     System.out.println(curSeller.viewCustomerShoppingCarts());;
@@ -485,6 +487,149 @@ public class Runner {
         }
     }
 
+    //This method doesn't check for input errors until all three inputs have been inputted
+    private static void customerDashboard(Scanner scan, Customer curCustomer){
+        System.out.println("Which type of dashboard would you like to see?\n1)Stores\n2)My Purchases");
+        boolean inputting = true;
+        String sortPrompt = "";
+        while (inputting) { //until dashboard choice is fully imputed
+            int customerChoice;
+            try {
+                 customerChoice = Integer.parseInt(scan.nextLine());
+            } catch (Exception e) {
+                  customerChoice = -1;
+            }
+            
+            //Customer chose which dashboard to see
+            switch (customerChoice) {
+                case 1:  //Stores
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Store name\n2)Number of product sales\n3)Total revenue";
+                    break;
+
+                case 2:  //My Purchases
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Product name\n2)Number of products bought\n3)Total spent";
+
+                    break;
+                default:  //error, will be printed at loop end.
+                    break;
+            }
+        
+            System.out.println(sortPrompt);
+            int customerSortChoice;
+            try {
+                customerSortChoice = Integer.parseInt(scan.nextLine());
+            } catch (Exception e) {
+                customerSortChoice = -1;
+            }
+
+            //Getting input
+            System.out.println("Would you like to sort ascending or descending?\n1)Ascending\n2)Descending");
+            int customerAscChoice;
+            boolean ascending = false;
+            try {
+                customerAscChoice = Integer.parseInt(scan.nextLine());
+                if (customerAscChoice == 1){
+                    ascending = true;
+                } else if (customerAscChoice == 2){
+                    ascending = false;
+                } else{
+                    customerAscChoice = -1;
+                }
+            } catch (Exception e) {
+                customerAscChoice = -1;
+            }
+
+            //if all 3 inputs are valid, print database and break the loop
+            if(!(customerChoice == -1) && !(customerSortChoice == -1) && !(customerAscChoice == -1)){
+                //depending on dashboard type
+                switch (customerChoice) {
+                    case 1:
+                        Dashboard.printDashboardData("Stores", Dashboard.customerGetStoresDashboard(customerSortChoice, ascending));
+                        break;
+                    case 2:
+                        Dashboard.printDashboardData("PersonalPurchases", Dashboard.customerGetPersonalPurchasesDashboard(customerSortChoice, ascending,curCustomer.getUserID()));
+                    default:
+                        break;
+                }
+                inputting = false;
+
+            } else{
+                System.out.println("Invalid input(s) Please try again.");
+            }
+        }   
+    }
+
+    //This method doesn't check for input errors until all three inputs have been inputted
+    private static void sellerDashboard(Scanner scan, Seller curSeller){
+        System.out.println("Which type of dashboard would you like to see?\n1)Customers\n2)Products");
+        boolean inputting = true;
+        String sortPrompt = "";
+        while (inputting) { //until dashboard choice is fully imputed
+            int sellerChoice;
+            try {
+                 sellerChoice = Integer.parseInt(scan.nextLine());
+            } catch (Exception e) {
+                  sellerChoice = -1;
+            }
+            
+            //Customer chose which dashboard to see
+            switch (sellerChoice) {
+                case 1:  //Stores
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Customer name\n2)Number of products bought\n3)Total spent";
+                    break;
+
+                case 2:  //My Purchases
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Product name\n2)Number of products sold\n3)Total revenue";
+
+                    break;
+                default:  //error, will be printed at loop end.
+                    break;
+            }
+        
+            System.out.println(sortPrompt);
+            int sellerSortChoice;
+            try {
+                sellerSortChoice = Integer.parseInt(scan.nextLine());
+            } catch (Exception e) {
+                sellerSortChoice = -1;
+            }
+
+            //Getting input
+            System.out.println("Would you like to sort ascending or descending?\n1)Ascending\n2)Descending");
+            int sellerAscChoice;
+            boolean ascending = false;
+            try {
+                sellerAscChoice = Integer.parseInt(scan.nextLine());
+                if (sellerAscChoice == 1){
+                    ascending = true;
+                } else if (sellerAscChoice == 2){
+                    ascending = false;
+                } else{
+                    sellerAscChoice = -1;
+                }
+            } catch (Exception e) {
+                sellerAscChoice = -1;
+            }
+
+            //if all 3 inputs are valid, print database and break the loop
+            if(!(sellerChoice == -1) && !(sellerSortChoice == -1) && !(sellerAscChoice == -1)){
+                //depending on dashboard type
+                switch (sellerChoice) {
+                    case 1:
+                        Dashboard.printDashboardData("Customers", Dashboard.sellerGetCustomersDashboard(sellerSortChoice, ascending));
+                        break;
+                    case 2:
+                        Dashboard.printDashboardData("Products", Dashboard.sellerGetProductsDashboard(sellerSortChoice, ascending));
+                    default:
+                        break;
+                }
+                inputting = false;
+
+            } else{
+                System.out.println("Invalid input(s) Please try again.");
+            }
+        }   
+    }
     private static void editUser (Scanner scan) {
         while (true) {
             String newUserString = "";
