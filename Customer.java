@@ -292,7 +292,7 @@ public class Customer extends User {
      * 
      * @return Returns the sorted string
      */
-    public String sortStores(String choice) {
+    public String sortProducts(String choice) {
         ArrayList<String> sorted = db.getDatabaseContents("products.csv");
         int n = sorted.size();
         String temp = "";
