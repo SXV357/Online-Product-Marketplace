@@ -41,7 +41,6 @@ public class Customer extends User {
     public String arrToString(ArrayList<String> array, boolean quantity) {
 
         StringBuilder output = new StringBuilder();
-        String[] splitArr;
         if (quantity) {
             output.append("Product Name - Store Name - Quantity - Price\n");
         } else {
@@ -62,6 +61,8 @@ public class Customer extends User {
         String[] info;
         StringBuilder sb = new StringBuilder();
         ArrayList<String> output = new ArrayList<>();
+
+        purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
 
         if (purchasehistory.isEmpty()) {
             return "No Products Available";
@@ -170,6 +171,7 @@ public class Customer extends User {
         String[] info;
         StringBuilder sb = new StringBuilder();
         ArrayList<String> output = new ArrayList<>();
+        shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
 
         if (shoppingCart.isEmpty()) {
             return "No Products Available";
