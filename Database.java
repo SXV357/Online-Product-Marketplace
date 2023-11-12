@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -88,12 +87,16 @@ public class Database {
                 startIDSubstring = 2;
                 break;
         }
-        for (int i = 0; i < correspondingEntries.size(); i++) {
-            String[] userRepresentation = correspondingEntries.get(i).split(",");
-            String matchedID = userRepresentation[comparisonIndex].substring(startIDSubstring);
-            if (idToCheck == Integer.parseInt(matchedID)) {
-                return true;
-            }
+        if (correspondingEntries.isEmpty()) {
+            return false;
+        } else {
+            for (int i = 0; i < correspondingEntries.size(); i++) {
+                String[] userRepresentation = correspondingEntries.get(i).split(",");
+                String matchedID = userRepresentation[comparisonIndex].substring(startIDSubstring);
+                if (idToCheck == Integer.parseInt(matchedID)) {
+                    return true;
+                }
+        }
         }
         return false;
     }
@@ -113,6 +116,10 @@ public class Database {
      */
     public String retrieveUserMatchForLogin(String email, String password) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
+        // If the very first user in the application tries logging in instead of signing up
+        if (userEntries.isEmpty()) {
+            return null;
+        }
         for (int j = 0; j < userEntries.size(); j++) {
             String[] userRepresentation = userEntries.get(j).split(",");
             if (email.toLowerCase().equals(userRepresentation[1].toLowerCase())
@@ -135,6 +142,10 @@ public class Database {
      */
     public String retrieveUserMatchForSignUp(String email) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
+        // If the very first user in the application tries creating an account, no matches found yet
+        if (userEntries.isEmpty()) {
+            return null;
+        }
         for (int j = 0; j < userEntries.size(); j++) {
             String[] userRepresentation = userEntries.get(j).split(",");
             if (email.toLowerCase().equals(userRepresentation[1].toLowerCase())) {

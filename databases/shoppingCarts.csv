@@ -1,4 +1,1 @@
 Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
-C1000001,S1000000,ST1000000,PR1000001,Van's Fruit Store,blueberries,4,14.0
-C1000003,S1000000,ST1000000,PR1000000,Van's Fruit Store,Raspberries,2,9.0
-C1000003,S1000000,ST1000000,PR1000001,Van's Fruit Store,blueberries,1,3.5

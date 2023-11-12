@@ -18,12 +18,12 @@ public class TestStoreManagement {
     
     public static void main(String[] args) {
 
+        /* THE METHOD BELOW NEEDS TO BE CALLED BEFORE RUNNING ALL THE TESTS */
+        // CreateDatabaseData.clearData();
+
         /* CREATING A NEW SELLER AND DATABASE INSTANCE */
         Database db = new Database();
         Seller s = new Seller("seller1@gmail.com", "ehjfewgfjh", UserRole.SELLER);
-
-        /* THE METHOD BELOW NEEDS TO BE CALLED BEFORE RUNNING ALL THE TESTS */
-        CreateDatabaseData.clearData();
 
         /* SELLER + PRODUCT + STORE CLASS TESTS */
 
