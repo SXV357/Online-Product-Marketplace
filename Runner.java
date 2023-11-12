@@ -100,10 +100,11 @@ public class Runner {
     public static int sellerPrompt(Scanner scan) {
         int sellerChoice;
         do {
-            System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Sign Out");
+            System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Edit Account\n" +
+                    "6) Sign Out");
             try {
                 sellerChoice = Integer.parseInt(scan.nextLine());
-                if (sellerChoice > 0 && sellerChoice < 5) {
+                if (sellerChoice > 0 && sellerChoice < 6) {
                     return sellerChoice;
                 } else {
                     System.out.println("Please enter your choice's corresponding Integer");
@@ -117,10 +118,11 @@ public class Runner {
     public static int customerPrompt(Scanner scan) {
         int customerChoice;
         do {
-            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n5) Sign Out");
+            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n5) Edit Account\n" +
+                    "6) Sign Out");
             try {
                 customerChoice = Integer.parseInt(scan.nextLine());
-                if (customerChoice > 0 && customerChoice < 6) {
+                if (customerChoice > 0 && customerChoice < 7) {
                     return customerChoice;
                 } else {
                     System.out.println("Please enter your choice's corresponding Integer");
@@ -140,28 +142,33 @@ public class Runner {
                 int storeUIChoice = Integer.parseInt(scan.nextLine());
                 switch (storeUIChoice) {
                     case 1:  //Select a Store
-                        while (true) {  //loops until seller selects "Go Back"
-                            System.out.println("Select a store or go back:");
-                            for (int i = 0; i <= curSellerStores.size(); i++) {
-                                if (i < curSellerStores.size()) {
-                                    System.out.println((i + 1) + ") " + curSellerStores.get(i).getStoreName());
-                                } else {
-                                    System.out.println((i + 1) + ") " + "Go Back");
+                        if (curSellerStores != null) {
+                            while (true) {  //loops until seller selects "Go Back"
+                                System.out.println("Select a store or go back:");
+                                for (int i = 0; i <= curSellerStores.size(); i++) {
+                                    if (i < curSellerStores.size()) {
+                                        System.out.println((i + 1) + ") " + curSellerStores.get(i).getStoreName());
+                                    } else {
+                                        System.out.println((i + 1) + ") " + "Go Back");
+                                    }
+                                }
+                                try {
+                                    int storeChoice = Integer.parseInt(scan.nextLine());
+                                    if (storeChoice == curSellerStores.size() + 1) {
+                                        break;
+                                    } else {
+                                        Store curStore = curSellerStores.get(storeChoice - 1);
+                                        manageStore(scan, curSeller, curStore);
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Please enter your choice's corresponding Integer");
                                 }
                             }
-                            try {
-                                int storeChoice = Integer.parseInt(scan.nextLine());
-                                if (storeChoice == curSellerStores.size() + 1) {
-                                    break;
-                                } else {
-                                    Store curStore = curSellerStores.get(storeChoice - 1);
-                                    manageStore(scan, curSeller, curStore);
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Please enter your choice's corresponding Integer");
-                            }
+                            break;
+                        } else {
+                            System.out.println("You do not currently have any stores!");
+                            break;
                         }
-                        break;
                     case 2:  //Create Store
                         System.out.println("What would you like to name the store?");
                         String newStoreName = scan.nextLine();
@@ -175,6 +182,7 @@ public class Runner {
                         break;
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Please enter your choice's corresponding Integer");
             }
         }
@@ -406,12 +414,33 @@ public class Runner {
                     break;
                 case 2:  //Dashboard
                     //TODO fix Dashboard UI
-                    Dashboard.sellerGetCustomersDashboard(0, false);
+                    System.out.println("What would you like to view?\n1) Sales to Customers\n2) Product Sales");
+                    try {
+                        switch (Integer.parseInt(scan.nextLine())) {
+                            case 1:  //sales to customers
+                                System.out.println(Dashboard.sellerGetCustomersDashboard(0, false));
+                                break;
+                            case 2:  //product sales
+                                System.out.println(Dashboard.sellerGetProductsDashboard(0, false));
+                                break;
+                            default:  //error
+                                System.out.println("Please enter your choice's corresponding Integer");
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Please enter your choice's corresponding Integer");
+                    }
                     break;
                 case 3:  //Customer Shopping Carts
-                    curSeller.viewCustomerShoppingCarts();
+                    System.out.println(curSeller.viewCustomerShoppingCarts());;
                     break;
-                case 4:  //Sign Out
+                case 4:  //Edit user
+                    editUser(scan);
+                    if (!userLoggedIn) {
+                        return;
+                    }
+                    break;
+                case 5:  //Sign Out
                     userLoggedIn = false;
                     System.out.println("Thank you!");
                     return;  //ends the program
@@ -439,13 +468,59 @@ public class Runner {
                 case 4:  //Shopping Cart
                     customerShoppingCart(scan, curCustomer);
                     break;
-                case 5:  //Sign Out
+                case 5:  //Edit Account
+                    editUser(scan);
+                    if (!userLoggedIn) {
+                        return;
+                    }
+                    break;
+                case 6:  //Sign Out
                     userLoggedIn = false;
                     System.out.println("Thank you!");
                     return;  //ends the program
                 default:  //error
                     System.out.println("Please enter your choice's corresponding Integer");
                     break;
+            }
+        }
+    }
+
+    private static void editUser (Scanner scan) {
+        while (true) {
+            String newUserString = "";
+            String prevUserString = "";
+            System.out.println("What would you like to do?\n1) Change Email\n2) Change Password\n3) Delete Account\n" +
+                    "4) Exit");
+            try {
+                switch (Integer.parseInt(scan.nextLine())) {
+                    case 1:  //Change Email
+                        prevUserString = curUser.toString();
+                        System.out.println("What would you like your new Email to be?");
+                        String newEmail = scan.nextLine();
+                        curUser.setEmail(newEmail);
+                        newUserString = curUser.toString();
+                        db.modifyDatabase("users.csv", prevUserString, newUserString);
+                        break;
+                    case 2:  //Change Password
+                        prevUserString = curUser.toString();
+                        System.out.println("What would you like your new Password to be?");
+                        String newPassword = scan.nextLine();
+                        curUser.setPassword(newPassword);
+                        newUserString = curUser.toString();
+                        db.modifyDatabase("users.csv", prevUserString, newUserString);
+                        break;
+                    case 3:  //Delete Account
+                        curUser.deleteAccount();
+                        userLoggedIn = false;
+                        return;
+                    case 4:  //Return
+                        return;
+                    default:  //error
+                        System.out.println("Please enter your choice's corresponding Integer");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Please enter your choice's corresponding Integer");
             }
         }
     }
