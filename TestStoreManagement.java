@@ -18,8 +18,7 @@ public class TestStoreManagement {
     
     public static void main(String[] args) {
 
-        /* THE METHOD BELOW NEEDS TO BE CALLED BEFORE RUNNING ALL THE TESTS */
-        // CreateDatabaseData.clearData();
+        CreateDatabaseData.clearData();
 
         /* CREATING A NEW SELLER AND DATABASE INSTANCE */
         Database db = new Database();
@@ -366,7 +365,7 @@ public class TestStoreManagement {
 
     @SuppressWarnings("unused")
     static String testImportProductsSuccess(Seller s, Database db) {
-        boolean productsImported = s.importProducts("import.csv", "Inorbit Market");
+        boolean productsImported = s.importProducts("ProductsToImport.csv", "Inorbit Market");
         String resultStoreEntries = db.getDatabaseContents("stores.csv").toString();
         String resultProductEntries = db.getDatabaseContents("products.csv").toString();
         String expectedStoreEntries = "[ST1000000,S1000000,Inorbit Market,4]";

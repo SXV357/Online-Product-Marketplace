@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 11, 2023
+ * @version November 12, 2023
  */
 public class User {
 
@@ -180,9 +180,8 @@ public class User {
                     db.removeFromDatabase("shoppingCarts.csv", shoppingCartEntry);
                 }
             }
-            System.out.println("Account deleted successfully!");
         } catch (Exception e) {
-            System.out.println("There was a problem when deleting this account.");
+            System.out.println("An error occurred when deleting this account. Please try again!");
         }
     }
 
