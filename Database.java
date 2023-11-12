@@ -326,9 +326,10 @@ public class Database {
      */
     public ArrayList<String> getMatchedEntries(String fileName, int index, String searchParam) {
         ArrayList<String> matchedEntries = new ArrayList<>();
-        if (checkColumnBounds(fileName, index)) {
-            File target = new File(DATABASES_DIRECTORY + fileName);
-            try (BufferedReader br = new BufferedReader(new FileReader(target))) {
+        try {
+            if (checkColumnBounds(fileName, index)) {
+                File target = new File(DATABASES_DIRECTORY + fileName);
+                BufferedReader br = new BufferedReader(new FileReader(target));
                 br.readLine(); // skip the header
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -337,9 +338,10 @@ public class Database {
                         matchedEntries.add(line);
                     }
                 }
-            } catch (IOException e) {
-                return new ArrayList<String>();
+                br.close();
             }
+        } catch(Exception e) {
+            return new ArrayList<String>();
         }
         return matchedEntries;
     }
