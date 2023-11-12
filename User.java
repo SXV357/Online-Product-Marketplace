@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 9, 2023
+ * @version November 11, 2023
  */
 public class User {
 
@@ -105,12 +105,24 @@ public class User {
     }
 
     /**
-     * Sets the user's current email to the email passed into the method
+     * Sets the user's current email to the email passed into the method. The user's email won't be modified if the new value they provide is associated with an existing user's email.
      * 
      * @param email The email to modify the current email to
      */
     public void setEmail(String email) {
-        this.email = email;
+        boolean modifyEmail = true;
+        ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
+        for (String userEntry: userEntries) {
+            String userEmail = userEntry.split(",")[1];
+            if (userEmail.equals(email)) {
+                modifyEmail = false;
+                System.out.println("Another user exists with the same email. Please choose a different one and try again!");
+                break;
+            }
+        }
+        if (modifyEmail) {
+            this.email = email;
+        }
     }
 
     /**
