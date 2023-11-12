@@ -1,27 +1,48 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import org.junit.Test;
+
+/**
+ * Project 4 - CustomerTest.java
+ *
+ * Class to test the Customer functionalities
+ *
+ * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
+ *         Miller, Oliver Long
+ *
+ * @version November 2, 2023
+ */
+
 
 public class CustomerTest {
     public static void main(String[] args) {
         //Instatiated a new customer and database for testing
         Customer c = new Customer("C100001", "customer@gmail.com", "customer", UserRole.CUSTOMER);
+        Customer c2 = new Customer("C100003", "empty@gmail.com", "customer", UserRole.CUSTOMER);
+
+        c2.exportPurchaseHistory();
         Database db = new Database();
 
         //Creates testing data
         CreateDatabaseData.clearData();
+        testGetAllProductsWhenEmpty(c);
         CreateDatabaseData.createData();
 
         //List of all tests
         testGetProductInfo(c);
         testAddToCart(c, db);
-        testGetCart(c);
+        testGetCart(c, c2);
         testRemoveFromCart(c, db);
-        testGetShoppingHistory(c);
-        testGetAllProducts(c);
+        testGetShoppingHistory(c, c2);
         testPurchaseItems(c, db);
-        testSortStores(c);
+        testSortProducts(c);
         testSearchProducts(c);
+        testExportPurchaseHistory(c, c2);
 
     }
 
@@ -79,11 +100,14 @@ public class CustomerTest {
     }
 
     @Test(timeout = 1000)
-    public static void testGetCart(Customer c) {
+    public static void testGetCart(Customer c, Customer c2) {
         // Verifies the Formatting of Getting Products in the Cart
-        assertEquals("Product Name - Store Name - Quantity - Price\n" +
+        assertEquals("Error Retrieving Cart", "Product Name - Store Name - Quantity - Price\n" +
                 "1) myProduct     myStore     30     750.0     \n" +
                 "2) mySecondProduct     myStore     100     100000.0", c.getCart().replace("\r\n", "\n").trim());
+
+        // Verifies the condition when the shopping cart is empty
+        assertEquals("Error with Empty Cart", "No Products Available", c2.getCart());
         System.out.println("getCart ... OK");
     }
 
@@ -106,13 +130,16 @@ public class CustomerTest {
     }
 
     @Test(timeout = 1000)
-    public static void testGetShoppingHistory(Customer c) {
+    public static void testGetShoppingHistory(Customer c, Customer c2) {
         // Verifies the Formatting of Getting Products from History
         assertEquals("Product Name - Store Name - Quantity - Price\n" +
                 "1) myProduct     myStore     10     250     \n" +
                 "2) mySecondProduct     myStore     1     1000     \n" +
                 "3) otherProduct     otherStore     1     1",
                 c.getShoppingHistory().replace("\r\n", "\n").trim());
+
+        // Verifies the condition when the shopping history is empty
+        assertEquals("Error with Empty Shopping History", "No Products Available", c2.getShoppingHistory());
         System.out.println("getShoppingHistory ... OK");
     }
 
@@ -124,7 +151,15 @@ public class CustomerTest {
                 "2) mySecondProduct     myStore     1000     \n" +
                 "3) otherProduct     otherStore     1     \n" +
                 "4) productamondo     otherStore     5", c.getAllProducts().replace("\r\n", "\n").trim());
+
         System.out.println("getAllProducts ... OK");
+    }
+
+    @Test(timeout = 1000)
+    public static void testGetAllProductsWhenEmpty(Customer c) {
+        // Verifies the condition when the shopping history is empty
+        assertEquals("Error with Empty Shopping History", "No Products Available", c.getAllProducts());
+        System.out.println("testGetAllProductsWhenEmpty ... OK");
     }
 
     @Test(timeout = 1000)
@@ -151,11 +186,11 @@ public class CustomerTest {
     }
 
     @Test(timeout = 1000)
-    public static void testSortStores(Customer c) {
+    public static void testSortProducts(Customer c) {
 
         // Verifies the invalid input
         assertEquals("Search Catch Error", "Invalid search!",
-                c.sortStores("random unsortable entry"));
+                c.sortProducts("random unsortable entry"));
 
         // Verifies the sorting by price
         assertEquals("Invalid Sort Format - Price", "Product Name - Store Name - Price\n" +
@@ -163,7 +198,7 @@ public class CustomerTest {
                 "2) productamondo     otherStore     5     \n" +
                 "3) myProduct     myStore     25     \n" +
                 "4) mySecondProduct     myStore     1000",
-                c.sortStores("price").replace("\r\n", "\n").trim());
+                c.sortProducts("price").replace("\r\n", "\n").trim());
 
         // Verifies the sorting by quantity
         assertEquals("Invalid Sort Format - Quantity", "Product Name - Store Name - Quantity - Price\n" +
@@ -171,7 +206,7 @@ public class CustomerTest {
                 "2) mySecondProduct     myStore     1000     1000     \n" +
                 "3) otherProduct     otherStore     1000     1     \n" +
                 "4) productamondo     otherStore     1000     5",
-                c.sortStores("quantity").replace("\r\n", "\n").trim());
+                c.sortProducts("quantity").replace("\r\n", "\n").trim());
 
         System.out.println("sortStores ... OK");
     }
@@ -203,6 +238,35 @@ public class CustomerTest {
                 c.searchProducts("Its a product!").replace("\r\n", "\n").trim());
 
         System.out.println("searchProcuts ... OK");
+    }
+
+    @Test(timeout = 1000)
+    public static void testExportPurchaseHistory(Customer c, Customer c2) {
+        //Tests Returns true -> file created / false -> no file created
+        assertEquals("Export History Boolean Return Error", true, c.exportPurchaseHistory());
+        assertEquals("Export History Boolean Return Error", false, c2.exportPurchaseHistory());
+
+        File f = new File("exportedHistory/empty@gmail.com.csv");
+
+        assertEquals("File Should Not Exist Error", false, f.exists());
+
+        //Tests the Customer's Purchase History has been exported properly
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("exportedHistory/customer@gmail.com.csv")))){
+        br.readLine(); // skip headers
+        String line;
+        while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+                }
+        assertEquals("Export Purchase History Error", "C100001,S100001,ST100001,PR100001,myStore,myProduct,10,250\n" +
+                "C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,1,1000\n" +
+                "C100001,S100002,ST100002,PR100003,otherStore,otherProduct,1,1", sb.toString().trim());
+
+        System.out.println("exportPurchaseHistory ... OK");
+        } catch (IOException e) {
+                System.out.println("Exported Purchase History File Directory Does Not Exist");
+                e.printStackTrace();
+        }
     }
 
 }
