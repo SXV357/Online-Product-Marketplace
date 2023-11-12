@@ -150,3 +150,29 @@ Relationship to other classes: All users need to have a defined role in the appl
 21.  When the seller tries importing products from a file that doesn't exist, or the seller tries importing products from a file that exists into a non-existent store, neither the products.csv file is updated nor the stores.csv file
 22.  When the seller exports products from an existing store containing products, all the relevant products' details are written to a new file successfully
 23.  When the seller exports products from a store that doesn't exist or from an existing store but one that doesn't contain any products, a new file containing the products is not created
+
+## Customer
+### Note: The junit tests for the Customer subclass are located in "CustomerTest.java". Each test case will report its results with either a customized error message showing the program encountered a problem or "[methodName] ... OK" indicating the test's success. The test cases should be run sequentially because subsequent tests may rely on updated data from previous cases. The following are all cases that are tested:
+1. When retrieving product information that is not a valid index in the database, the program returns "Invalid Product."
+2. When retrieving the information of multiple distinct products, each returns a correct and properly formatted string of the product's information.
+3. When adding a product to the cart with a quantity that exceeds the available supply on the marketplace, the program returns false.
+4. When adding a product to the cart with an index that does not exist in the marketplace, the program returns false.
+5. When adding a product to the cart, the program properly formats and updates the user's shopping cart
+6. When adding a product that already exists in the shopping cart, the program modifies the old entry with a summation of the quantity and price
+7. When adding a different product, the cart adds a properly formatted entry
+8. When retrieving a customer's cart information, the cart is returned as expected
+9. When retrieving a customer's empty cart, the program returns "No Products Available"
+10. When removing a product from the cart that is out of its index, the program returns false
+11. When the customer removes two different products from the cart, the exact products are removed
+12. When the customer retrieves their purchase history and it contains products, the correct purchase history is returned
+13. When a customer has an empty purchase history, the program returns "No Products Available"
+14. When the customer retrieves the marketplace that has products, it returns a properly formatted list
+15. When the customer retrieves an empty marketplace, it returns "No Products Available"
+16. When the customer purchases items, the program correctly adds the item to the purchase history, removes the entry from the cart, and updates the quantity of the product on the marketplace. If there is a duplicate product in the purchase history, the quantity and purchase price will be summed.
+17. When the customer sorts the stores with an invalid tag, returns "Invalid Search!"
+18. When the customer sorts the stores by price, the bubble sort returns a correctly formatted list from least to highest prices
+19. When the customer sorts the stores by quantity, the bubble sort returns a correctly formatted list from least to highest quantities
+20. When the customer searches the product information by an unsearchable query, returns "Query has returned no results!"
+21. When the customer searches the product by product name, store name, or description, the program returns stores and products with those distinct attributes
+22. When the customer exports their purchase history, a file is created under the "exportedHistory" directory with a "[email].csv" file with their past purchases
+23. When the customer exports their purchase history and they have made no purchases, return false and no file is created.
