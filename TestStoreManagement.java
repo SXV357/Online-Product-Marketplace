@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 11, 2023
+ * @version November 12, 2023
  */
 public class TestStoreManagement {
     
@@ -27,36 +27,36 @@ public class TestStoreManagement {
 
         /* SELLER + PRODUCT + STORE CLASS TESTS */
 
-        // System.out.println("Get Stores Test Result: " + testGetStores(s));
-        // System.out.println("Create New Store Test Result: " + createNewStore(s, db));
-        // System.out.println("Create Duplicate Store Test Result: " + createDuplicateStore(s, db));
+        System.out.println("Get Stores Test Result: " + testGetStores(s));
+        System.out.println("Create New Store Test Result: " + createNewStore(s, db));
+        System.out.println("Create Duplicate Store Test Result: " + createDuplicateStore(s, db));
 
-        // System.out.println("Delete Non-Existing Store Test Result: " + deleteNonExistentStore(s, db));
-        // System.out.println("Delete Existing Store Test Result: " + deleteExistingStore(s, db));
+        System.out.println("Delete Non-Existing Store Test Result: " + deleteNonExistentStore(s, db));
+        System.out.println("Delete Existing Store Test Result: " + deleteExistingStore(s, db));
 
-        // System.out.println("Successful Store Name Modification Test Result: " + modifyStoreNameSuccess(s, db));
-        // System.out.println("Unsuccessful Store Name Modification: " + modifyStoreNameFail(s, db));
+        System.out.println("Successful Store Name Modification Test Result: " + modifyStoreNameSuccess(s, db));
+        System.out.println("Unsuccessful Store Name Modification: " + modifyStoreNameFail(s, db));
 
-        // System.out.println("Successful Product Creation Test Result: " + createNewProductSuccess(s, db));
-        // System.out.println("Unsuccessful Product Creation Test Result: " + createNewProductFail(s, db));
+        System.out.println("Successful Product Creation Test Result: " + createNewProductSuccess(s, db));
+        System.out.println("Unsuccessful Product Creation Test Result: " + createNewProductFail(s, db));
 
-        // System.out.println("Unsuccessful Product Removal Test Result: " + deleteProductFailure(s, db));
-        // System.out.println("Successful Product Removal Test Result: " + deleteProductSuccess(s, db));
+        System.out.println("Unsuccessful Product Removal Test Result: " + deleteProductFailure(s, db));
+        System.out.println("Successful Product Removal Test Result: " + deleteProductSuccess(s, db));
 
-        // System.out.println("Successful Product Detail Modification Test Result: " + editProductSuccess(s, db));
-        // System.out.println("Unsuccessful Product Detail Modification Test Result: " + editProductFail(s, db));
+        System.out.println("Successful Product Detail Modification Test Result: " + editProductSuccess(s, db));
+        System.out.println("Unsuccessful Product Detail Modification Test Result: " + editProductFail(s, db));
 
-        // System.out.println("Successful View Customer Shopping Carts Test Result: " + testViewCustomerShoppingCartsSuccessful(s, db));
-        // System.out.println("Unsuccessful View Customer Shopping Carts Test Result: " + testViewCustomerShoppingCartsUnsuccessful(s, db));
+        System.out.println("Successful View Customer Shopping Carts Test Result: " + testViewCustomerShoppingCartsSuccessful(s, db));
+        System.out.println("Unsuccessful View Customer Shopping Carts Test Result: " + testViewCustomerShoppingCartsUnsuccessful(s, db));
 
-        // System.out.println("Successful View Store Sales Test Result: " + testViewStoreSalesSuccessful(s, db));
-        // System.out.println("Unsuccessful View Store Sales Test Result: " + testViewStoreSalesUnsuccessful(s, db));
+        System.out.println("Successful View Store Sales Test Result: " + testViewStoreSalesSuccessful(s, db));
+        System.out.println("Unsuccessful View Store Sales Test Result: " + testViewStoreSalesUnsuccessful(s, db));
 
-        // System.out.println("Successful Product Import Test Result: " + testImportProductsSuccess(s, db));
-        // System.out.println("Unsuccessful Product Import Test Result: " + testImportProductsFail(s, db));
+        System.out.println("Successful Product Import Test Result: " + testImportProductsSuccess(s, db));
+        System.out.println("Unsuccessful Product Import Test Result: " + testImportProductsFail(s, db));
 
-        // System.out.println("Successful Product Export Test Result: " + testExportProductsSuccess(s));
-        // System.out.println("Unsuccessful Product Export Test Result: " + testExportProductsFail(s));
+        System.out.println("Successful Product Export Test Result: " + testExportProductsSuccess(s));
+        System.out.println("Unsuccessful Product Export Test Result: " + testExportProductsFail(s));
 
     }
 
