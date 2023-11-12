@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 /**
  * Project 4 - Database.java
  * 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 10, 2023
+ * @version November 11, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
@@ -112,12 +111,12 @@ public class Database {
      * @return A comma-separated string containing the matched user's information in
      *         the users.csv database
      */
-    public String retrieveUser(String email, String password) {
+    public String retrieveUserMatchForLogin(String email, String password) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
         for (int j = 0; j < userEntries.size(); j++) {
             String[] userRepresentation = userEntries.get(j).split(",");
-            if (email.toLowerCase().equals(userRepresentation[1])
-                    && password.toLowerCase().equals(userRepresentation[2])) {
+            if (email.toLowerCase().equals(userRepresentation[1].toLowerCase())
+                    && password.toLowerCase().equals(userRepresentation[2].toLowerCase())) {
                 return userEntries.get(j);
             }
         }
@@ -134,11 +133,11 @@ public class Database {
      * @return A comma-separated string containing the matched user's information in
      *         the users.csv database
      */
-    public String checkEmail(String email) {
+    public String retrieveUserMatchForSignUp(String email) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
         for (int j = 0; j < userEntries.size(); j++) {
             String[] userRepresentation = userEntries.get(j).split(",");
-            if (email.toLowerCase().equals(userRepresentation[1])) {
+            if (email.toLowerCase().equals(userRepresentation[1].toLowerCase())) {
                 return userEntries.get(j);
             }
         }

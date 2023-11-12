@@ -20,8 +20,9 @@ public class DashboardTest {
 
         testSellerGetCustomersDashboard();
         //testSellerGetProductsDashboard();
+        
         //testCustomerGetStoresDashboard();
-        testCustomerGetPersonalPurchasesDashboard();
+        //testCustomerGetPersonalPurchasesDashboard();
 
     }
 
@@ -31,6 +32,7 @@ public class DashboardTest {
         }
         if (output.size() == 0) {
             System.out.println("output was empty");
+            //Should never get here.
         }
     }
 
@@ -39,7 +41,7 @@ public class DashboardTest {
         System.out.println("Testing SellerGetCustomersDashboard\n _____________");
         System.out.println("Alphabetical Descending:");
         printResults(Dashboard.sellerGetCustomersDashboard(0, false));
-
+        //assertEquals(Dashboard.sellerGetCustomersDashboard(0, false), );
         System.out.println("Quantity Ascending:");
         printResults(Dashboard.sellerGetCustomersDashboard(1, true));
 
