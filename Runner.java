@@ -468,8 +468,7 @@ public class Runner {
                     curCustomer.exportPurchaseHistory();
                     break;
                 case 3:  //Dashboard
-                    //TODO add Dashboard UI
-                    System.out.println(Dashboard.customerGetStoresDashboard(0, false));
+                    customerDashboard(scan, curCustomer);
                     break;
                 case 4:  //Shopping Cart
                     customerShoppingCart(scan, curCustomer);
@@ -493,7 +492,7 @@ public class Runner {
 
     //This method doesn't check for input errors until all three inputs have been inputted
     private static void customerDashboard(Scanner scan, Customer curCustomer){
-        System.out.println("Which type of dashboard would you like to see?\n1)Stores\n2)My Purchases");
+        System.out.println("Which type of dashboard would you like to see?\n1) Stores\n2) My Purchases");
         boolean inputting = true;
         String sortPrompt = "";
         while (inputting) { //until dashboard choice is fully imputed
@@ -507,11 +506,11 @@ public class Runner {
             //Customer chose which dashboard to see
             switch (customerChoice) {
                 case 1:  //Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Store name\n2)Number of product sales\n3)Total revenue";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Store name\n2) Number of product sales\n3) Total revenue";
                     break;
 
                 case 2:  //My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Product name\n2)Number of products bought\n3)Total spent";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products bought\n3 )Total spent";
 
                     break;
                 default:  //error, will be printed at loop end.
@@ -527,7 +526,7 @@ public class Runner {
             }
 
             //Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1)Ascending\n2)Descending");
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending");
             int customerAscChoice;
             boolean ascending = false;
             try {
@@ -565,7 +564,7 @@ public class Runner {
 
     //This method doesn't check for input errors until all three inputs have been inputted
     private static void sellerDashboard(Scanner scan, Seller curSeller){
-        System.out.println("Which type of dashboard would you like to see?\n1)Customers\n2)Products");
+        System.out.println("Which type of dashboard would you like to see?\n1) Customers\n2) Products");
         boolean inputting = true;
         String sortPrompt = "";
         while (inputting) { //until dashboard choice is fully imputed
@@ -579,11 +578,11 @@ public class Runner {
             //Customer chose which dashboard to see
             switch (sellerChoice) {
                 case 1:  //Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Customer name\n2)Number of products bought\n3)Total spent";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Customer name\n2) Number of products bought\n3) Total spent";
                     break;
 
                 case 2:  //My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Product name\n2)Number of products sold\n3)Total revenue";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products sold\n3) Total revenue";
 
                     break;
                 default:  //error, will be printed at loop end.
@@ -599,7 +598,7 @@ public class Runner {
             }
 
             //Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1)Ascending\n2)Descending");
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending");
             int sellerAscChoice;
             boolean ascending = false;
             try {
