@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,9 +46,9 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (db.retrieveUser(uEmail, uPassword) != null) {
+        if (db.retrieveUserMatchForLogin(uEmail, uPassword) != null) {
             System.out.println("Login successful!");
-            String userAsString = db.retrieveUser(uEmail, uPassword);
+            String userAsString = db.retrieveUserMatchForLogin(uEmail, uPassword);
             String[] userFromDB = userAsString.split(",");
             String uID = userFromDB[0];
             UserRole uRole = UserRole.UNDECIDED;
@@ -70,7 +71,7 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (db.retrieveUser(uEmail, uPassword) != null) {  //Check to see if there is a user with the email already
+        if (db.retrieveUserMatchForSignUp(uEmail) != null) {  //Check to see if there is a user with the email already
             System.out.println("User already exists");
         } else {
             UserRole uRole = UserRole.UNDECIDED;  //New user is defaulted to undecided until they set it
@@ -224,7 +225,7 @@ public class Runner {
                             System.out.println("Would you like to change the product's name, quantity, " +
                                     "price, or description?");
                             editParam = scan.nextLine();
-                            if (editParam.equals("name") || editParam.equals("price")
+                            if (editParam.equals("name") || editParam.equals("quantity") || editParam.equals("price")
                                     || editParam.equals("description")) {
                                 break;
                             } else {
@@ -247,8 +248,8 @@ public class Runner {
                         break;
                     case 3:  //Delete Product
                         curProduct = pickProduct(scan, curSeller, curStore);
-                        curSeller.deleteProduct(curStore.getStoreIdentificationNumber(),
-                                curProduct.getProductIdentificationNumber());
+                        curSeller.deleteProduct(curStore.getStoreName(),
+                                curProduct.getName());
                         System.out.println("Product has been deleted");
                         break;
                     case 4:  //Import Products
@@ -259,7 +260,7 @@ public class Runner {
                                 break;
                             }
                             boolean successfulImport = curSeller.importProducts(filePath,
-                                    curStore.getStoreIdentificationNumber());
+                                    curStore.getStoreName());
                             if (successfulImport) {
                                 break;
                             } else {
@@ -317,7 +318,7 @@ public class Runner {
             switch (marketChoice) {
                 case 1:  //View Products
                     //TODO  View all products
-                    showAllProducts();
+                    showAllProducts(scan, curCustomer);
                     break;
                 case 2:  //Search for product
                     //TODO  search for a product
@@ -332,77 +333,153 @@ public class Runner {
         }
     }
 
-    public static void showAllProducts() {
+    public static void showAllProducts(Scanner scan, Customer curCustomer) {
         //TODO  Select a product
-
+        System.out.println(curCustomer.getAllProducts());
+        try {
+            int productSelection = Integer.parseInt(scan.nextLine());
+            System.out.println(curCustomer.getProductInfo(productSelection));
+            while (true) {
+                System.out.println("Would you like to add this item to cart?\n1) Yes\n2) No");
+                switch (Integer.parseInt(scan.nextLine())) {
+                    case 1:  //yes
+                        System.out.println("How many would you like?");
+                        int availableQuantity = Integer.parseInt(
+                                curCustomer.getProductInfo(productSelection).substring(curCustomer.getProductInfo(productSelection).indexOf("Quantity: ") + 10, curCustomer.getProductInfo(productSelection).indexOf("\nPrice:") - 1));
+                        int quantity = Integer.parseInt(scan.nextLine());
+                        if (quantity < 1) {
+                            System.out.println("Please enter a positive integer for the number you wish to purchase");
+                        } else if (quantity > availableQuantity) {
+                            System.out.println("There are only " + availableQuantity + " available");
+                        } else {
+                            curCustomer.addToCart(productSelection, quantity);
+                            System.out.println("Product has been added to cart");
+                            return;
+                        }
+                        break;
+                    case 2: //No
+                        return;
+                    default:  //error
+                        System.out.println("Please enter your choice's corresponding Integer");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Please enter your choice's corresponding Integer");
+        }
         //TODO  Sort Market (price or quantity)
+    }
+
+    private static void customerShoppingCart(Scanner scan, Customer curCustomer) {
+        while (true) {
+            System.out.println(curCustomer.getCart());
+            System.out.println("What would you like to do?\n1) Checkout\n2) Remove a Product\n3) Return");
+            try {
+                switch (Integer.parseInt(scan.nextLine())) {
+                    case 1:  //checkout
+                        curCustomer.purchaseItems();
+                        break;
+                    case 2:  //remove an item
+                        System.out.println("Which item would you like to remove?");
+                        System.out.println(curCustomer.getCart());
+                        int removeChoice = Integer.parseInt(scan.nextLine());
+                        curCustomer.removeFromCart(removeChoice);
+                        System.out.println("Item has been removed from cart");
+                        break;
+                    case 3:  //return
+                        return;
+                    default:  //error
+                        System.out.println("Please enter your choice's corresponding Integer");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Please enter your choice's corresponding Integer");
+            }
+        }
+    }
+
+    private static void userIsSeller(Scanner scan, Seller curSeller) {
+        while (true) {  //loops until Seller signs out
+            int sellerChoice = sellerPrompt(scan);
+            switch (sellerChoice) {
+                case 1:  //Stores
+                    storeUI(scan, curSeller);
+                    break;
+                case 2:  //Dashboard
+                    //TODO fix Dashboard UI
+                    Dashboard.sellerGetCustomersDashboard(0, false);
+                    break;
+                case 3:  //Customer Shopping Carts
+                    curSeller.viewCustomerShoppingCarts();
+                    break;
+                case 4:  //Sign Out
+                    userLoggedIn = false;
+                    System.out.println("Thank you!");
+                    return;  //ends the program
+                default: //error
+                    System.out.println("Please enter your choice's corresponding Integer");
+                    break;
+            }
+        }
+    }
+
+    private static void userIsCustomer(Scanner scan, Customer curCustomer) {
+        while (true) {  //loops until the user signs out
+            int customerChoice = customerPrompt(scan);
+            switch (customerChoice) {
+                case 1:  //Market
+                    marketUI(scan, curCustomer);
+                    break;
+                case 2:  //Purchase History
+                    curCustomer.exportPurchaseHistory();
+                    break;
+                case 3:  //Dashboard
+                    //TODO add Dashboard UI
+                    System.out.println(Dashboard.customerGetStoresDashboard(0, false));
+                    break;
+                case 4:  //Shopping Cart
+                    customerShoppingCart(scan, curCustomer);
+                    break;
+                case 5:  //Sign Out
+                    userLoggedIn = false;
+                    System.out.println("Thank you!");
+                    return;  //ends the program
+                default:  //error
+                    System.out.println("Please enter your choice's corresponding Integer");
+                    break;
+            }
+        }
     }
 
     public static void main(String[] args) {
         System.out.println("Welcome!");
         Scanner scan = new Scanner(System.in);
-        do {
-            int welcomeResponse = welcomeUser(scan);
-            switch (welcomeResponse) {
-                case 1:  //Log user in
-                    loginUser(scan);
-                    break;
-                case 2:  //Create new user
-                    createUser(scan);
-                    break;
-                case 3:  //Quit Program
-                    System.out.println("Thank you!");
-                    scan.close();
-                    return;  //ends the program
-            }
-        } while (!userLoggedIn);
-        if (curUser.getRole().equals(UserRole.SELLER)) {  //code for if the current user is a seller
-            Seller curSeller = new Seller(curUser.getUserID(), curUser.getEmail(),
-                    curUser.getPassword(), curUser.getRole()); //makes a seller object with same ID as user
-            System.out.println("Welcome Seller");
-            while (true) {  //loops until Seller signs out
-                int sellerChoice = sellerPrompt(scan);
-                switch (sellerChoice) {
-                    case 1:  //Stores
-                        storeUI(scan, curSeller);
+        while (true) {
+            do {
+                int welcomeResponse = welcomeUser(scan);
+                switch (welcomeResponse) {
+                    case 1:  //Log user in
+                        loginUser(scan);
                         break;
-                    case 2:  //Dashboard
-                        //TODO fix Dashboard UI
-                        Dashboard.sellerGetCustomersDashboard(0, false);
+                    case 2:  //Create new user
+                        createUser(scan);
                         break;
-                    case 3:  //Customer Shopping Carts
-                        curSeller.viewCustomerShoppingCarts();
-                        break;
-                    case 4:  //Sign Out
-                        System.out.println("Thank you!");
+                    case 3:  //Quit Program
+                        System.out.println("Goodbye");
+                        scan.close();
                         return;  //ends the program
                 }
-            }
-        } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
-            Customer curCustomer = new Customer(curUser.getUserID(), curUser.getEmail(),
-                    curUser.getPassword(), UserRole.CUSTOMER);
-            System.out.println("Welcome Customer");
-            while (true) {  //loops until the user signs out
-                int customerChoice = customerPrompt(scan);
-                switch (customerChoice) {
-                    case 1:  //Market
-                        marketUI(scan, curCustomer);
-                        break;
-                    case 2:  //Purchase History
-                        curCustomer.exportPurchaseHistory();
-                        break;
-                    case 3:  //Dashboard
-                        //TODO add Dashboard UI
-                        break;
-                    case 4:  //Shopping Cart
-                        System.out.println(curCustomer.getShoppingHistory());
-                        break;
-                    case 5:  //Sign Out
-                        System.out.println("Thank you!");
-                        return;  //ends the program
-                }
+            } while (!userLoggedIn);
+            if (curUser.getRole().equals(UserRole.SELLER)) {  //code for if the current user is a seller
+                Seller curSeller = new Seller(curUser.getUserID(), curUser.getEmail(),
+                        curUser.getPassword(), curUser.getRole()); //makes a seller object with same ID as user
+                System.out.println("Welcome Seller");
+                userIsSeller(scan, curSeller);
+            } else if (curUser.getRole().equals(UserRole.CUSTOMER)) {  //code for if the current user is a customer
+                Customer curCustomer = new Customer(curUser.getUserID(), curUser.getEmail(),
+                        curUser.getPassword(), UserRole.CUSTOMER);
+                System.out.println("Welcome Customer");
+                userIsCustomer(scan, curCustomer);
             }
         }
-        while (true) ;
     }
 }
