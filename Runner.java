@@ -18,6 +18,7 @@ public class Runner {
     private static final Database db = new Database();  //Makes a Database object
     private static boolean userLoggedIn = false;  //This boolean is used to check if the user has logged in successfully
     private static User curUser = new User();  //This field stores the user object for the current User of the program
+    private static final String SWITCH_IO_ERROR_MESSAGE = "Input Error:\nPlease enter your choice's corresponding Integer";
 
     //Welcomes the user and asks them whether they would like to: Log-in, Create Account, or Quit
     //Takes only the Scanner as a Parameter
@@ -30,10 +31,10 @@ public class Runner {
                 if (response > 0 && response < 4) {
                     return response;
                 } else {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         } while (true);
     }
@@ -84,10 +85,10 @@ public class Runner {
                     } else if (input == 2) {
                         uRole = UserRole.CUSTOMER;
                     } else {
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                     }
                 } catch (Exception e) {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             }
             curUser = new User(uEmail, uPassword, uRole);
@@ -107,10 +108,10 @@ public class Runner {
                 if (sellerChoice > 0 && sellerChoice < 6) {
                     return sellerChoice;
                 } else {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         } while (true);
     }
@@ -125,10 +126,10 @@ public class Runner {
                 if (customerChoice > 0 && customerChoice < 7) {
                     return customerChoice;
                 } else {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         } while (true);
     }
@@ -161,7 +162,7 @@ public class Runner {
                                         manageStore(scan, curSeller, curStore);
                                     }
                                 } catch (Exception e) {
-                                    System.out.println("Please enter your choice's corresponding Integer");
+                                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                                 }
                             }
                             break;
@@ -178,12 +179,12 @@ public class Runner {
                     case 3:  //sends seller back to initial SellerUI
                         return;
                     default:
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                         break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         }
     }
@@ -283,11 +284,11 @@ public class Runner {
                     case 6:  //Go Back
                         return;
                     default:  //integer is out of range
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
 
         }
@@ -313,7 +314,7 @@ public class Runner {
                 chosenProduct = productList.get(editProductChoice - 1);
             }
         } catch (Exception e) {
-            System.out.println("Please enter your choice's corresponding Integer");
+            System.out.println(SWITCH_IO_ERROR_MESSAGE);
         }
         return chosenProduct;
     }
@@ -368,11 +369,11 @@ public class Runner {
                     case 2: //No
                         return;
                     default:  //error
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             }
         } catch (Exception e) {
-            System.out.println("Please enter your choice's corresponding Integer");
+            System.out.println(SWITCH_IO_ERROR_MESSAGE);
         }
         //TODO  Sort Market (price or quantity)
     }
@@ -400,11 +401,11 @@ public class Runner {
                     case 3:  //return
                         return;
                     default:  //error
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
 
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         }
     }
@@ -418,24 +419,6 @@ public class Runner {
                     break;
                 case 2:  //Dashboard
                     sellerDashboard(scan, curSeller);
-                    /* System.out.println("What would you like to view?\n1) Sales to Customers\n2) Product Sales");
-                    
-                    try {
-                        switch (Integer.parseInt(scan.nextLine())) {
-                            case 1:  //sales to customers
-                                System.out.println(Dashboard.sellerGetCustomersDashboard(0, false));
-                                break;
-                            case 2:  //product sales
-                                System.out.println(Dashboard.sellerGetProductsDashboard(0, false));
-                                break;
-                            default:  //error
-                                System.out.println("Please enter your choice's corresponding Integer");
-                                break;
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Please enter your choice's corresponding Integer");
-                    }
-                    */
                     break;
                 case 3:  //Customer Shopping Carts
                     System.out.println(curSeller.viewCustomerShoppingCarts());;
@@ -451,7 +434,7 @@ public class Runner {
                     System.out.println("Thank you!");
                     return;  //ends the program
                 default: //error
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                     break;
             }
         }
@@ -484,7 +467,7 @@ public class Runner {
                     System.out.println("Thank you!");
                     return;  //ends the program
                 default:  //error
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                     break;
             }
         }
@@ -664,11 +647,11 @@ public class Runner {
                     case 4:  //Return
                         return;
                     default:  //error
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         }
     }
