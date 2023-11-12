@@ -1,20 +1,7 @@
 import java.util.ArrayList;
 
 public class DashboardTest {
-    /*
-     * private static final String usersDatabaseHeaders = "ID,Email,Password,Role";
-     * private static final String storesDatabaseHeaders =
-     * "Store ID,Seller ID,Store Name,Number of Products";
-     * private static final String productsDatabaseHeaders =
-     * "Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description"
-     * ;
-     * private static final String purchaseHistoryDatabaseHeaders =
-     * "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price"
-     * ;
-     * private static final String shoppingCartDatabaseHeaders =
-     * "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price"
-     * ;
-     */
+    
     public static void main(String[] args) {
         CreateDatabaseData.createData();
 
@@ -38,18 +25,17 @@ public class DashboardTest {
 
     // Uses users.csv and purchasehistories.csv
     private static void testSellerGetCustomersDashboard() {
-        System.out.println("Testing SellerGetCustomersDashboard\n _____________");
-        System.out.println("Alphabetical Descending:");
+        //System.out.println("Testing SellerGetCustomersDashboard\n _____________");
+        //System.out.println("Alphabetical Descending:");
         printResults(Dashboard.sellerGetCustomersDashboard(0, false));
         //assertEquals(Dashboard.sellerGetCustomersDashboard(0, false), );
-        System.out.println("Quantity Ascending:");
-        printResults(Dashboard.sellerGetCustomersDashboard(1, true));
+        //System.out.println("Quantity Ascending:");
+        //printResults(Dashboard.sellerGetCustomersDashboard(1, true));
 
-        System.out.println("Spending Descending:");
-        printResults(Dashboard.sellerGetCustomersDashboard(2, false));
+        //System.out.println("Spending Descending:");
+        //printResults(Dashboard.sellerGetCustomersDashboard(2, false));
 
-        System.out.println("Spending Ascending:");
-        printResults(Dashboard.sellerGetCustomersDashboard(2, true));
+
     }
 
     private static void testSellerGetProductsDashboard() {
