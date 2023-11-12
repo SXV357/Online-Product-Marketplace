@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 11, 2023
+ * @version November 12, 2023
  */
 public class TestDatabase {
     static final String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,SELLER";
@@ -19,35 +19,31 @@ public class TestDatabase {
 
     public static void main(String[] args) {
 
-        /* INITIALIZE A NEW DATABASE INSTANCE FOR TESTING PURPOSES */
-        Database db = new Database();
-
-        /*
-         * THE TWO METHODS BELOW NEED TO BE CALLED BEFORE RUNNING ALL THE TESTS DOWN
-         * BELOW
-         */
+        /* THE TWO METHODS BELOW NEED TO BE CALLED BEFORE RUNNING ALL THE TESTS DOWN BELOW */
         // CreateDatabaseData.clearData();
         // CreateDatabaseData.createDataForDatabaseTests();
 
+        /* INITIALIZE A NEW DATABASE INSTANCE FOR TESTING PURPOSES */
+        Database db = new Database();
+
         /* DATABASE CLASS TESTS*/
 
-        // System.out.println("Get File Headers Test Result: " + testGetFileHeaders(db));
-        // System.out.println("Database Column Bounds Test Result: " + testDatabaseColumnBounds(db));
-        // System.out.println("Add Initial Database Entries Test Result: " + testAddInitialDatabaseEntries(db));
-        // System.out.println("Add Duplicate Database Entries Test Result: " + testAddDuplicateDatabaseEntries(db));
-        // System.out.println("Modify Existing Database Entries Test Result: " + testSuccessfulDatabaseModification(db));
-        // System.out.println("Modify Non-Existing Database Entries Test Result: " + testUnsuccessfulDatabaseModification(db));
-        // System.out.println("Remove Existing Database Entries Test Result: " + testSuccessfulDatabaseRemoval(db));
-        // System.out.println("Remove Non-Existing Database Entries Test Result: " + testUnsuccessfulDatabaseRemoval(db));
-        // System.out.println("Check ID Existence Test Result: " + testMatchedUserIDs(db));
-        // System.out.println("Retrieve User From Database For Login Test Result: " + testUserRetrievalFromDatabaseForLogin(db));
-        // System.out.println("Database Entry in Existing File(s) Test Result: " + testFileEntryExists(db));
-        // System.out.println("Database Entry in Non-Existing File(s) Test Result: " + testUnsuccessfulFileEntryExists(db));
-        // System.out.println("Get Database Entries in Existing Files Test Result: " + testSuccessfulGetDatabaseContents(db));
-        // System.out.println("Get Database Entries in Non-Existing Files Test Result: " + testUnsuccessfulGetDatabaseContents(db));
-        // System.out.println("Get Matched Entries in Existing Files Test Result: " + testSuccessfulGetMatchedEntries(db));
-        // System.out.println("Get Matched Entries Unsuccessful Test Result: " + testUnsuccessfulGetMatchedEntries(db));
-
+        System.out.println("Get File Headers Test Result: " + testGetFileHeaders(db));
+        System.out.println("Database Column Bounds Test Result: " + testDatabaseColumnBounds(db));
+        System.out.println("Add Initial Database Entries Test Result: " + testAddInitialDatabaseEntries(db));
+        System.out.println("Add Duplicate Database Entries Test Result: " + testAddDuplicateDatabaseEntries(db));
+        System.out.println("Modify Existing Database Entries Test Result: " + testSuccessfulDatabaseModification(db));
+        System.out.println("Modify Non-Existing Database Entries Test Result: " + testUnsuccessfulDatabaseModification(db));
+        System.out.println("Remove Existing Database Entries Test Result: " + testSuccessfulDatabaseRemoval(db));
+        System.out.println("Remove Non-Existing Database Entries Test Result: " + testUnsuccessfulDatabaseRemoval(db));
+        System.out.println("Check ID Existence Test Result: " + testMatchedUserIDs(db));
+        System.out.println("Retrieve User From Database For Login Test Result: " + testUserRetrievalFromDatabaseForLogin(db));
+        System.out.println("Database Entry in Existing File(s) Test Result: " + testFileEntryExists(db));
+        System.out.println("Database Entry in Non-Existing File(s) Test Result: " + testUnsuccessfulFileEntryExists(db));
+        System.out.println("Get Database Entries in Existing Files Test Result: " + testSuccessfulGetDatabaseContents(db));
+        System.out.println("Get Database Entries in Non-Existing Files Test Result: " + testUnsuccessfulGetDatabaseContents(db));
+        System.out.println("Get Matched Entries in Existing Files Test Result: " + testSuccessfulGetMatchedEntries(db));
+        System.out.println("Get Matched Entries Unsuccessful Test Result: " + testUnsuccessfulGetMatchedEntries(db));
     }
 
     static String testGetFileHeaders(Database db) {
