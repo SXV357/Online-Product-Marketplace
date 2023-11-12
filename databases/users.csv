@@ -1,7 +1,2 @@
 ID,Email,Password,Role
-C100001,cherry@gmail.com,12345,CUSTOMER
-S100002,balogne@gmail.com,12315436,SELLER
-S1000000,seller@purdue.edu,password,SELLER
-C1000001,customer@purdue.edu,password,CUSTOMER
-C1000002,idk@testing.edu,Password,CUSTOMER
-C1000003,Imamonkey34@gmail.com,ilovesports21,CUSTOMER
+

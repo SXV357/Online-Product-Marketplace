@@ -78,17 +78,18 @@ public class CreateDatabaseData {
         ArrayList<String> testPurchases = new ArrayList<>();
         // Add purchases to test DB
         // customer 1 purchases
-        testPurchases.add("C100001,S100001,ST100001,PR100001,myStore,myProduct,10,25");
+        testPurchases.add("C100001,S100001,ST100001,PR100001,myStore,myProduct,10,250");
         testPurchases.add("C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,1,1000");
         testPurchases.add("C100001,S100002,ST100002,PR100003,otherStore,otherProduct,1,1");
         // customer 2 purchases
-        testPurchases.add("C100002,S100002,ST100002,PR100003,otherStore,otherProduct,500,1");
-        testPurchases.add("C100002,S100002,ST100002,PR100004,otherStore,productamondo,10,5");
+        testPurchases.add("C100002,S100002,ST100002,PR100003,otherStore,otherProduct,500,500");
+        testPurchases.add("C100002,S100002,ST100002,PR100004,otherStore,productamondo,10,25");
 
         // customer 3 makes no purchases
 
         // Write purchaseHistories.csv
         database.updateDatabaseContents("purchaseHistories.csv", testPurchases);
+
     }
 
     // SPECIFIC FOR TESTS RELATED TO THE DATABASE CLASS(DO NOT MODIFY)
