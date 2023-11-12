@@ -20,7 +20,6 @@ public class Customer extends User {
     private ArrayList<String> shoppingCart;
     private ArrayList<String> purchasehistory;
     private Database db = new Database();
-    private String userID;
 
     public Customer(String email, String password, UserRole role) {
         super(email, password, role);
@@ -39,11 +38,17 @@ public class Customer extends User {
      * 
      * @return String of array's contents
      */
-    public String arrToString(ArrayList<String> array) {
+    public String arrToString(ArrayList<String> array, boolean quantity) {
+
         StringBuilder output = new StringBuilder();
         String[] splitArr;
+        if (quantity) {
+            output.append("Product Name - Store Name - Quantity - Price\n");
+        } else {
+            output.append("Product Name - Store Name - Price\n");
+        }
         for (int i = 0; i < array.size(); i++) {
-            output.append(i + 1).append(") ").append(array.get(i)).append(System.getProperty("line.separator"));
+            output.append(i + 1).append(") ").append(array.get(i)).append("\n");
         }
         return output.toString();
     }
@@ -54,7 +59,24 @@ public class Customer extends User {
      * @return The shopping history as a string
      */
     public String getShoppingHistory() {
-        return arrToString(purchasehistory);
+        String[] info;
+        StringBuilder sb = new StringBuilder();
+        ArrayList<String> output = new ArrayList<>();
+
+        if (purchasehistory.isEmpty()) {
+            return "No Products Available";
+        } else {
+            for (String product : db.getMatchedEntries("purchaseHistories.csv", 0, getUserID())) {
+                sb = new StringBuilder();
+                info = product.split(",");
+                sb.append(info[5]).append("     ");
+                sb.append(info[4]).append("     ");
+                sb.append(info[6]).append("     ");
+                sb.append(info[7]).append("     ");
+                output.add(sb.toString());
+            }
+        }
+        return arrToString(output, true);
     }
 
     /**
@@ -83,6 +105,7 @@ public class Customer extends User {
         }
 
     }
+
     /**
      * Returns the all the products in the csv
      * 
@@ -93,48 +116,48 @@ public class Customer extends User {
         StringBuilder sb = new StringBuilder();
         String[] info;
         ArrayList<String> output = new ArrayList<>();
-        System.out.println("Product Name - Store Name - Price"); 
-        System.out.println("------------------------------------");
         if (productList.isEmpty()) {
             return "No Products Available";
         } else {
-            sb = new StringBuilder();
             for (String product : productList) {
+                sb = new StringBuilder();
                 info = product.split(",");
                 sb.append(info[4]).append("     ");
                 sb.append(info[3]).append("     ");
                 sb.append(info[6]).append("     ");
+                output.add(sb.toString());
             }
-            output.add(sb.toString());
         }
-        return arrToString(output);
+        return arrToString(output, false);
 
     }
 
     /**
-     * Returns the all inputted products in a the formatted method
+     * Internal Supplementary formatting method
      * 
-     * @return The products listed as a string
+     * @return The products formatted as a string
      */
-    public String getAllProducts(ArrayList<String> productList) {
+    public String formatProducts(ArrayList<String> productList, boolean quantity) {
         StringBuilder sb = new StringBuilder();
         String[] info;
         ArrayList<String> output = new ArrayList<>();
-        System.out.println("Product Name - Store Name - Price"); 
-        System.out.println("------------------------------------");
+
         if (productList.isEmpty()) {
             return "No Products Available";
         } else {
-            sb = new StringBuilder();
             for (String product : productList) {
+                sb = new StringBuilder();
                 info = product.split(",");
                 sb.append(info[4]).append("     ");
                 sb.append(info[3]).append("     ");
+                if (quantity) {
+                    sb.append(info[5]).append("     ");
+                }
                 sb.append(info[6]).append("     ");
+                output.add(sb.toString());
             }
-            output.add(sb.toString());
         }
-        return arrToString(output);
+        return arrToString(output, quantity);
 
     }
 
@@ -144,7 +167,24 @@ public class Customer extends User {
      * @return The shopping cart as a string
      */
     public String getCart() {
-        return arrToString(shoppingCart);
+        String[] info;
+        StringBuilder sb = new StringBuilder();
+        ArrayList<String> output = new ArrayList<>();
+
+        if (shoppingCart.isEmpty()) {
+            return "No Products Available";
+        } else {
+            for (String product : shoppingCart) {
+                sb = new StringBuilder();
+                info = product.split(",");
+                sb.append(info[5]).append("     ");
+                sb.append(info[4]).append("     ");
+                sb.append(info[6]).append("     ");
+                sb.append(info[7]).append("     ");
+                output.add(sb.toString());
+            }
+        }
+        return arrToString(output, true);
     }
 
     /**
@@ -177,13 +217,9 @@ public class Customer extends User {
                     .split(",");
             if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
                 return false;
-            } else {
-                target[5] = String.valueOf(Integer.parseInt(target[5]) - quantity);
-                db.modifyDatabase("products.csv",
-                        db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0),
-                        String.join(",", target));
             }
 
+            shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
             StringBuilder output = new StringBuilder();
             int updatedQuant = quantity;
             output.append(getUserID()).append(",");
@@ -214,25 +250,38 @@ public class Customer extends User {
      * Purchases the items in the cart
      * 
      */
-    public void purchaseItems() {
+    public boolean purchaseItems() {
         StringBuilder output = new StringBuilder();
         String[] updatedEntry;
+        String[] target;
+        shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
+        purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
+
         output.append(getUserID()).append(",");
-        for (String item : shoppingCart) {
-            for (String entry : purchasehistory) {
-                if (item.split(",")[2].equals(entry.split(",")[2])) {
-                    updatedEntry = entry.split(",");
+        String item;
+        for (int i = 0; i < shoppingCart.size(); i++) {
+            item = shoppingCart.get(i);
+            for (int j = 0; j < purchasehistory.size(); j++) {
+                if (item.split(",")[3].equals(purchasehistory.get(i).split(",")[3])) {
+                    updatedEntry = purchasehistory.get(i).split(",");
                     updatedEntry[6] = String
                             .valueOf(Integer.parseInt(updatedEntry[6]) + Integer.parseInt(item.split(",")[6]));
                     updatedEntry[7] = String
                             .valueOf(Double.parseDouble(updatedEntry[7]) + Double.parseDouble(item.split(",")[7]));
-                    db.modifyDatabase("purchaseHistories.csv", entry, String.join(",", updatedEntry));
-                } else {
+                    db.modifyDatabase("purchaseHistories.csv", purchasehistory.get(i), String.join(",", updatedEntry));
+                } else if (j == purchasehistory.size() - 1) {
                     db.addToDatabase("purchaseHistories.csv", item);
                 }
-                db.removeFromDatabase("shoppingCarts.csv", item);
             }
+            db.removeFromDatabase("shoppingCarts.csv", item);
+            shoppingCart.remove(item);
+            target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
+            target[5] = String.valueOf(Integer.parseInt(target[5]) - Integer.parseInt(item.split(",")[6]));
+            db.modifyDatabase("products.csv",
+                    db.getMatchedEntries("products.csv", 2, target[2]).get(0),
+                    String.join(",", target));
         }
+        return true;
 
     }
 
@@ -246,10 +295,12 @@ public class Customer extends User {
         int n = sorted.size();
         String temp = "";
         int searchIndex = -1;
+        boolean quantity = false;
         if (choice.equals("price")) {
             searchIndex = 6;
         } else if (choice.equals("quantity")) {
             searchIndex = 5;
+            quantity = true;
         }
 
         if (searchIndex != -1) {
@@ -265,7 +316,8 @@ public class Customer extends User {
                     }
                 }
             }
-            return getAllProducts(sorted);
+            
+            return formatProducts(sorted, quantity);
         } else {
             return "Invalid search!";
         }
@@ -317,7 +369,7 @@ public class Customer extends User {
         if (productsFound.isEmpty()) {
             return "Query has returned no results!";
         } else {
-            return getAllProducts(productsFound);
+            return formatProducts(productsFound, false);
         }
 
     }
