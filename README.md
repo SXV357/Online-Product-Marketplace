@@ -22,13 +22,13 @@ The driver class that lets a user interact with the application from start to fi
 Relationship to other classes: The functionality of all the other classes is integrated into this class.
 
 ## Dashboard
-Class that encompasses functionality for customers to view store and seller information, and for sellers to view statistics for each of their stores.
-- Sellers can view statistics for each of their stores which include a list of customers with number of items purchased and list of products with number of sales.
-- Sellers can sort the dashboard in alphabetical ascending and reverse order as well as numerically ascending and reverse order
+Class that encompasses functionality for customers to view store and seller information, and for sellers to view statistics for stores and products.
+- Sellers can view a list of customers with number of items purchased and total spending and a list of products with number of sales and total revenue.
+- Sellers can sort the dashboard in alphabetical ascending and reverse order as well as numerically ascending and reverse order for all data
 - Customers can view store and seller information which include list of stores by number of products sold and list of stores with products purchased by that customer.
 - Customers can sort the dashboard in alphabetical ascending and reverse order as well as numerically ascending and reverse order
 
-Relationship to other classes: Customers can select to view store and seller information an sellers can select to view statistics for each of their stores.
+Relationship to other classes: Dashboard contains four static methods that generate a list that can be printed to display a database. It also contains a method to display the resulting data to the terminal. Other classes call Dashboard's methods to generate the data required to display a dashboard.
 
 ## Database
 Class that handles all database access and modification functionality related to the application.

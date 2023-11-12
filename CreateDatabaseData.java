@@ -89,7 +89,7 @@ public class CreateDatabaseData {
 
         // Write purchaseHistories.csv
         database.updateDatabaseContents("purchaseHistories.csv", testPurchases);
-        
+
     }
 
     // SPECIFIC FOR TESTS RELATED TO THE DATABASE CLASS(DO NOT MODIFY)
