@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -384,11 +385,12 @@ public class Database {
             }
             File output = new File(dir, fileName);
             String fileHeaders = getFileHeaders(fileName);
-            BufferedWriter bw = new BufferedWriter(new FileWriter(output));
-            bw.write(fileHeaders + "\n");
+            PrintWriter bw = new PrintWriter(new FileWriter(output));
+            bw.println(fileHeaders);
             for (int i = 0; i < contents.size(); i++) {
-                bw.write(contents.get(i) + "\n");
+                bw.println(contents.get(i));
             }
+            bw.flush();
             bw.close();
             System.out.println("The contents of " + fileName + " were updated successfully!");
         } catch (IOException e) {
