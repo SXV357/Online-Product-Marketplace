@@ -1,4 +1,9 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import org.junit.Test;
 
@@ -6,6 +11,9 @@ public class CustomerTest {
     public static void main(String[] args) {
         //Instatiated a new customer and database for testing
         Customer c = new Customer("C100001", "customer@gmail.com", "customer", UserRole.CUSTOMER);
+        Customer c2 = new Customer("C100003", "empty@gmail.com", "customer", UserRole.CUSTOMER);
+
+        c2.exportPurchaseHistory();
         Database db = new Database();
 
         //Creates testing data
@@ -22,6 +30,7 @@ public class CustomerTest {
         testPurchaseItems(c, db);
         testSortStores(c);
         testSearchProducts(c);
+        testExportPurchaseHistory(c, c2);
 
     }
 
@@ -203,6 +212,31 @@ public class CustomerTest {
                 c.searchProducts("Its a product!").replace("\r\n", "\n").trim());
 
         System.out.println("searchProcuts ... OK");
+    }
+
+    @Test(timeout = 1000)
+    public static void testExportPurchaseHistory(Customer c, Customer c2) {
+        //Tests Returns true -> file created / false -> no file created
+        assertEquals("Export History Boolean Return Error", true, c.exportPurchaseHistory());
+        assertEquals("Export History Boolean Return Error", false, c2.exportPurchaseHistory());
+
+        //Tests the Customer's Purchase History has been exported properly
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("exportedHistory/customer@gmail.com.csv")))){
+        br.readLine(); // skip headers
+        String line;
+        while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+                }
+        assertEquals("Export Purchase History Error", "C100001,S100001,ST100001,PR100001,myStore,myProduct,10,250\n" +
+                "C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,1,1000\n" +
+                "C100001,S100002,ST100002,PR100003,otherStore,otherProduct,1,1", sb.toString().trim());
+
+        System.out.println("exportPurchaseHistory ... OK");
+        } catch (IOException e) {
+                System.out.println("Exported Purchase History File Directory Does Not Exist");
+                e.printStackTrace();
+        }
     }
 
 }
