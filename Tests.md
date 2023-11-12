@@ -1,5 +1,5 @@
 ## Database
-### Note: The tests for the Database class can be found in the root directory in the TestDatabase.java class. Before running all tests, there are two methods that have been commented out which need to be executed since they are responsible for generating test data that the test cases have been designed for. There is no need for running each test sequentially, as all can be run at once.
+### Note: The tests for the Database class can be found in the root directory in the TestDatabase.java class.
 1. Given the name of the database(users.csv, stores.csv, products.csv, shoppingCarts.csv, and purchaseHistories.csv), the correct headers associated with the files are returned
 2. Given the name of the database, the test to check whether or not a given index is within bounds or not for how many ever columns exist returns the correct value
 3. When adding an entry for the first time to each of the databases, the respective CSVs get populated accordingly with the new information
@@ -20,7 +20,7 @@
 18. When searching for a value in a given column and the column index is out of bounds, or the index is in bounds but the search parameter doesn't exist in the given column in any of the entries, or the provided file name within which to search the value for doesn't exist, then no entries are returned
 
 ## Seller
-### Note: The tests for the Seller class can be found in the root directory in the TestStoreManagement.java class. Before running all tests, there is a method commented out which needs to be executed since it is responsible for clearing out any existing data in any of the databases based on which the test cases are designed. The test file for a seller to import products from into one of their existing stores is located in the root directory with the name import.csv. There is no need for running each test sequentially, as all can be run at once.
+### Note: The tests for the Seller class can be found in the root directory in the TestStoreManagement.java class. The test file for a seller to import products from into one of their existing stores is located in the root directory with the name <ins>ProductsToImport.csv</ins>.
 1. When retrieving a list of stores for a seller that hasn't created any stores yet, a null value is returned as expected
 2. When creating a new store associated with the seller, the contents of stores.csv are updated correctly
 3. When creating a store with the same name as an existing one, the store is not created and the contents of stores.csv remain unchanged
