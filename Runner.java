@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,6 +17,7 @@ public class Runner {
     private static final Database db = new Database();  //Makes a Database object
     private static boolean userLoggedIn = false;  //This boolean is used to check if the user has logged in successfully
     private static User curUser = new User();  //This field stores the user object for the current User of the program
+    private static final String SWITCH_IO_ERROR_MESSAGE = "Input Error:\nPlease enter your choice's corresponding Integer";
 
     //Welcomes the user and asks them whether they would like to: Log-in, Create Account, or Quit
     //Takes only the Scanner as a Parameter
@@ -30,10 +30,10 @@ public class Runner {
                 if (response > 0 && response < 4) {
                     return response;
                 } else {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         } while (true);
     }
@@ -84,10 +84,10 @@ public class Runner {
                     } else if (input == 2) {
                         uRole = UserRole.CUSTOMER;
                     } else {
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                     }
                 } catch (Exception e) {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             }
             curUser = new User(uEmail, uPassword, uRole);
@@ -100,17 +100,21 @@ public class Runner {
     public static int sellerPrompt(Scanner scan) {
         int sellerChoice;
         do {
-            System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Edit Account\n" +
-                    "5) Sign Out");
+            System.out.println("""
+                    1) Stores
+                    2) Dashboard
+                    3) Customer Shopping Carts
+                    4) Edit Account
+                    5) Sign Out""");
             try {
                 sellerChoice = Integer.parseInt(scan.nextLine());
                 if (sellerChoice > 0 && sellerChoice < 6) {
                     return sellerChoice;
                 } else {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         } while (true);
     }
@@ -118,17 +122,22 @@ public class Runner {
     public static int customerPrompt(Scanner scan) {
         int customerChoice;
         do {
-            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n5) Edit Account\n" +
-                    "6) Sign Out");
+            System.out.println("""
+                    1) Market
+                    2) Purchase History
+                    3) Dashboard
+                    4) Shopping Cart
+                    5) Edit Account
+                    6) Sign Out""");
             try {
                 customerChoice = Integer.parseInt(scan.nextLine());
                 if (customerChoice > 0 && customerChoice < 7) {
                     return customerChoice;
                 } else {
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         } while (true);
     }
@@ -161,7 +170,7 @@ public class Runner {
                                         manageStore(scan, curSeller, curStore);
                                     }
                                 } catch (Exception e) {
-                                    System.out.println("Please enter your choice's corresponding Integer");
+                                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                                 }
                             }
                             break;
@@ -178,18 +187,18 @@ public class Runner {
                     case 3:  //sends seller back to initial SellerUI
                         return;
                     default:
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         }
     }
 
     public static void manageStore(Scanner scan, Seller curSeller, Store curStore) {
         while (true) {  //loops until seller goes back
+            Product curProduct = pickProduct(scan, curStore);
             System.out.println(curStore.getStoreName() + " Options:\n1) Create Product\n2) Edit Product\n" +
                     "3) Delete Product\n4) Import Products\n5) Export Products\n6) Go Back");
             try {
@@ -224,7 +233,7 @@ public class Runner {
                         System.out.println(worked);
                         break;
                     case 2:  //Edit Product
-                        Product curProduct = pickProduct(scan, curSeller, curStore);
+
                         if (curProduct == null) {
                             break;
                         }
@@ -241,13 +250,10 @@ public class Runner {
                             }
                         }
                         String newValue;
-                        while (true) {  //loops until newValue is not null
+                        do {  //loops until newValue is not null
                             System.out.println("What would you like the new value to be?");
                             newValue = scan.nextLine();
-                            if (newValue != null) {
-                                break;
-                            }
-                        }
+                        } while (newValue == null);
                         if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam, newValue)) {
                             System.out.println("Product successfully edited");
                         } else {
@@ -255,7 +261,7 @@ public class Runner {
                         }
                         break;
                     case 3:  //Delete Product
-                        curProduct = pickProduct(scan, curSeller, curStore);
+                        curProduct = pickProduct(scan, curStore);
                         curSeller.deleteProduct(curStore.getStoreName(),
                                 curProduct.getName());
                         System.out.println("Product has been deleted");
@@ -276,24 +282,24 @@ public class Runner {
                             }
                         }
                     case 5:  //Export Products
-                        curSeller.exportProducts(curStore.getStoreIdentificationNumber());
+                        curSeller.exportProducts(curStore.getStoreName());
                         System.out.println("Products have been exported to " + "exportedProducts/"
                                 + curStore.getStoreName() + ".csv");
                         break;
                     case 6:  //Go Back
                         return;
                     default:  //integer is out of range
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
 
         }
     }
 
-    public static Product pickProduct(Scanner scan, Seller curSeller, Store curStore) {
+    public static Product pickProduct(Scanner scan, Store curStore) {
         ArrayList<Product> productList = curStore.getProducts();
         System.out.println("Which product would you like to adjust?");
         for (int i = 0; i <= productList.size(); i++) {
@@ -313,15 +319,18 @@ public class Runner {
                 chosenProduct = productList.get(editProductChoice - 1);
             }
         } catch (Exception e) {
-            System.out.println("Please enter your choice's corresponding Integer");
+            System.out.println(SWITCH_IO_ERROR_MESSAGE);
         }
         return chosenProduct;
     }
 
     public static void marketUI(Scanner scan, Customer curCustomer) {
         while (true) {  //loops until user selects to go back
-            System.out.println("What would you like to do?\n1) View All Products\n2) Search for a Product\n" +
-                    "3) Return");
+            System.out.println("""
+                    What would you like to do?
+                    1) View All Products
+                    2) Search for a Product
+                    3) Return""");
             int marketChoice = Integer.parseInt(scan.nextLine());
             switch (marketChoice) {
                 case 1:  //View Products
@@ -368,11 +377,11 @@ public class Runner {
                     case 2: //No
                         return;
                     default:  //error
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
             }
         } catch (Exception e) {
-            System.out.println("Please enter your choice's corresponding Integer");
+            System.out.println(SWITCH_IO_ERROR_MESSAGE);
         }
         //TODO  Sort Market (price or quantity)
     }
@@ -400,11 +409,11 @@ public class Runner {
                     case 3:  //return
                         return;
                     default:  //error
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                 }
 
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         }
     }
@@ -418,27 +427,9 @@ public class Runner {
                     break;
                 case 2:  //Dashboard
                     sellerDashboard(scan, curSeller);
-                    /* System.out.println("What would you like to view?\n1) Sales to Customers\n2) Product Sales");
-                    
-                    try {
-                        switch (Integer.parseInt(scan.nextLine())) {
-                            case 1:  //sales to customers
-                                System.out.println(Dashboard.sellerGetCustomersDashboard(0, false));
-                                break;
-                            case 2:  //product sales
-                                System.out.println(Dashboard.sellerGetProductsDashboard(0, false));
-                                break;
-                            default:  //error
-                                System.out.println("Please enter your choice's corresponding Integer");
-                                break;
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Please enter your choice's corresponding Integer");
-                    }
-                    */
                     break;
                 case 3:  //Customer Shopping Carts
-                    System.out.println(curSeller.viewCustomerShoppingCarts());;
+                    System.out.println(curSeller.viewCustomerShoppingCarts());
                     break;
                 case 4:  //Edit user
                     editUser(scan);
@@ -451,7 +442,7 @@ public class Runner {
                     System.out.println("Thank you!");
                     return;  //ends the program
                 default: //error
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                     break;
             }
         }
@@ -468,8 +459,7 @@ public class Runner {
                     curCustomer.exportPurchaseHistory();
                     break;
                 case 3:  //Dashboard
-                    //TODO add Dashboard UI
-                    System.out.println(Dashboard.customerGetStoresDashboard(0, false));
+                    customerDashboard(scan, curCustomer);
                     break;
                 case 4:  //Shopping Cart
                     customerShoppingCart(scan, curCustomer);
@@ -485,7 +475,7 @@ public class Runner {
                     System.out.println("Thank you!");
                     return;  //ends the program
                 default:  //error
-                    System.out.println("Please enter your choice's corresponding Integer");
+                    System.out.println(SWITCH_IO_ERROR_MESSAGE);
                     break;
             }
         }
@@ -493,7 +483,7 @@ public class Runner {
 
     //This method doesn't check for input errors until all three inputs have been inputted
     private static void customerDashboard(Scanner scan, Customer curCustomer){
-        System.out.println("Which type of dashboard would you like to see?\n1)Stores\n2)My Purchases");
+        System.out.println("Which type of dashboard would you like to see?\n1) Stores\n2) My Purchases");
         boolean inputting = true;
         String sortPrompt = "";
         while (inputting) { //until dashboard choice is fully imputed
@@ -507,11 +497,11 @@ public class Runner {
             //Customer chose which dashboard to see
             switch (customerChoice) {
                 case 1:  //Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Store name\n2)Number of product sales\n3)Total revenue";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Store name\n2) Number of product sales\n3) Total revenue";
                     break;
 
                 case 2:  //My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Product name\n2)Number of products bought\n3)Total spent";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products bought\n3 )Total spent";
 
                     break;
                 default:  //error, will be printed at loop end.
@@ -527,7 +517,7 @@ public class Runner {
             }
 
             //Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1)Ascending\n2)Descending");
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending");
             int customerAscChoice;
             boolean ascending = false;
             try {
@@ -565,7 +555,7 @@ public class Runner {
 
     //This method doesn't check for input errors until all three inputs have been inputted
     private static void sellerDashboard(Scanner scan, Seller curSeller){
-        System.out.println("Which type of dashboard would you like to see?\n1)Customers\n2)Products");
+        System.out.println("Which type of dashboard would you like to see?\n1) Customers\n2) Products");
         boolean inputting = true;
         String sortPrompt = "";
         while (inputting) { //until dashboard choice is fully imputed
@@ -579,11 +569,11 @@ public class Runner {
             //Customer chose which dashboard to see
             switch (sellerChoice) {
                 case 1:  //Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Customer name\n2)Number of products bought\n3)Total spent";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Customer name\n2) Number of products bought\n3) Total spent";
                     break;
 
                 case 2:  //My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1)Product name\n2)Number of products sold\n3)Total revenue";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products sold\n3) Total revenue";
 
                     break;
                 default:  //error, will be printed at loop end.
@@ -599,7 +589,7 @@ public class Runner {
             }
 
             //Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1)Ascending\n2)Descending");
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending");
             int sellerAscChoice;
             boolean ascending = false;
             try {
@@ -636,10 +626,14 @@ public class Runner {
     }
     private static void editUser (Scanner scan) {
         while (true) {
-            String newUserString = "";
-            String prevUserString = "";
-            System.out.println("What would you like to do?\n1) Change Email\n2) Change Password\n3) Delete Account\n" +
-                    "4) Exit");
+            String newUserString;
+            String prevUserString;
+            System.out.println("""
+                    What would you like to do?
+                    1) Change Email
+                    2) Change Password
+                    3) Delete Account
+                    4) Exit""");
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1:  //Change Email
@@ -665,11 +659,11 @@ public class Runner {
                     case 4:  //Return
                         return;
                     default:  //error
-                        System.out.println("Please enter your choice's corresponding Integer");
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("Please enter your choice's corresponding Integer");
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         }
     }
