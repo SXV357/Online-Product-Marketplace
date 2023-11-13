@@ -6,10 +6,9 @@ public class DashboardTest {
     public static void main(String[] args) {
         CreateDatabaseData.createData();
 
-        //testSellerGetCustomersDashboard();
-        //testSellerGetProductsDashboard();
-        
-        //testCustomerGetStoresDashboard();
+        testSellerGetCustomersDashboard();
+        testSellerGetProductsDashboard();
+        testCustomerGetStoresDashboard();
         testCustomerGetPersonalPurchasesDashboard();
 
     }
@@ -26,7 +25,7 @@ public class DashboardTest {
 
     // Uses users.csv and purchasehistories.csv
     private static void testSellerGetCustomersDashboard() {
-        //System.out.println("Testing SellerGetCustomersDashboard\n _____________");
+        System.out.println("Testing SellerGetCustomersDashboard");
 
         //System.out.println("Alphabetical Descending:");
         //printResults(Dashboard.sellerGetCustomersDashboard(0, false));
@@ -68,7 +67,7 @@ public class DashboardTest {
     }
 
     private static void testSellerGetProductsDashboard() {
-        System.out.println("Testing SellerGetProductsDashboard\n _____________");
+        System.out.println("Testing SellerGetProductsDashboard");
 
         //System.out.println("Alphabetical Descending:");
         //printResults(Dashboard.sellerGetProductsDashboard(0, false));
@@ -121,7 +120,7 @@ public class DashboardTest {
     }
 
     private static void testCustomerGetStoresDashboard() {
-        System.out.println("Testing CustomerGetStoresDashboard\n _____________");
+        System.out.println("Testing CustomerGetStoresDashboard");
 
         //System.out.println("Alphabetical Descending:");
         //printResults(Dashboard.customerGetStoresDashboard(0, false));
@@ -159,7 +158,7 @@ public class DashboardTest {
     }
 
     private static void testCustomerGetPersonalPurchasesDashboard() {
-        System.out.println("Testing CustomerGetPersonalPurchasesDashboard\n _____________");
+        System.out.println("Testing CustomerGetPersonalPurchasesDashboard");
 
         //System.out.println("Alphabetical Ascending for customer C100001:");
         //printResults(Dashboard.customerGetPersonalPurchasesDashboard(0, true, "C100001"));
@@ -192,7 +191,7 @@ public class DashboardTest {
             return;
         }
 
-        System.out.println("customerGetStoresDashboard() Testing completed without errors!");
+        System.out.println("customerGetPersonalPurchasesDashboard() Testing completed without errors!");
 
     }
 
