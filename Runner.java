@@ -4,12 +4,11 @@ import java.util.Scanner;
 
 /**
  * Project 4 - Runner.java
- *
+ * <p>
  * Driver class for the application
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 13, 2023
  */
 
@@ -17,8 +16,9 @@ public class Runner {
     private static final Database db = new Database(); // Makes a Database object
     private static boolean userLoggedIn = false; // This boolean is used to check if the user has logged in successfully
     private static User curUser = new User(); // This field stores the user object for the current User of the program
-    private static final String LINE_BREAK ="\n-------------------------------------------------";
-    private static final String SWITCH_IO_ERROR_MESSAGE = "Input Error:\nPlease enter your choice's corresponding Integer" + LINE_BREAK;
+    private static final String LINE_BREAK = "\n-------------------------------------------------";
+    private static final String SWITCH_IO_ERROR_MESSAGE = "Input Error:\nPlease enter your choice's " +
+            "corresponding Integer" + LINE_BREAK;
 
     // Welcomes the user and asks them whether they would like to: Log-in, Create
     // Account, or Quit
@@ -77,7 +77,7 @@ public class Runner {
         String uPassword = scan.nextLine();
         if (uEmail.isEmpty() || uPassword.isEmpty()) {
             System.out.println("Fields cannot be blank" + LINE_BREAK);
-        } else if (db.retrieveUserMatchForSignUp(uEmail) != null) { // Check to see if there is a user with the email already
+        } else if (db.retrieveUserMatchForSignUp(uEmail) != null) { //see if there is a user with the email already
             System.out.println("User already exists");
         } else {
             UserRole uRole = UserRole.UNDECIDED; // New user is defaulted to undecided until they set it
@@ -274,7 +274,8 @@ public class Runner {
                         break;
                     case 4: // Import Products
                         while (true) { // loop until import is successful
-                            System.out.println("Please enter the file path for the import\n Enter \"Quit\" to exit" + LINE_BREAK);
+                            System.out.println("Please enter the file path for the import\n Enter \"Quit\" to exit"
+                                    + LINE_BREAK);
                             String filePath = scan.nextLine();
                             if (filePath.equals("Quit") || filePath.equals("quit")) {
                                 break;
@@ -316,7 +317,7 @@ public class Runner {
             }
         }
         int editProductChoice;
-        Product chosenProduct = new Product("", 0, 0, ""); // Where is the empty constructor
+        Product chosenProduct = new Product("", 0, 0, "");
         try {
             editProductChoice = Integer.parseInt(scan.nextLine());
             if (editProductChoice == productList.size() + 1) {
@@ -352,7 +353,7 @@ public class Runner {
         }
     }
 
-    public static void showAllProducts(Scanner scan, Customer curCustomer , Boolean searching) {
+    public static void showAllProducts(Scanner scan, Customer curCustomer, Boolean searching) {
         if (searching) {
             System.out.println("What would you like to search for?");
             String query = scan.nextLine();
@@ -516,10 +517,12 @@ public class Runner {
             // Customer chose which dashboard to see
             switch (customerChoice) {
                 case 1: // Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Store name\n2) Number of product sales\n3) Total revenue" + LINE_BREAK;
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Store name\n2) Number of " +
+                            "product sales\n3) Total revenue" + LINE_BREAK;
                     break;
                 case 2: // My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products bought\n3 )Total spent" + LINE_BREAK;
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of " +
+                            "products bought\n3 )Total spent" + LINE_BREAK;
                     break;
                 default: // error, will be printed at loop end.
                     break;
@@ -534,7 +537,8 @@ public class Runner {
             }
 
             // Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending" + LINE_BREAK);
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending"
+                    + LINE_BREAK);
             int customerAscChoice;
             boolean ascending = false;
             try {
@@ -590,10 +594,12 @@ public class Runner {
             // Customer chose which dashboard to see
             switch (sellerChoice) {
                 case 1: // Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Customer name\n2) Number of products bought\n3) Total spent" + LINE_BREAK;
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Customer name\n" +
+                            "2) Number of products bought\n3) Total spent" + LINE_BREAK;
                     break;
                 case 2: // My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products sold\n3) Total revenue" + LINE_BREAK;
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n" +
+                            "2) Number of products sold\n3) Total revenue" + LINE_BREAK;
                     break;
                 default: // error, will be printed at loop end.
                     break;
@@ -608,7 +614,8 @@ public class Runner {
             }
 
             // Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending" + LINE_BREAK);
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending"
+                    + LINE_BREAK);
             int sellerAscChoice;
             boolean ascending = false;
             try {
