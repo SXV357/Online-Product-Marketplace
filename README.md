@@ -48,8 +48,10 @@ Relationship to other classes: Interacts with all other classes to retrieve, add
 Superclass that represents the characteristics associated with all users in the application. When a new user is created, they are assigned a unique 7-digit ID which also has a marker associated with it to signify if the current user is a seller or a customer.
 - Getters for retrieving all the users' attributes(Identification Number, Email, Password, Role)
 - Setters for the customer's email and password for account modification
+    - Functionality to check if the new email that the user wants to modify their current email to is already associated with   an existing account in the users.csv database
 - Initialize a newly created user with a new unique ID
 - Initialize an already existing user when they log back into the application with their identification number, email, password, and role
+- Delete account and all corresponding database entries
 
 Relationship to other classes: Users need to exist in order to be able to interact with the application.
 
