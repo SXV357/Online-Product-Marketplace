@@ -200,7 +200,8 @@ public class Customer extends User {
             shoppingCart.remove(index);
             return true;
         } catch (IndexOutOfBoundsException e) {
-            return false;
+            throw e;
+            //return false;
         }
 
     }
