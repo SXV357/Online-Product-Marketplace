@@ -63,13 +63,14 @@
 14. When the customer retrieves the marketplace that has products, it returns a properly formatted list
 15. When the customer retrieves an empty marketplace, it returns "No Products Available"
 16. When the customer purchases items, the program correctly adds the item to the purchase history, removes the entry from the cart, and updates the quantity of the product on the marketplace. If there is a duplicate product in the purchase history, the quantity and purchase price will be summed.
-17. When the customer sorts the stores with an invalid tag, returns "Invalid Search!"
-18. When the customer sorts the stores by price, the bubble sort returns a correctly formatted list from least to highest prices
-19. When the customer sorts the stores by quantity, the bubble sort returns a correctly formatted list from least to highest quantities
-20. When the customer searches the product information by an unsearchable query, returns "Query has returned no results!"
-21. When the customer searches the product by product name, store name, or description, the program returns stores and products with those distinct attributes
-22. When the customer exports their purchase history, a file is created under the "exportedHistory" directory with a "[email].csv" file with their past purchases
-23. When the customer exports their purchase history and they have made no purchases, return false and no file is created.
+17. When the customer purchases an item that is out of stock, returns an error message, removes the item from the cart, does not update the product page quantity, and continues purchasing items.
+18. When the customer sorts the stores with an invalid tag, returns "Invalid Search!"
+19. When the customer sorts the stores by price, the bubble sort returns a correctly formatted list from least to highest prices
+20. When the customer sorts the stores by quantity, the bubble sort returns a correctly formatted list from least to highest quantities
+21. When the customer searches the product information by an unsearchable query, returns "Query has returned no results!"
+22. When the customer searches the product by product name, store name, or description, the program returns stores and products with those distinct attributes
+23. When the customer exports their purchase history, a file is created under the "exportedHistory" directory with a "[email].csv" file with their past purchases
+24. When the customer exports their purchase history and they have made no purchases, return false and no file is created.
 
 ## Dashboard 
 ### Note: The tests for the Dashboard class can be found in the root directory in the TestDashboard.java class. Tests were performed by checking that the output of each function equaled the expected output for the given dataset. 3 tests were performed for each method: sort descending by name, sort ascending by quantity, and sort ascending by total revenue. Invalid input testing was not performed as dashboard is an internal class only meant to be called by other classes. For the `customerGetPersonalPurchasesDashboard()` method, testing was also done on a different customer for each test case.
