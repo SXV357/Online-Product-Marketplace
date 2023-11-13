@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 12, 2023
+ * @version November 13, 2023
  */
 public class Seller extends User {
 
@@ -334,7 +334,8 @@ public class Seller extends User {
 
                         String salesInformation = String.format(
                                 "\tCustomer: %s, Product: %s-%s, Quantity Purchased: %d, Revenues: %.2f",
-                                customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5], purchaseQuantity, revenues);
+                                customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5],
+                                purchaseQuantity, revenues);
 
                         if (!salesByStore.containsKey(storeIdentifier)) {
                             salesByStore.put(storeIdentifier, new ArrayList<String>());
