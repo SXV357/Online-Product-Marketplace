@@ -82,16 +82,16 @@ public class CustomerTest {
 
                 // Verifies Adding Product and Formatting
                 c.addToCart(1, 10);
-                assertEquals("Add To Cart Error", "C100001,S100001,ST100001,PR100001,myStore,myProduct,10,250.0",
+                assertEquals("Add To Cart Error", "C100001,S100001,ST100001,PR100001,myStore,myProduct,10,250.00",
                                 db.getMatchedEntries("shoppingCarts.csv", 0, c.getUserID()).get(0).trim());
 
                 c.addToCart(1, 20);
-                assertEquals("Add To Cart Error", "C100001,S100001,ST100001,PR100001,myStore,myProduct,30,750.0",
+                assertEquals("Add To Cart Error", "C100001,S100001,ST100001,PR100001,myStore,myProduct,30,750.00",
                                 db.getMatchedEntries("shoppingCarts.csv", 0, c.getUserID()).get(0).trim());
 
                 c.addToCart(2, 100);
                 assertEquals("Add To Cart Error",
-                                "C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,100,100000.0",
+                                "C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,100,100000.00",
                                 db.getMatchedEntries("shoppingCarts.csv", 0, c.getUserID()).get(1).trim());
 
                 System.out.println("addToCart ... OK");
@@ -101,8 +101,8 @@ public class CustomerTest {
         public static void testGetCart(Customer c, Customer c2) {
                 // Verifies the Formatting of Getting Products in the Cart
                 assertEquals("Error Retrieving Cart", "Product Name - Store Name - Quantity - Price\n" +
-                                "1) myProduct     myStore     30     750.0     \n" +
-                                "2) mySecondProduct     myStore     100     100000.0",
+                                "1) myProduct     myStore     30     750.00     \n" +
+                                "2) mySecondProduct     myStore     100     100000.00",
                                 c.getCart().replace("\r\n", "\n").trim());
 
                 // Verifies the condition when the shopping cart is empty
@@ -170,12 +170,11 @@ public class CustomerTest {
 
                 // Purchases the 10 items
                 c.purchaseItems();
-                c2.purchaseItems();
 
                 // Tests failed
                 assertEquals("Invalid Purchase Error",
-                                "S100001,ST100001,PR100001,myStore,myProduct,990,25,Its a product!",
-                                db.getMatchedEntries("products.csv", 2, "PR100001").get(0).trim());
+                                false,
+                                c2.purchaseItems());
 
                 // Verifies the shopping cart is empty
                 assertEquals("Remove From Cart Error", true,

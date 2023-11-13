@@ -200,8 +200,7 @@ public class Customer extends User {
             shoppingCart.remove(index);
             return true;
         } catch (IndexOutOfBoundsException e) {
-            throw e;
-            //return false;
+            return false;
         }
 
     }
@@ -267,10 +266,8 @@ public class Customer extends User {
             item = shoppingCart.get(i);
             target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
             quantity = Integer.parseInt(item.split(",")[6]);
-            System.out.println(quantity);
-            System.out.println(target[5]);
             if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
-                System.out.println("Unable to add item: " + item.split(",")[5]);
+                return false;
             } else {
                 duplicate = false;
                 for (int j = 0; j < purchasehistory.size(); j++) {
