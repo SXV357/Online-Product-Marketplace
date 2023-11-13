@@ -36,7 +36,7 @@ public class CustomerTest {
                 testGetCart(c, c2);
                 testRemoveFromCart(c, db);
                 testGetShoppingHistory(c, c2);
-                testPurchaseItems(c, db);
+                testPurchaseItems(c, c2, db);
                 testSortProducts(c);
                 testSearchProducts(c);
                 testExportPurchaseHistory(c, c2);
@@ -163,11 +163,19 @@ public class CustomerTest {
         }
 
         @Test(timeout = 1000)
-        public static void testPurchaseItems(Customer c, Database db) {
+        public static void testPurchaseItems(Customer c, Customer c2, Database db) {
                 // Adds 10 of the first product in the marketplace to cart
                 c.addToCart(1, 10);
+                c2.addToCart(1, 1000);
+
                 // Purchases the 10 items
                 c.purchaseItems();
+                c2.purchaseItems();
+
+                // Tests failed
+                assertEquals("Invalid Purchase Error",
+                                "S100001,ST100001,PR100001,myStore,myProduct,990,25,Its a product!",
+                                db.getMatchedEntries("products.csv", 2, "PR100001").get(0).trim());
 
                 // Verifies the shopping cart is empty
                 assertEquals("Remove From Cart Error", true,
@@ -261,12 +269,12 @@ public class CustomerTest {
                                 sb.append(line).append("\n");
                         }
                         assertEquals("Export Purchase History Error",
-                                        "C100001,S100001,ST100001,PR100001,myStore,myProduct,10,250\n" +
+                                        "C100001,S100001,ST100001,PR100001,myStore,myProduct,20,500.0\n" +
                                                         "C100001,S100001,ST100001,PR100002,myStore," +
                                                 "mySecondProduct,1,1000\n"
                                                         +
                                                         "C100001,S100002,ST100002,PR100003,otherStore," +
-                                                "otherProduct,1,1",
+                                                        "otherProduct,1,1",
                                         sb.toString().trim());
 
                         System.out.println("exportPurchaseHistory ... OK");
