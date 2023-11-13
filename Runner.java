@@ -392,7 +392,7 @@ public class Runner {
                         int availableQuantity = Integer.parseInt(
                                 curCustomer.getProductInfo(productSelection).substring(
                                         curCustomer.getProductInfo(productSelection).indexOf("Quantity: ") + 10,
-                                        curCustomer.getProductInfo(productSelection).indexOf("\nPrice:") - 1));
+                                        curCustomer.getProductInfo(productSelection).indexOf("\nPrice:")));
                         int quantity = Integer.parseInt(scan.nextLine());
                         if (quantity < 1) {
                             System.out.println("Please enter a positive integer for the number you wish to purchase");
@@ -427,7 +427,7 @@ public class Runner {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1: // checkout
                         boolean purchased = curCustomer.purchaseItems();
-                        if (purchased) {
+                        if (!purchased) {
                             System.out.println("Error: not enough products in stock\n product has been removed" +
                                     "from cart");
                         }
@@ -489,8 +489,13 @@ public class Runner {
                     marketUI(scan, curCustomer);
                     break;
                 case 2: // Purchase History
-                    curCustomer.exportPurchaseHistory();
-                    System.out.println("Purchase history has been exported to the exportedHistory directory.");
+                    boolean historyExported = curCustomer.exportPurchaseHistory();
+                    if (historyExported) {
+                        System.out.println("Purchase history has been exported to the exportedHistory directory.");
+                    } else {
+                        System.out.println("Purchase History is empty");
+                    }
+                    
                     break;
                 case 3: // Dashboard
                     customerDashboard(scan, curCustomer);

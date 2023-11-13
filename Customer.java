@@ -267,6 +267,8 @@ public class Customer extends User {
             target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
             quantity = Integer.parseInt(item.split(",")[6]);
             if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
+                db.removeFromDatabase("shoppingCarts.csv", item);
+                shoppingCart.remove(item);
                 return false;
             } else {
                 duplicate = false;
