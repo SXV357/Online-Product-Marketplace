@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 12, 2023
+ * @version November 13, 2023
  */
 
 public class Runner {
@@ -259,7 +259,8 @@ public class Runner {
                             System.out.println("What would you like the new value to be?");
                             newValue = scan.nextLine();
                         } while (newValue == null);
-                        if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam, newValue)) {
+                        if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam,
+                                newValue)) {
                             System.out.println("Product successfully edited");
                         } else {
                             System.out.println("Error editing product"); // fix to be more specific
@@ -517,10 +518,8 @@ public class Runner {
                 case 1: // Stores
                     sortPrompt = "Select how you would like to sort the dashboard.\n1) Store name\n2) Number of product sales\n3) Total revenue" + LINE_BREAK;
                     break;
-
                 case 2: // My Purchases
                     sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products bought\n3 )Total spent" + LINE_BREAK;
-
                     break;
                 default: // error, will be printed at loop end.
                     break;
@@ -593,10 +592,8 @@ public class Runner {
                 case 1: // Stores
                     sortPrompt = "Select how you would like to sort the dashboard.\n1) Customer name\n2) Number of products bought\n3) Total spent" + LINE_BREAK;
                     break;
-
                 case 2: // My Purchases
                     sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products sold\n3) Total revenue" + LINE_BREAK;
-
                     break;
                 default: // error, will be printed at loop end.
                     break;
