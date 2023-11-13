@@ -9,6 +9,10 @@ Shafer Anthony Hofmann - Submitted Report on Brightspace
 
 Shreyas Viswanathan - Submitted project on Vocareum's workspace
 
+# Testing
+
+Testing information can be found in Tests.md in the project root directory.
+
 # Class Information
 
 ## Runner
@@ -104,7 +108,3 @@ Relationship to other classes: Related to the store class since it represents an
 An enum that represents all the possible roles users have in the application.
 
 Relationship to other classes: All users need to have a defined role in the application to take any actions.
-
-# Testing
-
-Testing information can be found in Tests.md in the project root directory.
