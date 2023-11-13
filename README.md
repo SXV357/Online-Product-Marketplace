@@ -2,9 +2,14 @@
 
 # Instructions
 From the root directory of the project, compile Runner.java and then execute it which will launch the main application.
-Note: commas are used as the database separating character.
+When the user is prompted with a list of numbered options, they should input a number corresponding with their choice.
+When the user is asked a question, they should input their choice in lowercase.
+Example:
+>Would you like to change the product's name, quantity, price, or description?
+User can input "name", "quantity", "price", or "description"
+Note: commas are used internally as a separating character in our file structure.
 The current version of this program may crash if certain user inputted fields are filled out with commas.
-This will be fixed in the next iteration of the project.
+This error will be fixed in the next iteration of the project.
 
 # Project Submission Details
 
