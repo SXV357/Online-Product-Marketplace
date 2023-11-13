@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 
  * @version November 12, 2023
  */
-public class TestDatabase {
+public class DatabaseTest {
     static final String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,SELLER";
     static final String nonExistentStoreEntry = "100912,Store100,90";
     static final String nonExistentProductEntry = "100912,Store100,Apple,10,2,This is an apple";

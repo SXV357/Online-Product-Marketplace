@@ -9,7 +9,7 @@
  * 
  * @version November 12, 2023
  */
-public class TestUser {
+public class UserTest {
     public static void main(String[] args) {
 
         CreateDatabaseData.clearData();
