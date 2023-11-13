@@ -177,7 +177,8 @@ public class Seller extends User {
                 }
             }
 
-            Product newProduct = new Product(productName, availableQuantity, price, productDescription.replace(",", ""));
+            Product newProduct = new Product(productName, availableQuantity, price,
+                    productDescription.replace(",", ""));
 
             String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0],
                     newProduct.getProductIdentificationNumber(), storeName) + "," + newProduct.toString();

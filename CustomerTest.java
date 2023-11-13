@@ -270,7 +270,8 @@ public class CustomerTest {
                         }
                         assertEquals("Export Purchase History Error",
                                         "C100001,S100001,ST100001,PR100001,myStore,myProduct,20,500.0\n" +
-                                                        "C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,1,1000\n"
+                                                        "C100001,S100001,ST100001,PR100002,myStore," +
+                                                "mySecondProduct,1,1000\n"
                                                         +
                                                         "C100001,S100002,ST100002,PR100003,otherStore," +
                                                         "otherProduct,1,1",
