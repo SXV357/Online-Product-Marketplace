@@ -36,7 +36,7 @@ public class DashboardTest {
 
     // Uses users.csv and purchasehistories.csv
     private static void testSellerGetCustomersDashboard() {
-        // System.out.println("Testing SellerGetCustomersDashboard\n _____________");
+        System.out.println("Testing SellerGetCustomersDashboard\n _____________");
 
         // System.out.println("Alphabetical Descending:");
         // printResults(Dashboard.sellerGetCustomersDashboard(0, false));
