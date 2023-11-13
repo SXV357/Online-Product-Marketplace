@@ -15,15 +15,18 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 12, 2023
+ * @version November 13, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
     private static final String usersDatabaseHeaders = "ID,Email,Password,Role";
     private static final String storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
-    private static final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description";
-    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
-    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
+    private static final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
+            "Available Quantity,Price,Description";
+    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store " +
+            "Name,Product Name,Purchase Quantity,Price";
+    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name," +
+            "Product Name,Purchase Quantity,Price";
 
     /**
      * Takes in the name of the file as input and returns a string containing all
@@ -408,8 +411,8 @@ public class Database {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            // System.out.println("There was an error when updating the contents of " +
-            // fileName);
+             System.out.println("There was an error when updating the contents of " +
+             fileName);
         }
     }
 }
