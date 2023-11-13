@@ -1,4 +1,3 @@
-import javax.sound.sampled.Line;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -233,9 +232,8 @@ public class Runner {
                         }
                         System.out.println("Describe the product please");
                         String description = scan.nextLine();
-                        boolean worked = curSeller.createNewProduct(curStore.getStoreName(), productName,
+                        curSeller.createNewProduct(curStore.getStoreName(), productName,
                                 availableQuantity, price, description);
-                        System.out.println(worked);
                         break;
                     case 2: // Edit Product
                         if (curStore.getProducts() == null) {
@@ -428,7 +426,11 @@ public class Runner {
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1: // checkout
-                        curCustomer.purchaseItems();
+                        boolean purchased = curCustomer.purchaseItems();
+                        if (purchased) {
+                            System.out.println("Error: not enough products in stock\n product has been removed" +
+                                    "from cart");
+                        }
                         break;
                     case 2: // remove an item
                         System.out.println("Which item would you like to remove?" + LINE_BREAK);
@@ -488,6 +490,7 @@ public class Runner {
                     break;
                 case 2: // Purchase History
                     curCustomer.exportPurchaseHistory();
+                    System.out.println("Purchase history has been exported to the exportedHistory directory.");
                     break;
                 case 3: // Dashboard
                     customerDashboard(scan, curCustomer);
