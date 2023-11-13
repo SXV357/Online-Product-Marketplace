@@ -13,6 +13,9 @@ import java.util.ArrayList;
  */
 public class CreateDatabaseData {
 
+    public static void main(String[] args) {
+        createData();
+    }
     public static void clearData() {
         Database database = new Database();
 
