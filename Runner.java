@@ -282,7 +282,7 @@ public class Runner {
                             }
                         }
                     case 5:  //Export Products
-                        curSeller.exportProducts(curStore.getStoreIdentificationNumber());
+                        curSeller.exportProducts(curStore.getStoreName());
                         System.out.println("Products have been exported to " + "exportedProducts/"
                                 + curStore.getStoreName() + ".csv");
                         break;
