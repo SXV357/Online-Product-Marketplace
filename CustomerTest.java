@@ -178,7 +178,7 @@ public class CustomerTest {
 
                 // Verifies the shopping cart is empty
                 assertEquals("Remove From Cart Error", true,
-                                db.getMatchedEntries("shoppin   gCarts.csv", 0, "C100001").isEmpty());
+                                db.getMatchedEntries("shoppingCarts.csv", 0, "C100001").isEmpty());
 
                 // Verifies the updated purchase history
                 assertEquals("Update Purchase History Error",
