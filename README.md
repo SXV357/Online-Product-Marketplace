@@ -137,14 +137,14 @@ Class that handles all testing related to the functionalities implemented in the
 
 Relationship to other classes: Tests the functionalities in the Store class.
 
-# UserTest
+## UserTest
 Class that handles all testing related to the functionalities implemented in the User class.
 - Includes tests to verify that all the required functionalities are working as expected
 - Includes tests to verify that no methods crash or throw exceptions when receiving invalid input.
 
 Relationship to other classes: Tests the functionalities in the User class.
 
-# DatabaseTest
+## DatabaseTest
 Class that handles all testing related to the functionalities implemented in the Database class.
 - Includes tests to verify that all the required functionalities are working as expected
 - Includes tests to verify that no methods crash or throw exceptions when receiving invalid input.
