@@ -12,9 +12,8 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version November 2, 2023
+ * @version November 12, 2023
  */
-
 public class Customer extends User {
 
     private ArrayList<String> shoppingCart;
@@ -318,7 +317,6 @@ public class Customer extends User {
                     }
                 }
             }
-            
             return formatProducts(sorted, quantity);
         } else {
             return "Invalid search!";
