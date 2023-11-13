@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -101,8 +100,12 @@ public class Runner {
     public static int sellerPrompt(Scanner scan) {
         int sellerChoice;
         do {
-            System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Edit Account\n" +
-                    "5) Sign Out");
+            System.out.println("""
+                    1) Stores
+                    2) Dashboard
+                    3) Customer Shopping Carts
+                    4) Edit Account
+                    5) Sign Out""");
             try {
                 sellerChoice = Integer.parseInt(scan.nextLine());
                 if (sellerChoice > 0 && sellerChoice < 6) {
@@ -119,8 +122,13 @@ public class Runner {
     public static int customerPrompt(Scanner scan) {
         int customerChoice;
         do {
-            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n5) Edit Account\n" +
-                    "6) Sign Out");
+            System.out.println("""
+                    1) Market
+                    2) Purchase History
+                    3) Dashboard
+                    4) Shopping Cart
+                    5) Edit Account
+                    6) Sign Out""");
             try {
                 customerChoice = Integer.parseInt(scan.nextLine());
                 if (customerChoice > 0 && customerChoice < 7) {
@@ -183,7 +191,6 @@ public class Runner {
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 System.out.println(SWITCH_IO_ERROR_MESSAGE);
             }
         }
@@ -191,6 +198,7 @@ public class Runner {
 
     public static void manageStore(Scanner scan, Seller curSeller, Store curStore) {
         while (true) {  //loops until seller goes back
+            Product curProduct = pickProduct(scan, curStore);
             System.out.println(curStore.getStoreName() + " Options:\n1) Create Product\n2) Edit Product\n" +
                     "3) Delete Product\n4) Import Products\n5) Export Products\n6) Go Back");
             try {
@@ -225,7 +233,7 @@ public class Runner {
                         System.out.println(worked);
                         break;
                     case 2:  //Edit Product
-                        Product curProduct = pickProduct(scan, curSeller, curStore);
+
                         if (curProduct == null) {
                             break;
                         }
@@ -242,13 +250,10 @@ public class Runner {
                             }
                         }
                         String newValue;
-                        while (true) {  //loops until newValue is not null
+                        do {  //loops until newValue is not null
                             System.out.println("What would you like the new value to be?");
                             newValue = scan.nextLine();
-                            if (newValue != null) {
-                                break;
-                            }
-                        }
+                        } while (newValue == null);
                         if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam, newValue)) {
                             System.out.println("Product successfully edited");
                         } else {
@@ -256,7 +261,7 @@ public class Runner {
                         }
                         break;
                     case 3:  //Delete Product
-                        curProduct = pickProduct(scan, curSeller, curStore);
+                        curProduct = pickProduct(scan, curStore);
                         curSeller.deleteProduct(curStore.getStoreName(),
                                 curProduct.getName());
                         System.out.println("Product has been deleted");
@@ -294,7 +299,7 @@ public class Runner {
         }
     }
 
-    public static Product pickProduct(Scanner scan, Seller curSeller, Store curStore) {
+    public static Product pickProduct(Scanner scan, Store curStore) {
         ArrayList<Product> productList = curStore.getProducts();
         System.out.println("Which product would you like to adjust?");
         for (int i = 0; i <= productList.size(); i++) {
@@ -321,8 +326,11 @@ public class Runner {
 
     public static void marketUI(Scanner scan, Customer curCustomer) {
         while (true) {  //loops until user selects to go back
-            System.out.println("What would you like to do?\n1) View All Products\n2) Search for a Product\n" +
-                    "3) Return");
+            System.out.println("""
+                    What would you like to do?
+                    1) View All Products
+                    2) Search for a Product
+                    3) Return""");
             int marketChoice = Integer.parseInt(scan.nextLine());
             switch (marketChoice) {
                 case 1:  //View Products
@@ -421,7 +429,7 @@ public class Runner {
                     sellerDashboard(scan, curSeller);
                     break;
                 case 3:  //Customer Shopping Carts
-                    System.out.println(curSeller.viewCustomerShoppingCarts());;
+                    System.out.println(curSeller.viewCustomerShoppingCarts());
                     break;
                 case 4:  //Edit user
                     editUser(scan);
@@ -618,10 +626,14 @@ public class Runner {
     }
     private static void editUser (Scanner scan) {
         while (true) {
-            String newUserString = "";
-            String prevUserString = "";
-            System.out.println("What would you like to do?\n1) Change Email\n2) Change Password\n3) Delete Account\n" +
-                    "4) Exit");
+            String newUserString;
+            String prevUserString;
+            System.out.println("""
+                    What would you like to do?
+                    1) Change Email
+                    2) Change Password
+                    3) Delete Account
+                    4) Exit""");
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1:  //Change Email
