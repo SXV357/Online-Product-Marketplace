@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 /**
  * Project 4 - CreateDatabaseData.java
  * 
@@ -38,17 +39,6 @@ public class CreateDatabaseData {
 
     public static void createData() {
         Database database = new Database();
-
-        /*
-         * usersDatabaseHeaders = "ID,Email,Password,Role";
-         * storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
-         * productsDatabaseHeaders =
-         * "Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description"
-         * purchaseHistoryDatabaseHeaders =
-         * "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price"
-         * shoppingCartDatabaseHeaders = Customer ID,Seller ID,Store ID,Product ID,Store
-         * Name,Product Name,Purchase Quantity,Price"
-         */
 
         // Users
         ArrayList<String> testUsers = new ArrayList<>();

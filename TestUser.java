@@ -11,7 +11,7 @@
  */
 public class TestUser {
     public static void main(String[] args) {
-        
+
         CreateDatabaseData.clearData();
 
         /* CREATE NEW DATABASE INSTANCE FOR TESTING PURPOSES */
@@ -74,7 +74,10 @@ public class TestUser {
         String expectedShoppingCartContents = "[]";
         String expectedPurchaseHistoryContents = "[]";
 
-        return resultUserContents.equals(expectedUserContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents)
+                && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
+                        : "Test Failed";
     }
 
     static String deleteSellerAccountSuccessful(Database db) {
@@ -93,7 +96,9 @@ public class TestUser {
         String expectedProductContents = "[]";
         String expectedShoppingCartContents = "[]";
 
-        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents) && resultProductsContents.equals(expectedProductContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents)
+                && resultProductsContents.equals(expectedProductContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents) ? "Test Passed" : "Test Failed";
     }
 
 }

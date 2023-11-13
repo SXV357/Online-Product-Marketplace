@@ -1,12 +1,15 @@
 import java.util.ArrayList;
+
 /**
  * Project 4 - Store.java
  *
- * Class that represents an individual store that belongs to a seller in the application.
+ * Class that represents an individual store that belongs to a seller in the
+ * application.
  *
- * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic Miller, Oliver Long
+ * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
+ *         Miller, Oliver Long
  *
- * @version November 9, 2023
+ * @version November 12, 2023
  */
 public class Store {
 
@@ -16,7 +19,8 @@ public class Store {
     private String storeName;
 
     /**
-     * Creating a new store for the first time. Generates a unique ID and adds a signifier to it indicating that it is a store.
+     * Creating a new store for the first time. Generates a unique ID and adds a
+     * signifier to it indicating that it is a store.
      * 
      * @param storeName The new store's name
      */
@@ -29,7 +33,7 @@ public class Store {
      * Re-initialize an already-existing store
      * 
      * @param storeIdentificationNumber The existing store's ID
-     * @param storeName The existing store's name
+     * @param storeName                 The existing store's name
      */
     public Store(String storeIdentificationNumber, String storeName) {
         this.storeIdentificationNumber = storeIdentificationNumber;
@@ -37,7 +41,9 @@ public class Store {
     }
 
     /**
-     * Queries the database for product entries associated with this store then bundles all the entries into product objects and returns them in the form of an arraylist.
+     * Queries the database for product entries associated with this store then
+     * bundles all the entries into product objects and returns them in the form of
+     * an arraylist.
      * 
      * @return An arraylist of all the products associated with this store
      */
@@ -49,7 +55,8 @@ public class Store {
         }
         for (int i = 0; i < matchedProducts.size(); i++) {
             String[] productEntry = matchedProducts.get(i).split(",");
-            Product product = new Product(productEntry[2], productEntry[4], Integer.parseInt(productEntry[5]), Double.parseDouble(productEntry[6]), productEntry[7]);
+            Product product = new Product(productEntry[2], productEntry[4], Integer.parseInt(productEntry[5]),
+                    Double.parseDouble(productEntry[6]), productEntry[7]);
             products.add(product);
         }
         return products;
@@ -63,7 +70,7 @@ public class Store {
     public String getStoreIdentificationNumber() {
         return this.storeIdentificationNumber;
     }
-    
+
     /**
      * Gets the current store's name
      * 
@@ -74,7 +81,8 @@ public class Store {
     }
 
     /**
-     * Returns a unique 7-digit ID as long as the current ID is not already associated with an existing account in the stores.csv database
+     * Returns a unique 7-digit ID as long as the current ID is not already
+     * associated with an existing account in the stores.csv database
      * 
      * @return A unique 7-digit ID
      */
