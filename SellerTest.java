@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * 
  * @version November 12, 2023
  */
-public class TestStoreManagement {
+public class SellerTest {
 
     public static void main(String[] args) {
 

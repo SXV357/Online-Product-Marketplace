@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 
  * @version November 12, 2023
  */
-public class TestStore {
+public class StoreTest {
     public static void main(String[] args) {
 
         CreateDatabaseData.clearData();
