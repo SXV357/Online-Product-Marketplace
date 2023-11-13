@@ -404,7 +404,6 @@ public class Database {
             }
             bw.flush();
             bw.close();
-            //System.out.println("The contents of " + fileName + " were updated successfully!");
         } catch (IOException e) {
             //System.out.println("There was an error when updating the contents of " + fileName);
         }

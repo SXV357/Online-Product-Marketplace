@@ -101,7 +101,7 @@ public class Runner {
         int sellerChoice;
         do {
             System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Edit Account\n" +
-                    "6) Sign Out");
+                    "5) Sign Out");
             try {
                 sellerChoice = Integer.parseInt(scan.nextLine());
                 if (sellerChoice > 0 && sellerChoice < 6) {
@@ -379,6 +379,10 @@ public class Runner {
 
     private static void customerShoppingCart(Scanner scan, Customer curCustomer) {
         while (true) {
+            if (curCustomer.getCart().equals("No Products Available")) {
+                System.out.println("Shopping Cart is empty");
+                return;
+            }
             System.out.println(curCustomer.getCart());
             System.out.println("What would you like to do?\n1) Checkout\n2) Remove a Product\n3) Return");
             try {

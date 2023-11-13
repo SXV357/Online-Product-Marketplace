@@ -19,9 +19,8 @@ public class TestDatabase {
 
     public static void main(String[] args) {
 
-        /* THE TWO METHODS BELOW NEED TO BE CALLED BEFORE RUNNING ALL THE TESTS DOWN BELOW */
-        // CreateDatabaseData.clearData();
-        // CreateDatabaseData.createDataForDatabaseTests();
+        CreateDatabaseData.clearData();
+        CreateDatabaseData.createDataForDatabaseTests();
 
         /* INITIALIZE A NEW DATABASE INSTANCE FOR TESTING PURPOSES */
         Database db = new Database();
