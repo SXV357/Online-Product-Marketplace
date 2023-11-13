@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * Project 4 - Dashboard.java
@@ -10,15 +8,14 @@ import java.util.HashMap;
  * information, and for sellers to view statistics for each of their stores
  * Uses four methods, two for sellers and two for customers.
  * To create a full dashboard, call the two customer/seller methods, and display
- * the resulting data.
- * Each Dashboard will return an arraylist with three collumns: Name, Total
- * quantity, Total revenue
- * Sort index is which collumn to sort by.
+ * the resulting data. Each Dashboard will return an arraylist with three
+ * collumns: Name, Total
+ * quantity, and Total revenue. Sort index is which collumn to sort by.
  * 
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 2, 2023
+ * @version November 12, 2023
  */
 public class Dashboard {
 
@@ -187,7 +184,8 @@ public class Dashboard {
     }
 
     // Personal Dashboard requires CustomerID
-    // Returns all stores including summed information about purchases made by the customer with customer ID at that store
+    // Returns all stores including summed information about purchases made by the
+    // customer with customer ID at that store
     // Return line format: storeName, Products Bought, Total Spent
     public static ArrayList<String> customerGetPersonalPurchasesDashboard(int sortIndex, boolean sortAscending,
             String customerID) {
@@ -245,8 +243,8 @@ public class Dashboard {
                 Collections.sort(arrayList,
                         (a, b) -> a.split(",")[0].compareTo(b.split(",")[0]));
 
-                        //Alphabetically sorting works reverse to numerical sorting
-                        sortAscending = !sortAscending;
+                // Alphabetically sorting works reverse to numerical sorting
+                sortAscending = !sortAscending;
                 break;
             case 1, 2:
                 // Using a lambda function to compare only the price collumn after casting to
@@ -254,7 +252,7 @@ public class Dashboard {
                 Collections.sort(arrayList,
                         (a, b) -> Double.compare(Double.parseDouble(a.split(",")[sortIndex]),
                                 Double.parseDouble(b.split(",")[sortIndex])));
-                    
+
                 break;
 
         }

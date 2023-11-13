@@ -12,9 +12,8 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version November 2, 2023
+ * @version November 12, 2023
  */
-
 public class Customer extends User {
 
     private ArrayList<String> shoppingCart;
@@ -256,6 +255,7 @@ public class Customer extends User {
         StringBuilder output = new StringBuilder();
         String[] updatedEntry;
         String[] target;
+        int quantity;
         shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
 
@@ -263,25 +263,32 @@ public class Customer extends User {
         String item;
         for (int i = 0; i < shoppingCart.size(); i++) {
             item = shoppingCart.get(i);
-            for (int j = 0; j < purchasehistory.size(); j++) {
-                if (item.split(",")[3].equals(purchasehistory.get(i).split(",")[3])) {
-                    updatedEntry = purchasehistory.get(i).split(",");
-                    updatedEntry[6] = String
-                            .valueOf(Integer.parseInt(updatedEntry[6]) + Integer.parseInt(item.split(",")[6]));
-                    updatedEntry[7] = String
-                            .valueOf(Double.parseDouble(updatedEntry[7]) + Double.parseDouble(item.split(",")[7]));
-                    db.modifyDatabase("purchaseHistories.csv", purchasehistory.get(i), String.join(",", updatedEntry));
-                } else if (j == purchasehistory.size() - 1) {
-                    db.addToDatabase("purchaseHistories.csv", item);
+            target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
+            quantity = Integer.parseInt(item.split(",")[6]);
+            if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
+                System.out.println("Unable to add item: " + item.split(",")[5]);
+            } else {
+                for (int j = 0; j < purchasehistory.size(); j++) {
+                    if (item.split(",")[3].equals(purchasehistory.get(i).split(",")[3])) {
+                        updatedEntry = purchasehistory.get(i).split(",");
+                        updatedEntry[6] = String
+                                .valueOf(Integer.parseInt(updatedEntry[6]) + Integer.parseInt(item.split(",")[6]));
+                        updatedEntry[7] = String
+                                .valueOf(Double.parseDouble(updatedEntry[7]) + Double.parseDouble(item.split(",")[7]));
+                        db.modifyDatabase("purchaseHistories.csv", purchasehistory.get(i),
+                                String.join(",", updatedEntry));
+                    } else if (j == purchasehistory.size() - 1) {
+                        db.addToDatabase("purchaseHistories.csv", item);
+                    }
                 }
+                target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
+                target[5] = String.valueOf(Integer.parseInt(target[5]) - Integer.parseInt(item.split(",")[6]));
+                db.modifyDatabase("products.csv",
+                        db.getMatchedEntries("products.csv", 2, target[2]).get(0),
+                        String.join(",", target));
             }
             db.removeFromDatabase("shoppingCarts.csv", item);
             shoppingCart.remove(item);
-            target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
-            target[5] = String.valueOf(Integer.parseInt(target[5]) - Integer.parseInt(item.split(",")[6]));
-            db.modifyDatabase("products.csv",
-                    db.getMatchedEntries("products.csv", 2, target[2]).get(0),
-                    String.join(",", target));
         }
         return true;
 
@@ -318,7 +325,6 @@ public class Customer extends User {
                     }
                 }
             }
-            
             return formatProducts(sorted, quantity);
         } else {
             return "Invalid search!";

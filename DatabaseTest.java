@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 /**
  * Project 4 - TestDatabase.java
  * 
@@ -8,9 +9,9 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 12, 2023
+ * @version November 13, 2023
  */
-public class TestDatabase {
+public class DatabaseTest {
     static final String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,SELLER";
     static final String nonExistentStoreEntry = "100912,Store100,90";
     static final String nonExistentProductEntry = "100912,Store100,Apple,10,2,This is an apple";
@@ -25,22 +26,27 @@ public class TestDatabase {
         /* INITIALIZE A NEW DATABASE INSTANCE FOR TESTING PURPOSES */
         Database db = new Database();
 
-        /* DATABASE CLASS TESTS*/
+        /* DATABASE CLASS TESTS */
 
         System.out.println("Get File Headers Test Result: " + testGetFileHeaders(db));
         System.out.println("Database Column Bounds Test Result: " + testDatabaseColumnBounds(db));
         System.out.println("Add Initial Database Entries Test Result: " + testAddInitialDatabaseEntries(db));
         System.out.println("Add Duplicate Database Entries Test Result: " + testAddDuplicateDatabaseEntries(db));
         System.out.println("Modify Existing Database Entries Test Result: " + testSuccessfulDatabaseModification(db));
-        System.out.println("Modify Non-Existing Database Entries Test Result: " + testUnsuccessfulDatabaseModification(db));
+        System.out.println(
+                "Modify Non-Existing Database Entries Test Result: " + testUnsuccessfulDatabaseModification(db));
         System.out.println("Remove Existing Database Entries Test Result: " + testSuccessfulDatabaseRemoval(db));
         System.out.println("Remove Non-Existing Database Entries Test Result: " + testUnsuccessfulDatabaseRemoval(db));
         System.out.println("Check ID Existence Test Result: " + testMatchedUserIDs(db));
-        System.out.println("Retrieve User From Database For Login Test Result: " + testUserRetrievalFromDatabaseForLogin(db));
+        System.out.println(
+                "Retrieve User From Database For Login Test Result: " + testUserRetrievalFromDatabaseForLogin(db));
         System.out.println("Database Entry in Existing File(s) Test Result: " + testFileEntryExists(db));
-        System.out.println("Database Entry in Non-Existing File(s) Test Result: " + testUnsuccessfulFileEntryExists(db));
-        System.out.println("Get Database Entries in Existing Files Test Result: " + testSuccessfulGetDatabaseContents(db));
-        System.out.println("Get Database Entries in Non-Existing Files Test Result: " + testUnsuccessfulGetDatabaseContents(db));
+        System.out
+                .println("Database Entry in Non-Existing File(s) Test Result: " + testUnsuccessfulFileEntryExists(db));
+        System.out.println(
+                "Get Database Entries in Existing Files Test Result: " + testSuccessfulGetDatabaseContents(db));
+        System.out.println(
+                "Get Database Entries in Non-Existing Files Test Result: " + testUnsuccessfulGetDatabaseContents(db));
         System.out.println("Get Matched Entries in Existing Files Test Result: " + testSuccessfulGetMatchedEntries(db));
         System.out.println("Get Matched Entries Unsuccessful Test Result: " + testUnsuccessfulGetMatchedEntries(db));
     }
@@ -86,12 +92,14 @@ public class TestDatabase {
         boolean purchaseHistoryColumnInvalid = db.checkColumnBounds("purchaseHistories.csv", 8);
 
         return (userColumnValid && !userColumnInvalid && storeColumnValid && !storeColumnInvalid
-        && productColumnValid && !productColumnInvalid && shoppingCartColumnValid && !shoppingCartColumnInvalid
-        && purchaseHistoryColumnValid && !purchaseHistoryColumnInvalid) ? "Test Passed" : "Test Failed";
+                && productColumnValid && !productColumnInvalid && shoppingCartColumnValid &&
+                !shoppingCartColumnInvalid
+                && purchaseHistoryColumnValid && !purchaseHistoryColumnInvalid) ? "Test Passed" : "Test Failed";
     }
 
     static String testAddInitialDatabaseEntries(Database db) {
-        // Initially adding one entry to each of the databases(None of these entries exist yet)
+        // Initially adding one entry to each of the databases(None of these entries
+        // exist yet)
         String userEntry = "C100000,blabla@yahoo.com,abc123,CUSTOMER";
         String storeEntry = "ST100000,S1000000,Store1,5";
         String productEntry = "S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito";
@@ -110,13 +118,21 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
-        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000,S1000000,Store1,5]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com," +
+                "12315436,SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
+        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000," +
+                "S1000000,Store1,5]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000," +
+                "PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
         String expectedShoppingCartContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
         String expectedPurchaseHistoryContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
 
-        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents) && resultProductContents.equals(expectedProductContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents)
+                && resultProductContents.equals(expectedProductContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents)
+                && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
+                        : "Test Failed";
     }
 
     static String testAddDuplicateDatabaseEntries(Database db) {
@@ -139,13 +155,21 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
-        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000,S1000000,Store1,5]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436," +
+                "SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
+        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000," +
+                "S1000000,Store1,5]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000," +
+                "PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
         String expectedShoppingCartContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
         String expectedPurchaseHistoryContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
 
-        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents) && resultProductContents.equals(expectedProductContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents)
+                && resultProductContents.equals(expectedProductContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents)
+                && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
+                        : "Test Failed";
     }
 
     static String testSuccessfulDatabaseModification(Database db) {
@@ -158,15 +182,17 @@ public class TestDatabase {
 
         boolean userEntryModified = db.modifyDatabase("users.csv", currUserEntry,
                 "C100000,blabla123@gmail.com,abc123,CUSTOMER");
-        boolean storEntryModified = db.modifyDatabase("stores.csv", currStoreEntry, "ST100000,S1000000,StoreSomething,10");
+        boolean storEntryModified = db.modifyDatabase("stores.csv", currStoreEntry,
+                "ST100000,S1000000,StoreSomething,10");
         boolean productEntryModified = db.modifyDatabase("products.csv", currProductEntry,
                 "S1000000,ST1000000,PR1000000,Store1,Apple,10,5.99,Green apple");
         boolean shoppingCartEntryModified = db.modifyDatabase("shoppingCarts.csv", currShoppingCartEntry,
                 "C1000000,S1000000,ST1000000,PR1000000,Store1,Apple,6,35.94");
         boolean purchaseHistoryEntryModified = db.modifyDatabase("purchaseHistories.csv", currPurchaseHistoryEntry,
                 "C1000000,S1000000,ST1000000,PR1000000,Store1,Apple,6,35.94");
-        
-        return (userEntryModified && storEntryModified && productEntryModified && shoppingCartEntryModified && purchaseHistoryEntryModified) ? "Test Passed" : "Test Failed";
+
+        return (userEntryModified && storEntryModified && productEntryModified && shoppingCartEntryModified
+                && purchaseHistoryEntryModified) ? "Test Passed" : "Test Failed";
     }
 
     static String testUnsuccessfulDatabaseModification(Database db) {
@@ -178,10 +204,12 @@ public class TestDatabase {
                 "100912,Store100,Apple,10,3,This is an apple");
         boolean shoppingCartEntryModified = db.modifyDatabase("shoppingCarts.csv", nonExistentShoppingCartEntry,
                 "100678,100912,Store100,Apple,5,15");
-        boolean purchaseHistoryEntryModified = db.modifyDatabase("purchaseHistories.csv", nonExistentPurchaseHistoryEntry,
+        boolean purchaseHistoryEntryModified = db.modifyDatabase("purchaseHistories.csv",
+                nonExistentPurchaseHistoryEntry,
                 "100678,100912,Store100,Apple,5,15");
-        
-        return (!userEntryModified && !storEntryModified && !productEntryModified && !shoppingCartEntryModified && !purchaseHistoryEntryModified) ? "Test Passed" : "Test Failed";
+
+        return (!userEntryModified && !storEntryModified && !productEntryModified && !shoppingCartEntryModified
+                && !purchaseHistoryEntryModified) ? "Test Passed" : "Test Failed";
     }
 
     static String testSuccessfulDatabaseRemoval(Database db) {
@@ -203,13 +231,19 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436," +
+                "SELLER]";
         String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         String expectedShoppingCartContents = "[]";
         String expectedPurchaseHistoryContents = "[]";
 
-        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents) && resultProductContents.equals(expectedProductContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents)
+                && resultProductContents.equals(expectedProductContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents)
+                && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
+                        : "Test Failed";
 
     }
 
@@ -227,13 +261,19 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436," +
+                "SELLER]";
         String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         String expectedShoppingCartContents = "[]";
         String expectedPurchaseHistoryContents = "[]";
 
-        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents) && resultProductContents.equals(expectedProductContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents)
+                && resultProductContents.equals(expectedProductContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents)
+                && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
+                        : "Test Failed";
     }
 
     static String testMatchedUserIDs(Database db) {
@@ -247,7 +287,8 @@ public class TestDatabase {
         boolean productIDMatch = db.checkIDMatch(100001, "products.csv");
         boolean productIDNonMatch = db.checkIDMatch(1234567, "products.csv");
 
-        return (userIDMatch && !userIDNonMatch && storeIDMatch && !storeIDNonMatch && productIDMatch && !productIDNonMatch) ? "Test Passed" : "Test Failed";
+        return (userIDMatch && !userIDNonMatch && storeIDMatch && !storeIDNonMatch && productIDMatch
+                && !productIDNonMatch) ? "Test Passed" : "Test Failed";
     }
 
     static String testUserRetrievalFromDatabaseForLogin(Database db) {
@@ -262,7 +303,10 @@ public class TestDatabase {
         String nonExistentUserThreeResult = db.retrieveUserMatchForLogin("656ghhgf@hotmail.com", "abc123");
 
         String expectedExistentUserResult = "C100001,cherry@gmail.com,12345,CUSTOMER";
-        return (existentUserResult.equals(expectedExistentUserResult) && existentUserTwoResult.equals(expectedExistentUserResult) && nonExistentUserOneResult == null && nonExistentUserTwoResult == null && nonExistentUserThreeResult == null) ? "Test Passed" : "Test Failed";
+        return (existentUserResult.equals(expectedExistentUserResult)
+                && existentUserTwoResult.equals(expectedExistentUserResult) && nonExistentUserOneResult == null
+                && nonExistentUserTwoResult == null && nonExistentUserThreeResult == null) ? "Test Passed"
+                        : "Test Failed";
     }
 
     static String testFileEntryExists(Database db) {
@@ -290,7 +334,10 @@ public class TestDatabase {
         boolean purchaseHistoryEntryNonExistence = db.checkEntryExists("purchaseHistories.csv",
                 nonExistentPurchaseHistoryEntry);
 
-        return (userEntryExists && !userEntryNonExistence && storeEntryExists && !storeEntryNonExistence && productEntryExists && !productEntryNonExistence && !shoppingEntryExists && !shoppingEntryNonExistence && !purchaseHistoryEntryExists && !purchaseHistoryEntryNonExistence) ? "Test Passed" : "Test Failed";
+        return (userEntryExists && !userEntryNonExistence && storeEntryExists && !storeEntryNonExistence
+                && productEntryExists && !productEntryNonExistence && !shoppingEntryExists &&
+                !shoppingEntryNonExistence
+                && !purchaseHistoryEntryExists && !purchaseHistoryEntryNonExistence) ? "Test Passed" : "Test Failed";
     }
 
     static String testUnsuccessfulFileEntryExists(Database db) {
@@ -313,11 +360,14 @@ public class TestDatabase {
 
         String expectedUsers = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER]";
         String expectedStores = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1]";
-        String expectedProducts = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedProducts = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002," +
+                "ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         String expectedShoppingCarts = "[]";
         String expectedPurchaseHistories = "[]";
 
-        return (resultUsers.equals(expectedUsers) && resultStores.equals(expectedStores) && resultProducts.equals(expectedProducts) && resultShoppingCarts.equals(expectedShoppingCarts) && resultPurchaseHistories.equals(expectedPurchaseHistories)) ? "Test Passed" : "Test Failed";
+        return (resultUsers.equals(expectedUsers) && resultStores.equals(expectedStores)
+                && resultProducts.equals(expectedProducts) && resultShoppingCarts.equals(expectedShoppingCarts)
+                && resultPurchaseHistories.equals(expectedPurchaseHistories)) ? "Test Passed" : "Test Failed";
     }
 
     static String testUnsuccessfulGetDatabaseContents(Database db) {
@@ -333,17 +383,20 @@ public class TestDatabase {
     static String testSuccessfulGetMatchedEntries(Database db) {
         ArrayList<String> matchedEntries = db.getMatchedEntries("products.csv", 5, "1000");
         String resultContents = matchedEntries.toString();
-        String expectedResultContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedResultContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         return resultContents.equals(expectedResultContents) ? "Test Passed" : "Test Failed";
     }
 
     static String testUnsuccessfulGetMatchedEntries(Database db) {
         // The index is out of bounds
         ArrayList<String> matchedEntries = db.getMatchedEntries("users.csv", 4, "CUSTOMER");
-        // The index is in bounds but the search parameter doesn't exist in the specified colum
+        // The index is in bounds but the search parameter doesn't exist in the
+        // specified colum
         ArrayList<String> matchedEntriesTwo = db.getMatchedEntries("users.csv", 3, "UNDECIDED");
         // // The provided file name to search for doesn't exist
         ArrayList<String> matchedEntriesThree = db.getMatchedEntries("random.csv", 0, "Something");
-        return matchedEntries.isEmpty() && matchedEntriesTwo.isEmpty() && matchedEntriesThree.isEmpty() ? "Test Passed" : "Test Failed";
+        return matchedEntries.isEmpty() && matchedEntriesTwo.isEmpty() && matchedEntriesThree.isEmpty() ? "Test Passed"
+                : "Test Failed";
     }
 }

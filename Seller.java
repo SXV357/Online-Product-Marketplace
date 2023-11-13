@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 10, 2023
+ * @version November 13, 2023
  */
 public class Seller extends User {
 
@@ -299,9 +299,12 @@ public class Seller extends User {
     }
 
     /**
+     *
      * View a list of sales by store, where the seller can view customer
      * information, product details, how many items the customer purchased, and the
      * revenues per sale.
+     * 
+     * @return A string containing store sale information
      */
     public String viewStoreSales() {
         String result = "";
@@ -331,7 +334,8 @@ public class Seller extends User {
 
                         String salesInformation = String.format(
                                 "\tCustomer: %s, Product: %s-%s, Quantity Purchased: %d, Revenues: %.2f",
-                                customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5], purchaseQuantity, revenues);
+                                customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5],
+                                purchaseQuantity, revenues);
 
                         if (!salesByStore.containsKey(storeIdentifier)) {
                             salesByStore.put(storeIdentifier, new ArrayList<String>());
@@ -371,7 +375,8 @@ public class Seller extends User {
             int numProducts = 0;
             while ((line = br.readLine()) != null) {
                 String[] productLine = line.split(",");
-                boolean productAdded = this.createNewProduct(storeName, productLine[0], Integer.parseInt(productLine[1]), Double.parseDouble(productLine[2]), productLine[3]);
+                boolean productAdded = this.createNewProduct(storeName, productLine[0],
+                        Integer.parseInt(productLine[1]), Double.parseDouble(productLine[2]), productLine[3]);
                 if (productAdded) {
                     numProducts += 1;
                 }
@@ -437,9 +442,12 @@ public class Seller extends User {
     }
 
     /**
+     *
      * View customer's shopping carts associated with this sellers' stores, where
      * the seller can view customer information, product details, quantity added,
      * and price the customer will have to incur should they purchase it.
+     * 
+     * @return A string containing customer shopping cart information
      */
     public String viewCustomerShoppingCarts() {
         String result = "";
@@ -455,7 +463,7 @@ public class Seller extends User {
             } else { // The seller has products associated with their stores
                 ArrayList<String> matchedCarts = db.getMatchedEntries("shoppingCarts.csv", 1, super.getUserID());
                 if (matchedCarts.isEmpty()) {
-                   return "No customers have added products to their shopping cart from any of your stores!";
+                    return "No customers have added products to their shopping cart from any of your stores!";
                 } else {
                     HashMap<String, ArrayList<String>> cartsByStore = new HashMap<>();
                     for (int i = 0; i < matchedCarts.size(); i++) {

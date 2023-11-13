@@ -71,13 +71,21 @@
 22. When the customer exports their purchase history, a file is created under the "exportedHistory" directory with a "[email].csv" file with their past purchases
 23. When the customer exports their purchase history and they have made no purchases, return false and no file is created.
 
-## Dashboard class tests contained in DashboardTest.java
-## Tests were performed by checking that the output of each function equaled the expected output for the given dataset.
-## 3 tests were performed for each method: sort descending by name, sort ascending by quantity, and sort ascending by total revenue.
-## Invalid input testing was not performed as dashboard is an internal class only meant to be called by other classes. 
-## For the customerGetPersonalPurchasesDashboard() method, testing was also done on a different customer for each test case.
+## Dashboard 
+### Note: The tests for the Dashboard class can be found in the root directory in the TestDashboard.java class. Tests were performed by checking that the output of each function equaled the expected output for the given dataset. 3 tests were performed for each method: sort descending by name, sort ascending by quantity, and sort ascending by total revenue. Invalid input testing was not performed as dashboard is an internal class only meant to be called by other classes. For the `customerGetPersonalPurchasesDashboard()` method, testing was also done on a different customer for each test case.
 1. The method SellerGetCustomersDashboard was tested to ensure it returned a list of customers and the number of products they have bought, as well as their total spending.
 2. The method SellerGetProductsDashboard was tested to ensure it returned a list of products and the number of sales, as well as their total revenue.
 3. The method customerGetStoresDashboard was tested to ensure it returned a list of stores and the number of products they have sold, as well as their total revenue.
 4. The method customerGetPersonalPurchasesDashboard was tested to ensure it returned a list of stores and the number of products that user bought from that store, as well as their total spending at that strore.
 
+# Store
+### Note:  The tests for the Store class can be found in the root directory in the TestStore.java class
+1. When retrieving the products associated with a store that doesn't contain any products yet, a null value is returned as expected
+2. When retrieving the products associated with a store that contains several products, the arraylist containing all the associated product objects are correctly returned
+
+# User
+### Note: The tests for the User class can be found in the root directory in the TestUser.java class
+1. When a user is modifying their email and provides a new value that isn't already associated with an existing account, then the modification is successful
+2. When a user modifies their email to a value associated with an existing account, a descriptive error message is displayed and the email remains unchanged
+3. When a customer deletes their account, the users.csv database is updated accordingly, and the customer's associated shopping carts and purchase histories are also deleted successfully
+4. When a seller deletes their account, the users.csv database is updated accordingly, all stores and products associated with the seller are deleted and all customers who have added products from that specific seller's store(s) to their shopping carts have the entries removed accordingly

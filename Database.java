@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
 /**
  * Project 4 - Database.java
  * 
@@ -14,15 +15,18 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 11, 2023
+ * @version November 13, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
     private static final String usersDatabaseHeaders = "ID,Email,Password,Role";
     private static final String storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
-    private static final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description";
-    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
-    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price";
+    private static final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
+            "Available Quantity,Price,Description";
+    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store " +
+            "Name,Product Name,Purchase Quantity,Price";
+    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name," +
+            "Product Name,Purchase Quantity,Price";
 
     /**
      * Takes in the name of the file as input and returns a string containing all
@@ -96,7 +100,7 @@ public class Database {
                 if (idToCheck == Integer.parseInt(matchedID)) {
                     return true;
                 }
-        }
+            }
         }
         return false;
     }
@@ -116,7 +120,8 @@ public class Database {
      */
     public String retrieveUserMatchForLogin(String email, String password) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
-        // If the very first user in the application tries logging in instead of signing up
+        // If the very first user in the application tries logging in instead of signing
+        // up
         if (userEntries.isEmpty()) {
             return null;
         }
@@ -142,7 +147,8 @@ public class Database {
      */
     public String retrieveUserMatchForSignUp(String email) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
-        // If the very first user in the application tries creating an account, no matches found yet
+        // If the very first user in the application tries creating an account, no
+        // matches found yet
         if (userEntries.isEmpty()) {
             return null;
         }
@@ -351,7 +357,7 @@ public class Database {
                 }
                 br.close();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new ArrayList<String>();
         }
         return matchedEntries;
@@ -405,7 +411,8 @@ public class Database {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            //System.out.println("There was an error when updating the contents of " + fileName);
+             System.out.println("There was an error when updating the contents of " +
+             fileName);
         }
     }
 }

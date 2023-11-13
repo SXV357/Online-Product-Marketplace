@@ -7,11 +7,11 @@
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 12, 2023
+ * @version November 13, 2023
  */
-public class TestUser {
+public class UserTest {
     public static void main(String[] args) {
-        
+
         CreateDatabaseData.clearData();
 
         /* CREATE NEW DATABASE INSTANCE FOR TESTING PURPOSES */
@@ -35,7 +35,8 @@ public class TestUser {
         customer.setEmail("hello123@hotmail.com");
         db.modifyDatabase("users.csv", previousCustomerRep, customer.toString());
         String resultUserContents = db.getDatabaseContents("users.csv").toString();
-        String expectedUserContents = "[C1000000,hello123@hotmail.com,abc123,CUSTOMER, S1000001,seller1@yahoo.com,123456,SELLER]";
+        String expectedUserContents = "[C1000000,hello123@hotmail.com,abc123,CUSTOMER, S1000001," +
+                "seller1@yahoo.com,123456,SELLER]";
         return resultUserContents.equals(expectedUserContents) ? "Test Passed" : "Test Failed";
     }
 
@@ -46,7 +47,8 @@ public class TestUser {
         currentUser.setEmail("seller1@yahoo.com");
         db.modifyDatabase("users.csv", previousRepresentation, currentUser.toString());
         String resultUserContents = db.getDatabaseContents("users.csv").toString();
-        String expectedUserContents = "[C1000000,hello123@hotmail.com,abc123,CUSTOMER, S1000001,seller1@yahoo.com,123456,SELLER]";
+        String expectedUserContents = "[C1000000,hello123@hotmail.com,abc123,CUSTOMER, S1000001,seller1@yahoo.com," +
+                "123456,SELLER]";
         return resultUserContents.equals(expectedUserContents) ? "Test Passed" : "Test Failed";
     }
 
@@ -74,7 +76,10 @@ public class TestUser {
         String expectedShoppingCartContents = "[]";
         String expectedPurchaseHistoryContents = "[]";
 
-        return resultUserContents.equals(expectedUserContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents)
+                && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
+                        : "Test Failed";
     }
 
     static String deleteSellerAccountSuccessful(Database db) {
@@ -93,7 +98,9 @@ public class TestUser {
         String expectedProductContents = "[]";
         String expectedShoppingCartContents = "[]";
 
-        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents) && resultProductsContents.equals(expectedProductContents) && resultShoppingCartContents.equals(expectedShoppingCartContents) ? "Test Passed" : "Test Failed";
+        return resultUserContents.equals(expectedUserContents) && resultStoreContents.equals(expectedStoreContents)
+                && resultProductsContents.equals(expectedProductContents)
+                && resultShoppingCartContents.equals(expectedShoppingCartContents) ? "Test Passed" : "Test Failed";
     }
 
 }

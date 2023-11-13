@@ -11,18 +11,20 @@ import java.util.ArrayList;
  * 
  * @version November 12, 2023
  */
-public class TestStore {
+public class StoreTest {
     public static void main(String[] args) {
-        
+
         CreateDatabaseData.clearData();
 
-        /* INITIALIZING A NEW STORE AND DATABASE FOR TESTING PURPOSES  */
+        /* INITIALIZING A NEW STORE AND DATABASE FOR TESTING PURPOSES */
         Store newStore = new Store("Fruit Marketplace");
         Database db = new Database();
 
         /* STORE CLASS TESTS */
-        System.out.println("Get Products From Store That Doesn\'t Contain Products Test Result: " + testGetProductsUnsuccessful(newStore));
-        System.out.println("Get Products From Store That Contains Products Test Result: " + testGetProductsSuccessful(newStore, db));
+        System.out.println("Get Products From Store That Doesn\'t Contain Products Test Result: "
+                + testGetProductsUnsuccessful(newStore));
+        System.out.println("Get Products From Store That Contains Products Test Result: "
+                + testGetProductsSuccessful(newStore, db));
 
     }
 
@@ -42,9 +44,9 @@ public class TestStore {
                 resultProducts += products.get(i).toString() + "\n";
             }
         }
-        String expectedProducts = "Apple,10,5.99,Kashmiri Apples\n" + 
-                                  "Banana,5,3.20,Ripe Bananas\n" +
-                                  "Kiwi,7,2.50,Fresh Kiwis";
+        String expectedProducts = "Apple,10,5.99,Kashmiri Apples\n" +
+                "Banana,5,3.20,Ripe Bananas\n" +
+                "Kiwi,7,2.50,Fresh Kiwis";
         return resultProducts.equals(expectedProducts) ? "Test Passed" : "Test Failed";
     }
 
