@@ -14,7 +14,7 @@ import org.junit.Test;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version November 12, 2023
+ * @version November 13, 2023
  */
 public class CustomerTest {
         public static void main(String[] args) {
@@ -173,8 +173,9 @@ public class CustomerTest {
                 c2.purchaseItems();
 
                 // Tests failed
-                assertEquals("Invalid Purchase Error", "S100001,ST100001,PR100001,myStore,myProduct,990,25,Its a product!",
-                        db.getMatchedEntries("products.csv", 2, "PR100001").get(0).trim());
+                assertEquals("Invalid Purchase Error",
+                                "S100001,ST100001,PR100001,myStore,myProduct,990,25,Its a product!",
+                                db.getMatchedEntries("products.csv", 2, "PR100001").get(0).trim());
 
                 // Verifies the shopping cart is empty
                 assertEquals("Remove From Cart Error", true,
@@ -271,7 +272,8 @@ public class CustomerTest {
                                         "C100001,S100001,ST100001,PR100001,myStore,myProduct,20,500.0\n" +
                                                         "C100001,S100001,ST100001,PR100002,myStore,mySecondProduct,1,1000\n"
                                                         +
-                                                        "C100001,S100002,ST100002,PR100003,otherStore,otherProduct,1,1",
+                                                        "C100001,S100002,ST100002,PR100003,otherStore," +
+                                                        "otherProduct,1,1",
                                         sb.toString().trim());
 
                         System.out.println("exportPurchaseHistory ... OK");

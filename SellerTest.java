@@ -13,9 +13,9 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 12, 2023
+ * @version November 13, 2023
  */
-public class TestStoreManagement {
+public class SellerTest {
 
     public static void main(String[] args) {
 
@@ -159,10 +159,12 @@ public class TestStoreManagement {
         boolean productCreated = s.createNewProduct(currentStore, productName, availableQuantity, price, description);
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
-        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50,Juicy corn dogs fried to perfection]";
+        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50," +
+                "Juicy corn dogs fried to perfection]";
 
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
-        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000,TownSquare Provisions,0]";
+        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000," +
+                "TownSquare Provisions,0]";
 
         return resultProductContents.equals(expectedProductContents)
                 && resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -198,10 +200,12 @@ public class TestStoreManagement {
         boolean productCreated2 = s.createNewProduct(currStore, prodName, qty2, price2, descrip2);
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
-        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50,Juicy corn dogs fried to perfection]";
+        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50," +
+                "Juicy corn dogs fried to perfection]";
 
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
-        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000,TownSquare Provisions,0]";
+        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000,TownSquare " +
+                "Provisions,0]";
 
         return resultProductContents.equals(expectedProductContents)
                 && resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -226,10 +230,12 @@ public class TestStoreManagement {
         boolean productDeleted3 = s.deleteProduct(existingStoreTwo, productToDelete);
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
-        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50,Juicy corn dogs fried to perfection]";
+        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50," +
+                "Juicy corn dogs fried to perfection]";
 
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
-        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000,TownSquare Provisions,0]";
+        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000," +
+                "TownSquare Provisions,0]";
 
         return resultProductContents.equals(expectedProductContents)
                 && resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -246,7 +252,8 @@ public class TestStoreManagement {
         String expectedProductContents = "[]";
 
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
-        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,0, ST1000001,S1000000,TownSquare Provisions,0]";
+        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,0, ST1000001,S1000000," +
+                "TownSquare Provisions,0]";
 
         return resultProductContents.equals(expectedProductContents)
                 && resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -265,10 +272,12 @@ public class TestStoreManagement {
         boolean productModified = s.editProduct(currentStore, productName, "name", "Crispy Corn Dogs");
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
-        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Crispy Corn Dogs,50,6.50,Juicy corn dogs fried to perfection]";
+        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Crispy Corn Dogs," +
+                "50,6.50,Juicy corn dogs fried to perfection]";
 
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
-        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000,TownSquare Provisions,0]";
+        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,1, ST1000001,S1000000,TownSquare " +
+                "Provisions,0]";
 
         return resultProductContents.equals(expectedProductContents)
                 && resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -298,10 +307,13 @@ public class TestStoreManagement {
         boolean productEditFailFive = s.editProduct("MetroFresh Market", "Crispy Corn Dogs", "name", "Apples");
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
-        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Crispy Corn Dogs,50,6.50,Juicy corn dogs fried to perfection, S1000000,ST1000000,PR1000001,MetroFresh Market,Apples,20,5.99,Green apples]";
+        String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Crispy Corn Dogs,50,6.50," +
+                "Juicy corn dogs fried to perfection, S1000000,ST1000000,PR1000001,MetroFresh Market,Apples,20,5.99," +
+                "Green apples]";
 
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
-        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,2, ST1000001,S1000000,TownSquare Provisions,0]";
+        String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,2, ST1000001,S1000000,TownSquare " +
+                "Provisions,0]";
 
         return resultProductContents.equals(expectedProductContents)
                 && resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -312,7 +324,8 @@ public class TestStoreManagement {
                 "PR1000000", "MetroFresh Market", "Crispy Corn Dogs", "10", "65");
         db.addToDatabase("shoppingCarts.csv", shoppingCartEntry);
         String resultShoppingCarts = s.viewCustomerShoppingCarts();
-        String expectedShoppingCarts = "Store ST1000000-MetroFresh Market Shopping Carts\n\tCustomer: C1000000, Product: PR1000000-Crispy Corn Dogs, Quantity: 10, Estimated Costs: 65.00";
+        String expectedShoppingCarts = "Store ST1000000-MetroFresh Market Shopping Carts\n\tCustomer: C1000000, " +
+                "Product: PR1000000-Crispy Corn Dogs, Quantity: 10, Estimated Costs: 65.00";
         return resultShoppingCarts.equals(expectedShoppingCarts) ? "Test Passed" : "Test Failed";
     }
 
@@ -343,7 +356,9 @@ public class TestStoreManagement {
         boolean productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", 50, 6.50,
                 "Juicy corn dogs fried to perfection");
         String resultShoppingCartsThree = s.viewCustomerShoppingCarts();
-        String expectedShoppingCartsThree = "No customers have added products to their shopping cart from any of your stores!";
+        String expectedShoppingCartsThree = "No customers have added products to their shopping cart " +
+                "from any of your " +
+                "stores!";
 
         return resultShoppingCartsOne.equals(expectedShoppingCartsOne)
                 && resultShoppingCartsTwo.equals(expectedShoppingCartsTwo)
@@ -354,7 +369,8 @@ public class TestStoreManagement {
         String purchaseHistoryEntry = "C1000000,S1000000,ST1000000,PR1000000,Inorbit Market,Crispy Corn Dogs,10,65";
         db.addToDatabase("purchaseHistories.csv", purchaseHistoryEntry);
         String resultStoreSales = s.viewStoreSales();
-        String expectedStoreSales = "Store ST1000000-Inorbit Market Sales\n\tCustomer: C1000000, Product: PR1000000-Crispy Corn Dogs, Quantity Purchased: 10, Revenues: 65.00";
+        String expectedStoreSales = "Store ST1000000-Inorbit Market Sales\n\tCustomer: C1000000, Product: " +
+                "PR1000000-Crispy Corn Dogs, Quantity Purchased: 10, Revenues: 65.00";
         return resultStoreSales.equals(expectedStoreSales) ? "Test Passed" : "Test Failed";
     }
 
@@ -398,7 +414,12 @@ public class TestStoreManagement {
         String resultStoreEntries = db.getDatabaseContents("stores.csv").toString();
         String resultProductEntries = db.getDatabaseContents("products.csv").toString();
         String expectedStoreEntries = "[ST1000000,S1000000,Inorbit Market,4]";
-        String expectedProductEntries = "[S1000000,ST1000000,PR1000000,Inorbit Market,Crispy Corn Dogs,50,6.50,Juicy corn dogs fried to perfection, S1000000,ST1000000,PR1000001,Inorbit Market,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick, S1000000,ST1000000,PR1000002,Inorbit Market,Margherita Pizza,30,9.99,Classic pizza topped with fresh tomatoes mozzarella and basil, S1000000,ST1000000,PR1000003,Inorbit Market,Pasta,10,5.70,Napoli pasta.]";
+        String expectedProductEntries = "[S1000000,ST1000000,PR1000000,Inorbit Market,Crispy Corn Dogs,50,6.50," +
+                "Juicy corn dogs fried to perfection, S1000000,ST1000000,PR1000001,Inorbit Market,Spicy " +
+                "Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick, " +
+                "S1000000,ST1000000,PR1000002,Inorbit Market,Margherita Pizza,30,9.99,Classic pizza topped with " +
+                "fresh tomatoes mozzarella and basil, S1000000,ST1000000,PR1000003,Inorbit Market,Pasta,10,5.70," +
+                "Napoli pasta.]";
         return resultStoreEntries.equals(expectedStoreEntries) && resultProductEntries.equals(expectedProductEntries)
                 ? "Test Passed"
                 : "Test Failed";
@@ -415,7 +436,12 @@ public class TestStoreManagement {
         String resultStoreEntries = db.getDatabaseContents("stores.csv").toString();
         String resultProductEntries = db.getDatabaseContents("products.csv").toString();
         String expectedStoreEntries = "[ST1000000,S1000000,Inorbit Market,4]";
-        String expectedProductEntries = "[S1000000,ST1000000,PR1000000,Inorbit Market,Crispy Corn Dogs,50,6.50,Juicy corn dogs fried to perfection, S1000000,ST1000000,PR1000001,Inorbit Market,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick, S1000000,ST1000000,PR1000002,Inorbit Market,Margherita Pizza,30,9.99,Classic pizza topped with fresh tomatoes mozzarella and basil, S1000000,ST1000000,PR1000003,Inorbit Market,Pasta,10,5.70,Napoli pasta.]";
+        String expectedProductEntries = "[S1000000,ST1000000,PR1000000,Inorbit Market,Crispy Corn Dogs,50,6.50," +
+                "Juicy corn dogs fried to perfection, S1000000,ST1000000,PR1000001,Inorbit Market,Spicy " +
+                "Chicken Wings," +
+                "50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick, S1000000,ST1000000," +
+                "PR1000002,Inorbit Market,Margherita Pizza,30,9.99,Classic pizza topped with fresh tomatoes " +
+                "mozzarella and basil, S1000000,ST1000000,PR1000003,Inorbit Market,Pasta,10,5.70,Napoli pasta.]";
         return resultStoreEntries.equals(expectedStoreEntries) && resultProductEntries.equals(expectedProductEntries)
                 ? "Test Passed"
                 : "Test Failed";
@@ -434,7 +460,11 @@ public class TestStoreManagement {
             }
             br.close();
             String result = contents.toString();
-            String expected = "[S1000000,ST1000000,PR1000000,Crispy Corn Dogs,50,6.50,Juicy corn dogs fried to perfection, S1000000,ST1000000,PR1000001,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick, S1000000,ST1000000,PR1000002,Margherita Pizza,30,9.99,Classic pizza topped with fresh tomatoes mozzarella and basil, S1000000,ST1000000,PR1000003,Pasta,10,5.70,Napoli pasta.]";
+            String expected = "[S1000000,ST1000000,PR1000000,Crispy Corn Dogs,50,6.50,Juicy corn dogs fried to " +
+                    "perfection, S1000000,ST1000000,PR1000001,Spicy Chicken Wings,50,12.99,Deliciously seasoned " +
+                    "and crispy chicken wings with a spicy kick, S1000000,ST1000000,PR1000002,Margherita Pizza," +
+                    "30,9.99,Classic pizza topped with fresh tomatoes mozzarella and basil, S1000000,ST1000000," +
+                    "PR1000003,Pasta,10,5.70,Napoli pasta.]";
             return result.equals(expected) ? "Test Passed" : "Test Failed";
         } catch (IOException e) {
             return "There was an error when exporting the products.";

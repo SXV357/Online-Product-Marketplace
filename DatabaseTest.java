@@ -9,9 +9,9 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 12, 2023
+ * @version November 13, 2023
  */
-public class TestDatabase {
+public class DatabaseTest {
     static final String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,SELLER";
     static final String nonExistentStoreEntry = "100912,Store100,90";
     static final String nonExistentProductEntry = "100912,Store100,Apple,10,2,This is an apple";
@@ -92,7 +92,8 @@ public class TestDatabase {
         boolean purchaseHistoryColumnInvalid = db.checkColumnBounds("purchaseHistories.csv", 8);
 
         return (userColumnValid && !userColumnInvalid && storeColumnValid && !storeColumnInvalid
-                && productColumnValid && !productColumnInvalid && shoppingCartColumnValid && !shoppingCartColumnInvalid
+                && productColumnValid && !productColumnInvalid && shoppingCartColumnValid &&
+                !shoppingCartColumnInvalid
                 && purchaseHistoryColumnValid && !purchaseHistoryColumnInvalid) ? "Test Passed" : "Test Failed";
     }
 
@@ -117,9 +118,13 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
-        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000,S1000000,Store1,5]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com," +
+                "12315436,SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
+        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000," +
+                "S1000000,Store1,5]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000," +
+                "PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
         String expectedShoppingCartContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
         String expectedPurchaseHistoryContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
 
@@ -150,9 +155,13 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
-        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000,S1000000,Store1,5]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000,PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436," +
+                "SELLER, C100000,blabla@yahoo.com,abc123,CUSTOMER]";
+        String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1, ST100000," +
+                "S1000000,Store1,5]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!, S1000000,ST1000000," +
+                "PR1000000,Store1,Burrito,50,5.99,This is a breakfast burrito]";
         String expectedShoppingCartContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
         String expectedPurchaseHistoryContents = "[C1000000,S1000000,ST1000000,PR1000000,Store1,Burrito,10,59.9]";
 
@@ -222,9 +231,11 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436," +
+                "SELLER]";
         String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         String expectedShoppingCartContents = "[]";
         String expectedPurchaseHistoryContents = "[]";
 
@@ -250,9 +261,11 @@ public class TestDatabase {
         String resultShoppingCartContents = db.getDatabaseContents("shoppingCarts.csv").toString();
         String resultPurchaseHistoryContents = db.getDatabaseContents("purchaseHistories.csv").toString();
 
-        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER]";
+        String expectedUserContents = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436," +
+                "SELLER]";
         String expectedStoreContents = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1]";
-        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedProductContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         String expectedShoppingCartContents = "[]";
         String expectedPurchaseHistoryContents = "[]";
 
@@ -322,7 +335,8 @@ public class TestDatabase {
                 nonExistentPurchaseHistoryEntry);
 
         return (userEntryExists && !userEntryNonExistence && storeEntryExists && !storeEntryNonExistence
-                && productEntryExists && !productEntryNonExistence && !shoppingEntryExists && !shoppingEntryNonExistence
+                && productEntryExists && !productEntryNonExistence && !shoppingEntryExists &&
+                !shoppingEntryNonExistence
                 && !purchaseHistoryEntryExists && !purchaseHistoryEntryNonExistence) ? "Test Passed" : "Test Failed";
     }
 
@@ -346,7 +360,8 @@ public class TestDatabase {
 
         String expectedUsers = "[C100001,cherry@gmail.com,12345,CUSTOMER, S100002,balogne@gmail.com,12315436,SELLER]";
         String expectedStores = "[ST100001,S100002,newStore1,1, ST100002,S100002,newStore2,1]";
-        String expectedProducts = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedProducts = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002," +
+                "ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         String expectedShoppingCarts = "[]";
         String expectedPurchaseHistories = "[]";
 
@@ -368,7 +383,8 @@ public class TestDatabase {
     static String testSuccessfulGetMatchedEntries(Database db) {
         ArrayList<String> matchedEntries = db.getMatchedEntries("products.csv", 5, "1000");
         String resultContents = matchedEntries.toString();
-        String expectedResultContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
+        String expectedResultContents = "[S100002,ST100001,PR100001,newStore1,myProduct,1000,25,Its a product!, " +
+                "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!]";
         return resultContents.equals(expectedResultContents) ? "Test Passed" : "Test Failed";
     }
 

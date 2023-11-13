@@ -1,22 +1,24 @@
+import javax.sound.sampled.Line;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Project 4 - Runner.java
- *
+ * <p>
  * Driver class for the application
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version November 12, 2023
+ * Miller, Oliver Long
+ * @version November 13, 2023
  */
 
 public class Runner {
     private static final Database db = new Database(); // Makes a Database object
     private static boolean userLoggedIn = false; // This boolean is used to check if the user has logged in successfully
     private static User curUser = new User(); // This field stores the user object for the current User of the program
-    private static final String SWITCH_IO_ERROR_MESSAGE = "Input Error:\nPlease enter your choice's corresponding Integer";
+    private static final String LINE_BREAK = "\n-------------------------------------------------";
+    private static final String SWITCH_IO_ERROR_MESSAGE = "Input Error:\nPlease enter your choice's " +
+            "corresponding Integer" + LINE_BREAK;
 
     // Welcomes the user and asks them whether they would like to: Log-in, Create
     // Account, or Quit
@@ -24,7 +26,7 @@ public class Runner {
     public static int welcomeUser(Scanner scan) {
         System.out.println("What would you like to do?");
         do {
-            System.out.println("1) Log-in\n2) Create Account\n3) Quit");
+            System.out.println("1) Log-in\n2) Create Account\n3) Quit" + LINE_BREAK);
             try {
                 int response = Integer.parseInt(scan.nextLine());
                 if (response > 0 && response < 4) {
@@ -73,12 +75,14 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (db.retrieveUserMatchForSignUp(uEmail) != null) { // Check to see if there is a user with the email already
+        if (uEmail.isEmpty() || uPassword.isEmpty()) {
+            System.out.println("Fields cannot be blank" + LINE_BREAK);
+        } else if (db.retrieveUserMatchForSignUp(uEmail) != null) { //see if there is a user with the email already
             System.out.println("User already exists");
         } else {
             UserRole uRole = UserRole.UNDECIDED; // New user is defaulted to undecided until they set it
             while (uRole.equals(UserRole.UNDECIDED)) {
-                System.out.println("Which would you like to be? \n1) Seller\n2) Customer");
+                System.out.println("Which would you like to be? \n1) Seller\n2) Customer" + LINE_BREAK);
                 try {
                     int input = Integer.parseInt(scan.nextLine());
                     if (input == 1) {
@@ -106,7 +110,7 @@ public class Runner {
                     2) Dashboard
                     3) Customer Shopping Carts
                     4) Edit Account
-                    5) Sign Out""");
+                    5) Sign Out""" + LINE_BREAK);
             try {
                 sellerChoice = Integer.parseInt(scan.nextLine());
                 if (sellerChoice > 0 && sellerChoice < 6) {
@@ -129,7 +133,7 @@ public class Runner {
                     3) Dashboard
                     4) Shopping Cart
                     5) Edit Account
-                    6) Sign Out""");
+                    6) Sign Out""" + LINE_BREAK);
             try {
                 customerChoice = Integer.parseInt(scan.nextLine());
                 if (customerChoice > 0 && customerChoice < 7) {
@@ -146,7 +150,7 @@ public class Runner {
     public static void storeUI(Scanner scan, Seller curSeller) {
         while (true) { // loops until seller returns
             System.out.println("What would you like to do?");
-            System.out.println("1) Select Store\n2) Create Store\n3) Go Back");
+            System.out.println("1) Select Store\n2) Create Store\n3) Go Back" + LINE_BREAK);
             ArrayList<Store> curSellerStores = curSeller.getStores();
             try {
                 int storeUIChoice = Integer.parseInt(scan.nextLine());
@@ -159,7 +163,7 @@ public class Runner {
                                     if (i < curSellerStores.size()) {
                                         System.out.println((i + 1) + ") " + curSellerStores.get(i).getStoreName());
                                     } else {
-                                        System.out.println((i + 1) + ") " + "Go Back");
+                                        System.out.println((i + 1) + ") " + "Go Back" + LINE_BREAK);
                                     }
                                 }
                                 try {
@@ -201,7 +205,7 @@ public class Runner {
         while (true) { // loops until seller goes back
             Product curProduct = pickProduct(scan, curStore);
             System.out.println(curStore.getStoreName() + " Options:\n1) Create Product\n2) Edit Product\n" +
-                    "3) Delete Product\n4) Import Products\n5) Export Products\n6) Go Back");
+                    "3) Delete Product\n4) Import Products\n5) Export Products\n6) Go Back" + LINE_BREAK);
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1: // Create Product
@@ -255,7 +259,8 @@ public class Runner {
                             System.out.println("What would you like the new value to be?");
                             newValue = scan.nextLine();
                         } while (newValue == null);
-                        if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam, newValue)) {
+                        if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam,
+                                newValue)) {
                             System.out.println("Product successfully edited");
                         } else {
                             System.out.println("Error editing product"); // fix to be more specific
@@ -269,9 +274,10 @@ public class Runner {
                         break;
                     case 4: // Import Products
                         while (true) { // loop until import is successful
-                            System.out.println("Please enter the file path for the import\n Enter \"Quit\" to exit");
+                            System.out.println("Please enter the file path for the import\n Enter \"Quit\" to exit"
+                                    + LINE_BREAK);
                             String filePath = scan.nextLine();
-                            if (filePath.equals("Quit")) {
+                            if (filePath.equals("Quit") || filePath.equals("quit")) {
                                 break;
                             }
                             boolean successfulImport = curSeller.importProducts(filePath,
@@ -311,7 +317,7 @@ public class Runner {
             }
         }
         int editProductChoice;
-        Product chosenProduct = new Product("", 0, 0, ""); // Where is the empty constructor
+        Product chosenProduct = new Product("", 0, 0, "");
         try {
             editProductChoice = Integer.parseInt(scan.nextLine());
             if (editProductChoice == productList.size() + 1) {
@@ -331,16 +337,14 @@ public class Runner {
                     What would you like to do?
                     1) View All Products
                     2) Search for a Product
-                    3) Return""");
+                    3) Return""" + LINE_BREAK);
             int marketChoice = Integer.parseInt(scan.nextLine());
             switch (marketChoice) {
                 case 1: // View Products
-                    showAllProducts(scan, curCustomer);
+                    showAllProducts(scan, curCustomer, false);
                     break;
                 case 2: // Search for product
-                    System.out.println("What would you like to search for?");
-                    String query = scan.nextLine();
-                    System.out.println(curCustomer.searchProducts(query));
+                    showAllProducts(scan, curCustomer, true);
                     break;
                 case 3: // Go Back
                     return;
@@ -349,13 +353,29 @@ public class Runner {
         }
     }
 
-    public static void showAllProducts(Scanner scan, Customer curCustomer) {
-        System.out.println(curCustomer.getAllProducts());
+    public static void showAllProducts(Scanner scan, Customer curCustomer, Boolean searching) {
+        if (searching) {
+            System.out.println("What would you like to search for?");
+            String query = scan.nextLine();
+            if ((curCustomer.searchProducts(query)).equals("Query has returned no results!" + LINE_BREAK)) {
+                System.out.println(curCustomer.searchProducts(query));
+                return;
+            }
+            System.out.println("Select an Item");
+            System.out.println(curCustomer.searchProducts(query));
+        } else {
+            System.out.println("Select an Item");
+            System.out.println(curCustomer.getAllProducts());
+        }
+        System.out.println(LINE_BREAK);
         try {
             int productSelection = Integer.parseInt(scan.nextLine());
             System.out.println(curCustomer.getProductInfo(productSelection));
+            if (curCustomer.getProductInfo(productSelection).equals("Invalid Product")) {
+                return;
+            }
             while (true) {
-                System.out.println("Would you like to add this item to cart?\n1) Yes\n2) No");
+                System.out.println("Would you like to add this item to cart?\n1) Yes\n2) No" + LINE_BREAK);
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1: // yes
                         System.out.println("How many would you like?");
@@ -392,14 +412,14 @@ public class Runner {
                 return;
             }
             System.out.println(curCustomer.getCart());
-            System.out.println("What would you like to do?\n1) Checkout\n2) Remove a Product\n3) Return");
+            System.out.println("What would you like to do?\n1) Checkout\n2) Remove a Product\n3) Return" + LINE_BREAK);
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1: // checkout
                         curCustomer.purchaseItems();
                         break;
                     case 2: // remove an item
-                        System.out.println("Which item would you like to remove?");
+                        System.out.println("Which item would you like to remove?" + LINE_BREAK);
                         System.out.println(curCustomer.getCart());
                         int removeChoice = Integer.parseInt(scan.nextLine());
                         curCustomer.removeFromCart(removeChoice);
@@ -483,7 +503,7 @@ public class Runner {
     // This method doesn't check for input errors until all three inputs have been
     // inputted
     private static void customerDashboard(Scanner scan, Customer curCustomer) {
-        System.out.println("Which type of dashboard would you like to see?\n1) Stores\n2) My Purchases");
+        System.out.println("Which type of dashboard would you like to see?\n1) Stores\n2) My Purchases" + LINE_BREAK);
         boolean inputting = true;
         String sortPrompt = "";
         while (inputting) { // until dashboard choice is fully imputed
@@ -497,12 +517,12 @@ public class Runner {
             // Customer chose which dashboard to see
             switch (customerChoice) {
                 case 1: // Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Store name\n2) Number of product sales\n3) Total revenue";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Store name\n2) Number of " +
+                            "product sales\n3) Total revenue" + LINE_BREAK;
                     break;
-
                 case 2: // My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products bought\n3 )Total spent";
-
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of " +
+                            "products bought\n3 )Total spent" + LINE_BREAK;
                     break;
                 default: // error, will be printed at loop end.
                     break;
@@ -517,7 +537,8 @@ public class Runner {
             }
 
             // Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending");
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending"
+                    + LINE_BREAK);
             int customerAscChoice;
             boolean ascending = false;
             try {
@@ -559,7 +580,7 @@ public class Runner {
     // This method doesn't check for input errors until all three inputs have been
     // inputted
     private static void sellerDashboard(Scanner scan, Seller curSeller) {
-        System.out.println("Which type of dashboard would you like to see?\n1) Customers\n2) Products");
+        System.out.println("Which type of dashboard would you like to see?\n1) Customers\n2) Products" + LINE_BREAK);
         boolean inputting = true;
         String sortPrompt = "";
         while (inputting) { // until dashboard choice is fully imputed
@@ -573,12 +594,12 @@ public class Runner {
             // Customer chose which dashboard to see
             switch (sellerChoice) {
                 case 1: // Stores
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Customer name\n2) Number of products bought\n3) Total spent";
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Customer name\n" +
+                            "2) Number of products bought\n3) Total spent" + LINE_BREAK;
                     break;
-
                 case 2: // My Purchases
-                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n2) Number of products sold\n3) Total revenue";
-
+                    sortPrompt = "Select how you would like to sort the dashboard.\n1) Product name\n" +
+                            "2) Number of products sold\n3) Total revenue" + LINE_BREAK;
                     break;
                 default: // error, will be printed at loop end.
                     break;
@@ -593,7 +614,8 @@ public class Runner {
             }
 
             // Getting input
-            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending");
+            System.out.println("Would you like to sort ascending or descending?\n1) Ascending\n2) Descending"
+                    + LINE_BREAK);
             int sellerAscChoice;
             boolean ascending = false;
             try {
@@ -631,6 +653,26 @@ public class Runner {
         }
     }
 
+    private static void deleteUser(Scanner scan) {
+        while (true) {
+            System.out.println("Are you sure you want to delete your account?\n1) Yes\n2) No" + LINE_BREAK);
+            try {
+                switch (Integer.parseInt(scan.nextLine())) {
+                    case 1:  //delete
+                        curUser.deleteAccount();
+                        userLoggedIn = false;
+                        return;
+                    case 2:  //Back out
+                        return;
+                    default:  //Error
+                        System.out.println(SWITCH_IO_ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                System.out.println(SWITCH_IO_ERROR_MESSAGE);
+            }
+        }
+    }
+
     private static void editUser(Scanner scan) {
         while (true) {
             String newUserString;
@@ -640,7 +682,7 @@ public class Runner {
                     1) Change Email
                     2) Change Password
                     3) Delete Account
-                    4) Exit""");
+                    4) Exit""" + LINE_BREAK);
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1: // Change Email
@@ -660,9 +702,11 @@ public class Runner {
                         db.modifyDatabase("users.csv", prevUserString, newUserString);
                         break;
                     case 3: // Delete Account
-                        curUser.deleteAccount();
-                        userLoggedIn = false;
-                        return;
+                        deleteUser(scan);
+                        if (!userLoggedIn) {
+                            return;
+                        }
+                        break;
                     case 4: // Return
                         return;
                     default: // error
