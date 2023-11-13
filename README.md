@@ -2,6 +2,9 @@
 
 # Instructions
 From the root directory of the project, compile Runner.java and then execute it which will launch the main application.
+Note: commas are used as the database separating character.
+The current version of this program may crash if certain user inputted fields are filled out with commas.
+This will be fixed in the next iteration of the project.
 
 # Project Submission Details
 
