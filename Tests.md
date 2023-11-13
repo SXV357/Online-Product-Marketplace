@@ -74,5 +74,10 @@
 ## Dashboard class tests contained in DashboardTest.java
 ## Tests were performed by checking that the output of each function equaled the expected output for the given dataset.
 ## 3 tests were performed for each method: sort descending by name, sort ascending by quantity, and sort ascending by total revenue.
-Invalid input testing was not performed as dashboard is an internal class only meant to be called by other classes. 
-For the customerGetPersonalPurchasesDashboard() method, testing was also done on a different customer for each test case.
+## Invalid input testing was not performed as dashboard is an internal class only meant to be called by other classes. 
+## For the customerGetPersonalPurchasesDashboard() method, testing was also done on a different customer for each test case.
+1. The method SellerGetCustomersDashboard was tested to ensure it returned a list of customers and the number of products they have bought, as well as their total spending.
+2. The method SellerGetProductsDashboard was tested to ensure it returned a list of products and the number of sales, as well as their total revenue.
+3. The method customerGetStoresDashboard was tested to ensure it returned a list of stores and the number of products they have sold, as well as their total revenue.
+4. The method customerGetPersonalPurchasesDashboard was tested to ensure it returned a list of stores and the number of products that user bought from that store, as well as their total spending at that strore.
+
