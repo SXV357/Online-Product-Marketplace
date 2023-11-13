@@ -70,3 +70,9 @@
 21. When the customer searches the product by product name, store name, or description, the program returns stores and products with those distinct attributes
 22. When the customer exports their purchase history, a file is created under the "exportedHistory" directory with a "[email].csv" file with their past purchases
 23. When the customer exports their purchase history and they have made no purchases, return false and no file is created.
+
+## Dashboard class tests contained in DashboardTest.java
+## Tests were performed by checking that the output of each function equaled the expected output for the given dataset.
+## 3 tests were performed for each method: sort descending by name, sort ascending by quantity, and sort ascending by total revenue.
+Invalid input testing was not performed as dashboard is an internal class only meant to be called by other classes. 
+For the customerGetPersonalPurchasesDashboard() method, testing was also done on a different customer for each test case.

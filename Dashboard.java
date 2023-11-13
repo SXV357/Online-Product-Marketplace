@@ -187,7 +187,7 @@ public class Dashboard {
     }
 
     // Personal Dashboard requires CustomerID
-    // Returns all products purchased by the customer with customer ID
+    // Returns all stores including summed information about purchases made by the customer with customer ID at that store
     // Return line format: storeName, Products Bought, Total Spent
     public static ArrayList<String> customerGetPersonalPurchasesDashboard(int sortIndex, boolean sortAscending,
             String customerID) {
