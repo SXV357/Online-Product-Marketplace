@@ -237,7 +237,7 @@ public class Customer extends User {
                 output.append(target[i]).append(",");
             }
             output.append(updatedQuant).append(",");
-            output.append(Double.parseDouble(target[6]) * (double) updatedQuant);
+            output.append(String.format("%.2f", Double.parseDouble(target[6]) * (double) updatedQuant));
 
             shoppingCart.add(output.toString());
             db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size() - 1));
@@ -262,13 +262,17 @@ public class Customer extends User {
 
         output.append(getUserID()).append(",");
         String item;
+        boolean duplicate = false;
         for (int i = 0; i < shoppingCart.size(); i++) {
             item = shoppingCart.get(i);
             target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
             quantity = Integer.parseInt(item.split(",")[6]);
+            System.out.println(quantity);
+            System.out.println(target[5]);
             if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
                 System.out.println("Unable to add item: " + item.split(",")[5]);
             } else {
+                duplicate = false;
                 for (int j = 0; j < purchasehistory.size(); j++) {
                     if (item.split(",")[3].equals(purchasehistory.get(i).split(",")[3])) {
                         updatedEntry = purchasehistory.get(i).split(",");
@@ -278,9 +282,11 @@ public class Customer extends User {
                                 .valueOf(Double.parseDouble(updatedEntry[7]) + Double.parseDouble(item.split(",")[7]));
                         db.modifyDatabase("purchaseHistories.csv", purchasehistory.get(i),
                                 String.join(",", updatedEntry));
-                    } else if (j == purchasehistory.size() - 1) {
-                        db.addToDatabase("purchaseHistories.csv", item);
-                    }
+                        duplicate = true;
+                    } 
+                }
+                if (!duplicate) {
+                    db.addToDatabase("purchaseHistories.csv", item);
                 }
                 target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
                 target[5] = String.valueOf(Integer.parseInt(target[5]) - Integer.parseInt(item.split(",")[6]));
@@ -354,6 +360,7 @@ public class Customer extends User {
                 for (int i = 0; i < purchasehistory.size(); i++) {
                     bw.write(purchasehistory.get(i) + "\n");
                 }
+                bw.flush();
                 bw.close();
                 return true;
             } else {
