@@ -237,7 +237,7 @@ public class Customer extends User {
                 output.append(target[i]).append(",");
             }
             output.append(updatedQuant).append(",");
-            output.append(Double.parseDouble(target[6]) * updatedQuant);
+            output.append(Double.parseDouble(target[6]) * (double) updatedQuant);
 
             shoppingCart.add(output.toString());
             db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size() - 1));
@@ -332,6 +332,7 @@ public class Customer extends User {
      * @return Returns true if the process is successful
      */
     public boolean exportPurchaseHistory() {
+        purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
         try {
             if (!(purchasehistory.isEmpty())) {
                 File targetDir = new File("exportedHistory");
