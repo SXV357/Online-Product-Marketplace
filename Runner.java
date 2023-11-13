@@ -203,7 +203,7 @@ public class Runner {
 
     public static void manageStore(Scanner scan, Seller curSeller, Store curStore) {
         while (true) { // loops until seller goes back
-            Product curProduct = pickProduct(scan, curStore);
+            Product curProduct;
             System.out.println(curStore.getStoreName() + " Options:\n1) Create Product\n2) Edit Product\n" +
                     "3) Delete Product\n4) Import Products\n5) Export Products\n6) Go Back" + LINE_BREAK);
             try {
@@ -238,7 +238,11 @@ public class Runner {
                         System.out.println(worked);
                         break;
                     case 2: // Edit Product
-
+                        if (curStore.getProducts() == null) {
+                            System.out.println("This store has no products");
+                            break;
+                        }
+                        curProduct = pickProduct(scan, curStore);
                         if (curProduct == null) {
                             break;
                         }
@@ -267,6 +271,10 @@ public class Runner {
                         }
                         break;
                     case 3: // Delete Product
+                        if (curStore.getProducts() == null) {
+                            System.out.println("This store has no products");
+                            break;
+                        }
                         curProduct = pickProduct(scan, curStore);
                         curSeller.deleteProduct(curStore.getStoreName(),
                                 curProduct.getName());
@@ -289,6 +297,10 @@ public class Runner {
                             }
                         }
                     case 5: // Export Products
+                        if (curStore.getProducts() == null) {
+                            System.out.println("This store has no products");
+                            break;
+                        }
                         curSeller.exportProducts(curStore.getStoreName());
                         System.out.println("Products have been exported to " + "exportedProducts/"
                                 + curStore.getStoreName() + ".csv");

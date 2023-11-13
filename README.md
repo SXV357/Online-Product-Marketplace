@@ -15,7 +15,7 @@ This error will be fixed in the next iteration of the project.
 
 Shafer Anthony Hofmann - Submitted Report on Brightspace
 
-Shreyas Viswanathan - Submitted project on Vocareum's workspace
+Nathan Pasic Miller - Submitted project on Vocareum's workspace
 
 # Testing
 
