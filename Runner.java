@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 
 public class Runner {
-    private static final Database db = new Database(); // Makes a Database object
+    private static final Database DB = new Database(); // Makes a Database object
     private static boolean userLoggedIn = false; // This boolean is used to check if the user has logged in successfully
     private static User curUser = new User(); // This field stores the user object for the current User of the program
     private static final String LINE_BREAK = "\n-------------------------------------------------";
@@ -49,9 +49,9 @@ public class Runner {
         String uEmail = scan.nextLine();
         System.out.println("Enter your password: ");
         String uPassword = scan.nextLine();
-        if (db.retrieveUserMatchForLogin(uEmail, uPassword) != null) {
+        if (DB.retrieveUserMatchForLogin(uEmail, uPassword) != null) {
             System.out.println("Login successful!");
-            String userAsString = db.retrieveUserMatchForLogin(uEmail, uPassword);
+            String userAsString = DB.retrieveUserMatchForLogin(uEmail, uPassword);
             String[] userFromDB = userAsString.split(",");
             String uID = userFromDB[0];
             UserRole uRole = UserRole.UNDECIDED;
@@ -76,7 +76,7 @@ public class Runner {
         String uPassword = scan.nextLine();
         if (uEmail.isEmpty() || uPassword.isEmpty()) {
             System.out.println("Fields cannot be blank" + LINE_BREAK);
-        } else if (db.retrieveUserMatchForSignUp(uEmail) != null) { //see if there is a user with the email already
+        } else if (DB.retrieveUserMatchForSignUp(uEmail) != null) { //see if there is a user with the email already
             System.out.println("User already exists");
         } else {
             UserRole uRole = UserRole.UNDECIDED; // New user is defaulted to undecided until they set it
@@ -96,7 +96,7 @@ public class Runner {
                 }
             }
             curUser = new User(uEmail, uPassword, uRole);
-            db.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
+            DB.addToDatabase("users.csv", curUser.toString()); // based on latest modification of database
             userLoggedIn = true;
         }
     }
@@ -104,12 +104,8 @@ public class Runner {
     public static int sellerPrompt(Scanner scan) {
         int sellerChoice;
         do {
-            System.out.println("""
-                    1) Stores
-                    2) Dashboard
-                    3) Customer Shopping Carts
-                    4) Edit Account
-                    5) Sign Out""" + LINE_BREAK);
+            System.out.println("1) Stores\n2) Dashboard\n3) Customer Shopping Carts\n4) Edit Account\n5) Sign Out"
+                    + LINE_BREAK);
             try {
                 sellerChoice = Integer.parseInt(scan.nextLine());
                 if (sellerChoice > 0 && sellerChoice < 6) {
@@ -126,13 +122,8 @@ public class Runner {
     public static int customerPrompt(Scanner scan) {
         int customerChoice;
         do {
-            System.out.println("""
-                    1) Market
-                    2) Purchase History
-                    3) Dashboard
-                    4) Shopping Cart
-                    5) Edit Account
-                    6) Sign Out""" + LINE_BREAK);
+            System.out.println("1) Market\n2) Purchase History\n3) Dashboard\n4) Shopping Cart\n5) Edit Account\n" +
+                    "6) Sign Out" + LINE_BREAK);
             try {
                 customerChoice = Integer.parseInt(scan.nextLine());
                 if (customerChoice > 0 && customerChoice < 7) {
@@ -343,11 +334,8 @@ public class Runner {
 
     public static void marketUI(Scanner scan, Customer curCustomer) {
         while (true) { // loops until user selects to go back
-            System.out.println("""
-                    What would you like to do?
-                    1) View All Products
-                    2) Search for a Product
-                    3) Return""" + LINE_BREAK);
+            System.out.println("What would you like to do?\n1) View All Products\n2) Search for a Product\n3) Return"
+                    + LINE_BREAK);
             int marketChoice = Integer.parseInt(scan.nextLine());
             switch (marketChoice) {
                 case 1: // View Products
@@ -495,7 +483,7 @@ public class Runner {
                     } else {
                         System.out.println("Purchase History is empty");
                     }
-                    
+
                     break;
                 case 3: // Dashboard
                     customerDashboard(scan, curCustomer);
@@ -697,12 +685,8 @@ public class Runner {
         while (true) {
             String newUserString;
             String prevUserString;
-            System.out.println("""
-                    What would you like to do?
-                    1) Change Email
-                    2) Change Password
-                    3) Delete Account
-                    4) Exit""" + LINE_BREAK);
+            System.out.println("What would you like to do?\n1) Change Email\n2) Change Password\n3) Delete Account\n" +
+                    "4) Exit" + LINE_BREAK);
             try {
                 switch (Integer.parseInt(scan.nextLine())) {
                     case 1: // Change Email
@@ -711,7 +695,7 @@ public class Runner {
                         String newEmail = scan.nextLine();
                         curUser.setEmail(newEmail);
                         newUserString = curUser.toString();
-                        db.modifyDatabase("users.csv", prevUserString, newUserString);
+                        DB.modifyDatabase("users.csv", prevUserString, newUserString);
                         break;
                     case 2: // Change Password
                         prevUserString = curUser.toString();
@@ -719,7 +703,7 @@ public class Runner {
                         String newPassword = scan.nextLine();
                         curUser.setPassword(newPassword);
                         newUserString = curUser.toString();
-                        db.modifyDatabase("users.csv", prevUserString, newUserString);
+                        DB.modifyDatabase("users.csv", prevUserString, newUserString);
                         break;
                     case 3: // Delete Account
                         deleteUser(scan);

@@ -2,13 +2,12 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - User.java
- * 
+ * <p>
  * Class that represents the characteristics associated with all users in the
  * application.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 12, 2023
  */
 public class User {
@@ -35,7 +34,7 @@ public class User {
      * Constructor to initialize a new user when they create an account. Generates a
      * unique ID for the user and adds a marker to it signifying whether the user is
      * a customer or a seller.
-     * 
+     *
      * @param email    The user's new email
      * @param password The user's new password
      * @param role     The user's role
@@ -55,7 +54,7 @@ public class User {
     /**
      * Customer to re-initialize a user when they log back into the application.
      * Sets the values of all fields to the ones passed to the constructor.
-     * 
+     *
      * @param userID   The user's existing ID
      * @param email    The user's existing email
      * @param password The user's existing password
@@ -70,7 +69,7 @@ public class User {
 
     /**
      * Gets the current user's email
-     * 
+     *
      * @return The email associated with this user
      */
     public String getEmail() {
@@ -79,7 +78,7 @@ public class User {
 
     /**
      * Gets the current user's password
-     * 
+     *
      * @return The password associated with this user
      */
     public String getPassword() {
@@ -88,7 +87,7 @@ public class User {
 
     /**
      * Gets the current user's ID
-     * 
+     *
      * @return The ID associated with this user
      */
     public String getUserID() {
@@ -97,7 +96,7 @@ public class User {
 
     /**
      * Gets the current user's role
-     * 
+     *
      * @return The role associated with this user
      */
     public UserRole getRole() {
@@ -108,7 +107,7 @@ public class User {
      * Sets the user's current email to the email passed into the method. The user's
      * email won't be modified if the new value they provide is associated with an
      * existing user's email.
-     * 
+     *
      * @param email The email to modify the current email to
      */
     public void setEmail(String email) {
@@ -130,7 +129,7 @@ public class User {
 
     /**
      * Sets the user's current email to the password passed into the method
-     * 
+     *
      * @param password The password to modify the current password to
      */
     public void setPassword(String password) {
@@ -140,7 +139,7 @@ public class User {
     /**
      * Returns a unique 7-digit ID as long as the current ID is not already
      * associated with an existing account in the users.csv database
-     * 
+     *
      * @return A unique 7-digit ID
      */
     public int generateUserIdentificationNumber() {

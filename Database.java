@@ -8,41 +8,40 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - Database.java
- * 
+ * <p>
  * Class that handles all database access and modification functionality related
  * to the application.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 13, 2023
  */
 public class Database {
     private static final String DATABASES_DIRECTORY = "databases/";
-    private static final String usersDatabaseHeaders = "ID,Email,Password,Role";
-    private static final String storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
-    private static final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
+    private static final String USERS_DATABASE_HEADERS = "ID,Email,Password,Role";
+    private static final String STORES_DATABASE_HEADERS = "Store ID,Seller ID,Store Name,Number of Products";
+    private static final String PRODUCTS_DATABASE_HEADERS = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
             "Available Quantity,Price,Description";
-    private static final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store " +
-            "Name,Product Name,Purchase Quantity,Price";
-    private static final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name," +
-            "Product Name,Purchase Quantity,Price";
+    private static final String PURCHASE_HISTORY_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store "
+            + "Name,Product Name,Purchase Quantity,Price";
+    private static final String SHOPPING_CART_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store Name,"
+            + "Product Name,Purchase Quantity,Price";
 
     /**
      * Takes in the name of the file as input and returns a string containing all
      * the headers associated with that file.
-     * 
+     *
      * @param fileName The name of the file that the user wants to update
      * @return The headers that are associated with that specific CSV file.
      */
     public String getFileHeaders(String fileName) {
         String fileHeaders = "";
         switch (fileName) {
-            case "users.csv" -> fileHeaders = usersDatabaseHeaders;
-            case "stores.csv" -> fileHeaders = storesDatabaseHeaders;
-            case "products.csv" -> fileHeaders = productsDatabaseHeaders;
-            case "shoppingCarts.csv" -> fileHeaders = shoppingCartDatabaseHeaders;
-            case "purchaseHistories.csv" -> fileHeaders = purchaseHistoryDatabaseHeaders;
+            case "users.csv" -> fileHeaders = USERS_DATABASE_HEADERS;
+            case "stores.csv" -> fileHeaders = STORES_DATABASE_HEADERS;
+            case "products.csv" -> fileHeaders = PRODUCTS_DATABASE_HEADERS;
+            case "shoppingCarts.csv" -> fileHeaders = SHOPPING_CART_DATABASE_HEADERS;
+            case "purchaseHistories.csv" -> fileHeaders = PURCHASE_HISTORY_DATABASE_HEADERS;
         }
         return fileHeaders;
     }
@@ -50,12 +49,12 @@ public class Database {
     /**
      * Takes in the name of the file and a column index and returns whether that
      * index is within bounds of how many ever columns exist in the given file
-     * 
+     *
      * @param fileName The file using which the validity of the index will be
      *                 determined
      * @param index    The index of the specified column
      * @return If the column index is within bounds of the total number of columns
-     *         in the file
+     * in the file
      */
     public boolean checkColumnBounds(String fileName, int index) {
         String[] columns = getFileHeaders(fileName).split(",");
@@ -65,7 +64,7 @@ public class Database {
     /**
      * Takes in an ID and a file name and checks whether that ID is already
      * associated with an entry
-     * 
+     *
      * @param idToCheck The ID to compare with the entries in the file
      * @param fileName  The file to check for the existence of the ID
      * @return The existence of the ID in the specified file
@@ -110,13 +109,13 @@ public class Database {
      * credentials in the users.csv database. Used for when the user is logging into
      * the application. A null value signifies that no user with the given
      * credentials was found in the database.
-     * 
+     *
      * @param email    The user's email to compare with an existing entry in the
      *                 users.csv database
      * @param password The user's password to compare with an existing entry in the
      *                 users.csv database
      * @return A comma-separated string containing the matched user's information in
-     *         the users.csv database
+     * the users.csv database
      */
     public String retrieveUserMatchForLogin(String email, String password) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
@@ -139,11 +138,11 @@ public class Database {
      * Takes in the user's email and retrieves a match for the credential in the
      * users.csv database. Used for when the user is creating a new account. A null
      * value signifies that no user with the given email was found in the database.
-     * 
+     *
      * @param email The user's email to compare with an existing entry in the
      *              users.csv database
      * @return A comma-separated string containing the matched user's information in
-     *         the users.csv database
+     * the users.csv database
      */
     public String retrieveUserMatchForSignUp(String email) {
         ArrayList<String> userEntries = getDatabaseContents("users.csv");
@@ -164,7 +163,7 @@ public class Database {
     /**
      * Takes in a comma-separated string as an entry and appends it to the file
      * specified by the file name
-     * 
+     *
      * @param fileName The name of the file to append the entry to
      * @param entry    The entry to be appended to the file
      */
@@ -207,7 +206,7 @@ public class Database {
     /**
      * Takes in a comma-separated string as an entry and removes it from the file
      * specified by the file name
-     * 
+     *
      * @param fileName The name of the file to remove the entry from
      * @param entry    The entry to be removed from the file
      */
@@ -251,7 +250,7 @@ public class Database {
      * Takes in two comma separated strings, one representing the previous entry in
      * the file specified and one representing the modified entry and updates that
      * specified entry in the file with the modified entry
-     * 
+     *
      * @param fileName  The name of the file to be updated with the modified entry
      * @param prevEntry The entry that already exists in the file
      * @param newEntry  The entry that will replace the previous entry in the
@@ -308,7 +307,7 @@ public class Database {
     /**
      * Searches for the entry parameter in the file specified by filename and
      * returns whether it exists or not
-     * 
+     *
      * @param fileName The name of the file to within which to look for
      * @param entry    A comma-separated string representing a possible entry in the
      *                 file
@@ -334,7 +333,7 @@ public class Database {
      * Searches the column specified by the index in the specified file and returns
      * all rows where the value in that column matches the value of the search
      * parameter
-     * 
+     *
      * @param fileName    The file to search for
      * @param index       The index of the column to search for
      * @param searchParam The parameter to compare a value in the specified column
@@ -366,7 +365,7 @@ public class Database {
     /**
      * Takes in the name of the file as input and extracts all of its contents
      * line-by-line
-     * 
+     *
      * @param fileName The filename to extract the contents from
      * @return An arraylist containing all the entries in the specified file
      */
@@ -390,7 +389,7 @@ public class Database {
     /**
      * Takes in the name of the file and overwrites it completely with the contents
      * specified by the contents in the arraylist
-     * 
+     *
      * @param fileName The name of the file whose contents need to be updated
      * @param contents An arraylist representing the modified contents to be written
      *                 to the file
@@ -411,8 +410,8 @@ public class Database {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-             System.out.println("There was an error when updating the contents of " +
-             fileName);
+            System.out.println("There was an error when updating the contents of " +
+                    fileName);
         }
     }
 }

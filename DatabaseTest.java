@@ -2,21 +2,20 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - TestDatabase.java
- * 
+ * <p>
  * Class that handles all testing related to the functionalities implemented in
  * the database class.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 13, 2023
  */
 public class DatabaseTest {
-    static final String nonExistentUserEntry = "100678,hello@yahoo.com,76ybgjh,SELLER";
-    static final String nonExistentStoreEntry = "100912,Store100,90";
-    static final String nonExistentProductEntry = "100912,Store100,Apple,10,2,This is an apple";
-    static final String nonExistentShoppingCartEntry = "100678,100912,Store100,Apple,5,10";
-    static final String nonExistentPurchaseHistoryEntry = "100678,100912,Store100,Apple,5,10";
+    static final String NON_EXISTENT_USER_ENTRY = "100678,hello@yahoo.com,76ybgjh,SELLER";
+    static final String NON_EXISTENT_STORE_ENTRY = "100912,Store100,90";
+    static final String NON_EXISTENT_PRODUCT_ENTRY = "100912,Store100,Apple,10,2,This is an apple";
+    static final String NON_EXISTENT_SHOPPING_CART_ENTRY = "100678,100912,Store100,Apple,5,10";
+    static final String NON_EXISTENT_PURCHASE_HISTORY_ENTRY = "100678,100912,Store100,Apple,5,10";
 
     public static void main(String[] args) {
 
@@ -53,8 +52,7 @@ public class DatabaseTest {
 
     static String testGetFileHeaders(Database db) {
         String result = "";
-        String[] fileNames = { "stores.csv", "purchaseHistories.csv", "users.csv", "shoppingCarts.csv",
-                "products.csv" };
+        String[] fileNames = {"stores.csv", "purchaseHistories.csv", "users.csv", "shoppingCarts.csv", "products.csv"};
         for (int i = 0; i < fileNames.length; i++) {
             if (i != fileNames.length - 1) {
                 result += db.getFileHeaders(fileNames[i]) + "\n";
@@ -132,7 +130,7 @@ public class DatabaseTest {
                 && resultProductContents.equals(expectedProductContents)
                 && resultShoppingCartContents.equals(expectedShoppingCartContents)
                 && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
-                        : "Test Failed";
+                : "Test Failed";
     }
 
     static String testAddDuplicateDatabaseEntries(Database db) {
@@ -169,7 +167,7 @@ public class DatabaseTest {
                 && resultProductContents.equals(expectedProductContents)
                 && resultShoppingCartContents.equals(expectedShoppingCartContents)
                 && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
-                        : "Test Failed";
+                : "Test Failed";
     }
 
     static String testSuccessfulDatabaseModification(Database db) {
@@ -197,15 +195,15 @@ public class DatabaseTest {
 
     static String testUnsuccessfulDatabaseModification(Database db) {
         // Modifying entries that don't exist in any of the databases
-        boolean userEntryModified = db.modifyDatabase("users.csv", nonExistentUserEntry,
+        boolean userEntryModified = db.modifyDatabase("users.csv", NON_EXISTENT_USER_ENTRY,
                 "100678,hello@yahoo.com,jhghgf,Seller");
-        boolean storEntryModified = db.modifyDatabase("stores.csv", nonExistentStoreEntry, "100912,Store102,90");
-        boolean productEntryModified = db.modifyDatabase("products.csv", nonExistentProductEntry,
+        boolean storEntryModified = db.modifyDatabase("stores.csv", NON_EXISTENT_STORE_ENTRY, "100912,Store102,90");
+        boolean productEntryModified = db.modifyDatabase("products.csv", NON_EXISTENT_PRODUCT_ENTRY,
                 "100912,Store100,Apple,10,3,This is an apple");
-        boolean shoppingCartEntryModified = db.modifyDatabase("shoppingCarts.csv", nonExistentShoppingCartEntry,
+        boolean shoppingCartEntryModified = db.modifyDatabase("shoppingCarts.csv", NON_EXISTENT_SHOPPING_CART_ENTRY,
                 "100678,100912,Store100,Apple,5,15");
         boolean purchaseHistoryEntryModified = db.modifyDatabase("purchaseHistories.csv",
-                nonExistentPurchaseHistoryEntry,
+                NON_EXISTENT_PURCHASE_HISTORY_ENTRY,
                 "100678,100912,Store100,Apple,5,15");
 
         return (!userEntryModified && !storEntryModified && !productEntryModified && !shoppingCartEntryModified
@@ -243,17 +241,17 @@ public class DatabaseTest {
                 && resultProductContents.equals(expectedProductContents)
                 && resultShoppingCartContents.equals(expectedShoppingCartContents)
                 && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
-                        : "Test Failed";
+                : "Test Failed";
 
     }
 
     static String testUnsuccessfulDatabaseRemoval(Database db) {
         // Removing entries that don't exist in any of the databases
-        db.removeFromDatabase("users.csv", nonExistentUserEntry);
-        db.removeFromDatabase("stores.csv", nonExistentStoreEntry);
-        db.removeFromDatabase("products.csv", nonExistentProductEntry);
-        db.removeFromDatabase("shoppingCarts.csv", nonExistentShoppingCartEntry);
-        db.removeFromDatabase("purchaseHistories.csv", nonExistentPurchaseHistoryEntry);
+        db.removeFromDatabase("users.csv", NON_EXISTENT_USER_ENTRY);
+        db.removeFromDatabase("stores.csv", NON_EXISTENT_STORE_ENTRY);
+        db.removeFromDatabase("products.csv", NON_EXISTENT_PRODUCT_ENTRY);
+        db.removeFromDatabase("shoppingCarts.csv", NON_EXISTENT_SHOPPING_CART_ENTRY);
+        db.removeFromDatabase("purchaseHistories.csv", NON_EXISTENT_PURCHASE_HISTORY_ENTRY);
 
         String resultUserContents = db.getDatabaseContents("users.csv").toString();
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
@@ -273,7 +271,7 @@ public class DatabaseTest {
                 && resultProductContents.equals(expectedProductContents)
                 && resultShoppingCartContents.equals(expectedShoppingCartContents)
                 && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
-                        : "Test Failed";
+                : "Test Failed";
     }
 
     static String testMatchedUserIDs(Database db) {
@@ -306,33 +304,33 @@ public class DatabaseTest {
         return (existentUserResult.equals(expectedExistentUserResult)
                 && existentUserTwoResult.equals(expectedExistentUserResult) && nonExistentUserOneResult == null
                 && nonExistentUserTwoResult == null && nonExistentUserThreeResult == null) ? "Test Passed"
-                        : "Test Failed";
+                : "Test Failed";
     }
 
     static String testFileEntryExists(Database db) {
         // for users.csv
         boolean userEntryExists = db.checkEntryExists("users.csv", "S100002,balogne@gmail.com,12315436,SELLER");
-        boolean userEntryNonExistence = db.checkEntryExists("users.csv", nonExistentUserEntry);
+        boolean userEntryNonExistence = db.checkEntryExists("users.csv", NON_EXISTENT_USER_ENTRY);
 
         // for stores.csv
         boolean storeEntryExists = db.checkEntryExists("stores.csv", "ST100001,S100002,newStore1,1");
-        boolean storeEntryNonExistence = db.checkEntryExists("stores.csv", nonExistentStoreEntry);
+        boolean storeEntryNonExistence = db.checkEntryExists("stores.csv", NON_EXISTENT_STORE_ENTRY);
 
         // for products.csv
         boolean productEntryExists = db.checkEntryExists("products.csv",
                 "S100002,ST100002,PR100002,newStore2,myProduct2,1000,25,Its a new product!");
-        boolean productEntryNonExistence = db.checkEntryExists("products.csv", nonExistentProductEntry);
+        boolean productEntryNonExistence = db.checkEntryExists("products.csv", NON_EXISTENT_PRODUCT_ENTRY);
 
         // for shoppingCarts.csv
         boolean shoppingEntryExists = db.checkEntryExists("shoppingCarts.csv",
                 "C1000000,S1000000,ST1000000,PR1000000,Store1,Apple,6,35.94");
-        boolean shoppingEntryNonExistence = db.checkEntryExists("shoppingCarts.csv", nonExistentShoppingCartEntry);
+        boolean shoppingEntryNonExistence = db.checkEntryExists("shoppingCarts.csv", NON_EXISTENT_SHOPPING_CART_ENTRY);
 
         // for purchaseHistories.csv
         boolean purchaseHistoryEntryExists = db.checkEntryExists("purchaseHistories.csv",
                 "C1000000,S1000000,ST1000000,PR1000000,Store1,Apple,6,35.94");
         boolean purchaseHistoryEntryNonExistence = db.checkEntryExists("purchaseHistories.csv",
-                nonExistentPurchaseHistoryEntry);
+                NON_EXISTENT_PURCHASE_HISTORY_ENTRY);
 
         return (userEntryExists && !userEntryNonExistence && storeEntryExists && !storeEntryNonExistence
                 && productEntryExists && !productEntryNonExistence && !shoppingEntryExists &&
@@ -344,7 +342,7 @@ public class DatabaseTest {
         // Checking for entries in files that don't exist
         boolean result = false;
         String sampleEntry = "C100001,cherry@gmail.com,12345,CUSTOMER";
-        String[] nonExistentFiles = { "random.csv", "blabla.csv", "hello.csv", "something.csv" };
+        String[] nonExistentFiles = {"random.csv", "blabla.csv", "hello.csv", "something.csv"};
         for (int i = 0; i < nonExistentFiles.length; i++) {
             result = db.checkEntryExists(nonExistentFiles[i], sampleEntry);
         }
@@ -373,7 +371,7 @@ public class DatabaseTest {
     static String testUnsuccessfulGetDatabaseContents(Database db) {
         boolean result = false;
         // When the user tries retrieving contents from a non-existent file
-        String[] nonExistentFiles = { "random.csv", "blabla.csv", "hello.csv", "something.csv" };
+        String[] nonExistentFiles = {"random.csv", "blabla.csv", "hello.csv", "something.csv"};
         for (String f : nonExistentFiles) {
             result = db.getDatabaseContents(f).isEmpty();
         }

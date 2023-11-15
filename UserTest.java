@@ -1,12 +1,11 @@
 /**
  * Project 4 - TestUser.java
- * 
+ * <p>
  * Class that handles all testing related to the functionalities implemented in
  * the user class.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 13, 2023
  */
 public class UserTest {
@@ -79,7 +78,7 @@ public class UserTest {
         return resultUserContents.equals(expectedUserContents)
                 && resultShoppingCartContents.equals(expectedShoppingCartContents)
                 && resultPurchaseHistoryContents.equals(expectedPurchaseHistoryContents) ? "Test Passed"
-                        : "Test Failed";
+                : "Test Failed";
     }
 
     static String deleteSellerAccountSuccessful(Database db) {

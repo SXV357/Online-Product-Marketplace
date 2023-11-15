@@ -6,12 +6,11 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - Customer.java
- *
+ * <p>
  * Class to represent the permissions and details associated with a customer
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- *
+ * Miller, Oliver Long
  * @version November 12, 2023
  */
 public class Customer extends User {
@@ -34,7 +33,7 @@ public class Customer extends User {
 
     /**
      * Converts arrays to list of strings
-     * 
+     *
      * @return String of array's contents
      */
     public String arrToString(ArrayList<String> array, boolean quantity) {
@@ -53,7 +52,7 @@ public class Customer extends User {
 
     /**
      * Returns the user's shopping history
-     * 
+     *
      * @return The shopping history as a string
      */
     public String getShoppingHistory() {
@@ -81,7 +80,7 @@ public class Customer extends User {
 
     /**
      * Returns a specific products's info
-     * 
+     *
      * @return The product's info
      */
     public String getProductInfo(int index) {
@@ -108,7 +107,7 @@ public class Customer extends User {
 
     /**
      * Returns the all the products in the csv
-     * 
+     *
      * @return The products listed as a string
      */
     public String getAllProducts() {
@@ -134,7 +133,7 @@ public class Customer extends User {
 
     /**
      * Internal Supplementary formatting method
-     * 
+     *
      * @return The products formatted as a string
      */
     public String formatProducts(ArrayList<String> productList, boolean quantity) {
@@ -163,7 +162,7 @@ public class Customer extends User {
 
     /**
      * Returns the user's shopping cart
-     * 
+     *
      * @return The shopping cart as a string
      */
     public String getCart() {
@@ -190,7 +189,7 @@ public class Customer extends User {
 
     /**
      * Removes a given item from the cart
-     * 
+     *
      * @param index the index of the cart the remove
      */
     public boolean removeFromCart(int index) {
@@ -207,7 +206,7 @@ public class Customer extends User {
 
     /**
      * Adds a given item from the cart
-     * 
+     *
      * @param productID the index of the product the add
      */
     public boolean addToCart(int index, int quantity) {
@@ -249,7 +248,6 @@ public class Customer extends User {
 
     /**
      * Purchases the items in the cart
-     * 
      */
     public boolean purchaseItems() {
         StringBuilder output = new StringBuilder();
@@ -282,7 +280,7 @@ public class Customer extends User {
                         db.modifyDatabase("purchaseHistories.csv", purchasehistory.get(i),
                                 String.join(",", updatedEntry));
                         duplicate = true;
-                    } 
+                    }
                 }
                 if (!duplicate) {
                     db.addToDatabase("purchaseHistories.csv", item);
@@ -302,7 +300,7 @@ public class Customer extends User {
 
     /**
      * Sorts based on user's choice of price or quantity
-     * 
+     *
      * @return Returns the sorted string
      */
     public String sortProducts(String choice) {
@@ -340,7 +338,7 @@ public class Customer extends User {
 
     /**
      * Exports the user's purchase history
-     * 
+     *
      * @return Returns true if the process is successful
      */
     public boolean exportPurchaseHistory() {
@@ -372,7 +370,7 @@ public class Customer extends User {
 
     /**
      * Searches for all products containing a given query
-     * 
+     *
      * @return Returns the products found
      */
     public String searchProducts(String query) {

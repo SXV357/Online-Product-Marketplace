@@ -2,20 +2,20 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - CreateDatabaseData.java
- * 
+ * <p>
  * Class that handles data generation for all the databases for purposes of
  * testing.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 11, 2023
  */
 public class CreateDatabaseData {
 
     public static void main(String[] args) {
-        createData();
+        clearData();
     }
+
     public static void clearData() {
         Database database = new Database();
 

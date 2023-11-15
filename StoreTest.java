@@ -2,13 +2,12 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - TestStore.java
- * 
+ * <p>
  * Class that handles all testing related to the functionalities implemented in
  * the store class.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 12, 2023
  */
 public class StoreTest {

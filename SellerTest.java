@@ -6,13 +6,12 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - TestStoreManagement.java
- * 
+ * <p>
  * Class that handles all testing related to the functionalities implemented in
  * the seller class.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 13, 2023
  */
 public class SellerTest {
@@ -124,10 +123,14 @@ public class SellerTest {
     @SuppressWarnings("unused")
     static String modifyStoreNameFail(Seller s, Database db) {
         // Both parameters are null or empty or one or the other
-        String n1 = "", n2 = "";
-        String n3 = null, n4 = null;
-        String n5 = "", n6 = null;
-        String n7 = "", n8 = null;
+        String n1 = "";
+        String n2 = "";
+        String n3 = null;
+        String n4 = null;
+        String n5 = "";
+        String n6 = null;
+        String n7 = "";
+        String n8 = null;
         boolean mod1 = s.modifyStoreName(n1, n2);
         boolean mod2 = s.modifyStoreName(n3, n4);
         boolean mod3 = s.modifyStoreName(n5, n6);

@@ -80,8 +80,8 @@ public class Dashboard {
             String customerEmail = customerDataList[1];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String StatsString = String.format("%s,%.2f,%.2f", customerEmail, totalQuantity, totalSpent);
-            customerStatisticsStrings.add(StatsString);
+            String statsString = String.format("%s,%.2f,%.2f", customerEmail, totalQuantity, totalSpent);
+            customerStatisticsStrings.add(statsString);
         }
 
         // Sorts the processed data
@@ -130,8 +130,8 @@ public class Dashboard {
             String productName = productDataList[4];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String StatsString = String.format("%s,%.2f,%.2f", productName, totalSold, totalRevenue);
-            productStatisticsStrings.add(StatsString);
+            String statsString = String.format("%s,%.2f,%.2f", productName, totalSold, totalRevenue);
+            productStatisticsStrings.add(statsString);
         }
 
         return sortResults(sortIndex, sortAscending, productStatisticsStrings);
@@ -176,8 +176,8 @@ public class Dashboard {
             String storeName = storeDataList[2];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String StatsString = String.format("%s,%.2f,%.2f", storeName, totalProductsSold, totalRevenue);
-            storeStatisticsStrings.add(StatsString);
+            String statsString = String.format("%s,%.2f,%.2f", storeName, totalProductsSold, totalRevenue);
+            storeStatisticsStrings.add(statsString);
         }
 
         return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
@@ -230,8 +230,8 @@ public class Dashboard {
             String storeName = storeDataList[2];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String StatsString = String.format("%s,%.2f,%.2f", storeName, totalProductsBought, totalSpent);
-            storeStatisticsStrings.add(StatsString);
+            String statsString = String.format("%s,%.2f,%.2f", storeName, totalProductsBought, totalSpent);
+            storeStatisticsStrings.add(statsString);
         }
         return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
     }

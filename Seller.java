@@ -8,12 +8,11 @@ import java.util.HashMap;
 
 /**
  * Project 4 - Seller.java
- * 
+ * <p>
  * Class to represent the permissions and details associated with a seller
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
+ * Miller, Oliver Long
  * @version November 13, 2023
  */
 public class Seller extends User {
@@ -24,7 +23,7 @@ public class Seller extends User {
      * Constructor to initialize a new seller when they create an account. Generates
      * a unique ID for the seller and adds a marker to it signifying that the user
      * is a seller.
-     * 
+     *
      * @param email    The seller's new email
      * @param password The seller's new password
      * @param role     The seller's role
@@ -36,7 +35,7 @@ public class Seller extends User {
     /**
      * Customer to re-initialize a seller when they log back into the application.
      * Sets the values of all fields to the ones passed to the constructor.
-     * 
+     *
      * @param userID   The seller's existing ID
      * @param email    The seller's existing email
      * @param password The seller's existing password
@@ -49,7 +48,7 @@ public class Seller extends User {
     /**
      * Retrieves all the stores associated with this seller and returns the entries
      * in the form of an arraylist of store objects
-     * 
+     *
      * @return An arraylist of store objects corresponding to this seller
      */
     public ArrayList<Store> getStores() {
@@ -68,7 +67,7 @@ public class Seller extends User {
     /**
      * Creates a new store associated with this seller. If another store exists with
      * the same name, the seller is prevented from creating the store.
-     * 
+     *
      * @param newStoreName The name of the new store
      * @return An indication of whether or not the store was created successfully.
      */
@@ -92,10 +91,10 @@ public class Seller extends User {
      * Deletes an existing store associated with this seller, including all of the
      * store's associated products. In an event where the seller chooses to delete a
      * store that doesn't exist, the deletion doesn't take place.
-     * 
+     *
      * @param storeName The name of the store to remove
      * @return An indication of whether or not the store, including all associated
-     *         products were deleted successfully.
+     * products were deleted successfully.
      */
     public boolean deleteStore(String storeName) {
         try {
@@ -117,12 +116,12 @@ public class Seller extends User {
      * to modify the name of an existing store to a name that either corresponds to
      * one of this sellers' other stores or one that corresponds to another seller's
      * stores, they are prevented from doing so.
-     * 
+     *
      * @param prevStoreName The name of the seller's existing store whose name they
      *                      choose to modify.
      * @param newStoreName  The store's new name.
      * @return An indication of whether the store name modification took place
-     *         successfully.
+     * successfully.
      */
     public boolean modifyStoreName(String prevStoreName, String newStoreName) {
         if (prevStoreName == null || prevStoreName.isEmpty() || newStoreName == null || newStoreName.isEmpty()) {
@@ -149,17 +148,17 @@ public class Seller extends User {
      * the seller tries adding a product to a store that doesn't exist or adds a
      * product to an existing store that already contains the same product, the
      * seller is prevented from doing so.
-     * 
+     *
      * @param storeName          The name of the store to add the product to
      * @param productName        The new product's name.
      * @param availableQuantity  The number of products going on sale
      * @param price              The price of the product
      * @param productDescription A description associated with the product
      * @return An indication of whether the product was succcessfully added to the
-     *         selected store or not.
+     * selected store or not.
      */
     public boolean createNewProduct(String storeName, String productName, int availableQuantity, double price,
-            String productDescription) {
+                                    String productDescription) {
         if (productName == null || productName.isEmpty() || availableQuantity < 0 || price < 0
                 || productDescription == null || productDescription.isEmpty()) {
             return false;
@@ -209,7 +208,7 @@ public class Seller extends User {
      *                    wants to edit(Name, Price, Quantity, Description)
      * @param newValue    The new value of the property to modify
      * @return An indication of whether the product in the given store was modified
-     *         successfully
+     * successfully
      */
     @SuppressWarnings("unused")
     public boolean editProduct(String storeName, String productName, String editParam, String newValue) {
@@ -263,11 +262,11 @@ public class Seller extends User {
      * Deletes the product associated with the given store. In an event when the
      * seller tries removing a product from a non-existent store or a non-existent
      * product from a given store, the seller is prevented from doing so.
-     * 
+     *
      * @param storeName   The name of the store to delete the product from
      * @param productName The name of the product to delete from the store
      * @return An indication whether the specified product was deleted from the
-     *         specified store successfully
+     * specified store successfully
      */
     public boolean deleteProduct(String storeName, String productName) {
         boolean productDeleted = false;
@@ -300,11 +299,10 @@ public class Seller extends User {
     }
 
     /**
-     *
      * View a list of sales by store, where the seller can view customer
      * information, product details, how many items the customer purchased, and the
      * revenues per sale.
-     * 
+     *
      * @return A string containing store sale information
      */
     public String viewStoreSales() {
@@ -359,12 +357,12 @@ public class Seller extends User {
      * Allows the seller to import a CSV file containing product entries in the form
      * Product Name, Available Quantity, Price, Description into any store of their
      * choice.
-     * 
+     *
      * @param filePath  The file containing the products to be imported into the
      *                  store
      * @param storeName The name of the store to add the products to
      * @return An indication whether the product import took place successfully or
-     *         not.
+     * not.
      */
     public boolean importProducts(String filePath, String storeName) {
         try {
@@ -398,7 +396,7 @@ public class Seller extends User {
     /**
      * Allows a seller to export the products associated with any of their stores to
      * a separate CSV file.
-     * 
+     *
      * @param storeName The name of the store whose products the seller wants to
      *                  export
      * @return An indication whether the export took place successfully.
@@ -443,11 +441,10 @@ public class Seller extends User {
     }
 
     /**
-     *
      * View customer's shopping carts associated with this sellers' stores, where
      * the seller can view customer information, product details, quantity added,
      * and price the customer will have to incur should they purchase it.
-     * 
+     *
      * @return A string containing customer shopping cart information
      */
     public String viewCustomerShoppingCarts() {

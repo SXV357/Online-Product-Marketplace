@@ -2,13 +2,12 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - Store.java
- *
+ * <p>
  * Class that represents an individual store that belongs to a seller in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- *
+ * Miller, Oliver Long
  * @version November 12, 2023
  */
 public class Store {
@@ -21,7 +20,7 @@ public class Store {
     /**
      * Creating a new store for the first time. Generates a unique ID and adds a
      * signifier to it indicating that it is a store.
-     * 
+     *
      * @param storeName The new store's name
      */
     public Store(String storeName) {
@@ -31,7 +30,7 @@ public class Store {
 
     /**
      * Re-initialize an already-existing store
-     * 
+     *
      * @param storeIdentificationNumber The existing store's ID
      * @param storeName                 The existing store's name
      */
@@ -44,7 +43,7 @@ public class Store {
      * Queries the database for product entries associated with this store then
      * bundles all the entries into product objects and returns them in the form of
      * an arraylist.
-     * 
+     *
      * @return An arraylist of all the products associated with this store
      */
     public ArrayList<Product> getProducts() {
@@ -64,7 +63,7 @@ public class Store {
 
     /**
      * Gets the current store's ID
-     * 
+     *
      * @return The ID associated with this store
      */
     public String getStoreIdentificationNumber() {
@@ -73,7 +72,7 @@ public class Store {
 
     /**
      * Gets the current store's name
-     * 
+     *
      * @return The name associated with this store
      */
     public String getStoreName() {
@@ -83,7 +82,7 @@ public class Store {
     /**
      * Returns a unique 7-digit ID as long as the current ID is not already
      * associated with an existing account in the stores.csv database
-     * 
+     *
      * @return A unique 7-digit ID
      */
     public int generateStoreIdentificationNumber() {
