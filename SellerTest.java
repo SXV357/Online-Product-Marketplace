@@ -6,13 +6,14 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - TestStoreManagement.java
- * <p>
+ * 
  * Class that handles all testing related to the functionalities implemented in
  * the seller class.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 13, 2023
+ * 
+ * @version November 16, 2023
  */
 public class SellerTest {
 
@@ -156,8 +157,8 @@ public class SellerTest {
         // store has the same name
         String currentStore = "MetroFresh Market";
         String productName = "Corn Dogs";
-        int availableQuantity = 50;
-        double price = 6.50;
+        String availableQuantity = "50";
+        String price = "6.50";
         String description = "Juicy corn dogs fried to perfection";
         boolean productCreated = s.createNewProduct(currentStore, productName, availableQuantity, price, description);
 
@@ -179,8 +180,8 @@ public class SellerTest {
         // provided attributes are invalid
         String existentStore = "TownSquare Provisions";
         String newProductName = "Bananas";
-        int quantity = -5; // Negative quantity is not allowed
-        double salePrice = 3.50;
+        String quantity = "-5"; // Negative quantity is not allowed
+        String salePrice = "3.50";
         String productDescription = "Fresh Bananas";
         boolean createdProduct = s.createNewProduct(existentStore, newProductName, quantity, salePrice,
                 productDescription);
@@ -188,8 +189,8 @@ public class SellerTest {
         // The store is non-existent
         String nonExistentStore = "UrbanPantry Mart";
         String productName = "whfjwhfj";
-        int qty = 54;
-        double price = 6.0;
+        String qty = "54";
+        String price = "6.0";
         String descrip = "qudtqvtwqutr";
         boolean productCreated = s.createNewProduct(nonExistentStore, productName, qty, price, descrip);
 
@@ -197,8 +198,8 @@ public class SellerTest {
         // name as an existing one in the same store
         String currStore = "MetroFresh Market";
         String prodName = "Corn Dogs";
-        int qty2 = 54;
-        double price2 = 6.0;
+        String qty2 = "54";
+        String price2 = "6.0";
         String descrip2 = "qudtqvtwqutr";
         boolean productCreated2 = s.createNewProduct(currStore, prodName, qty2, price2, descrip2);
 
@@ -268,8 +269,8 @@ public class SellerTest {
         // valid new value
         String currentStore = "MetroFresh Market";
         String productName = "Corn Dogs";
-        int availableQuantity = 50;
-        double price = 6.50;
+        String availableQuantity = "50";
+        String price = "6.50";
         String description = "Juicy corn dogs fried to perfection";
         boolean productCreated = s.createNewProduct(currentStore, productName, availableQuantity, price, description);
         boolean productModified = s.editProduct(currentStore, productName, "name", "Crispy Corn Dogs");
@@ -306,7 +307,7 @@ public class SellerTest {
         // The store exists and the product exists in the store and the edit parameter
         // is name but the new value provided for name already corresponds to an
         // existing product within the same store
-        s.createNewProduct("MetroFresh Market", "Apples", 20, 5.99, "Green apples");
+        s.createNewProduct("MetroFresh Market", "Apples", "20", "5.99", "Green apples");
         boolean productEditFailFive = s.editProduct("MetroFresh Market", "Crispy Corn Dogs", "name", "Apples");
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
@@ -356,7 +357,7 @@ public class SellerTest {
         String expectedShoppingCartsTwo = "No products have been added to any of your stores!";
 
         // No customers have added products to shopping cart from any stores
-        boolean productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", 50, 6.50,
+        boolean productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", "50", "6.50",
                 "Juicy corn dogs fried to perfection");
         String resultShoppingCartsThree = s.viewCustomerShoppingCarts();
         String expectedShoppingCartsThree = "No customers have added products to their shopping cart " +
@@ -401,7 +402,7 @@ public class SellerTest {
         String expectedPurchaseHistoriesTwo = "No products have been added to any of your stores!";
 
         // No customers have added products to shopping cart from any stores
-        boolean productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", 50, 6.50,
+        boolean productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", "50", "6.50",
                 "Juicy corn dogs fried to perfection");
         String resultPurchaseHistoriesThree = s.viewStoreSales();
         String expectedPurchaseHistoriesThree = "Customers have not purchased items from any of your stores!";
