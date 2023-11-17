@@ -8,12 +8,13 @@ import java.util.HashMap;
 
 /**
  * Project 4 - Seller.java
- * <p>
+ * 
  * Class to represent the permissions and details associated with a seller
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- * Miller, Oliver Long
- * @version November 13, 2023
+ *         Miller, Oliver Long
+ * 
+ * @version November 17, 2023
  */
 public class Seller extends User {
 
@@ -72,19 +73,18 @@ public class Seller extends User {
      * @return An indication of whether or not the store was created successfully.
      */
     public boolean createNewStore(String newStoreName) {
-        boolean storeCreated = false;
         ArrayList<String> matchedStoreEntries = db.getMatchedEntries("stores.csv", 2, newStoreName);
         if (newStoreName == null || newStoreName.isEmpty() || !matchedStoreEntries.isEmpty()) {
-            storeCreated = false;
+            return false;
         }
         if (matchedStoreEntries.isEmpty()) {
             Store newStore = new Store(newStoreName);
             String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(),
                     super.getUserID(), newStore.getStoreName(), 0);
             db.addToDatabase("stores.csv", newStoreEntry);
-            storeCreated = true;
+            return true;
         }
-        return storeCreated;
+        return false;
     }
 
     /**
@@ -94,9 +94,12 @@ public class Seller extends User {
      *
      * @param storeName The name of the store to remove
      * @return An indication of whether or not the store, including all associated
-     * products were deleted successfully.
+     *         products were deleted successfully.
      */
     public boolean deleteStore(String storeName) {
+        if (storeName == null || storeName.isEmpty()) {
+            return false;
+        }
         try {
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
@@ -121,7 +124,7 @@ public class Seller extends User {
      *                      choose to modify.
      * @param newStoreName  The store's new name.
      * @return An indication of whether the store name modification took place
-     * successfully.
+     *         successfully.
      */
     public boolean modifyStoreName(String prevStoreName, String newStoreName) {
         if (prevStoreName == null || prevStoreName.isEmpty() || newStoreName == null || newStoreName.isEmpty()) {
@@ -155,15 +158,19 @@ public class Seller extends User {
      * @param price              The price of the product
      * @param productDescription A description associated with the product
      * @return An indication of whether the product was succcessfully added to the
-     * selected store or not.
+     *         selected store or not.
      */
-    public boolean createNewProduct(String storeName, String productName, int availableQuantity, double price,
-                                    String productDescription) {
-        if (productName == null || productName.isEmpty() || availableQuantity < 0 || price < 0
-                || productDescription == null || productDescription.isEmpty()) {
-            return false;
-        }
+    public boolean createNewProduct(String storeName, String productName, String availableQuantity, String price,
+            String productDescription) {
         try {
+            if (storeName == null || storeName.isEmpty() || productName == null || productName.isEmpty() || availableQuantity == null || availableQuantity.isEmpty() || price == null || price.isEmpty() || productDescription == null || productDescription.isEmpty()) {
+                return false;
+            }
+            int quantity = Integer.parseInt(availableQuantity);
+            double productPrice = Double.parseDouble(price);
+            if (quantity < 0 || productPrice < 0) {
+                return false;
+            }
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
 
             // To ensure that the seller doesn't try adding a product with the same name in
@@ -176,7 +183,7 @@ public class Seller extends User {
                 }
             }
 
-            Product newProduct = new Product(productName, availableQuantity, price,
+            Product newProduct = new Product(productName, quantity, productPrice,
                     productDescription.replace(",", ""));
 
             String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0],
@@ -190,7 +197,7 @@ public class Seller extends User {
             db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",", newStoreRepresentation));
 
             return true;
-        } catch (IndexOutOfBoundsException e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -208,12 +215,15 @@ public class Seller extends User {
      *                    wants to edit(Name, Price, Quantity, Description)
      * @param newValue    The new value of the property to modify
      * @return An indication of whether the product in the given store was modified
-     * successfully
+     *         successfully
      */
     @SuppressWarnings("unused")
     public boolean editProduct(String storeName, String productName, String editParam, String newValue) {
         if (!editParam.equals("name") && !editParam.equals("price") && !editParam.equals("description")
                 && !editParam.equals("quantity")) {
+            return false;
+        }
+        if (storeName == null || storeName.isEmpty() || productName == null || productName.isEmpty() || editParam == null || editParam.isEmpty() || newValue == null || newValue.isEmpty()) {
             return false;
         }
         try {
@@ -266,9 +276,12 @@ public class Seller extends User {
      * @param storeName   The name of the store to delete the product from
      * @param productName The name of the product to delete from the store
      * @return An indication whether the specified product was deleted from the
-     * specified store successfully
+     *         specified store successfully
      */
     public boolean deleteProduct(String storeName, String productName) {
+        if (storeName == null || storeName.isEmpty() || productName == null || productName.isEmpty()) {
+            return false;
+        }
         boolean productDeleted = false;
         try {
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
@@ -362,9 +375,12 @@ public class Seller extends User {
      *                  store
      * @param storeName The name of the store to add the products to
      * @return An indication whether the product import took place successfully or
-     * not.
+     *         not.
      */
     public boolean importProducts(String filePath, String storeName) {
+        if (filePath == null || filePath.isEmpty() || storeName == null || storeName.isEmpty()) {
+            return false;
+        }
         try {
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             File productFile = new File(filePath);
@@ -375,7 +391,7 @@ public class Seller extends User {
             while ((line = br.readLine()) != null) {
                 String[] productLine = line.split(",");
                 boolean productAdded = this.createNewProduct(storeName, productLine[0],
-                        Integer.parseInt(productLine[1]), Double.parseDouble(productLine[2]), productLine[3]);
+                        productLine[1], productLine[2], productLine[3]);
                 if (productAdded) {
                     numProducts += 1;
                 }
@@ -403,6 +419,9 @@ public class Seller extends User {
      */
     @SuppressWarnings("unused")
     public boolean exportProducts(String storeName) {
+        if (storeName == null || storeName.isEmpty()) {
+            return false;
+        }
         try {
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);

@@ -3,12 +3,13 @@ import java.util.Scanner;
 
 /**
  * Project 4 - Runner.java
- * <p>
+ * 
  * Driver class for the application
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 13, 2023
+ * 
+ * @version November 17, 2023
  */
 
 public class Runner {
@@ -201,21 +202,21 @@ public class Runner {
                     case 1: // Create Product
                         System.out.println("What would you like to name the product?");
                         String productName = scan.nextLine();
-                        int availableQuantity;
+                        String availableQuantity;
                         while (true) {
                             System.out.println("How many are for sale?");
                             try {
-                                availableQuantity = Integer.parseInt(scan.nextLine());
+                                availableQuantity = scan.nextLine();
                                 break;
                             } catch (Exception e) {
                                 System.out.println("Error: Please enter an integer");
                             }
                         }
-                        double price;
+                        String price;
                         while (true) {
                             System.out.println("What is the price per product in dollars?");
                             try {
-                                price = Double.parseDouble(scan.nextLine());
+                                price = scan.nextLine();
                                 break;
                             } catch (Exception e) {
                                 System.out.println("Error: Please enter a double");
