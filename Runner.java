@@ -254,7 +254,7 @@ public class Runner {
                             newValue = scan.nextLine();
                         } while (newValue == null);
                         if (curSeller.editProduct(curStore.getStoreName(), curProduct.getName(), editParam,
-                                newValue)) {
+                                newValue).equals("Product edited successfully")) {
                             System.out.println("Product successfully edited");
                         } else {
                             System.out.println("Error editing product"); // fix to be more specific
@@ -278,9 +278,9 @@ public class Runner {
                             if (filePath.equals("Quit") || filePath.equals("quit")) {
                                 break;
                             }
-                            boolean successfulImport = curSeller.importProducts(filePath,
+                            String successfulImport = curSeller.importProducts(filePath,
                                     curStore.getStoreName());
-                            if (successfulImport) {
+                            if (successfulImport.equals("Products imported successfully")) {
                                 break;
                             } else {
                                 System.out.println("file path is incorrect");

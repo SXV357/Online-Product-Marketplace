@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 16, 2023
+ * @version November 17, 2023
  */
 public class SellerTest {
 
@@ -72,7 +72,7 @@ public class SellerTest {
     static String createNewStore(Seller s, Database db) {
         // Create a store with a name that doesn't exist already
         String newStoreName = "FreshHarbor Groceries";
-        boolean storeCreated = s.createNewStore(newStoreName);
+        String storeCreated = s.createNewStore(newStoreName);
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
         String expectedStoreContents = "[ST1000000,S1000000,FreshHarbor Groceries,0]";
         return resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -82,7 +82,7 @@ public class SellerTest {
     static String createDuplicateStore(Seller s, Database db) {
         // Create a store with the same name as an existing store
         String currentStoreName = "FreshHarbor Groceries";
-        boolean storeCreated = s.createNewStore(currentStoreName);
+        String storeCreated = s.createNewStore(currentStoreName);
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
         String expectedStoreContents = "[ST1000000,S1000000,FreshHarbor Groceries,0]";
         return resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -92,7 +92,7 @@ public class SellerTest {
     static String deleteNonExistentStore(Seller s, Database db) {
         // Delete a store that doesn't exist
         String nonExistentStoreName = "MetroFresh Market";
-        boolean storeDeleted = s.deleteStore(nonExistentStoreName);
+        String storeDeleted = s.deleteStore(nonExistentStoreName);
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
         String expectedStoreContents = "[ST1000000,S1000000,FreshHarbor Groceries,0]";
         return resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -102,7 +102,7 @@ public class SellerTest {
     static String deleteExistingStore(Seller s, Database db) {
         // Delete a store that exists
         String currentStoreName = "FreshHarbor Groceries";
-        boolean storeDeleted = s.deleteStore(currentStoreName);
+        String storeDeleted = s.deleteStore(currentStoreName);
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
         String expectedStoreContents = "[]";
         return resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -113,9 +113,9 @@ public class SellerTest {
         // The previous store name exists and the new provided store name is not already
         // associated with an existing store
         String previousStoreName = "FreshHarbor Groceries";
-        boolean storeCreated = s.createNewStore(previousStoreName);
+        String storeCreated = s.createNewStore(previousStoreName);
         String newStoreName = "MetroFresh Market";
-        boolean storeNameModified = s.modifyStoreName(previousStoreName, newStoreName);
+        String storeNameModified = s.modifyStoreName(previousStoreName, newStoreName);
         String resultStoreContents = db.getDatabaseContents("stores.csv").toString();
         String expectedStoreContents = "[ST1000000,S1000000,MetroFresh Market,0]";
         return resultStoreContents.equals(expectedStoreContents) ? "Test Passed" : "Test Failed";
@@ -123,32 +123,18 @@ public class SellerTest {
 
     @SuppressWarnings("unused")
     static String modifyStoreNameFail(Seller s, Database db) {
-        // Both parameters are null or empty or one or the other
-        String n1 = "";
-        String n2 = "";
-        String n3 = null;
-        String n4 = null;
-        String n5 = "";
-        String n6 = null;
-        String n7 = "";
-        String n8 = null;
-        boolean mod1 = s.modifyStoreName(n1, n2);
-        boolean mod2 = s.modifyStoreName(n3, n4);
-        boolean mod3 = s.modifyStoreName(n5, n6);
-        boolean mod4 = s.modifyStoreName(n7, n8);
-
         // The previousStoreName doesn't exist
         String nonExistentPrev = "GreenVista Supermarket";
-        boolean mod5 = s.modifyStoreName(nonExistentPrev, "TownSquare Provisions");
+        String mod1 = s.modifyStoreName(nonExistentPrev, "TownSquare Provisions");
 
         // Previous store name exists but the new store name is already associated with
         // an existing store name
-        boolean newStoreCreated = s.createNewStore("TownSquare Provisions");
+        String newStoreCreated = s.createNewStore("TownSquare Provisions");
         String existingName = "MetroFresh Market";
         String newName = "TownSquare Provisions";
-        boolean mod6 = s.modifyStoreName(existingName, newName);
+        String mod2 = s.modifyStoreName(existingName, newName);
 
-        return !mod1 && !mod2 && !mod3 && !mod4 && !mod5 && !mod6 ? "Test Passed" : "Test Failed";
+        return mod1.equals("Unable to modify store name. The previous store name provided is non-existent!") && mod2.equals("Unable to modify store name. The new name provided is already associated with an existing store!") ? "Test Passed" : "Test Failed";
     }
 
     @SuppressWarnings("unused")
@@ -160,7 +146,7 @@ public class SellerTest {
         String availableQuantity = "50";
         String price = "6.50";
         String description = "Juicy corn dogs fried to perfection";
-        boolean productCreated = s.createNewProduct(currentStore, productName, availableQuantity, price, description);
+        String productCreated = s.createNewProduct(currentStore, productName, availableQuantity, price, description);
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
         String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50," +
@@ -183,7 +169,7 @@ public class SellerTest {
         String quantity = "-5"; // Negative quantity is not allowed
         String salePrice = "3.50";
         String productDescription = "Fresh Bananas";
-        boolean createdProduct = s.createNewProduct(existentStore, newProductName, quantity, salePrice,
+        String createdProduct = s.createNewProduct(existentStore, newProductName, quantity, salePrice,
                 productDescription);
 
         // The store is non-existent
@@ -192,7 +178,7 @@ public class SellerTest {
         String qty = "54";
         String price = "6.0";
         String descrip = "qudtqvtwqutr";
-        boolean productCreated = s.createNewProduct(nonExistentStore, productName, qty, price, descrip);
+        String productCreated = s.createNewProduct(nonExistentStore, productName, qty, price, descrip);
 
         // The store is existent but the seller tries adding a product with the same
         // name as an existing one in the same store
@@ -201,7 +187,7 @@ public class SellerTest {
         String qty2 = "54";
         String price2 = "6.0";
         String descrip2 = "qudtqvtwqutr";
-        boolean productCreated2 = s.createNewProduct(currStore, prodName, qty2, price2, descrip2);
+        String productCreated2 = s.createNewProduct(currStore, prodName, qty2, price2, descrip2);
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
         String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50," +
@@ -220,18 +206,18 @@ public class SellerTest {
         // Removing an existing product from a non-existent store
         String nonExistentStore = "Food marketplace";
         String productName = "Corn Dogs";
-        boolean productDeleted = s.deleteProduct(nonExistentStore, productName);
+        String productDeleted = s.deleteProduct(nonExistentStore, productName);
 
         // Removing a non-existing product from an existing store
         String existingStore = "MetroFresh Market";
         String nonExistentProduct = "Bananas";
-        boolean productDeleted2 = s.deleteProduct(existingStore, nonExistentProduct);
+        String productDeleted2 = s.deleteProduct(existingStore, nonExistentProduct);
 
         // Trying to remove a product that exists in a different store from a store that
         // doesn't have any products
         String existingStoreTwo = "TownSquare Provisions";
         String productToDelete = "Corn Dogs";
-        boolean productDeleted3 = s.deleteProduct(existingStoreTwo, productToDelete);
+        String productDeleted3 = s.deleteProduct(existingStoreTwo, productToDelete);
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
         String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Corn Dogs,50,6.50," +
@@ -250,7 +236,7 @@ public class SellerTest {
         // Delete an existing product in an existing store
         String currStore = "MetroFresh Market";
         String currProduct = "Corn Dogs";
-        boolean productDeleted = s.deleteProduct(currStore, currProduct);
+        String productDeleted = s.deleteProduct(currStore, currProduct);
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
         String expectedProductContents = "[]";
@@ -272,8 +258,8 @@ public class SellerTest {
         String availableQuantity = "50";
         String price = "6.50";
         String description = "Juicy corn dogs fried to perfection";
-        boolean productCreated = s.createNewProduct(currentStore, productName, availableQuantity, price, description);
-        boolean productModified = s.editProduct(currentStore, productName, "name", "Crispy Corn Dogs");
+        String productCreated = s.createNewProduct(currentStore, productName, availableQuantity, price, description);
+        String productModified = s.editProduct(currentStore, productName, "name", "Crispy Corn Dogs");
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
         String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Crispy Corn Dogs," +
@@ -290,25 +276,25 @@ public class SellerTest {
     @SuppressWarnings("unused")
     static String editProductFail(Seller s, Database db) {
         // When the seller wants to edit a product in a store that doesn't exist
-        boolean productEditFailOne = s.editProduct("Metrotown store", "Crispy Corn Dogs", "description",
+        String productEditFailOne = s.editProduct("Metrotown store", "Crispy Corn Dogs", "description",
                 "Crispy corn dogs");
 
         // When the seller wants to edit something other than name, description, price,
         // or quantity
-        boolean productEditFailTwo = s.editProduct("MetroFresh Market", "Crispy Corn Dogs", "reach", "jkdwjfi");
+        String productEditFailTwo = s.editProduct("MetroFresh Market", "Crispy Corn Dogs", "reach", "jkdwjfi");
 
         // The store exists but doesn't contain any products
-        boolean productEditFailThree = s.editProduct("TownSquare Provisions", "qwduiwqd", "quantity", "5");
+        String productEditFailThree = s.editProduct("TownSquare Provisions", "qwduiwqd", "quantity", "5");
 
         // The store exists and contains products but a match for the given product name
         // wasn't found
-        boolean productEditFailFour = s.editProduct("MetroFresh Market", "Bananas", "description", "ripe bananas");
+        String productEditFailFour = s.editProduct("MetroFresh Market", "Bananas", "description", "ripe bananas");
 
         // The store exists and the product exists in the store and the edit parameter
         // is name but the new value provided for name already corresponds to an
         // existing product within the same store
         s.createNewProduct("MetroFresh Market", "Apples", "20", "5.99", "Green apples");
-        boolean productEditFailFive = s.editProduct("MetroFresh Market", "Crispy Corn Dogs", "name", "Apples");
+        String productEditFailFive = s.editProduct("MetroFresh Market", "Crispy Corn Dogs", "name", "Apples");
 
         String resultProductContents = db.getDatabaseContents("products.csv").toString();
         String expectedProductContents = "[S1000000,ST1000000,PR1000000,MetroFresh Market,Crispy Corn Dogs,50,6.50," +
@@ -352,12 +338,12 @@ public class SellerTest {
         String expectedShoppingCartsOne = "You haven't created any stores yet!";
 
         // No products associated with any of the seller's stores
-        boolean storeCreated = s.createNewStore("Inorbit Market");
+        String storeCreated = s.createNewStore("Inorbit Market");
         String resultShoppingCartsTwo = s.viewCustomerShoppingCarts();
         String expectedShoppingCartsTwo = "No products have been added to any of your stores!";
 
         // No customers have added products to shopping cart from any stores
-        boolean productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", "50", "6.50",
+        String productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", "50", "6.50",
                 "Juicy corn dogs fried to perfection");
         String resultShoppingCartsThree = s.viewCustomerShoppingCarts();
         String expectedShoppingCartsThree = "No customers have added products to their shopping cart " +
@@ -397,12 +383,12 @@ public class SellerTest {
         String expectedPurchaseHistoriesOne = "You haven't created any stores yet!";
 
         // No products associated with any of the seller's stores
-        boolean storeCreated = s.createNewStore("Inorbit Market");
+        String storeCreated = s.createNewStore("Inorbit Market");
         String resultPurchaseHistoriesTwo = s.viewStoreSales();
         String expectedPurchaseHistoriesTwo = "No products have been added to any of your stores!";
 
         // No customers have added products to shopping cart from any stores
-        boolean productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", "50", "6.50",
+        String productCreated = s.createNewProduct("Inorbit Market", "Crispy Corn Dogs", "50", "6.50",
                 "Juicy corn dogs fried to perfection");
         String resultPurchaseHistoriesThree = s.viewStoreSales();
         String expectedPurchaseHistoriesThree = "Customers have not purchased items from any of your stores!";
@@ -414,7 +400,7 @@ public class SellerTest {
 
     @SuppressWarnings("unused")
     static String testImportProductsSuccess(Seller s, Database db) {
-        boolean productsImported = s.importProducts("ProductsToImport.csv", "Inorbit Market");
+        String productsImported = s.importProducts("ProductsToImport.csv", "Inorbit Market");
         String resultStoreEntries = db.getDatabaseContents("stores.csv").toString();
         String resultProductEntries = db.getDatabaseContents("products.csv").toString();
         String expectedStoreEntries = "[ST1000000,S1000000,Inorbit Market,4]";
@@ -432,10 +418,10 @@ public class SellerTest {
     @SuppressWarnings("unused")
     static String testImportProductsFail(Seller s, Database db) {
         // the file specified by the file path doesn't exist
-        boolean productImportFailOne = s.importProducts("stuff.csv", "Inorbit Market");
+        String productImportFailOne = s.importProducts("stuff.csv", "Inorbit Market");
 
         // the file exists but the store specified by store name doesn't exist
-        boolean productImportFailTwo = s.importProducts("import.csv", "TownSquare Provisions");
+        String productImportFailTwo = s.importProducts("import.csv", "TownSquare Provisions");
 
         String resultStoreEntries = db.getDatabaseContents("stores.csv").toString();
         String resultProductEntries = db.getDatabaseContents("products.csv").toString();
@@ -453,7 +439,7 @@ public class SellerTest {
 
     @SuppressWarnings("unused")
     static String testExportProductsSuccess(Seller s) {
-        boolean productsExported = s.exportProducts("Inorbit Market");
+        String productsExported = s.exportProducts("Inorbit Market");
         ArrayList<String> contents = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File("exportedProducts/Inorbit Market.csv")));
@@ -477,12 +463,12 @@ public class SellerTest {
 
     static String testExportProductsFail(Seller s) {
         // the store specified by store name doesn't exist
-        boolean productsExportedFailOne = s.exportProducts("Hello marketplace");
+        String productsExportedFailOne = s.exportProducts("Hello marketplace");
 
         // the store specified by store name doesn't have any products at all
         s.createNewStore("Evergreen Basket");
-        boolean productsExportedFailTwo = s.exportProducts("Evergreen Basket");
+        String productsExportedFailTwo = s.exportProducts("Evergreen Basket");
 
-        return !productsExportedFailOne && !productsExportedFailTwo ? "Test Passed" : "Test Failed";
+        return productsExportedFailOne.equals("Unable to export products. Please try again") && productsExportedFailTwo.equals("Unable to export products. This store doesn\'t contain any products") ? "Test Passed" : "Test Failed";
     }
 }
