@@ -1,17 +1,16 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 import java.awt.event.*;
 /**
- * Project 4 - SellerGUI.java
+ * Project 5 - SellerGUI.java
  * 
  * The interface associated with a seller in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 17, 2023
+ * @version November 18, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -32,11 +31,7 @@ public class SellerGUI extends JComponent {
     private JButton viewSalesByStoreButton;
     private JButton viewCustomerDashboardButton;
     private JButton viewProductDashboardButton;
-    
-    // Related to generic functionality
-    private JButton editEmailButton;
-    private JButton editPasswordButton;
-    private JButton deleteAccountButton;
+    private JButton manageAccountButton;
     private JButton signOutButton;
 
     public static void main(String[] args) {
@@ -184,27 +179,11 @@ public class SellerGUI extends JComponent {
                 // Client.sellerGetProductsDashboard("PRODUCTS_DASHBOARD", sortChoice, ascending)
                 // Display corresponding error/information dialog
 
-            } else if (e.getSource() == editEmailButton) {
-                String newEmail = JOptionPane.showInputDialog(null, "What is the new email?", "New Email", JOptionPane.QUESTION_MESSAGE);
-                // Client.editEmail("EDIT_EMAIL", newEmail);
-                // Display corresponding error/confirmation dialog
-
-            } else if (e.getSource() == editPasswordButton) {
-                String newPassword = JOptionPane.showInputDialog(null, "What is the new password?", "New Password", JOptionPane.QUESTION_MESSAGE);
-                // Client.editPassword("EDIT_PASSWORD", newPassword);
-                // Display corresponding error/confirmation dialog
-
-            } else if (e.getSource() == deleteAccountButton) {
-                int deleteConfirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete your account?", "Delete Account", JOptionPane.YES_NO_CANCEL_OPTION);
-                if (deleteConfirmation == JOptionPane.YES_OPTION) {
-                    // Client.deleteAccount("DELETE_ACCOUNT");
-                    // Display corresponding error/confirmation dialog
-                    // Re-direct them to login/signup GUI
-                }
+            } else if (e.getSource() == manageAccountButton) {
+                // re-direct them to the manage account GUI
 
             } else if (e.getSource() == signOutButton) {
-                // Re-direct them to the login/signup GUI
-                    // Maybe some method in initialClient that calls the main GUI
+                new UserGUI();
             }
         }
     };
@@ -261,15 +240,8 @@ public class SellerGUI extends JComponent {
         viewProductDashboardButton = new JButton("View Products Dashboard");
         viewProductDashboardButton.addActionListener(actionListener);
 
-        // Account handling button initialization
-        editEmailButton = new JButton("Edit Email");
-        editEmailButton.addActionListener(actionListener);
-
-        editPasswordButton = new JButton("Edit Password");
-        editPasswordButton.addActionListener(actionListener);
-
-        deleteAccountButton = new JButton("Delete Account");
-        deleteAccountButton.addActionListener(actionListener);
+        manageAccountButton = new JButton("Manage Account");
+        manageAccountButton.addActionListener(actionListener);
 
         signOutButton = new JButton("Sign Out");
         signOutButton.addActionListener(actionListener);
@@ -286,10 +258,7 @@ public class SellerGUI extends JComponent {
         buttonPanel.add(viewSalesByStoreButton);
         buttonPanel.add(viewCustomerDashboardButton);
         buttonPanel.add(viewProductDashboardButton);
-
-        buttonPanel.add(editEmailButton);
-        buttonPanel.add(editPasswordButton);
-        buttonPanel.add(deleteAccountButton);
+        buttonPanel.add(manageAccountButton);
         buttonPanel.add(signOutButton);
 
         sellerFrame.add(welcomeUserLabel, BorderLayout.NORTH);
