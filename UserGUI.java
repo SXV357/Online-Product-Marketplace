@@ -18,12 +18,15 @@ import java.awt.event.ActionListener;
 //TODO check for if static works with the concurrency
 
 public class UserGUI {
-    private static final JButton LOGIN_BUTTON = new JButton("Log In");
-    private static final JButton SIGN_UP_BUTTON = new JButton("Sign Up");
-    private static JFrame frame = new JFrame("");  //ADD TITLE HERE
+    private final JButton LOGIN_BUTTON = new JButton("Log In");
+    private final JButton SIGN_UP_BUTTON = new JButton("Sign Up");
+    private JFrame frame = new JFrame("");  //ADD TITLE HERE
 
+    public UserGUI() {
+        mainMenuDisplay();
+    }
 
-    private static ActionListener actionListener = new ActionListener() {
+    private ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == LOGIN_BUTTON) {
@@ -37,15 +40,15 @@ public class UserGUI {
         }
     };
 
-    private static void logIn() {
-        System.out.println("This is where Log In GUI starts");
+    private void logIn() {
+        System.out.println("This is where Log In GUI starts");  //Change to call LogIn GUI when implemented
     }
 
-    private static void signUp() {
-        System.out.println("This is where Sign Up Gui starts");
+    private void signUp() {
+        System.out.println("This is where Sign Up Gui starts");  //Change to call SignUp GUI when implemented
     }
 
-    public static void mainMenuDisplay () {
+    public void mainMenuDisplay () {
         //Set up frame for the display
         frame.setSize(225, 150);
         frame.setLocationRelativeTo(null);
@@ -72,13 +75,19 @@ public class UserGUI {
         frame.setVisible(true);
     }
 
-    public static void editUserDisplay() {
+    public void editUserDisplay() {
 
     }
 
 
     //remove when done testing
     public static void main(String[] args) {
-        mainMenuDisplay();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new UserGUI();
+            }
+        });
+
     }
 }
