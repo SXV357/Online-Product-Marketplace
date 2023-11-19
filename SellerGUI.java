@@ -183,7 +183,7 @@ public class SellerGUI extends JComponent {
                 // re-direct them to the manage account GUI
 
             } else if (e.getSource() == signOutButton) {
-                new UserGUI();
+                //new UserGUI();
             }
         }
     };
