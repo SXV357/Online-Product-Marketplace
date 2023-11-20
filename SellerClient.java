@@ -3,30 +3,34 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class CustomerClient {
-
+public class SellerClient {
+    
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
     //instance variable for convenience
     //saves repeated server requests by always storing this data
-    private Customer customer;
-
-    public CustomerClient(Socket socket, Customer customer) throws IOException{
+    private Seller seller;
+    public SellerClient(Socket socket, Seller seller) throws IOException{
         this.socket = socket;
         this.oos = new ObjectOutputStream(socket.getOutputStream());
         this.ois = new ObjectInputStream(socket.getInputStream());
 
-        this.customer = customer;
+        this.seller = seller;
+    }
+
+    public void signOut() throws IOException{
+        InitialClient initialClient = new InitialClient(socket);
+        initialClient.start();
     }
 
     //TODO
     public void homepage(){
-        //call customer GUI
-        //TODO customerGUI constructor
-        //CustomerGUI customerGUI = new CustomerGUI(customer.getEmail());
-        //CustomerGUI main is the seller homepage (Can be changed later)
-        CustomerGUI.main(null);
+        //call seller GUI
+        //TODO sellerGUI constructor needs more parameters
+        SellerGUI sellerGUI = new SellerGUI(seller.getEmail());
+        //sellerGUI main is the seller homepage
+        sellerGUI.main(null);
     }
 }
