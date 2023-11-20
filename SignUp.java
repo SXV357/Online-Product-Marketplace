@@ -83,3 +83,4 @@ public class SignUp extends JFrame {
         SwingUtilities.invokeLater(() -> new SignUp(new Database()).setVisible(true));
     }
 }
+
