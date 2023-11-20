@@ -10,13 +10,14 @@ import java.awt.event.*;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 18, 2023
+ * @version November 19, 2023
  */
 public class SellerGUI extends JComponent {
 
+    private JFrame sellerFrame;
     private String email;
     private JLabel welcomeUserLabel;
-    private static final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
+    private final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
 
     // Related to seller permissions
     private JButton createStoreButton;
@@ -180,20 +181,24 @@ public class SellerGUI extends JComponent {
                 // Display corresponding error/information dialog
 
             } else if (e.getSource() == manageAccountButton) {
-                // re-direct them to the manage account GUI
+                // call constructor of manage account GUI(This GUI would also need access to currUser)
 
             } else if (e.getSource() == signOutButton) {
-                new UserGUI();
+                // Close the frame, redirect to the login/signup GUI
+                // sellerFrame.dispose();
+                // new UserGUI();
             }
         }
     };
 
     public SellerGUI(String email) {
         this.email = email;
-        JFrame sellerFrame = new JFrame("Seller Page");
+        sellerFrame = new JFrame("Seller Page");
         JPanel buttonPanel = new JPanel(new GridLayout(8, 2, 5, 5));
+
         // Source: https://stackoverflow.com/questions/5328405/jpanel-padding-in-java
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
         sellerFrame.setSize(500, 800);
         sellerFrame.setLocationRelativeTo(null);
         sellerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
