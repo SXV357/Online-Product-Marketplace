@@ -32,10 +32,12 @@ public class InitialClient {
     //TODO
     public void attemptLoginSeller(String email, String password) throws IOException{
 
-        //Check credentials with the database
-
+        //Check credentials with the database and retrieve user object
+        //TODO replace this seller with a seller requested from the server
+        Seller seller = new Seller(email, password, null);
         //if valid, create new seller client and pass server connection to it
-        SellerClient sellerClient = new SellerClient(socket);
+
+        SellerClient sellerClient = new SellerClient(socket, seller);
         //Then display seller page 
         sellerClient.homepage();
         //-this client object becomes irrelevant after this is done 
@@ -47,11 +49,12 @@ public class InitialClient {
 
     //TODO
     public void attemptLoginCustomer(String email, String password) throws IOException{
-        //Check credentials with the database
+        //Check credentials with the database and retrieve user object
+        //TODO replace this seller with a seller requested from the server
+        Customer customer = new Customer(email, password, null);
+        //if valid, create new seller client and pass server connection to it
 
-        //if valid, create new Customer client and pass server connection to it
-        CustomerClient customerClient = new CustomerClient(socket);
-
+        CustomerClient customerClient = new CustomerClient(socket, customer);
         //Then display Customer homepage
         customerClient.homepage(); 
         //-this client object becomes irrelevant after this is done 
