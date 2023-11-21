@@ -2,6 +2,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Project 5 - SellerGUI.java
  * 
@@ -51,7 +54,7 @@ public class SellerGUI extends JComponent {
             // Perform certain actions based on which button is clicked
             if (e.getSource() == createStoreButton) {
                 String newStoreName = JOptionPane.showInputDialog(null, "What is the new store\'s name?", "New Store Name", JOptionPane.QUESTION_MESSAGE);
-                // Client.createStore("CREATE_STORE", newStoreName);
+                // sellerClient.createStore("CREATE_STORE", newStoreName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == editStoreButton) {
@@ -63,12 +66,12 @@ public class SellerGUI extends JComponent {
                 if (newStoreName == null) {
                     return;
                 }
-                // Client.modifyStore("MODIFY_STORE_NAME", prevStoreName, newStoreName);
+                // sellerClient.modifyStore("MODIFY_STORE_NAME", prevStoreName, newStoreName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == deleteStoreButton) {
                 String storeName = JOptionPane.showInputDialog(null, "What is the name of the store to delete?", "Store Name", JOptionPane.QUESTION_MESSAGE);
-                // Client.deleteStore("DELETE_STORE", storeName);
+                // sellerClient.deleteStore("DELETE_STORE", storeName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == createProductButton) {
@@ -92,7 +95,7 @@ public class SellerGUI extends JComponent {
                 if (description == null) {
                     return;
                 }
-                // Client.createNewProduct("CREATE_NEW_PRODUCT", storeName, productName, availableQuantity, price, description);
+                // sellerClient.createNewProduct("CREATE_NEW_PRODUCT", storeName, productName, availableQuantity, price, description);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == editProductButton) {
@@ -112,7 +115,7 @@ public class SellerGUI extends JComponent {
                 if (newValue == null) {
                     return;
                 }
-                // Client.editProduct("EDIT_PRODUCT", storeName, productName, editParam, newValue);
+                // sellerClient.editProduct("EDIT_PRODUCT", storeName, productName, editParam, newValue);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == deleteProductButton) {
@@ -124,7 +127,7 @@ public class SellerGUI extends JComponent {
                 if (productName == null) {
                     return;
                 }
-                // Client.deleteProduct("DELETE_PRODUCT", storeName, productName);
+                // sellerClient.deleteProduct("DELETE_PRODUCT", storeName, productName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == importProductsButton) {
@@ -136,25 +139,25 @@ public class SellerGUI extends JComponent {
               if (storeName == null) {
                 return;
               }
-              // Client.importProducts("IMPORT_PRODUCTS", filePath, storeName);
+              // sellerClient.importProducts("IMPORT_PRODUCTS", filePath, storeName);
               // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == exportProductsButton) {
                 String storeName = JOptionPane.showInputDialog(null, "What is the name of the store to export the products from?", "Store Name", JOptionPane.QUESTION_MESSAGE);
-                // Client.exportProducts("EXPORT_PRODUCTS", storeName);
+                // sellerClient.exportProducts("EXPORT_PRODUCTS", storeName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == viewCustomerShoppingCartsButton) {
-                // Client.viewCustomerShoppingCarts("VIEW_CUSTOMER_SHOPPING_CARTS");
+                // sellerClient.viewCustomerShoppingCarts("VIEW_CUSTOMER_SHOPPING_CARTS");
                 // Display corresponding error/information dialog
 
             } else if (e.getSource() == viewSalesByStoreButton) {
-                // Client.viewSalesByStore("VIEW_SALES_BY_STORE");
+                // sellerClient.viewSalesByStore("VIEW_SALES_BY_STORE");
                 // Display corresponding error/information dialog
 
             } else if (e.getSource() == viewCustomerDashboardButton) {
-                String[] sortChoices = {"Customer Email", "Quantity Purchased", "Money Spent"};
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                List<String> sortChoices = Arrays.asList("Customer Email", "Quantity Purchased", "Money Spent");
+                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices.toArray(), sortChoices.get(0));
                 if (sortChoice == null) {
                     return;
                 }
@@ -163,12 +166,17 @@ public class SellerGUI extends JComponent {
                     return;
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                // Client.sellerGetCustomersDashboard("CUSTOMERS_DASHBOARD", sortChoice, ascending)
-                // Display corresponding error/information dialog
+                int sortSelection = sortChoices.indexOf(sortChoice);
+                // sellerClient.sellerGetCustomersDashboard("CUSTOMERS_DASHBOARD", sortSelection, ascending)
+                String[] columnHeaders = {"Email", "Quantity Purchased", "Money Spent"};
+                Object[][] data = null;
+                JTable table = new JTable(data, columnHeaders);
+                JScrollPane scrollPane = new JScrollPane(table);
+                // call another GUI that will only be responsible for displaying this data
 
             } else if (e.getSource() == viewProductDashboardButton) {
-                String[] sortChoices = {"Product Name", "Quantity Sold", "Total revenues"};
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                List<String> sortChoices = Arrays.asList("Product Name", "Quantity Sold", "Total revenues");
+                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices.toArray(), sortChoices.get(0));
                 if (sortChoice == null) {
                     return;
                 }
@@ -177,16 +185,19 @@ public class SellerGUI extends JComponent {
                     return;
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                // Client.sellerGetProductsDashboard("PRODUCTS_DASHBOARD", sortChoice, ascending)
-                // Display corresponding error/information dialog
+                int sortSelection = sortChoices.indexOf(sortChoice);
+                // sellerClient.sellerGetProductsDashboard("PRODUCTS_DASHBOARD", sortSelection, ascending)
+                String[] columnHeaders = {"Product", "Quantity Sold", "Total Revenue"};
+                Object[][] data = null;
+                JTable table = new JTable(data, columnHeaders);
+                JScrollPane scrollPane = new JScrollPane(table);
+                // call another GUI that will only be responsible for displaying this data
 
             } else if (e.getSource() == manageAccountButton) {
-                // call constructor of manage account GUI(This GUI would also need access to currUser)
+                // invoke the edit account GUI
 
             } else if (e.getSource() == signOutButton) {
-                // Close the frame, redirect to the login/signup GUI
-                // sellerFrame.dispose();
-                // new UserGUI();
+                // sellerClient.signOut();
             }
         }
     };
