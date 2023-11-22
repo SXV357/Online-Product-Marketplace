@@ -3,7 +3,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
-import java.util.List;
 /**
  * Project 5 - CustomerGUI.java
  * 
@@ -12,7 +11,7 @@ import java.util.List;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 20, 2023
+ * @version November 21, 2023
  */
 public class CustomerGUI extends JComponent {
 
@@ -45,7 +44,7 @@ public class CustomerGUI extends JComponent {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == viewAllProductsButton) {
-                // CustomerClient.getAllProducts("GET_ALL_PRODUCTS")
+                // CustomerClient.getMarketplaceProducts("GET_MARKETPLACE_PRODUCTS")
                     // Display all products in a dropdown menu to customer
                     // Retrieve index of selection based on the index in the list of all products
                     // Ask them how many of the product they want to purchase
@@ -69,8 +68,8 @@ public class CustomerGUI extends JComponent {
 
 
             } else if (e.getSource() == viewStoreDashboardButton) {
-                List<String> sortChoices = Arrays.asList("Store name", "Number of product sales", "Total revenue");
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices.toArray(), sortChoices.get(0));
+                String[] sortChoices = {"Store name", "Number of product sales", "Total revenue"};
+                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
                 if (sortChoice == null) {
                     return;
                 }
@@ -79,17 +78,16 @@ public class CustomerGUI extends JComponent {
                     return;
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                int sortSelection = sortChoices.indexOf(sortChoice);
+                int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
                 // CustomerClient.viewStoresDashboard("VIEW_STORES_DASHBOARD", sortSelection, ascending);
-                String[] columnHeaders = {"Store", "Product Sales", "Total Revenue"};
                 Object[][] data = null;
-                JTable table = new JTable(data, columnHeaders);
+                JTable table = new JTable(data, sortChoices);
                 JScrollPane scrollPane = new JScrollPane(table);
-                // call another GUI that will only be responsible for displaying this data
+                // new DisplayDashboardGUI("Stores", scrollPane);
 
             } else if (e.getSource() == viewPurchaseDashboardButton) {
-                List<String> sortChoices = Arrays.asList("Product name", "Number of products purchased", "Total spent");
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices.toArray(), sortChoices.get(0));
+                String[] sortChoices = {"Product name", "Number of products purchased", "Total spent"};
+                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
                 if (sortChoice == null) {
                     return;
                 }
@@ -98,17 +96,16 @@ public class CustomerGUI extends JComponent {
                     return;
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                int sortSelection = sortChoices.indexOf(sortChoice);
+                int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
                 // CustomerClient.viewStoresDashboard("VIEW_PURCHASES_DASHBOARD", sortSelection, ascending, customerClient.getcustomerID);
-                String[] columnHeaders = {"Product", "Amount bought", "Amount spent"};
                 Object[][] data = null;
-                JTable table = new JTable(data, columnHeaders);
+                JTable table = new JTable(data, sortChoices);
                 JScrollPane scrollPane = new JScrollPane(table);
-                // call another GUI that will only be responsible for displaying this data
+                // new DisplayDashboardGUI("Purchases", scrollPane);
                 
 
             } else if (e.getSource() == checkoutItemsButton) {
-                // CustomerClient.checkoutItems("CHECKOUT_ITEMS")
+                // CustomerClient.purchaseItems("PURCHASE_ITEMS")
                 // Display confirmation/error message depending on action result
 
             } else if (e.getSource() == removeItemFromShoppingCartButton) {
@@ -120,6 +117,10 @@ public class CustomerGUI extends JComponent {
                     
             } else if (e.getSource() == manageAccountButton) {
                 // invoke the edit account GUI
+                // all actions will call the corresponding method in the client class
+                    // edit username
+                    // edit password
+                    // delete account
 
             } else if (e.getSource() == signOutButton) {
                 // customerClient.signOut();

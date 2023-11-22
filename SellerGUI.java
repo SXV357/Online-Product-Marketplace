@@ -3,7 +3,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Project 5 - SellerGUI.java
@@ -12,8 +11,8 @@ import java.util.List;
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
- * 
- * @version November 19, 2023
+ * s
+ * @version November 21, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -54,31 +53,42 @@ public class SellerGUI extends JComponent {
             // Perform certain actions based on which button is clicked
             if (e.getSource() == createStoreButton) {
                 String newStoreName = JOptionPane.showInputDialog(null, "What is the new store\'s name?", "New Store Name", JOptionPane.QUESTION_MESSAGE);
-                // sellerClient.createStore("CREATE_STORE", newStoreName);
+                // sellerClient.createNewStore("CREATE_NEW_STORE", newStoreName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == editStoreButton) {
-                String prevStoreName = JOptionPane.showInputDialog(null, "What is the old name of the store?", "Previous Store Name", JOptionPane.QUESTION_MESSAGE);
-                if (prevStoreName == null) {
-                    return;
-                }
+                // sellerClient.getStores("GET_ALL_STORES")
+                // If this seller doesn't have any stores, display error message
+                // else
+                    // Display all store names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the previous store name
                 String newStoreName = JOptionPane.showInputDialog(null, "What is the new name of the store?", "New Store Name", JOptionPane.QUESTION_MESSAGE);
                 if (newStoreName == null) {
                     return;
                 }
-                // sellerClient.modifyStore("MODIFY_STORE_NAME", prevStoreName, newStoreName);
+                // sellerClient.modifyStoreName("MODIFY_STORE_NAME", prevStoreName, newStoreName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == deleteStoreButton) {
-                String storeName = JOptionPane.showInputDialog(null, "What is the name of the store to delete?", "Store Name", JOptionPane.QUESTION_MESSAGE);
+                // sellerClient.getStores("GET_STORES")
+                // If this seller doesn't have any stores, display error message
+                // else
+                    // Display all store names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the store to delete
+
                 // sellerClient.deleteStore("DELETE_STORE", storeName);
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == createProductButton) {
-                String storeName = JOptionPane.showInputDialog(null, "What is the name of the store to add the product to?", "Store Name", JOptionPane.QUESTION_MESSAGE);
-                if (storeName == null) {
-                    return;
-                }
+                // sellerClient.getStores("GET_STORES")
+                // If this seller doesn't have any stores, display error message
+                // else
+                    // Display all store names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the store to create the product in
+
                 String productName = JOptionPane.showInputDialog(null, "What is the name of the product?", "Product Name", JOptionPane.QUESTION_MESSAGE);
                 if (productName == null) {
                     return;
@@ -91,7 +101,7 @@ public class SellerGUI extends JComponent {
                 if (price == null) {
                     return;
                 }
-                String description = JOptionPane.showInputDialog(null, "Product Description?", "Product Description", JOptionPane.QUESTION_MESSAGE);
+                String description = JOptionPane.showInputDialog(null, "What is the description of the product?", "Product Description", JOptionPane.QUESTION_MESSAGE);
                 if (description == null) {
                     return;
                 }
@@ -99,15 +109,23 @@ public class SellerGUI extends JComponent {
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == editProductButton) {
-                String storeName = JOptionPane.showInputDialog(null, "What is the name of the store that contains the product to be edited?", "Store Name", JOptionPane.QUESTION_MESSAGE);
-                if (storeName == null) {
-                    return;
-                }
-                String productName = JOptionPane.showInputDialog(null, "What is the name of the product to edit?", "Product Name", JOptionPane.QUESTION_MESSAGE);
-                if (productName == null) {
-                    return;
-                }
-                String editParam = JOptionPane.showInputDialog(null, "Which parameter would you like to edit?", "Edit Parameter", JOptionPane.QUESTION_MESSAGE);
+                // sellerClient.getStores("GET_STORES")
+                // If this seller doesn't have any stores, display error message and return
+                // else
+                    // Display all store names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the store to edit the product in
+                
+                // if no errors occurred, retrieve all the products associated with that store(only the names)
+                // sellerClient.getProducts("GET_ALL_PRODUCTS", storeName);
+                // if this store doesn't contain any products, display error message and return
+                // else
+                    // display all product names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the product to edit
+    
+                String[] editParameters = {"Name", "Price", "Description", "Quantity"};
+                String editParam = (String) JOptionPane.showInputDialog(null, "Which parameter would you like to edit?", "Edit Parameter", JOptionPane.QUESTION_MESSAGE, null, editParameters, editParameters[0]);
                 if (editParam == null) {
                     return;
                 }
@@ -119,14 +137,21 @@ public class SellerGUI extends JComponent {
                 // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == deleteProductButton) {
-                String storeName = JOptionPane.showInputDialog(null, "What is the name of the store that contains the product to be deleted?", "Store Name", JOptionPane.QUESTION_MESSAGE);
-                if (storeName == null) {
-                    return;
-                }
-                String productName = JOptionPane.showInputDialog(null, "What is the name of the product to delete?", "Product Name", JOptionPane.QUESTION_MESSAGE);
-                if (productName == null) {
-                    return;
-                }
+                // sellerClient.getStores("GET_STORES")
+                // If this seller doesn't have any stores, display error message
+                // else
+                    // Display all store names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the store to delete the product in
+                
+                // if no errors occurred, retrieve all the products associated with that store(only the names)
+                // sellerClient.getProducts("GET_ALL_PRODUCTS", storeName);
+                // if this store doesn't contain any products, display error message
+                // else
+                    // display all product names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the product to delete
+
                 // sellerClient.deleteProduct("DELETE_PRODUCT", storeName, productName);
                 // Display corresponding error/confirmation dialog
 
@@ -135,15 +160,24 @@ public class SellerGUI extends JComponent {
               if (filePath == null) {
                 return;
               }
-              String storeName = JOptionPane.showInputDialog(null, "What is the name of the store to import the products into?", "Store Name", JOptionPane.QUESTION_MESSAGE);
-              if (storeName == null) {
-                return;
-              }
+              // sellerClient.getStores("GET_STORES")
+                // If this seller doesn't have any stores, display error message
+                // else
+                    // Display all store names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the store to import the products into
+
               // sellerClient.importProducts("IMPORT_PRODUCTS", filePath, storeName);
               // Display corresponding error/confirmation dialog
 
             } else if (e.getSource() == exportProductsButton) {
-                String storeName = JOptionPane.showInputDialog(null, "What is the name of the store to export the products from?", "Store Name", JOptionPane.QUESTION_MESSAGE);
+                // sellerClient.getStores("GET_STORES")
+                // If this seller doesn't have any stores, display error message
+                // else
+                    // Display all store names in a dropdown menu to the seller
+                    // Retrieve index of selection based on position in the arraylist
+                    // Use that to get the name of the store to export the products from
+
                 // sellerClient.exportProducts("EXPORT_PRODUCTS", storeName);
                 // Display corresponding error/confirmation dialog
 
@@ -156,8 +190,8 @@ public class SellerGUI extends JComponent {
                 // Display corresponding error/information dialog
 
             } else if (e.getSource() == viewCustomerDashboardButton) {
-                List<String> sortChoices = Arrays.asList("Customer Email", "Quantity Purchased", "Money Spent");
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices.toArray(), sortChoices.get(0));
+                String[] sortChoices = {"Customer Email", "Quantity Purchased", "Money Spent"};
+                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
                 if (sortChoice == null) {
                     return;
                 }
@@ -166,17 +200,16 @@ public class SellerGUI extends JComponent {
                     return;
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                int sortSelection = sortChoices.indexOf(sortChoice);
+                int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
                 // sellerClient.sellerGetCustomersDashboard("CUSTOMERS_DASHBOARD", sortSelection, ascending)
-                String[] columnHeaders = {"Email", "Quantity Purchased", "Money Spent"};
                 Object[][] data = null;
-                JTable table = new JTable(data, columnHeaders);
+                JTable table = new JTable(data, sortChoices);
                 JScrollPane scrollPane = new JScrollPane(table);
-                // call another GUI that will only be responsible for displaying this data
+                // new DisplayDashboardGUI("Customers", scrollPane);
 
             } else if (e.getSource() == viewProductDashboardButton) {
-                List<String> sortChoices = Arrays.asList("Product Name", "Quantity Sold", "Total revenues");
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices.toArray(), sortChoices.get(0));
+                String[] sortChoices = {"Product Name", "Quantity Sold", "Total revenue"};
+                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
                 if (sortChoice == null) {
                     return;
                 }
@@ -185,16 +218,19 @@ public class SellerGUI extends JComponent {
                     return;
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                int sortSelection = sortChoices.indexOf(sortChoice);
+                int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
                 // sellerClient.sellerGetProductsDashboard("PRODUCTS_DASHBOARD", sortSelection, ascending)
-                String[] columnHeaders = {"Product", "Quantity Sold", "Total Revenue"};
                 Object[][] data = null;
-                JTable table = new JTable(data, columnHeaders);
+                JTable table = new JTable(data, sortChoices);
                 JScrollPane scrollPane = new JScrollPane(table);
-                // call another GUI that will only be responsible for displaying this data
+                // new DisplayDashboardGUI("Products", scrollPane);
 
             } else if (e.getSource() == manageAccountButton) {
                 // invoke the edit account GUI
+                // all actions will call the corresponding method in the client class
+                    // edit username
+                    // edit password
+                    // delete account
 
             } else if (e.getSource() == signOutButton) {
                 // sellerClient.signOut();
@@ -210,7 +246,7 @@ public class SellerGUI extends JComponent {
         // Source: https://stackoverflow.com/questions/5328405/jpanel-padding-in-java
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        sellerFrame.setSize(500, 800);
+        sellerFrame.setSize(650, 750);
         sellerFrame.setLocationRelativeTo(null);
         sellerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
