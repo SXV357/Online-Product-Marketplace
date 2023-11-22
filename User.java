@@ -2,18 +2,18 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - User.java
- * <p>
+ * 
  * Class that represents the characteristics associated with all users in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 12, 2023
+ * 
+ * @version November 21, 2023
  */
 public class User {
 
-    private static Database db = new Database();
-
+    private Database db = new Database();
     private String email;
     private String password;
     private UserRole role;

@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class Seller extends User {
 
-    private static Database db = new Database();
+    private Database db = new Database();
 
     /**
      * Constructor to initialize a new seller when they create an account. Generates

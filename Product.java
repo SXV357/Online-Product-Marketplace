@@ -1,16 +1,16 @@
 /**
  * Project 4 - Product.java
- * <p>
+ * 
  * Class that represents an individual product available in a seller's store.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 12, 2023
+ * 
+ * @version November 21, 2023
  */
 public class Product {
 
-    private static Database db = new Database();
-
+    private Database db = new Database();
     private String productIdentificationNumber;
     private String name;
     private int availableQuantity;

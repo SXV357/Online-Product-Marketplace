@@ -2,18 +2,18 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - Store.java
- * <p>
+ * 
  * Class that represents an individual store that belongs to a seller in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 12, 2023
+ * 
+ * @version November 21, 2023
  */
 public class Store {
 
-    private static Database db = new Database();
-
+    private Database db = new Database();
     private String storeIdentificationNumber;
     private String storeName;
 

@@ -18,16 +18,16 @@ import java.util.ArrayList;
  * @version November 15, 2023
  */
 public class Database {
-    private static final String DATABASES_DIRECTORY = "databases/";
-    private static final String USERS_DATABASE_HEADERS = "ID,Email,Password,Role";
-    private static final String STORES_DATABASE_HEADERS = "Store ID,Seller ID,Store Name,Number of Products";
-    private static final String PRODUCTS_DATABASE_HEADERS = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
+    private final String DATABASES_DIRECTORY = "databases/";
+    private final String USERS_DATABASE_HEADERS = "ID,Email,Password,Role";
+    private final String STORES_DATABASE_HEADERS = "Store ID,Seller ID,Store Name,Number of Products";
+    private final String PRODUCTS_DATABASE_HEADERS = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
             "Available Quantity,Price,Description";
-    private static final String PURCHASE_HISTORY_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store "
+    private final String PURCHASE_HISTORY_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store "
             + "Name,Product Name,Purchase Quantity,Price";
-    private static final String SHOPPING_CART_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store Name,"
+    private final String SHOPPING_CART_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store Name,"
             + "Product Name,Purchase Quantity,Price";
-    private static Object lock = new Object();
+    private Object lock = new Object();
 
     /**
      * Takes in the name of the file as input and returns a string containing all
