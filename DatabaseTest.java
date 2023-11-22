@@ -2,13 +2,14 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - TestDatabase.java
- * <p>
+ * 
  * Class that handles all testing related to the functionalities implemented in
  * the database class.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 13, 2023
+ * 
+ * @version November 21, 2023
  */
 public class DatabaseTest {
     static final String NON_EXISTENT_USER_ENTRY = "100678,hello@yahoo.com,76ybgjh,SELLER";
@@ -19,8 +20,9 @@ public class DatabaseTest {
 
     public static void main(String[] args) {
 
-        CreateDatabaseData.clearData();
-        CreateDatabaseData.createDataForDatabaseTests();
+        CreateDatabaseData data = new CreateDatabaseData();
+        data.clearData();
+        data.createDataForDatabaseTests();
 
         /* INITIALIZE A NEW DATABASE INSTANCE FOR TESTING PURPOSES */
         Database db = new Database();

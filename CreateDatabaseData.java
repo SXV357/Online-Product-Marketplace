@@ -2,23 +2,20 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - CreateDatabaseData.java
- * <p>
+ * 
  * Class that handles data generation for all the databases for purposes of
  * testing.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 11, 2023
+ * 
+ * @version November 21, 2023
  */
 public class CreateDatabaseData {
 
-    public static void main(String[] args) {
-        clearData();
-    }
+    private Database database = new Database();
 
-    public static void clearData() {
-        Database database = new Database();
-
+    public void clearData() {
         // Users
         ArrayList<String> testUsers = new ArrayList<>();
         database.updateDatabaseContents("users.csv", testUsers);
@@ -40,9 +37,7 @@ public class CreateDatabaseData {
         database.updateDatabaseContents("shoppingCarts.csv", testShoppingcarts);
     }
 
-    public static void createData() {
-        Database database = new Database();
-
+    public void createData() {
         // Users
         ArrayList<String> testUsers = new ArrayList<>();
         testUsers.add("C100001,cherry@gmail.com,12345,Customer");
@@ -86,9 +81,7 @@ public class CreateDatabaseData {
     }
 
     // SPECIFIC FOR TESTS RELATED TO THE DATABASE CLASS(DO NOT MODIFY)
-    public static void createDataForDatabaseTests() {
-        Database database = new Database();
-
+    public void createDataForDatabaseTests() {
         ArrayList<String> testUsers = new ArrayList<>();
         testUsers.add("C100001,cherry@gmail.com,12345,CUSTOMER");
         testUsers.add("S100002,balogne@gmail.com,12315436,SELLER");

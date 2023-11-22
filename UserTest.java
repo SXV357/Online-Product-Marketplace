@@ -1,17 +1,19 @@
 /**
  * Project 4 - TestUser.java
- * <p>
+ * 
  * Class that handles all testing related to the functionalities implemented in
  * the user class.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 13, 2023
+ * 
+ * @version November 21, 2023
  */
 public class UserTest {
     public static void main(String[] args) {
 
-        CreateDatabaseData.clearData();
+        CreateDatabaseData data = new CreateDatabaseData();
+        data.clearData();
 
         /* CREATE NEW DATABASE INSTANCE FOR TESTING PURPOSES */
         Database db = new Database();

@@ -2,18 +2,20 @@ import java.util.ArrayList;
 
 /**
  * Project 4 - TestStore.java
- * <p>
+ *
  * Class that handles all testing related to the functionalities implemented in
  * the store class.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 12, 2023
+ * 
+ * @version November 21, 2023
  */
 public class StoreTest {
     public static void main(String[] args) {
 
-        CreateDatabaseData.clearData();
+        CreateDatabaseData data = new CreateDatabaseData();
+        data.clearData();
 
         /* INITIALIZING A NEW STORE AND DATABASE FOR TESTING PURPOSES */
         Store newStore = new Store("Fruit Marketplace");

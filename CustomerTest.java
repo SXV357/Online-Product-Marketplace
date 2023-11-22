@@ -9,14 +9,16 @@ import org.junit.Test;
 
 /**
  * Project 4 - CustomerTest.java
- * <p>
+ * 
  * Class that handles all testing related to the functionalities implemented in
  * the Customer class.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 13, 2023
+ * 
+ * @version November 21, 2023
  */
+
 public class CustomerTest {
     public static void main(String[] args) {
         // Instatiated a new customer and database for testing
@@ -25,11 +27,12 @@ public class CustomerTest {
 
         c2.exportPurchaseHistory();
         Database db = new Database();
+        CreateDatabaseData data = new CreateDatabaseData();
 
         // Creates testing data
-        CreateDatabaseData.clearData();
+        data.clearData();
         testGetAllProductsWhenEmpty(c);
-        CreateDatabaseData.createData();
+        data.createData();
 
         // List of all tests
         testGetProductInfo(c);
