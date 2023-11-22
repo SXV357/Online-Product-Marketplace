@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Project 4 - Store.java
+ * Project 5 - Store.java
  * 
  * Class that represents an individual store that belongs to a seller in the
  * application.

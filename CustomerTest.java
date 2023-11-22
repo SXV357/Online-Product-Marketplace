@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 /**
- * Project 4 - CustomerTest.java
+ * Project 5 - CustomerTest.java
  * 
  * Class that handles all testing related to the functionalities implemented in
  * the Customer class.

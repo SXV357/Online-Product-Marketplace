@@ -2,7 +2,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
+/**
+ * Project 5 - CustomerClient.java
+ * 
+ * Class that handles communication with the server for a customer.
+ *
+ * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
+ * Miller, Oliver Long
+ * 
+ * @version November 21, 2023
+ */
 public class CustomerClient {
 
     private Socket socket;

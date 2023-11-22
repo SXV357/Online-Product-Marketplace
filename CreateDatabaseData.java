@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Project 4 - CreateDatabaseData.java
+ * Project 5 - CreateDatabaseData.java
  * 
  * Class that handles data generation for all the databases for purposes of
  * testing.

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Project 4 - TestStore.java
+ * Project 5 - TestStore.java
  *
  * Class that handles all testing related to the functionalities implemented in
  * the store class.

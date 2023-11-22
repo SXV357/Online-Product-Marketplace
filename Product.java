@@ -1,5 +1,5 @@
 /**
- * Project 4 - Product.java
+ * Project 5 - Product.java
  * 
  * Class that represents an individual product available in a seller's store.
  *
