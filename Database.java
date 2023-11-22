@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
- * Project 4 - Database.java
+ * Project 5 - Database.java
  * 
  * Class that handles all database access and modification functionality related
  * to the application.
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 15, 2023
+ * @version November 21, 2023
  */
 public class Database {
     private final String DATABASES_DIRECTORY = "databases/";

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Project 4 - Customer.java
+ * Project 5 - Customer.java
  * 
  * Class to represent the permissions and details associated with a customer
  *

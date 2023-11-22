@@ -1,5 +1,5 @@
 /**
- * Project 4 - TestUser.java
+ * Project 5 - TestUser.java
  * 
  * Class that handles all testing related to the functionalities implemented in
  * the user class.

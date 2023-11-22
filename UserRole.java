@@ -1,5 +1,5 @@
 /**
- * Project 4 - UserRole.java
+ * Project 5 - UserRole.java
  * 
  * For storing the available user roles in the application.
  *

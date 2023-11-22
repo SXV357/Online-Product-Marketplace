@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Project 4 - TestStoreManagement.java
+ * Project 5 - TestStoreManagement.java
  * 
  * Class that handles all testing related to the functionalities implemented in
  * the Dashboard class.

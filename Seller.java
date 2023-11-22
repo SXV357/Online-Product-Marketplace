@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Project 4 - Seller.java
+ * Project 5 - Seller.java
  * 
  * Class to represent the permissions and details associated with a seller
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 20, 2023
+ * @version November 21, 2023
  */
 public class Seller extends User {
 

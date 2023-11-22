@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Project 4 - TestDatabase.java
+ * Project 5 - TestDatabase.java
  * 
  * Class that handles all testing related to the functionalities implemented in
  * the database class.

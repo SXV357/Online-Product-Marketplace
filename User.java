@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Project 4 - User.java
+ * Project 5 - User.java
  * 
  * Class that represents the characteristics associated with all users in the
  * application.
