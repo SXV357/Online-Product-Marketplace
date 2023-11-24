@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 23, 2023
  */
 public class Database {
     private final String DATABASES_DIRECTORY = "databases/";
@@ -27,7 +27,7 @@ public class Database {
             + "Name,Product Name,Purchase Quantity,Price";
     private final String SHOPPING_CART_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store Name,"
             + "Product Name,Purchase Quantity,Price";
-    private Object lock = new Object();
+    private static Object lock = new Object();
 
     /**
      * Takes in the name of the file as input and returns a string containing all
