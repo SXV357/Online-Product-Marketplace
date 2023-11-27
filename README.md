@@ -1,33 +1,24 @@
-# CS-180-Project4 - Product Marketplace
+# CS-180-Project4_5 - Product Marketplace
 
 # Instructions
-From the root directory of the project, compile Runner.java and then execute it which will launch the main application.
-When the user is prompted with a list of numbered options, they should input a number corresponding with their choice.
-When the user is asked a question, they should input their choice in lowercase.
-Example:
->Would you like to change the product's name, quantity, price, or description?
-User can input "name", "quantity", "price", or "description"
-Note: commas are used internally as a separating character in our file structure.
-The current version of this program may crash if certain user inputted fields are filled out with commas.
-This error will be fixed in the next iteration of the project.
+From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it which will launch the main application.
 
 # Project Submission Details
-
-Shafer Anthony Hofmann - Submitted Report on Brightspace
-
-Nathan Pasic Miller - Submitted project on Vocareum's workspace
 
 # Testing
 
 Detailed testing information can be found in Tests.md in the project root directory.
-Some tests used the junit4 library. This library must be installed before running test cases.
-To make manually testing the program convinient, you can run the main method of CreateDatabaseData.java.
-This will fill each database with customers, sellers, stores, products, and purchases. This data was used in some test cases.
-The ProductsToImport.csv file was used for testing the import products functionality.
-This file must exist for test cases to pass
-
 
 # Class Information
+
+## SellerGUI
+## CustomerGUI
+## DisplayDashboardGUI
+## LoginGUI
+## SignupGUI
+## UserGUI
+## Server
+## ServerThread
 
 ## UserRole
 An enum that represents all the possible roles users have in the application.
