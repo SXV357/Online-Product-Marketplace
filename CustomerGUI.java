@@ -11,11 +11,12 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 26, 2023
  */
 public class CustomerGUI extends JComponent {
 
     private JFrame customerFrame;
+    private CustomerClient customerClient;
     private String email;
     private JLabel welcomeUserLabel;
     private JButton manageAccountButton;
@@ -35,7 +36,7 @@ public class CustomerGUI extends JComponent {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new CustomerGUI("");
+                // new CustomerGUI("");
             }
         });
     }
@@ -128,7 +129,8 @@ public class CustomerGUI extends JComponent {
         }
     };
 
-    public CustomerGUI(String email) {
+    public CustomerGUI(CustomerClient customerClient, String email) {
+        this.customerClient = customerClient;
         this.email = email;
         customerFrame = new JFrame("Customer Page");
         JPanel buttonPanel = new JPanel(new GridLayout(3, 3, 5, 5));

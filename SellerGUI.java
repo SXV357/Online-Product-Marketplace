@@ -12,10 +12,11 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * s
- * @version November 21, 2023
+ * @version November 26, 2023
  */
 public class SellerGUI extends JComponent {
 
+    private SellerClient sellerClient;
     private JFrame sellerFrame;
     private String email;
     private JLabel welcomeUserLabel;
@@ -41,8 +42,7 @@ public class SellerGUI extends JComponent {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // Login/Signup GUI will pass in email to be utilized here
-                new SellerGUI("");
+                // new SellerGUI("");
             }
         });
     }
@@ -238,7 +238,8 @@ public class SellerGUI extends JComponent {
         }
     };
 
-    public SellerGUI(String email) {
+    public SellerGUI(SellerClient sellerClient, String email) {
+        this.sellerClient = sellerClient;
         this.email = email;
         sellerFrame = new JFrame("Seller Page");
         JPanel buttonPanel = new JPanel(new GridLayout(8, 2, 5, 5));
