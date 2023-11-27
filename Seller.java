@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 27, 2023
  */
 public class Seller extends User {
 
@@ -81,6 +81,7 @@ public class Seller extends User {
         if (!matchedStoreEntries.isEmpty()) {
             throw new SellerException("Unable to create a new store. There is already a store that exists with the same name!");        
         } else {
+            newStoreName = newStoreName.replace(",", "");
             Store newStore = new Store(newStoreName);
             String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(),
                     super.getUserID(), newStore.getStoreName(), 0);
@@ -103,6 +104,7 @@ public class Seller extends User {
             if (storeName == null || storeName.isEmpty()) {
                 throw new SellerException("Unable to delete store. The store name cannot be null or empty!");
             }
+            storeName = storeName.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
             db.removeFromDatabase("stores.csv", matchedStore);
@@ -133,6 +135,8 @@ public class Seller extends User {
             if (prevStoreName == null || prevStoreName.isEmpty() || newStoreName == null || newStoreName.isEmpty()) {
                 throw new SellerException("Unable to modify store name. Either the previous store name and the new store name are null or empty or both are null or empty");
             }
+            prevStoreName = prevStoreName.replace(",", "");
+            newStoreName = newStoreName.replace(",", "");
             String matchedPrevStoreName = db.getMatchedEntries("stores.csv", 2, prevStoreName).get(0);
             ArrayList<String> matchedNewStoreName = db.getMatchedEntries("stores.csv", 2, newStoreName);
             if (matchedNewStoreName.isEmpty()) {
@@ -183,6 +187,11 @@ public class Seller extends User {
             } else if (productPrice < 0) {
                 throw new SellerException("Unable to add product. The price cannot be negative");
             }
+            storeName = storeName.replace(",", "");
+            productName = productName.replace(",", "");
+            availableQuantity = availableQuantity.replace(",", "");
+            price = price.replace(",", "");
+            productDescription = productDescription.replace(",", "");
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
 
             // To ensure that the seller doesn't try adding a product with the same name in
@@ -244,6 +253,9 @@ public class Seller extends User {
             } else if (newValue == null || newValue.isEmpty()) {
                 throw new SellerException("Unable to edit product. The new value cannot be null or empty");
             }
+            storeName = storeName.replace(",", "");
+            productName = productName.replace(",", "");
+            newValue = newValue.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> productMatches = db.getMatchedEntries("products.csv", 3, storeName);
             if (productMatches.isEmpty()) { // there are no products associated with this given store
@@ -302,6 +314,8 @@ public class Seller extends User {
             } else if (productName == null || productName.isEmpty()) {
                 throw new SellerException("Unable to delete product. The product name cannot be null or empty.");
             }
+            storeName = storeName.replace(",", "");
+            productName = productName.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProductsForGivenStore = db.getMatchedEntries("products.csv", 3, storeName);
             // If the store exists but it doesn't contain any products
@@ -401,6 +415,7 @@ public class Seller extends User {
             } else if (storeName == null || storeName.isEmpty()) {
                 throw new SellerException("Unable to import products. The store name cannot be null or empty"); 
             }
+            storeName = storeName.replace(",", "");
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             File productFile = new File(filePath);
             BufferedReader br = new BufferedReader(new FileReader(productFile));
@@ -439,6 +454,7 @@ public class Seller extends User {
             if (storeName == null || storeName.isEmpty()) {
                 throw new SellerException("Unable to export products. Store name cannot be null or empty");
             }   
+            storeName = storeName.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
             if (!(matchedProducts.isEmpty())) {
