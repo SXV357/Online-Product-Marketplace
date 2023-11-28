@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * s
- * @version November 26, 2023
+ * @version November 27, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -39,11 +40,20 @@ public class SellerGUI extends JComponent {
     private JButton signOutButton;
 
     public static void main(String[] args) {
+        // SwingUtilities.invokeLater(new Runnable() {
+        //     @Override
+        //     public void run() {
+        //         new SellerGUI(null, "");
+        //     }
+        // });
+    }
+
+    public void displayErrorDialog(String errorMessage) {
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // new SellerGUI("");
-            }
+           @Override
+           public void run() {
+            new ErrorMessageGUI(errorMessage);
+           } 
         });
     }
 
@@ -53,22 +63,32 @@ public class SellerGUI extends JComponent {
             // Perform certain actions based on which button is clicked
             if (e.getSource() == createStoreButton) {
                 String newStoreName = JOptionPane.showInputDialog(null, "What is the new store\'s name?", "New Store Name", JOptionPane.QUESTION_MESSAGE);
-                // sellerClient.createNewStore("CREATE_NEW_STORE", newStoreName);
-                // Display corresponding error/confirmation dialog
+                String result = sellerClient.createNewStore("CREATE_NEW_STORE", newStoreName);
+                JOptionPane.showMessageDialog(null, result, "Create Store", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == editStoreButton) {
-                // sellerClient.getStores("GET_ALL_STORES")
+                Object result = sellerClient.getStores("GET_ALL_STORES");
                 // If this seller doesn't have any stores, display error message
-                // else
-                    // Display all store names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the previous store name
+                if (result instanceof String) { // Error
+                    String errorMessage = (String) result;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Store> stores = (ArrayList<Store>) result;
+                ArrayList<String> storeNames = new ArrayList<>();
+                for (Store st: stores) {
+                    storeNames.add(st.getStoreName());
+                }
+                String prevStoreName = (String) JOptionPane.showInputDialog(null, "Which store\'s name would you like to edit?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                if (prevStoreName == null) {
+                    return;
+                }
                 String newStoreName = JOptionPane.showInputDialog(null, "What is the new name of the store?", "New Store Name", JOptionPane.QUESTION_MESSAGE);
                 if (newStoreName == null) {
                     return;
                 }
-                // sellerClient.modifyStoreName("MODIFY_STORE_NAME", prevStoreName, newStoreName);
-                // Display corresponding error/confirmation dialog
+                String result2 = sellerClient.modifyStoreName("MODIFY_STORE_NAME", prevStoreName, newStoreName);
+                JOptionPane.showMessageDialog(null, result2, "Edit Store", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == deleteStoreButton) {
                 // sellerClient.getStores("GET_STORES")

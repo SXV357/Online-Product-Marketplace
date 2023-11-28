@@ -51,18 +51,44 @@ public class Seller extends User {
      * in the form of an arraylist of store objects
      *
      * @return An arraylist of store objects corresponding to this seller
+     * @throws SellerException
      */
-    public ArrayList<Store> getStores() {
+    public ArrayList<Store> getStores() throws SellerException {
         ArrayList<Store> stores = new ArrayList<>();
         ArrayList<String> storeEntries = db.getMatchedEntries("stores.csv", 1, super.getUserID());
         if (storeEntries.isEmpty()) {
-            return null;
+            throw new SellerException("You haven\'t created any stores yet!");
         }
         for (int i = 0; i < storeEntries.size(); i++) {
             String[] storeEntry = storeEntries.get(i).split(",");
             stores.add(new Store(storeEntry[0], storeEntry[2]));
         }
         return stores;
+    }
+
+    /**
+     * Queries the database for product entries associated with the specified store then
+     * bundles all the entries into product objects and returns them in the form of
+     * an arraylist.
+     *
+     * @param storeName The name of the store to retrieve the products from
+     * @return An arraylist of all the products associated with this store
+     * @throws SellerException
+     */
+    public ArrayList<Product> getProducts(String storeName) throws SellerException {
+        storeName = storeName.replace(",", "");
+        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<String> productEntries = db.getMatchedEntries("products.csv", 3, storeName);
+        if (productEntries.isEmpty()) {
+            throw new SellerException(storeName + "doesn\'t have any products!");
+        }
+        for (int i = 0; i < productEntries.size(); i++) {
+            String[] productEntry = productEntries.get(i).split(",");
+            Product product = new Product(productEntry[2], productEntry[4], Integer.parseInt(productEntry[5]),
+                    Double.parseDouble(productEntry[6]), productEntry[7]);
+            products.add(product);
+        }
+        return products;
     }
 
     /**
