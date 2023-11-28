@@ -9,10 +9,10 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 27, 2023
  */
 public class DashboardTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SellerException, CustomerException {
         CreateDatabaseData data = new CreateDatabaseData();
         data.createData();
 
@@ -37,7 +37,7 @@ public class DashboardTest {
     }
 
     // Uses users.csv and purchasehistories.csv
-    public static void testSellerGetCustomersDashboard(Dashboard dashboard) {
+    public static void testSellerGetCustomersDashboard(Dashboard dashboard) throws SellerException {
         System.out.println("Testing SellerGetCustomersDashboard\n _____________");
 
         // System.out.println("Alphabetical Descending:");
@@ -76,7 +76,7 @@ public class DashboardTest {
 
     }
 
-    public static void testSellerGetProductsDashboard(Dashboard dashboard) {
+    public static void testSellerGetProductsDashboard(Dashboard dashboard) throws SellerException {
         System.out.println("Testing SellerGetProductsDashboard\n _____________");
 
         // System.out.println("Alphabetical Descending:");
@@ -129,7 +129,7 @@ public class DashboardTest {
 
     }
 
-    public static void testCustomerGetStoresDashboard(Dashboard dashboard) {
+    public static void testCustomerGetStoresDashboard(Dashboard dashboard) throws CustomerException {
         System.out.println("Testing CustomerGetStoresDashboard\n _____________");
 
         // System.out.println("Alphabetical Descending:");
@@ -167,7 +167,7 @@ public class DashboardTest {
 
     }
 
-    public static void testCustomerGetPersonalPurchasesDashboard(Dashboard dashboard) {
+    public static void testCustomerGetPersonalPurchasesDashboard(Dashboard dashboard) throws CustomerException {
         System.out.println("Testing CustomerGetPersonalPurchasesDashboard\n _____________");
 
         // System.out.println("Alphabetical Ascending for customer C100001:");

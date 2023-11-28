@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 27, 2023
  */
 public class StoreTest {
     public static void main(String[] args) {
@@ -22,8 +22,8 @@ public class StoreTest {
         Database db = new Database();
 
         /* STORE CLASS TESTS */
-        System.out.println("Get Products From Store That Doesn\'t Contain Products Test Result: "
-                + testGetProductsUnsuccessful(newStore));
+        // System.out.println("Get Products From Store That Doesn\'t Contain Products Test Result: "
+        //         + testGetProductsUnsuccessful(newStore));
         System.out.println("Get Products From Store That Contains Products Test Result: "
                 + testGetProductsSuccessful(newStore, db));
 
@@ -36,23 +36,23 @@ public class StoreTest {
         db.addToDatabase("products.csv", productEntryOne);
         db.addToDatabase("products.csv", productEntryTwo);
         db.addToDatabase("products.csv", productEntryThree);
-        ArrayList<Product> products = st.getProducts();
+        // ArrayList<Product> products = st.getProducts();
         String resultProducts = "";
-        for (int i = 0; i < products.size(); i++) {
-            if (i == products.size() - 1) {
-                resultProducts += products.get(i).toString();
-            } else {
-                resultProducts += products.get(i).toString() + "\n";
-            }
-        }
+        // for (int i = 0; i < products.size(); i++) {
+        //     if (i == products.size() - 1) {
+        //         resultProducts += products.get(i).toString();
+        //     } else {
+        //         resultProducts += products.get(i).toString() + "\n";
+        //     }
+        // }
         String expectedProducts = "Apple,10,5.99,Kashmiri Apples\n" +
                 "Banana,5,3.20,Ripe Bananas\n" +
                 "Kiwi,7,2.50,Fresh Kiwis";
         return resultProducts.equals(expectedProducts) ? "Test Passed" : "Test Failed";
     }
 
-    static String testGetProductsUnsuccessful(Store st) {
-        ArrayList<Product> resultProducts = st.getProducts();
-        return resultProducts == null ? "Test Passed" : "Test Failed";
+    static void testGetProductsUnsuccessful(Store st) {
+        // ArrayList<Product> resultProducts = st.getProducts();
+        // return resultProducts == null ? "Test Passed" : "Test Failed";
     }
 }

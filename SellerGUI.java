@@ -2,8 +2,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Project 5 - SellerGUI.java
@@ -57,6 +59,24 @@ public class SellerGUI extends JComponent {
         });
     }
 
+    public void displayMiscInfo(String informationType, String data) {
+        SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+            new DisplayInformationGUI().displaySellerMiscInfo(informationType, data);
+           } 
+        });
+    }
+
+    public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
+        SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+            new DisplayInformationGUI().displayDashboard(dashboardType, scrollPane);
+           } 
+        });
+    }
+
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -91,23 +111,43 @@ public class SellerGUI extends JComponent {
                 JOptionPane.showMessageDialog(null, result2, "Edit Store", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == deleteStoreButton) {
-                // sellerClient.getStores("GET_STORES")
+                Object result = sellerClient.getStores("GET_ALL_STORES");
                 // If this seller doesn't have any stores, display error message
-                // else
-                    // Display all store names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the store to delete
+                if (result instanceof String) { // Error
+                    String errorMessage = (String) result;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Store> stores = (ArrayList<Store>) result;
+                ArrayList<String> storeNames = new ArrayList<>();
+                for (Store st: stores) {
+                    storeNames.add(st.getStoreName());
+                }
+                String storeName = (String) JOptionPane.showInputDialog(null, "Which store would you like to delete?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                if (storeName == null) {
+                    return;
+                }
 
-                // sellerClient.deleteStore("DELETE_STORE", storeName);
-                // Display corresponding error/confirmation dialog
+                String result2 = sellerClient.deleteStore("DELETE_STORE", storeName);
+                JOptionPane.showMessageDialog(null, result2, "Delete Store", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == createProductButton) {
-                // sellerClient.getStores("GET_STORES")
+                Object result = sellerClient.getStores("GET_ALL_STORES");
                 // If this seller doesn't have any stores, display error message
-                // else
-                    // Display all store names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the store to create the product in
+                if (result instanceof String) { // Error
+                    String errorMessage = (String) result;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Store> stores = (ArrayList<Store>) result;
+                ArrayList<String> storeNames = new ArrayList<>();
+                for (Store st: stores) {
+                    storeNames.add(st.getStoreName());
+                }
+                String storeName = (String) JOptionPane.showInputDialog(null, "Which store would you like to add the product to?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                if (storeName == null) {
+                    return;
+                }
 
                 String productName = JOptionPane.showInputDialog(null, "What is the name of the product?", "Product Name", JOptionPane.QUESTION_MESSAGE);
                 if (productName == null) {
@@ -125,24 +165,42 @@ public class SellerGUI extends JComponent {
                 if (description == null) {
                     return;
                 }
-                // sellerClient.createNewProduct("CREATE_NEW_PRODUCT", storeName, productName, availableQuantity, price, description);
-                // Display corresponding error/confirmation dialog
+                String result2 = sellerClient.createNewProduct("CREATE_NEW_PRODUCT", storeName, productName, availableQuantity, price, description);
+                JOptionPane.showMessageDialog(null, result2, "Create Product", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == editProductButton) {
-                // sellerClient.getStores("GET_STORES")
-                // If this seller doesn't have any stores, display error message and return
-                // else
-                    // Display all store names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the store to edit the product in
-                
-                // if no errors occurred, retrieve all the products associated with that store(only the names)
-                // sellerClient.getProducts("GET_ALL_PRODUCTS", storeName);
-                // if this store doesn't contain any products, display error message and return
-                // else
-                    // display all product names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the product to edit
+                Object storeResult = sellerClient.getStores("GET_ALL_STORES");
+                // If this seller doesn't have any stores, display error message
+                if (storeResult instanceof String) { // Error
+                    String errorMessage = (String) storeResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Store> stores = (ArrayList<Store>) storeResult;
+                ArrayList<String> storeNames = new ArrayList<>();
+                for (Store st: stores) {
+                    storeNames.add(st.getStoreName());
+                }
+                String storeName = (String) JOptionPane.showInputDialog(null, "Which store contains the product you\'d like to edit?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                if (storeName == null) {
+                    return;
+                }
+                // ********
+                Object productResult = sellerClient.getProducts("GET_ALL_PRODUCTS", storeName);
+                if (productResult instanceof String) {
+                    String errorMessage = (String) productResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Product> products = (ArrayList<Product>) productResult;
+                ArrayList<String> productNames = new ArrayList<>();
+                for (Product pr: products) {
+                    productNames.add(pr.getName());
+                }
+                String productName = (String) JOptionPane.showInputDialog(null, "Which product would you like to edit?", "Products", JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
+                if (productName == null) {
+                    return;
+                }
     
                 String[] editParameters = {"Name", "Price", "Description", "Quantity"};
                 String editParam = (String) JOptionPane.showInputDialog(null, "Which parameter would you like to edit?", "Edit Parameter", JOptionPane.QUESTION_MESSAGE, null, editParameters, editParameters[0]);
@@ -153,61 +211,125 @@ public class SellerGUI extends JComponent {
                 if (newValue == null) {
                     return;
                 }
-                // sellerClient.editProduct("EDIT_PRODUCT", storeName, productName, editParam, newValue);
-                // Display corresponding error/confirmation dialog
+                String result = sellerClient.editProduct("EDIT_PRODUCT", storeName, productName, editParam, newValue);
+                JOptionPane.showMessageDialog(null, result, "Edit Product", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == deleteProductButton) {
-                // sellerClient.getStores("GET_STORES")
+                Object storeResult = sellerClient.getStores("GET_ALL_STORES");
                 // If this seller doesn't have any stores, display error message
-                // else
-                    // Display all store names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the store to delete the product in
-                
-                // if no errors occurred, retrieve all the products associated with that store(only the names)
-                // sellerClient.getProducts("GET_ALL_PRODUCTS", storeName);
-                // if this store doesn't contain any products, display error message
-                // else
-                    // display all product names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the product to delete
+                if (storeResult instanceof String) { // Error
+                    String errorMessage = (String) storeResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Store> stores = (ArrayList<Store>) storeResult;
+                ArrayList<String> storeNames = new ArrayList<>();
+                for (Store st: stores) {
+                    storeNames.add(st.getStoreName());
+                }
+                String storeName = (String) JOptionPane.showInputDialog(null, "Which store contains the product you\'d like to edit?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                if (storeName == null) {
+                    return;
+                }
+                // ********
+                Object productResult = sellerClient.getProducts("GET_ALL_PRODUCTS", storeName);
+                if (productResult instanceof String) {
+                    String errorMessage = (String) productResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Product> products = (ArrayList<Product>) productResult;
+                ArrayList<String> productNames = new ArrayList<>();
+                for (Product pr: products) {
+                    productNames.add(pr.getName());
+                }
+                String productName = (String) JOptionPane.showInputDialog(null, "Which product would you like to edit?", "Products", JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
+                if (productName == null) {
+                    return;
+                }
 
-                // sellerClient.deleteProduct("DELETE_PRODUCT", storeName, productName);
-                // Display corresponding error/confirmation dialog
+                String result = sellerClient.deleteProduct("DELETE_PRODUCT", storeName, productName);
+                JOptionPane.showMessageDialog(null, result, "Delete Product", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == importProductsButton) {
               String filePath = JOptionPane.showInputDialog(null, "What is the name of the file that contains the products?", "File Name", JOptionPane.QUESTION_MESSAGE);
               if (filePath == null) {
                 return;
               }
-              // sellerClient.getStores("GET_STORES")
+              Object storeResult = sellerClient.getStores("GET_ALL_STORES");
                 // If this seller doesn't have any stores, display error message
-                // else
-                    // Display all store names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the store to import the products into
+                if (storeResult instanceof String) { // Error
+                    String errorMessage = (String) storeResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Store> stores = (ArrayList<Store>) storeResult;
+                ArrayList<String> storeNames = new ArrayList<>();
+                for (Store st: stores) {
+                    storeNames.add(st.getStoreName());
+                }
+                String storeName = (String) JOptionPane.showInputDialog(null, "Which store contains the product you\'d like to edit?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                if (storeName == null) {
+                    return;
+                }
 
-              // sellerClient.importProducts("IMPORT_PRODUCTS", filePath, storeName);
-              // Display corresponding error/confirmation dialog
+              String result = sellerClient.importProducts("IMPORT_PRODUCTS", filePath, storeName);
+              JOptionPane.showMessageDialog(null, result, "Import Products", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == exportProductsButton) {
-                // sellerClient.getStores("GET_STORES")
+                Object storeResult = sellerClient.getStores("GET_ALL_STORES");
                 // If this seller doesn't have any stores, display error message
-                // else
-                    // Display all store names in a dropdown menu to the seller
-                    // Retrieve index of selection based on position in the arraylist
-                    // Use that to get the name of the store to export the products from
+                if (storeResult instanceof String) { // Error
+                    String errorMessage = (String) storeResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<Store> stores = (ArrayList<Store>) storeResult;
+                ArrayList<String> storeNames = new ArrayList<>();
+                for (Store st: stores) {
+                    storeNames.add(st.getStoreName());
+                }
+                String storeName = (String) JOptionPane.showInputDialog(null, "Which store contains the product you\'d like to edit?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                if (storeName == null) {
+                    return;
+                }
 
-                // sellerClient.exportProducts("EXPORT_PRODUCTS", storeName);
-                // Display corresponding error/confirmation dialog
+                String result = sellerClient.exportProducts("EXPORT_PRODUCTS", storeName);
+                JOptionPane.showMessageDialog(null, result, "Export Products", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == viewCustomerShoppingCartsButton) {
-                // sellerClient.viewCustomerShoppingCarts("VIEW_CUSTOMER_SHOPPING_CARTS");
-                // Display corresponding error/information dialog
+                Object result = sellerClient.viewCustomerShoppingCarts("VIEW_CUSTOMER_SHOPPING_CARTS");
+                if (result instanceof String) {
+                    String errorMessage = (String) result;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                HashMap<String, ArrayList<String>> shoppingCarts = (HashMap<String, ArrayList<String>>) result;
+                String info = "";
+                for (String store : shoppingCarts.keySet()) {
+                    result += store;
+                    for (String saleInformation : shoppingCarts.get(store)) {
+                        result += saleInformation;
+                    }
+                }
+                displayMiscInfo("Customer Shopping Carts", info);
 
             } else if (e.getSource() == viewSalesByStoreButton) {
-                // sellerClient.viewSalesByStore("VIEW_SALES_BY_STORE");
-                // Display corresponding error/information dialog
+                Object result = sellerClient.viewSalesByStore("VIEW_SALES_BY_STORE");
+                if (result instanceof String) {
+                    String errorMessage = (String) result;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                HashMap<String, ArrayList<String>> salesByStore = (HashMap<String, ArrayList<String>>) result;
+                String info = "";
+                for (String store : salesByStore.keySet()) {
+                    result += store;
+                    for (String saleInformation : salesByStore.get(store)) {
+                        result += saleInformation;
+                    }
+                }
+                displayMiscInfo("Sales by Store", info);
 
             } else if (e.getSource() == viewCustomerDashboardButton) {
                 String[] sortChoices = {"Customer Email", "Quantity Purchased", "Money Spent"};
@@ -221,11 +343,26 @@ public class SellerGUI extends JComponent {
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
                 int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
-                // sellerClient.sellerGetCustomersDashboard("CUSTOMERS_DASHBOARD", sortSelection, ascending)
-                Object[][] data = null;
+
+
+                Object customerDashboardResult = sellerClient.sellerGetCustomersDashboard("CUSTOMERS_DASHBOARD", sortSelection, ascending);
+
+                if (customerDashboardResult instanceof String) { // error was thrown
+                    String errorMessage = (String) customerDashboardResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                
+                ArrayList<String> customerDashboard = (ArrayList<String>) customerDashboardResult;
+                Object[][] data = new Object[customerDashboard.size()][3];
+                for (int i = 0; i < customerDashboard.size(); i++) {
+                    String[] elems = customerDashboard.get(i).split(",");
+                    System.arraycopy(elems, 0, data[i], 0, elems.length);
+                }
+
                 JTable table = new JTable(data, sortChoices);
                 JScrollPane scrollPane = new JScrollPane(table);
-                // new DisplayDashboardGUI("Customers", scrollPane);
+                displayDashboard("Customers", scrollPane);
 
             } else if (e.getSource() == viewProductDashboardButton) {
                 String[] sortChoices = {"Product Name", "Quantity Sold", "Total revenue"};
@@ -239,11 +376,24 @@ public class SellerGUI extends JComponent {
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
                 int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
-                // sellerClient.sellerGetProductsDashboard("PRODUCTS_DASHBOARD", sortSelection, ascending)
-                Object[][] data = null;
+
+
+                Object productDashboardResult = sellerClient.sellerGetProductsDashboard("PRODUCTS_DASHBOARD", sortSelection, ascending);
+                if (productDashboardResult instanceof String) { // error was thrown
+                    String errorMessage = (String) productDashboardResult;
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<String> productDashboard = (ArrayList<String>) productDashboardResult;
+                Object[][] data = new Object[productDashboard.size()][3];
+                for (int i = 0; i < productDashboard.size(); i++) {
+                    String[] elems = productDashboard.get(i).split(",");
+                    System.arraycopy(elems, 0, data[i], 0, elems.length);
+                }
+
                 JTable table = new JTable(data, sortChoices);
                 JScrollPane scrollPane = new JScrollPane(table);
-                // new DisplayDashboardGUI("Products", scrollPane);
+                displayDashboard("Products", scrollPane);
 
             } else if (e.getSource() == manageAccountButton) {
                 // invoke the edit account GUI
@@ -253,7 +403,10 @@ public class SellerGUI extends JComponent {
                     // delete account
 
             } else if (e.getSource() == signOutButton) {
-                // sellerClient.signOut();
+                try {
+                    sellerClient.signOut();
+                } catch (IOException ex) {
+                }
             }
         }
     };
