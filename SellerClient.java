@@ -44,11 +44,12 @@ public class SellerClient {
     // Get all the stores associated with the current seller
     public Object getStores(String action) {
         // action: GET_ALL_STORES
+        // RETURN THE ARRAYLIST AS IS OR THE CUSTOM ERROR MESSAGE
         Object result;
         try {
             oos.writeObject(new String[] {action});
             oos.flush();
-            result = ois.readObject(); // Represents arraylist or string error message
+            result = ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -58,6 +59,7 @@ public class SellerClient {
     // Get all the products associated with a certain store of the current seller
     public Object getProducts(String action, String storeName) {
         // action: GET_ALL_PRODUCTS
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         Object result;
         try {
             oos.writeObject(new String[] {action, storeName});
@@ -72,6 +74,7 @@ public class SellerClient {
 
     public String createNewStore(String action, String storeName) {
         // action: CREATE_NEW_STORE
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {
             oos.writeObject(new String[] {action, storeName});
@@ -85,6 +88,7 @@ public class SellerClient {
 
     public String modifyStoreName(String action, String prevStoreName, String newStoreName) {
         // action: MODIFY_STORE_NAME
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {
             oos.writeObject(new String[] {prevStoreName, newStoreName});
@@ -98,6 +102,7 @@ public class SellerClient {
 
     public String deleteStore(String action, String storeName) {
         // action: DELETE_STORE
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {
             oos.writeObject(new String[] {action, storeName});
@@ -111,6 +116,7 @@ public class SellerClient {
 
     public String createNewProduct(String action, String storeName, String productName, String availableQuantity, String price, String description) {
         // action: CREATE_NEW_PRODUCT
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {
             oos.writeObject(new String[] {action, storeName, productName, availableQuantity, price, description});
@@ -124,6 +130,7 @@ public class SellerClient {
 
     public String editProduct(String action, String storeName, String productName, String editParam, String newValue) {
         // action: EDIT_PRODUCT
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {
             oos.writeObject(new String[] {action, storeName, productName, editParam, newValue});
@@ -137,6 +144,7 @@ public class SellerClient {
 
     public String deleteProduct(String action, String storeName, String productName) {
         // action: DELETE_PRODUCT
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {
             oos.writeObject(new String[] {action, storeName, productName});
@@ -150,6 +158,7 @@ public class SellerClient {
 
     public String importProducts(String action, String filePath, String storeName) {
         // action: IMPORT_PRODUCTS
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {
             oos.writeObject(new String[] {action, filePath, storeName});
@@ -163,6 +172,7 @@ public class SellerClient {
 
     public String exportProducts(String action, String storeName) {
         // action: EXPORT_PRODUCTS
+        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
         String result;
         try {  
             oos.writeObject(new String[] {action, storeName});
@@ -176,6 +186,7 @@ public class SellerClient {
 
     public Object viewCustomerShoppingCarts(String action) {
         // action: VIEW_CUSTOMER_SHOPPING_CARTS
+        // RETURN THE HASHMAP AS IS OR THE CUSTOM ERROR MESSAGE
         Object result;
         try {
             oos.writeObject(new String[] {action});
@@ -189,6 +200,7 @@ public class SellerClient {
 
     public Object viewSalesByStore(String action) {
         // action: VIEW_SALES_BY_STORE
+        // RETURN THE HASHMAP AS IS OR THE CUSTOM ERROR MESSAGE
         Object result;
         try {
             oos.writeObject(new String[] {action});
@@ -202,6 +214,7 @@ public class SellerClient {
 
     public Object sellerGetCustomersDashboard(String action, int sortSelection, boolean ascending) {
         // action: CUSTOMERS_DASHBOARD
+        // RETURN THE ARRAYLIST AS IS OR THE CUSTOM ERROR MESSAGE
         Object result;
         try {
             oos.writeObject(new Object[] {action, sortSelection, ascending});
@@ -215,6 +228,7 @@ public class SellerClient {
 
     public Object sellerGetProductsDashboard(String action, int sortSelection, boolean ascending) {
         // action: PRODUCTS_DASHBOARD
+        // RETURN THE ARRAYLIST AS IS OR THE CUSTOM ERROR MESSAGE
         Object result;
         try {
             oos.writeObject(new Object[] {action, sortSelection, ascending});
