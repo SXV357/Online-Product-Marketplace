@@ -84,7 +84,7 @@ public class Dashboard {
             String customerEmail = customerDataList[1];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String statsString = String.format("%s, %.2f, %.2f", customerEmail, totalQuantity, totalSpent);
+            String statsString = String.format("%s,%.2f,%.2f", customerEmail, totalQuantity, totalSpent);
             customerStatisticsStrings.add(statsString);
         }
 
@@ -137,7 +137,7 @@ public class Dashboard {
             String productName = productDataList[4];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String statsString = String.format("%s, %.2f, %.2f", productName, totalSold, totalRevenue);
+            String statsString = String.format("%s,%.2f,%.2f", productName, totalSold, totalRevenue);
             productStatisticsStrings.add(statsString);
         }
 
@@ -186,7 +186,7 @@ public class Dashboard {
             String storeName = storeDataList[2];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String statsString = String.format("%s, %.2f, %.2f", storeName, totalProductsSold, totalRevenue);
+            String statsString = String.format("%s,%.2f,%.2f", storeName, totalProductsSold, totalRevenue);
             storeStatisticsStrings.add(statsString);
         }
 
@@ -243,7 +243,7 @@ public class Dashboard {
             String storeName = storeDataList[2];
             // Add customer's stats to the list
             // Format: email, totalQuantity, totalSpent
-            String statsString = String.format("%s, %.2f, %.2f", storeName, totalProductsBought, totalSpent);
+            String statsString = String.format("%s,%.2f,%.2f", storeName, totalProductsBought, totalSpent);
             storeStatisticsStrings.add(statsString);
         }
         return sortResults(sortIndex, sortAscending, storeStatisticsStrings);

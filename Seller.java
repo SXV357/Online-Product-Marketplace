@@ -374,8 +374,8 @@ public class Seller extends User {
      * @return A string containing store sale information
      * @throws SellerException
      */
-    public String viewStoreSales() throws SellerException {
-        String result = "";
+    public HashMap<String, ArrayList<String>> viewStoreSales() throws SellerException {
+        HashMap<String, ArrayList<String>> salesByStore = new HashMap<>();
         ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, super.getUserID());
         if (matchedStores.isEmpty()) {
             throw new SellerException("You haven't created any stores yet!");
@@ -391,7 +391,6 @@ public class Seller extends User {
                 if (matchedPurchaseHistories.isEmpty()) {
                     throw new SellerException("Customers have not purchased items from any of your stores!");
                 } else {
-                    HashMap<String, ArrayList<String>> salesByStore = new HashMap<>();
                     for (int i = 0; i < matchedPurchaseHistories.size(); i++) {
                         String[] purchaseHistoryEntry = matchedPurchaseHistories.get(i).split(",");
                         String storeIdentifier = String.format("Store %s-%s Sales\n", purchaseHistoryEntry[2],
@@ -410,16 +409,10 @@ public class Seller extends User {
                         }
                         salesByStore.get(storeIdentifier).add(salesInformation);
                     }
-                    for (String store : salesByStore.keySet()) {
-                        result += store;
-                        for (String saleInformation : salesByStore.get(store)) {
-                            result += saleInformation;
-                        }
-                    }
                 }
             }
         }
-        return result;
+        return salesByStore;
     }
 
     /**
@@ -524,8 +517,8 @@ public class Seller extends User {
      * @return A string containing customer shopping cart information
      * @throws SellerException
      */
-    public String viewCustomerShoppingCarts() throws SellerException {
-        String result = "";
+    public HashMap<String, ArrayList<String>> viewCustomerShoppingCarts() throws SellerException {
+        HashMap<String, ArrayList<String>> cartsByStore = new HashMap<>();
         ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, super.getUserID());
         if (matchedStores.isEmpty()) {
             throw new SellerException("You haven't created any stores yet!");
@@ -540,7 +533,6 @@ public class Seller extends User {
                 if (matchedCarts.isEmpty()) {
                     throw new SellerException("No customers have added products to their shopping cart from any of your stores!");
                 } else {
-                    HashMap<String, ArrayList<String>> cartsByStore = new HashMap<>();
                     for (int i = 0; i < matchedCarts.size(); i++) {
                         String[] shoppingCartEntry = matchedCarts.get(i).split(",");
                         String storeIdentifier = String.format("Store %s-%s Shopping Carts\n", shoppingCartEntry[2],
@@ -558,15 +550,9 @@ public class Seller extends User {
                         }
                         cartsByStore.get(storeIdentifier).add(shoppingCartInformation);
                     }
-                    for (String store : cartsByStore.keySet()) {
-                        result += store;
-                        for (String saleInformation : cartsByStore.get(store)) {
-                            result += saleInformation;
-                        }
-                    }
                 }
             }
         }
-        return result;
+        return cartsByStore;
     }
 }

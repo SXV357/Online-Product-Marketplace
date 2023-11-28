@@ -174,26 +174,26 @@ public class SellerClient {
         return result;
     }
 
-    public String viewCustomerShoppingCarts(String action) {
+    public Object viewCustomerShoppingCarts(String action) {
         // action: VIEW_CUSTOMER_SHOPPING_CARTS
-        String result;
+        Object result;
         try {
             oos.writeObject(new String[] {action});
             oos.flush();
-            result = (String) ois.readObject();
+            result = ois.readObject();
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-    public String viewSalesByStore(String action) {
+    public Object viewSalesByStore(String action) {
         // action: VIEW_SALES_BY_STORE
-        String result;
+        Object result;
         try {
             oos.writeObject(new String[] {action});
             oos.flush();
-            result = (String) ois.readObject();
+            result = ois.readObject();
         } catch (Exception e) {
             return null;
         }
