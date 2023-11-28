@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Project 5 - Store.java
  * 
@@ -9,7 +7,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 27, 2023
  */
 public class Store {
 
@@ -37,28 +35,6 @@ public class Store {
     public Store(String storeIdentificationNumber, String storeName) {
         this.storeIdentificationNumber = storeIdentificationNumber;
         this.storeName = storeName;
-    }
-
-    /**
-     * Queries the database for product entries associated with this store then
-     * bundles all the entries into product objects and returns them in the form of
-     * an arraylist.
-     *
-     * @return An arraylist of all the products associated with this store
-     */
-    public ArrayList<Product> getProducts() {
-        ArrayList<Product> products = new ArrayList<>();
-        ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1, this.storeIdentificationNumber);
-        if (matchedProducts.isEmpty()) {
-            return null;
-        }
-        for (int i = 0; i < matchedProducts.size(); i++) {
-            String[] productEntry = matchedProducts.get(i).split(",");
-            Product product = new Product(productEntry[2], productEntry[4], Integer.parseInt(productEntry[5]),
-                    Double.parseDouble(productEntry[6]), productEntry[7]);
-            products.add(product);
-        }
-        return products;
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.Collections;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 27, 2023
  */
 public class Dashboard {
 
@@ -48,9 +48,13 @@ public class Dashboard {
 
     // Seller's method to view all customers
     // Return line format: email,totalQuantity,totalSpent
-    public ArrayList<String> sellerGetCustomersDashboard(int sortIndex, boolean sortAscending) {
+    public ArrayList<String> sellerGetCustomersDashboard(int sortIndex, boolean sortAscending) throws SellerException {
         // Get all customer Users
         ArrayList<String> allCustomers = database.getMatchedEntries("users.csv", 3, "Customer");
+
+        if (allCustomers.isEmpty()) {
+            throw new SellerException("There are no existent customer accounts!");
+        }
 
         // return array
         ArrayList<String> customerStatisticsStrings = new ArrayList<>();
@@ -91,10 +95,14 @@ public class Dashboard {
 
     // Seller's method to view all products
     // Return line format: productName,TotalSales,Total Revenue
-    public ArrayList<String> sellerGetProductsDashboard(int sortIndex, boolean sortAscending) {
+    public ArrayList<String> sellerGetProductsDashboard(int sortIndex, boolean sortAscending) throws SellerException {
         // Get all products:Seller ID,Store ID,Product ID,Store Name,Product
         // Name,Available Quantity,Price,Description
         ArrayList<String> allProducts = database.getDatabaseContents("products.csv");
+
+        if (allProducts.isEmpty()) {
+            throw new SellerException("No products have been added to any stores yet!");
+        }
 
         // return array
         ArrayList<String> productStatisticsStrings = new ArrayList<>();
@@ -138,9 +146,13 @@ public class Dashboard {
 
     // Customer's method to view all stores and their products sold
     // Return line format: storeName, Products Sold, Total Revenue
-    public ArrayList<String> customerGetStoresDashboard(int sortIndex, boolean sortAscending) {
+    public ArrayList<String> customerGetStoresDashboard(int sortIndex, boolean sortAscending) throws CustomerException {
         // Get all stores:Store ID,Seller ID,Store Name,Number of Products
         ArrayList<String> allStores = database.getDatabaseContents("stores.csv");
+
+        if (allStores.isEmpty()) {
+            throw new CustomerException("No stores have been created yet!");
+        }
 
         // return array
         ArrayList<String> storeStatisticsStrings = new ArrayList<>();
@@ -186,9 +198,13 @@ public class Dashboard {
     // customer with customer ID at that store
     // Return line format: storeName, Products Bought, Total Spent
     public ArrayList<String> customerGetPersonalPurchasesDashboard(int sortIndex, boolean sortAscending,
-            String customerID) {
+            String customerID) throws CustomerException {
         // Get all stores:Store ID,Seller ID,Store Name,Number of Products
         ArrayList<String> allStores = database.getDatabaseContents("stores.csv");
+
+        if (allStores.isEmpty()) {
+            throw new CustomerException("No stores have been created yet!");
+        }
 
         // return array
         ArrayList<String> storeStatisticsStrings = new ArrayList<>();
