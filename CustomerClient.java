@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import javax.swing.SwingUtilities;
 /**
  * Project 5 - CustomerClient.java
  * 
@@ -30,13 +32,13 @@ public class CustomerClient {
         this.customer = customer;
     }
 
-    //TODO
     public void homepage(){
-        //call customer GUI
-        //TODO customerGUI constructor
-        //CustomerGUI customerGUI = new CustomerGUI(customer.getEmail());
-        //CustomerGUI main is the seller homepage (Can be changed later)
-        CustomerGUI.main(null);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new CustomerGUI(CustomerClient.this, customer.getEmail());
+            }
+        });
     }
 
     // Get all the products from the marketplace
