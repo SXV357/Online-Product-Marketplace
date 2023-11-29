@@ -18,9 +18,9 @@ import java.awt.event.ActionListener;
 //TODO check for if static works with the concurrency
 
 public class UserGUI {
+    private final JFrame frame = new JFrame("");  //ADD TITLE HERE
     private final JButton LOGIN_BUTTON = new JButton("Log In");
     private final JButton SIGN_UP_BUTTON = new JButton("Sign Up");
-    private JFrame frame = new JFrame("");  //ADD TITLE HERE
 
     public UserGUI() {
         mainMenuDisplay();
@@ -42,10 +42,12 @@ public class UserGUI {
 
     private void logIn() {
         System.out.println("This is where Log In GUI starts");  //Change to call LogIn GUI when implemented
+        new LoginGUI();
     }
 
     private void signUp() {
         System.out.println("This is where Sign Up Gui starts");  //Change to call SignUp GUI when implemented
+        new SignUp(new Database());
     }
 
     public void mainMenuDisplay () {
@@ -88,6 +90,5 @@ public class UserGUI {
                 new UserGUI();
             }
         });
-
     }
 }
