@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 28, 2023
+ * @version November 29, 2023
  */
 public class SellerClient {
     
@@ -42,14 +42,14 @@ public class SellerClient {
     }
 
     // Get all the stores associated with the current seller
-    public Object getStores() {
+    public Object[] getStores() {
         // action: GET_ALL_STORES
-        // RETURN THE ARRAYLIST AS IS OR THE CUSTOM ERROR MESSAGE
-        Object result;
+        // RETURN: ["ERROR", error message] or ["SUCCESS", stores arraylist]
+        Object[] result;
         try {
             oos.writeObject(new String[] {"GET_ALL_STORES"});
             oos.flush();
-            result = ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -57,24 +57,23 @@ public class SellerClient {
     }
 
     // Get all the products associated with a certain store of the current seller
-    public Object getProducts(String storeName) {
+    public Object[] getProducts(String storeName) {
         // action: GET_ALL_PRODUCTS
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
-        Object result;
+        // RETURN: ["ERROR", error message] or ["SUCCESS", products arraylist]
+        Object[] result;
         try {
             oos.writeObject(new String[] {"GET_ALL_PRODUCTS", storeName});
             oos.flush();
-            result = ois.readObject(); // Represents arraylist or string error message
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-
     public String[] createNewStore(String storeName) {
         // action: CREATE_NEW_STORE
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
             oos.writeObject(new String[] {"CREATE_NEW_STORE", storeName});
@@ -88,7 +87,7 @@ public class SellerClient {
 
     public String[] modifyStoreName(String prevStoreName, String newStoreName) {
         // action: MODIFY_STORE_NAME
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
             oos.writeObject(new String[] {"MODIFY_STORE_NAME", prevStoreName, newStoreName});
@@ -102,7 +101,7 @@ public class SellerClient {
 
     public String[] deleteStore(String storeName) {
         // action: DELETE_STORE
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
             oos.writeObject(new String[] {"DELETE_STORE", storeName});
@@ -116,7 +115,7 @@ public class SellerClient {
 
     public String[] createNewProduct(String storeName, String productName, String availableQuantity, String price, String description) {
         // action: CREATE_NEW_PRODUCT
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
             oos.writeObject(new String[] {"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity, price, description});
@@ -130,7 +129,7 @@ public class SellerClient {
 
     public String[] editProduct(String storeName, String productName, String editParam, String newValue) {
         // action: EDIT_PRODUCT
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
             oos.writeObject(new String[] {"EDIT_PRODUCT", storeName, productName, editParam, newValue});
@@ -144,7 +143,7 @@ public class SellerClient {
 
     public String[] deleteProduct(String storeName, String productName) {
         // action: DELETE_PRODUCT
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
             oos.writeObject(new String[] {"DELETE_PRODUCT", storeName, productName});
@@ -158,7 +157,7 @@ public class SellerClient {
 
     public String[] importProducts(String filePath, String storeName) {
         // action: IMPORT_PRODUCTS
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
             oos.writeObject(new String[] {"IMPORT_PRODUCTS", filePath, storeName});
@@ -172,7 +171,7 @@ public class SellerClient {
 
     public String[] exportProducts(String storeName) {
         // action: EXPORT_PRODUCTS
-        // RETURN A STRING CONFIRMATION OR THE CUSTOM ERROR MESSAGE FROM SERVER
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {  
             oos.writeObject(new String[] {"EXPORT_PRODUCTS", storeName});
@@ -184,56 +183,56 @@ public class SellerClient {
         return result;
     }
 
-    public Object viewCustomerShoppingCarts() {
+    public Object[] viewCustomerShoppingCarts() {
         // action: VIEW_CUSTOMER_SHOPPING_CARTS
-        // RETURN THE HASHMAP AS IS OR THE CUSTOM ERROR MESSAGE
-        Object result;
+        // RETURN: ["ERROR", error message] or ["SUCCESS", shopping carts hashmap]
+        Object[] result;
         try {
             oos.writeObject(new String[] {"VIEW_CUSTOMER_SHOPPING_CARTS"});
             oos.flush();
-            result = ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-    public Object viewSalesByStore() {
+    public Object[] viewSalesByStore() {
         // action: VIEW_SALES_BY_STORE
-        // RETURN THE HASHMAP AS IS OR THE CUSTOM ERROR MESSAGE
-        Object result;
+        // RETURN: ["ERROR", error message] or ["SUCCESS", sales by store hashmap]
+        Object[] result;
         try {
             oos.writeObject(new String[] {"VIEW_SALES_BY_STORE"});
             oos.flush();
-            result = ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-    public Object sellerGetCustomersDashboard(int sortSelection, boolean ascending) {
+    public Object[] sellerGetCustomersDashboard(int sortSelection, boolean ascending) {
         // action: CUSTOMERS_DASHBOARD
-        // RETURN THE ARRAYLIST AS IS OR THE CUSTOM ERROR MESSAGE
-        Object result;
+        // RETURN: ["ERROR", error message] or ["SUCCESS", dashboard arraylist]
+        Object[] result;
         try {
             oos.writeObject(new Object[] {"CUSTOMERS_DASHBOARD", sortSelection, ascending});
             oos.flush();
-            result = ois.readObject(); // Represents the arraylist or the string error message
+            result = (Object[]) ois.readObject(); // Represents the arraylist or the string error message
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-    public Object sellerGetProductsDashboard(int sortSelection, boolean ascending) {
+    public Object[] sellerGetProductsDashboard(int sortSelection, boolean ascending) {
         // action: PRODUCTS_DASHBOARD
-        // RETURN THE ARRAYLIST AS IS OR THE CUSTOM ERROR MESSAGE
-        Object result;
+        // RETURN: ["ERROR", error message] or ["SUCCESS", dashboard arraylist]
+        Object[] result;
         try {
             oos.writeObject(new Object[] {"PRODUCTS_DASHBOARD", sortSelection, ascending});
             oos.flush();
-            result = ois.readObject(); // Represents the arraylist or the string error message
+            result = (Object[]) ois.readObject(); // Represents the arraylist or the string error message
         } catch (Exception e) {
             return null;
         }
