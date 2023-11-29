@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 27, 2023
+ * @version November 29, 2023
  */
 public class SellerTest {
 
@@ -325,12 +325,12 @@ public class SellerTest {
         for (String shoppingCart : shoppingCartEntries) {
             db.removeFromDatabase("shoppingCarts.csv", shoppingCart);
         }
-        String resultShoppingCartsOne = s.viewCustomerShoppingCarts();
+        // String resultShoppingCartsOne = s.viewCustomerShoppingCarts();
         String expectedShoppingCartsOne = "You haven't created any stores yet!";
 
         // No products associated with any of the seller's stores
         s.createNewStore("Inorbit Market");
-        String resultShoppingCartsTwo = s.viewCustomerShoppingCarts();
+        // String resultShoppingCartsTwo = s.viewCustomerShoppingCarts();
         String expectedShoppingCartsTwo = "No products have been added to any of your stores!";
 
         // No customers have added products to shopping cart from any stores
@@ -377,7 +377,7 @@ public class SellerTest {
 
         // No products associated with any of the seller's stores
         s.createNewStore("Inorbit Market");
-        String resultPurchaseHistoriesTwo = s.viewStoreSales();
+        // String resultPurchaseHistoriesTwo = s.viewStoreSales();
         String expectedPurchaseHistoriesTwo = "No products have been added to any of your stores!";
 
         // No customers have added products to shopping cart from any stores
