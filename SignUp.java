@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 /**
  * Project 5 - SignUpForm.java
@@ -11,21 +11,22 @@ import java.awt.event.ActionListener;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version November 19, 2023
+ * @version November 29, 2023
  */
+
 public class SignUp extends JFrame {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JPasswordField confirmField;
-    private JComboBox<UserRole> roleComboBox;
+    private JComboBox<String> roleComboBox;
     private JButton confirmButton;
-    private Database db;
 
-    public SignUp(Database database) {
-        this.db = database;
+    // Constructor to initialize and set up the GUI components.
+    public SignUp() {
         createUI();
     }
 
+    // Creates and arranges all the GUI components in the form.
     private void createUI() {
         setTitle("Sign Up");
         setSize(300, 250);
@@ -47,7 +48,7 @@ public class SignUp extends JFrame {
         add(confirmField);
 
         add(new JLabel("Role:"));
-        roleComboBox = new JComboBox<>(UserRole.values());
+        roleComboBox = new JComboBox<>(new String[]{"Customer", "Seller"});
         add(roleComboBox);
 
         confirmButton = new JButton("Confirm");
@@ -55,32 +56,29 @@ public class SignUp extends JFrame {
         add(confirmButton);
     }
 
+    // Defines the action to be performed when the confirm button is clicked.
+    // It checks if the entered passwords match and displays a message accordingly.
     private void confirmAction(ActionEvent e) {
-        String email = emailField.getText();
         String password = new String(passwordField.getPassword());
         String confirmPassword = new String(confirmField.getPassword());
 
         if (!password.equals(confirmPassword)) {
             JOptionPane.showMessageDialog(this, "Passwords do not match!");
-            return;
+        } else {
+            JOptionPane.showMessageDialog(this, "Registration form submitted.");
         }
-
-        if (db.retrieveUserMatchForSignUp(email) != null) {
-            JOptionPane.showMessageDialog(this, "Email already in use. Please use a different email.");
-            return;
-        }
-
-        UserRole role = (UserRole) roleComboBox.getSelectedItem();
-        User newUser = new User(email, password, role);
-        db.addToDatabase("users.csv", newUser.toString());
-
-        JOptionPane.showMessageDialog(this, "Registration successful!");
-        this.dispose();
     }
 
+    // Clears all input fields in the form.
+    private void clearFields() {
+        emailField.setText("");
+        passwordField.setText("");
+        confirmField.setText("");
+        roleComboBox.setSelectedIndex(0); // Resets to the first role option
+    }
+
+    // The entry point of the application. It creates and shows the sign-up form.
     public static void main(String[] args) {
-        // Ensure the GUI is created in the Event Dispatch Thread for thread safety
-        SwingUtilities.invokeLater(() -> new SignUp(new Database()).setVisible(true));
+        SwingUtilities.invokeLater(() -> new SignUp().setVisible(true));
     }
 }
-
