@@ -55,8 +55,9 @@ public class Customer extends User {
      * Returns the user's shopping history
      *
      * @return The shopping history as a string
+     * @throws CustomerException
      */
-    public String getShoppingHistory() {
+    public String getShoppingHistory() throws CustomerException {
         String[] info;
         StringBuilder sb = new StringBuilder();
         ArrayList<String> output = new ArrayList<>();
@@ -64,7 +65,7 @@ public class Customer extends User {
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
 
         if (purchasehistory.isEmpty()) {
-            return "No Products Available";
+            throw new CustomerException("Shopping History is Empty");
         } else {
             for (String product : db.getMatchedEntries("purchaseHistories.csv", 0, getUserID())) {
                 sb = new StringBuilder();
@@ -83,8 +84,9 @@ public class Customer extends User {
      * Returns a specific products's info
      *
      * @return The product's info
+     * @throws CustomerException
      */
-    public String getProductInfo(int index) {
+    public String getProductInfo(int index) throws CustomerException {
         try {
             index -= 1;
             StringBuilder sb = new StringBuilder();
@@ -101,7 +103,7 @@ public class Customer extends User {
 
             return sb.toString();
         } catch (IndexOutOfBoundsException e) {
-            return "Invalid Product";
+            throw new CustomerException("Invalid Index");
         }
 
     }
@@ -110,14 +112,15 @@ public class Customer extends User {
      * Returns the all the products in the csv
      *
      * @return The products listed as a string
+     * @throws CustomerException
      */
-    public String getAllProducts() {
+    public String getAllProducts() throws CustomerException {
         ArrayList<String> productList = db.getDatabaseContents("products.csv");
         StringBuilder sb = new StringBuilder();
         String[] info;
         ArrayList<String> output = new ArrayList<>();
         if (productList.isEmpty()) {
-            return "No Products Available";
+            throw new CustomerException("No Products available");
         } else {
             for (String product : productList) {
                 sb = new StringBuilder();
@@ -136,14 +139,15 @@ public class Customer extends User {
      * Internal Supplementary formatting method
      *
      * @return The products formatted as a string
+     * @throws CustomerException
      */
-    public String formatProducts(ArrayList<String> productList, boolean quantity) {
+    public String formatProducts(ArrayList<String> productList, boolean quantity) throws CustomerException{
         StringBuilder sb = new StringBuilder();
         String[] info;
         ArrayList<String> output = new ArrayList<>();
 
         if (productList.isEmpty()) {
-            return "No Products Available";
+            throw new CustomerException("No Products Available");
         } else {
             for (String product : productList) {
                 sb = new StringBuilder();
@@ -165,15 +169,16 @@ public class Customer extends User {
      * Returns the user's shopping cart
      *
      * @return The shopping cart as a string
+     * @throws CustomerException
      */
-    public String getCart() {
+    public String getCart() throws CustomerException {
         String[] info;
         StringBuilder sb = new StringBuilder();
         ArrayList<String> output = new ArrayList<>();
         shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
 
         if (shoppingCart.isEmpty()) {
-            return "No Products Available";
+            throw new CustomerException("No Items in Shopping Cart");
         } else {
             for (String product : shoppingCart) {
                 sb = new StringBuilder();
@@ -192,15 +197,15 @@ public class Customer extends User {
      * Removes a given item from the cart
      *
      * @param index the index of the cart the remove
+     * @throws CustomerException
      */
-    public boolean removeFromCart(int index) {
+    public void removeFromCart(int index) throws CustomerException {
         index -= 1;
         try {
             db.removeFromDatabase("shoppingCarts.csv", shoppingCart.get(index));
             shoppingCart.remove(index);
-            return true;
         } catch (IndexOutOfBoundsException e) {
-            return false;
+            throw new CustomerException("Invalid Index");
         }
 
     }
@@ -209,15 +214,16 @@ public class Customer extends User {
      * Adds a given item from the cart
      *
      * @param productID the index of the product the add
+     * @throws CustomerException
      */
-    public boolean addToCart(int index, int quantity) {
+    public void addToCart(int index, int quantity) throws CustomerException {
         index -= 1;
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
                     .split(",");
             if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
-                return false;
+                throw new CustomerException("Invalid Quantity");
             }
 
             shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
@@ -240,17 +246,17 @@ public class Customer extends User {
 
             shoppingCart.add(output.toString());
             db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size() - 1));
-            return true;
         } catch (IndexOutOfBoundsException e) {
-            return false;
+            throw new CustomerException("Invalid Index");
         }
 
     }
 
     /**
      * Purchases the items in the cart
+     * @throws CustomerException
      */
-    public boolean purchaseItems() {
+    public void purchaseItems() throws CustomerException {
         StringBuilder output = new StringBuilder();
         String[] updatedEntry;
         String[] target;
@@ -268,7 +274,7 @@ public class Customer extends User {
             if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
                 db.removeFromDatabase("shoppingCarts.csv", item);
                 shoppingCart.remove(item);
-                return false;
+                throw new CustomerException("Not Enough Product Stocked");
             } else {
                 duplicate = false;
                 for (int j = 0; j < purchasehistory.size(); j++) {
@@ -295,7 +301,6 @@ public class Customer extends User {
             db.removeFromDatabase("shoppingCarts.csv", item);
             shoppingCart.remove(item);
         }
-        return true;
 
     }
 
@@ -303,8 +308,9 @@ public class Customer extends User {
      * Sorts based on user's choice of price or quantity
      *
      * @return Returns the sorted string
+     * @throws CustomerException
      */
-    public String sortProducts(String choice) {
+    public String sortProducts(String choice) throws CustomerException {
         ArrayList<String> sorted = db.getDatabaseContents("products.csv");
         int n = sorted.size();
         String temp = "";
@@ -332,7 +338,7 @@ public class Customer extends User {
             }
             return formatProducts(sorted, quantity);
         } else {
-            return "Invalid search!";
+            throw new CustomerException("Invalid Choice");
         }
 
     }
@@ -341,8 +347,9 @@ public class Customer extends User {
      * Exports the user's purchase history
      *
      * @return Returns true if the process is successful
+     * @throws CustomerException
      */
-    public boolean exportPurchaseHistory() {
+    public void exportPurchaseHistory() throws CustomerException {
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
         try {
             if (!(purchasehistory.isEmpty())) {
@@ -360,12 +367,11 @@ public class Customer extends User {
                 }
                 bw.flush();
                 bw.close();
-                return true;
             } else {
-                return false;
+                throw new CustomerException("Purchase History is Empty");
             }
         } catch (IOException e) {
-            return false;
+            throw new CustomerException("File Path DNE");
         }
     }
 
@@ -373,8 +379,9 @@ public class Customer extends User {
      * Searches for all products containing a given query
      *
      * @return Returns the products found
+     * @throws CustomerException
      */
-    public String searchProducts(String query) {
+    public String searchProducts(String query) throws CustomerException {
         ArrayList<String> productsFound = new ArrayList<>();
         for (String product : db.getDatabaseContents("products.csv")) {
             if (product.contains(query)) {
@@ -382,7 +389,7 @@ public class Customer extends User {
             }
         }
         if (productsFound.isEmpty()) {
-            return "Query has returned no results!";
+            throw new CustomerException("Invalid Query");
         } else {
             return formatProducts(productsFound, false);
         }
