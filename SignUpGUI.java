@@ -27,6 +27,9 @@ public class SignUp extends JFrame {
 
     // Creates and arranges all the GUI components in the form.
     private void createUI() {
+
+        InitialClient initialClient = new in
+
         setTitle("Sign Up");
         setSize(300, 250);
         setLocationRelativeTo(null);
@@ -49,8 +52,20 @@ public class SignUp extends JFrame {
         confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(this::confirmAction);
         add(confirmButton);
+        getRole();
     }
 
+    private void getRole() {
+        String eamil = new String(emailField.getEmail());
+        String password = new String(passwordField.getPassword);
+        String role = new String(roleComboBox.getRole());
+
+        if (role.equals("Customer")) {
+            InitialClient.attemptCreateNewCustomerAccount(eamil, password);
+        } else {
+            InitialClient.attemptCreateNewSellerAccount(eamil, password);
+        }
+    }
 
     // Clears all input fields in the form.
     private void clearFields() {
