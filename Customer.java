@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 29, 2023
  */
 public class Customer extends User {
 
@@ -20,7 +20,7 @@ public class Customer extends User {
     private ArrayList<String> purchasehistory;
     private Database db = new Database();
 
-    public Customer(String email, String password, UserRole role) {
+    public Customer(String email, String password, UserRole role) throws Exception {
         super(email, password, role);
         shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());

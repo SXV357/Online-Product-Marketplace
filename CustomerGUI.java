@@ -33,6 +33,8 @@ public class CustomerGUI extends JComponent {
     private JButton checkoutItemsButton;
     private JButton removeItemFromShoppingCartButton;
 
+    // implement viewPurchaseHistory
+
     public static void main(String[] args) {
         // SwingUtilities.invokeLater(new Runnable() {
         //     @Override
