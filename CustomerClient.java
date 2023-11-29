@@ -54,6 +54,21 @@ public class CustomerClient {
         return result;
     }
 
+    // Get a given products info
+    public String[] getProductInfo() {
+        // action: GET_PRODUCT_INFO
+        // RETURN: ["ERROR", error message] or ["SUCCESS", product info]
+        String[] result;
+        try {
+            oos.writeObject(new String[] {"GET_PRODUCT_INFO"});
+            oos.flush();
+            result = (String[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
     // Adds product from the marketplace using index to cart
     public String[] addToCart(int index) {
         // action: ADD_TO_CART
