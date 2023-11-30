@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 27, 2023
+ * @version November 29, 2023
  */
 public class Seller extends User {
 
@@ -29,7 +29,7 @@ public class Seller extends User {
      * @param password The seller's new password
      * @param role     The seller's role
      */
-    public Seller(String email, String password, UserRole role) {
+    public Seller(String email, String password, UserRole role) throws Exception {
         super(email, password, role);
     }
 

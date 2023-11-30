@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 public class SignUp extends JFrame {
     private JTextField emailField;
     private JPasswordField passwordField;
-    private JPasswordField confirmField;
     private JComboBox<String> roleComboBox;
     private JButton confirmButton;
 
@@ -28,6 +27,9 @@ public class SignUp extends JFrame {
 
     // Creates and arranges all the GUI components in the form.
     private void createUI() {
+
+        InitialClient initialClient = new in
+
         setTitle("Sign Up");
         setSize(300, 250);
         setLocationRelativeTo(null);
@@ -43,10 +45,6 @@ public class SignUp extends JFrame {
         passwordField = new JPasswordField();
         add(passwordField);
 
-        add(new JLabel("Confirm Password:"));
-        confirmField = new JPasswordField();
-        add(confirmField);
-
         add(new JLabel("Role:"));
         roleComboBox = new JComboBox<>(new String[]{"Customer", "Seller"});
         add(roleComboBox);
@@ -54,18 +52,18 @@ public class SignUp extends JFrame {
         confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(this::confirmAction);
         add(confirmButton);
+        getRole();
     }
 
-    // Defines the action to be performed when the confirm button is clicked.
-    // It checks if the entered passwords match and displays a message accordingly.
-    private void confirmAction(ActionEvent e) {
-        String password = new String(passwordField.getPassword());
-        String confirmPassword = new String(confirmField.getPassword());
+    private void getRole() {
+        String eamil = new String(emailField.getEmail());
+        String password = new String(passwordField.getPassword);
+        String role = new String(roleComboBox.getRole());
 
-        if (!password.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(this, "Passwords do not match!");
+        if (role.equals("Customer")) {
+            InitialClient.attemptCreateNewCustomerAccount(eamil, password);
         } else {
-            JOptionPane.showMessageDialog(this, "Registration form submitted.");
+            InitialClient.attemptCreateNewSellerAccount(eamil, password);
         }
     }
 
