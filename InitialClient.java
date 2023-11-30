@@ -1,4 +1,5 @@
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,6 +27,11 @@ public class InitialClient {
         this.ois = new ObjectInputStream(socket.getInputStream());
     }
 
+    public static void main(String[] args) throws UnknownHostException, IOException {
+        Socket socket = new Socket("localhost", Server.PORT_NUMBER);
+        InitialClient initialClient = new InitialClient(socket);
+        initialClient.start();
+    }
     //First method to call: initializes entire program through login GUI
     public void start(){
         //constructor calls the GUI

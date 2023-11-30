@@ -51,7 +51,7 @@ public class ServerThread extends Thread {
                             oos.writeObject(e.getMessage());
                         }
                     }
-                    default -> oos.writeObject("ERRROR");
+                    default -> oos.writeObject("ERROR");
                 }
 
                 if (userInfo[1].equals("C") && !u.getUserID().isEmpty()) {
