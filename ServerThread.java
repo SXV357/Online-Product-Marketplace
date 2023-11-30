@@ -98,6 +98,8 @@ public class ServerThread extends Thread {
 
                     }
                 } else if (userInfo[0].equals("S")) {
+                    //Need Id to create Seller
+                    //Id is the only data that is used to 
                     Seller s = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
                     Server.activeUsers.add(s.getUserID());
                     oos.writeObject("Seller Connection to Server Established");

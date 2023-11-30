@@ -26,19 +26,21 @@ public class InitialClient {
     }
     //First method to call: initializes entire program through login GUI
 
-    //TODO
     public void start(){
+        //constructor calls the GUI
+        new UserGUI();
+
         //LoginGUI.startScreen();
     }
     
-    //TODO
     public void loginPage(){
         //loginGUI call
+        new LoginGUI();
     }
 
-    //TODO
     public void createAccountPage(){
-        //loginGUI call
+        //GUI call
+        new SignUp();
     }
 
     //TODO
@@ -47,8 +49,8 @@ public class InitialClient {
         //Check credentials with the database and retrieve user object
         //TODO replace this seller with a seller requested from the server
         Seller seller = new Seller(email, password, null);
-        //if valid, create new seller client and pass server connection to it
 
+        //if valid, create new seller client and pass server connection to it
         SellerClient sellerClient = new SellerClient(socket, seller);
         //Then display seller page 
         sellerClient.homepage();
@@ -59,17 +61,26 @@ public class InitialClient {
 
     }
 
-    //TODO
     public void attemptLoginCustomer(String email, String password) throws IOException{
         //Check credentials with the database and retrieve user object
+        boolean loginSuccessful = true;
+
+
         //TODO replace this seller with a seller requested from the server
         Customer customer = new Customer(email, password, null);
         //if valid, create new seller client and pass server connection to it
 
         CustomerClient customerClient = new CustomerClient(socket, customer);
-        //Then display Customer homepage
-        customerClient.homepage(); 
-        //-this client object becomes irrelevant after this is done 
+        
+        if(loginSuccessful){
+            //Display Customer homepage
+            customerClient.homepage();  
+        } else{
+            new ErrorMessageGUI("");
+            new LoginGUI();
+        }
+
+        //this client object becomes irrelevant after this is done 
 
         //if invalid display error message and return to login page
     }
