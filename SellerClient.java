@@ -238,4 +238,46 @@ public class SellerClient {
         }
         return result;
     }
+
+    public String[] editEmail(String newEmail) {
+        // action: EDIT_EMAIL
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
+        String[] result;
+        try {
+            oos.writeObject(new String[] {"EDIT_EMAIL", newEmail});
+            oos.flush();
+            result = (String[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
+    public String[] editPassword(String newPassword) {
+        // action: EDIT_PASSWORD
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
+        String[] result;
+        try {
+            oos.writeObject(new String[] {"EDIT_PASSWORD", newPassword});
+            oos.flush();
+            result = (String[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
+    public String[] deleteAccount() {
+        // action: DELETE_ACCOUNT 
+        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
+        String[] result;
+        try {
+            oos.writeObject(new String[] {"DELETE_ACCOUNT"});
+            oos.flush();
+            result = (String[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
 }

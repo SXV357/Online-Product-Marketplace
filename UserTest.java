@@ -10,7 +10,7 @@
  * @version November 21, 2023
  */
 public class UserTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         CreateDatabaseData data = new CreateDatabaseData();
         data.clearData();
@@ -26,7 +26,7 @@ public class UserTest {
         System.out.println("Seller Account Deletion Test Result: " + deleteSellerAccountSuccessful(db));
     }
 
-    static String testModifyEmailSuccessful(Database db) {
+    static String testModifyEmailSuccessful(Database db) throws Exception {
         // Modifying an email to one that isn't already associated with an existing user
         User customer = new Customer("customer1@gmail.com", "abc123", UserRole.CUSTOMER);
         String previousCustomerRep = customer.toString();
