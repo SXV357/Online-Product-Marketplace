@@ -7,7 +7,7 @@
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 29, 2023
  */
 public class UserTest {
     public static void main(String[] args) throws Exception {
@@ -41,7 +41,7 @@ public class UserTest {
         return resultUserContents.equals(expectedUserContents) ? "Test Passed" : "Test Failed";
     }
 
-    static String testModifyEmailUnsuccessful(Database db) {
+    static String testModifyEmailUnsuccessful(Database db) throws Exception {
         String[] firstUser = db.getDatabaseContents("users.csv").get(0).split(",");
         User currentUser = new Customer(firstUser[0], firstUser[1], firstUser[2], UserRole.CUSTOMER);
         String previousRepresentation = currentUser.toString();
@@ -53,7 +53,7 @@ public class UserTest {
         return resultUserContents.equals(expectedUserContents) ? "Test Passed" : "Test Failed";
     }
 
-    static String deleteCustomerAccountSuccessful(Database db) {
+    static String deleteCustomerAccountSuccessful(Database db) throws Exception {
         String[] firstUser = db.getDatabaseContents("users.csv").get(0).split(",");
         User customer = new Customer(firstUser[0], firstUser[1], firstUser[2], UserRole.CUSTOMER);
 
@@ -83,7 +83,7 @@ public class UserTest {
                 : "Test Failed";
     }
 
-    static String deleteSellerAccountSuccessful(Database db) {
+    static String deleteSellerAccountSuccessful(Database db) throws Exception {
         String[] firstUser = db.getDatabaseContents("users.csv").get(0).split(",");
         User seller = new Seller(firstUser[0], firstUser[1], firstUser[2], UserRole.SELLER);
 
