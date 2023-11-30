@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version November 30, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -472,13 +473,20 @@ public class SellerGUI extends JComponent {
                    String[] deleteAccountResult = sellerClient.deleteAccount();
                    if (deleteAccountResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, deleteAccountResult[1], "Delete Account", JOptionPane.INFORMATION_MESSAGE);
-                        // Need to discuss with team how the later part will be handled
+                        try {
+                            sellerClient.handleAccountState();
+                        } catch (IOException ex) {}
                     } else {
                         displayErrorDialog(deleteAccountResult[1]);
                     }
+                } else {
+                    return;
                 }
             } else if (e.getSource() == signOutButton) {
-                // Need to discuss with team how this will be handled
+                try {
+                    sellerFrame.dispose();
+                    sellerClient.handleAccountState();
+                } catch (Exception ex) {}
             }
         }
     };

@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 /**
@@ -85,13 +86,14 @@ public class CustomerGUI extends JComponent {
                     displayErrorDialog(viewAllProductsResult[1]);
                     return;
                 } else {
-                    String[] products = viewAllProductsResult[1].split("\n");
-                    String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, products, products[0]);
+                    String[] originalProducts = viewAllProductsResult[1].split("\n");
+                    String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
+                    String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
                     if (productChoice == null) {
                         return;
                     }
                     
-                    int productSelection = Arrays.binarySearch(products, productChoice) + 1;
+                    int productSelection = Arrays.binarySearch(originalProducts, productChoice);
                     String[] productInfo = customerClient.getProductInfo(productSelection);
                     
                     if (productInfo[0].equals("ERROR")) {
@@ -123,13 +125,14 @@ public class CustomerGUI extends JComponent {
                     displayErrorDialog(viewAllProductsResult[1]);
                     return;
                 } else {
-                    String[] products = viewAllProductsResult[1].split("\n");
-                    String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, products, products[0]);
+                    String[] originalProducts = viewAllProductsResult[1].split("\n");
+                    String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
+                    String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
                     if (productChoice == null) {
                         return;
                     }
                     
-                    int productSelection = Arrays.binarySearch(products, productChoice) + 1;
+                    int productSelection = Arrays.binarySearch(originalProducts, productChoice);
                     String[] productInfo = customerClient.getProductInfo(productSelection);
                     
                     if (productInfo[0].equals("ERROR")) {
@@ -293,14 +296,21 @@ public class CustomerGUI extends JComponent {
                    String[] deleteAccountResult = customerClient.deleteAccount();
                    if (deleteAccountResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, deleteAccountResult[1], "Delete Account", JOptionPane.INFORMATION_MESSAGE);
-                        // Need to discuss with team how later part will be handled
+                        try {
+                            customerClient.handleAccountState();
+                        } catch (IOException ex) {}
                     } else {
                         displayErrorDialog(deleteAccountResult[1]);
                     }
+                } else {
+                    return;
                 }
 
             } else if (e.getSource() == signOutButton) {
-                // Need to discuss with team how this will be handled
+                try {
+                    customerFrame.dispose();
+                    customerClient.handleAccountState();
+                } catch (IOException ex) {}
             }
         }
     };
