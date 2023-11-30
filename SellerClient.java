@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version November 30, 2023
  */
 public class SellerClient {
     
@@ -27,10 +27,10 @@ public class SellerClient {
         this.seller = seller;
     }
 
-    // public void signOut() throws IOException{
-    //     InitialClient initialClient = new InitialClient(socket);
-    //     initialClient.start();
-    // }
+    public void handleAccountState() throws IOException{
+        InitialClient initialClient = new InitialClient(socket);
+        initialClient.start();
+    }
 
     public void homepage(){
         SwingUtilities.invokeLater(new Runnable() {
@@ -49,6 +49,8 @@ public class SellerClient {
         try {
             oos.writeObject(new String[] {"GET_ALL_STORES"});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -64,6 +66,8 @@ public class SellerClient {
         try {
             oos.writeObject(new String[] {"GET_ALL_PRODUCTS", storeName});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -77,6 +81,8 @@ public class SellerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"CREATE_NEW_STORE", storeName});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (String[]) ois.readObject(); // Represents the string confirmation or error message
         } catch (Exception e) {
@@ -92,6 +98,8 @@ public class SellerClient {
         try {
             oos.writeObject(new String[] {"MODIFY_STORE_NAME", prevStoreName, newStoreName});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (String[]) ois.readObject(); // Represents the string confirmation or error message
         } catch (Exception e) {
             return null;
@@ -105,6 +113,8 @@ public class SellerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"DELETE_STORE", storeName});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (String[]) ois.readObject(); // Represents the string confirmation or error message
         } catch (Exception e) {
@@ -120,6 +130,8 @@ public class SellerClient {
         try {
             oos.writeObject(new String[] {"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity, price, description});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (String[]) ois.readObject(); 
         } catch (Exception e) {
             return null;
@@ -133,6 +145,8 @@ public class SellerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"EDIT_PRODUCT", storeName, productName, editParam, newValue});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (String[]) ois.readObject(); // Represents the string confirmation or error message
         } catch (Exception e) {
@@ -148,6 +162,8 @@ public class SellerClient {
         try {
             oos.writeObject(new String[] {"DELETE_PRODUCT", storeName, productName});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (String[]) ois.readObject(); // Represents the string confirmation or error message
         } catch (Exception e) {
             return null;
@@ -161,6 +177,8 @@ public class SellerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"IMPORT_PRODUCTS", filePath, storeName});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (String[]) ois.readObject(); // Represents the string confirmation or error message
         } catch (Exception e) {
@@ -176,6 +194,8 @@ public class SellerClient {
         try {  
             oos.writeObject(new String[] {"EXPORT_PRODUCTS", storeName});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (String[]) ois.readObject(); // Represents the string confirmation or error message
         } catch (Exception e) {
             return null;
@@ -189,6 +209,8 @@ public class SellerClient {
         Object[] result;
         try {
             oos.writeObject(new String[] {"VIEW_CUSTOMER_SHOPPING_CARTS"});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
@@ -204,6 +226,8 @@ public class SellerClient {
         try {
             oos.writeObject(new String[] {"VIEW_SALES_BY_STORE"});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -217,6 +241,8 @@ public class SellerClient {
         Object[] result;
         try {
             oos.writeObject(new Object[] {"CUSTOMERS_DASHBOARD", sortSelection, ascending});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (Object[]) ois.readObject(); // Represents the arraylist or the string error message
         } catch (Exception e) {
@@ -232,6 +258,8 @@ public class SellerClient {
         try {
             oos.writeObject(new Object[] {"PRODUCTS_DASHBOARD", sortSelection, ascending});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (Object[]) ois.readObject(); // Represents the arraylist or the string error message
         } catch (Exception e) {
             return null;
@@ -245,6 +273,8 @@ public class SellerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"EDIT_EMAIL", newEmail});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
@@ -260,6 +290,8 @@ public class SellerClient {
         try {
             oos.writeObject(new String[] {"EDIT_PASSWORD", newPassword});
             oos.flush();
+            oos.writeObject(this.seller);
+            oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -273,6 +305,8 @@ public class SellerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"DELETE_ACCOUNT"});
+            oos.flush();
+            oos.writeObject(this.seller);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {

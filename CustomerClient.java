@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version November 30, 2023
  */
 public class CustomerClient {
 
@@ -31,6 +31,11 @@ public class CustomerClient {
         return this.customer;
     }
 
+    public void handleAccountState() throws IOException{
+        InitialClient initialClient = new InitialClient(socket);
+        initialClient.start();
+    }
+
     public void homepage(){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -48,6 +53,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"GET_ALL_PRODUCTS"});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -62,6 +69,8 @@ public class CustomerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"GET_PRODUCT_INFO", String.valueOf(productSelection)});
+            oos.flush();
+            oos.writeObject(this.customer);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
@@ -78,6 +87,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"ADD_TO_CART", String.valueOf(index), String.valueOf(quantity)});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -92,6 +103,8 @@ public class CustomerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"REMOVE_FROM_CART", String.valueOf(index)});
+            oos.flush();
+            oos.writeObject(this.customer);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
@@ -108,6 +121,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"GET_CART"});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -122,6 +137,8 @@ public class CustomerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"GET_SHOPPING_HISTORY"});
+            oos.flush();
+            oos.writeObject(this.customer);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
@@ -138,6 +155,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"SEARCH_PRODUCTS", query});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -152,6 +171,8 @@ public class CustomerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"SORT_PRODUCTS", choice});
+            oos.flush();
+            oos.writeObject(this.customer);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
@@ -168,6 +189,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"EXPORT_PURCHASE_HISTORY"});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -180,7 +203,9 @@ public class CustomerClient {
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         String[] result;
         try {
-            oos.writeObject(new Object[] {"PURCHASE_ITEMS"});
+            oos.writeObject(new String[] {"PURCHASE_ITEMS"});
+            oos.flush();
+            oos.writeObject(this.customer);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
@@ -197,6 +222,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new Object[] {"EXPORT_PURCHASE_HISTORY", sortSelection, ascending});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -212,6 +239,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new Object[] {"PURCHASE_DASHBOARD", sortSelection, ascending, userID});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -225,6 +254,8 @@ public class CustomerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"EDIT_EMAIL", newEmail});
+            oos.flush();
+            oos.writeObject(this.customer);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
@@ -240,6 +271,8 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"EDIT_PASSWORD", newPassword});
             oos.flush();
+            oos.writeObject(this.customer);
+            oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -253,6 +286,8 @@ public class CustomerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"DELETE_ACCOUNT"});
+            oos.flush();
+            oos.writeObject(this.customer);
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {
