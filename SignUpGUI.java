@@ -14,14 +14,17 @@ import java.awt.event.ActionEvent;
  * @version November 29, 2023
  */
 
-public class SignUp extends JFrame {
+public class SignUpGUI extends JFrame {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JComboBox<String> roleComboBox;
     private JButton confirmButton;
 
+    private InitialClient initialClient;
+
     // Constructor to initialize and set up the GUI components.
-    public SignUp() {
+    public SignUpGUI(InitialClient initialClient) {
+        this.initialClient = initialClient;
         createUI();
     }
 
@@ -48,20 +51,20 @@ public class SignUp extends JFrame {
         add(roleComboBox);
 
         confirmButton = new JButton("Confirm");
-        confirmButton.addActionListener(this::confirmAction);
+        //confirmButton.addActionListener(this::confirmAction);
         add(confirmButton);
         getRole();
     }
 
     private void getRole() {
-        String eamil = new String(emailField.getEmail());
+        String email = emailField.getText();
         String password = new String(passwordField.getPassword());
-        String role = new String(roleComboBox.getRole());
+        String role = (String) roleComboBox.getSelectedItem();
 
         if (role.equals("Customer")) {
-            InitialClient.attemptCreateNewCustomerAccount(eamil, password);
+            initialClient.attemptCreateNewCustomerAccount(email, password);
         } else {
-            InitialClient.attemptCreateNewSellerAccount(eamil, password);
+            initialClient.attemptCreateNewSellerAccount(email, password);
         }
     }
 
@@ -69,12 +72,13 @@ public class SignUp extends JFrame {
     private void clearFields() {
         emailField.setText("");
         passwordField.setText("");
-        confirmField.setText("");
+        //confirmField.setText("");
         roleComboBox.setSelectedIndex(0); // Resets to the first role option
     }
 
     // The entry point of the application. It creates and shows the sign-up form.
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new SignUp().setVisible(true));
+        //Can't test without initial client
+        //SwingUtilities.invokeLater(() -> new SignUpGUI().setVisible(true));
     }
 }

@@ -22,7 +22,9 @@ public class UserGUI {
     private final JButton LOGIN_BUTTON = new JButton("Log In");
     private final JButton SIGN_UP_BUTTON = new JButton("Sign Up");
 
-    public UserGUI() {
+    InitialClient initialClient;
+    public UserGUI(InitialClient initialClient) {
+        this.initialClient = initialClient;
         mainMenuDisplay();
     }
 
@@ -42,12 +44,12 @@ public class UserGUI {
 
     private void logIn() {
         System.out.println("This is where Log In GUI starts");  //Change to call LogIn GUI when implemented
-        new LoginGUI();
+        initialClient.loginPage();
     }
 
     private void signUp() {
         System.out.println("This is where Sign Up Gui starts");  //Change to call SignUp GUI when implemented
-        new SignUp(new Database());
+        initialClient.signUpPage();
     }
 
     public void mainMenuDisplay () {
@@ -87,7 +89,7 @@ public class UserGUI {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new UserGUI();
+                //new UserGUI();
             }
         });
     }

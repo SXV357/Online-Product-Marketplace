@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 
 public class InitialClient {
 
+    private final String SERVER_ERROR_MSG = "Error occured when communicating with server";
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
@@ -24,88 +25,204 @@ public class InitialClient {
         this.oos = new ObjectOutputStream(socket.getOutputStream());
         this.ois = new ObjectInputStream(socket.getInputStream());
     }
-    //First method to call: initializes entire program through login GUI
 
+    //First method to call: initializes entire program through login GUI
     public void start(){
         //constructor calls the GUI
-        new UserGUI();
-
-        //LoginGUI.startScreen();
+        new UserGUI(this);
     }
     
     public void loginPage(){
-        //loginGUI call
-        new LoginGUI();
+        new LoginGUI(this);
     }
 
-    public void createAccountPage(){
-        //GUI call
-        new SignUp();
+    public void signUpPage(){
+        new SignUpGUI(this);
     }
 
-    //TODO
-    public void attemptLoginSeller(String email, String password) throws IOException{
+    public void attemptLoginSeller(String email, String password){
+            try {
+            //Check credentials with the database and retrieve user object
 
-        //Check credentials with the database and retrieve user object
-        //TODO replace this seller with a seller requested from the server
-        Seller seller = new Seller(email, password, null);
+            //Write null to indicate logging in or signing up
+            oos.writeObject(null);
+            //TODO implement this request in server
+            String[] serverRequest = {"SELLER_LOGIN",email,password};
+            oos.writeObject(serverRequest);
 
-        //if valid, create new seller client and pass server connection to it
-        SellerClient sellerClient = new SellerClient(socket, seller);
-        //Then display seller page 
-        sellerClient.homepage();
-        //-this client object becomes irrelevant after this is done 
+            boolean loginSuccessful = true;
 
-        //if invalid display error message and return to login page
-
-
-    }
-
-    public void attemptLoginCustomer(String email, String password) throws IOException{
-        //Check credentials with the database and retrieve user object
-        boolean loginSuccessful = true;
-
-
-        //TODO replace this seller with a seller requested from the server
-        Customer customer = new Customer(email, password, null);
-        //if valid, create new seller client and pass server connection to it
-
-        CustomerClient customerClient = new CustomerClient(socket, customer);
-        
-        if(loginSuccessful){
-            //Display Customer homepage
-            customerClient.homepage();  
-        } else{
-            new ErrorMessageGUI("");
-            new LoginGUI();
+            loginSuccessful = (boolean) ois.readObject();
+            
+            //if invalid display error message and return to login page
+            if (loginSuccessful){
+                //Get seller object from server and move to new Seller Client
+                Seller seller = null;
+                
+                seller = (Seller) ois.readObject();
+                
+                SellerClient sellerClient = new SellerClient(socket, seller);
+                sellerClient.homepage();
+            } else {
+                //if invalid display error message and return to login page
+                String errorMessage = "";
+                try {
+                    errorMessage = (String) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                new ErrorMessageGUI(errorMessage);
+                new LoginGUI(this);
+            }
+        } catch (IOException e){
+            new ErrorMessageGUI(SERVER_ERROR_MSG);
+        } catch (Exception e){
+            //Should never come here
+            System.out.println("Internal Server Communication Error");
+            e.printStackTrace();
         }
 
-        //this client object becomes irrelevant after this is done 
-
-        //if invalid display error message and return to login page
     }
 
-    //TODO
-    public void attemptCreateNewSellerAccount(String email, String password){
-        //Check credentials with the database, if valid, create a new seller object
-        Seller newSeller = new Seller(email,password,UserRole.SELLER);
-        //if valid, create new seller client and pass server connection to it
-        //
-        //Then display seller page 
-        //-this client object becomes irrelevant after this is done 
+    public void attemptLoginCustomer(String email, String password){
+        try {
+            //Check credentials with the database and retrieve user object
+            //Write null to indicate logging in or signing up
+            oos.writeObject(null);
+            //TODO implement this request in server
+            String[] serverRequest = {"CUSTOMER_LOGIN",email,password};
+            oos.writeObject(serverRequest);
 
-        //if invalid display error message and return to login page
+            boolean loginSuccessful = true;
+            try {
+                loginSuccessful = (boolean) ois.readObject();
+            } catch (ClassNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            if(loginSuccessful){
+                //get customer object from server
+                Customer customer = null;
+                try {
+                    customer = (Customer) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                CustomerClient customerClient = new CustomerClient(socket, customer);
+                customerClient.homepage();  
+            } else {
+                //if invalid display error message and return to login page
+                String errorMessage = "";
+                try {
+                    errorMessage = (String) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                new ErrorMessageGUI(errorMessage);
+                new LoginGUI(this);
+            }
+        } catch (IOException e){
+            new ErrorMessageGUI(SERVER_ERROR_MSG);
+        } catch (Exception e){
+            //Should never come here
+            System.out.println("Internal Server Communication Error");
+            e.printStackTrace();
+        }
+
     }
 
+    public void attemptCreateNewSellerAccount(String email, String password) {
+        try{
+            //Check credentials with the database and retrieve user object
+            //Write null to indicate logging in or signing up
+            oos.writeObject(null);
+            //TODO implement this request in server
+            String[] serverRequest = {"CREATE_USER",email,password, "SELLER"};
+            oos.writeObject(serverRequest);
+
+            boolean userCreated = true;
+            try {
+                userCreated = (boolean) ois.readObject();
+            } catch (ClassNotFoundException e) {
+                //only come here if server mis outputted
+                e.printStackTrace();
+            }
+
+            if(userCreated){
+                //get Seller object from server
+                Seller seller = null;
+                try {
+                    seller = (Seller) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    
+                    e.printStackTrace();
+                }
+                //Display Customer homepage
+                SellerClient sellerClient = new SellerClient(socket, seller);
+                sellerClient.homepage();  
+            } else{
+                String errorMessage = "";
+                try {
+                    errorMessage = (String) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                new ErrorMessageGUI(errorMessage);
+                new LoginGUI(this);
+            }
+
+        } catch (IOException e){
+            new ErrorMessageGUI(SERVER_ERROR_MSG);
+        } catch (Exception e){
+            //Should never come here
+            System.out.println("Internal Server Communication Error");
+            e.printStackTrace();
+        }
+
+    }
     //TODO
     public void attemptCreateNewCustomerAccount(String email, String password){
-        //Check credentials with the database, if valid, create a new customer object
-        Customer newCustomer = new Customer(email,password,UserRole.CUSTOMER);
+        try {
+            //Check credentials with the database and retrieve user object
+            //Write null to indicate logging in or signing up
+            oos.writeObject(null);
+            //TODO implement this request in server
+            String[] serverRequest = {"CREATE_USER",email,password,"CUSTOMER"};
+            oos.writeObject(serverRequest);
 
-        //create new Customer client and pass server connection to it
-        //Then display seller page 
-        //-this client object becomes irrelevant after this is done 
+            boolean userCreated = true;
 
-        //if credentials invalid display error message and return to login page
+            userCreated = (boolean) ois.readObject();
+
+
+            if(userCreated){
+                //get customer object from server
+                Customer customer = null;
+
+                customer = (Customer) ois.readObject();
+
+                CustomerClient customerClient = new CustomerClient(socket, customer);
+                customerClient.homepage();  
+            } else {
+                //if invalid display error message and return to login page
+                String errorMessage = "";
+
+                errorMessage = (String) ois.readObject();
+                
+                new ErrorMessageGUI(errorMessage);
+                new SignUpGUI(this);
+            }
+        } catch (IOException e){
+            new ErrorMessageGUI(SERVER_ERROR_MSG);
+        } catch (Exception e){
+            //Should never come here
+            System.out.println("Internal Server Communication Error");
+            e.printStackTrace();
+        }
+
     }
+
+
 }

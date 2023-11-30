@@ -21,8 +21,10 @@ public class LoginGUI {
     private final JButton LOG_IN_BUTTON = new JButton("Log In");
     private Database db = new Database();
 
+    private InitialClient initialClient;
 
-    public LoginGUI() {
+    public LoginGUI(InitialClient initialClient) {
+        this.initialClient = initialClient;
         logInDisplay();
     }
 
@@ -82,7 +84,7 @@ public class LoginGUI {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new LoginGUI();
+                //new LoginGUI();
             }
         });
     }
