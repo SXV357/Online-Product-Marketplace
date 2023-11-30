@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Project 5 - User.java
@@ -9,11 +11,12 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version November 29, 2023
  */
 public class User {
 
     private Database db = new Database();
+    private final String EMAIL_REGEX = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}$";
     private String email;
     private String password;
     private UserRole role;
@@ -38,9 +41,16 @@ public class User {
      * @param email    The user's new email
      * @param password The user's new password
      * @param role     The user's role
+     * @throws Exception
      */
-    public User(String email, String password, UserRole role) {
-        this.email = email;
+    public User(String email, String password, UserRole role) throws Exception {
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        if (matcher.matches()) {
+            this.email = email;
+        } else {
+            throw new Exception("Invalid email. Please enter a valid one and try again!");
+        }
         this.password = password;
         this.role = role;
         int generatedID = generateUserIdentificationNumber();

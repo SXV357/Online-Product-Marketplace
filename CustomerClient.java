@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import javax.swing.SwingUtilities;
 /**
  * Project 5 - CustomerClient.java
  * 
@@ -30,13 +32,13 @@ public class CustomerClient {
         this.customer = customer;
     }
 
-    //TODO
     public void homepage(){
-        //call customer GUI
-        //TODO customerGUI constructor
-        //CustomerGUI customerGUI = new CustomerGUI(customer.getEmail());
-        //CustomerGUI main is the seller homepage (Can be changed later)
-        CustomerGUI.main(null);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new CustomerGUI(CustomerClient.this, customer.getEmail());
+            }
+        });
     }
 
     // Get all the products from the marketplace
@@ -46,6 +48,21 @@ public class CustomerClient {
         String[] result;
         try {
             oos.writeObject(new String[] {"GET_ALL_PRODUCTS"});
+            oos.flush();
+            result = (String[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
+    // Get a given products info
+    public String[] getProductInfo() {
+        // action: GET_PRODUCT_INFO
+        // RETURN: ["ERROR", error message] or ["SUCCESS", product info]
+        String[] result;
+        try {
+            oos.writeObject(new String[] {"GET_PRODUCT_INFO"});
             oos.flush();
             result = (String[]) ois.readObject();
         } catch (Exception e) {

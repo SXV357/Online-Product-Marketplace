@@ -34,73 +34,92 @@ public class ServerThread extends Thread {
 
             Object output = null;
             boolean exit = false;
+            Database database = new Database();
 
             while (true) {
+                User u = new User();
                 String[] userInfo = (String[]) ois.readObject();
-                if (userInfo[0].equals("C")) {
-                    Customer c = new Customer(userInfo[1], userInfo[2], UserRole.CUSTOMER);
+                switch (userInfo[0]) {
+                    // Log In
+                    case "LOG_IN" -> u = new User(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
+                            userInfo[2], userInfo[3], UserRole.UNDECIDED);
+                    // Sign up
+                    case "SIGN UP" -> {
+                        try {
+                            u = new User(userInfo[2], userInfo[3], UserRole.UNDECIDED);
+                        } catch (Exception e) {
+                            oos.writeObject(e.getMessage());
+                        }
+                    }
+                    default -> oos.writeObject("ERRROR");
+                }
+
+                if (userInfo[1].equals("C") && !u.getUserID().isEmpty()) {
+                    Customer c = new Customer(u.getUserID(), userInfo[2], userInfo[3], UserRole.CUSTOMER);
                     Server.activeUsers.add(c.getUserID());
                     oos.writeObject("Customer Connection to Server Established");
                     while (!exit) {
                         response = (String[]) ois.readObject();
                         output = null;
                         try {
-                        switch (response[0]) {
-                            // View All Products
-                            case "GET_ALL_PRODUCTS" -> output = c.getAllProducts();
-                            // Add Product to Cart
-                            case "ADD_TO_CART" -> {
-                                c.addToCart(Integer.parseInt(response[1]), Integer.parseInt(response[2]));
-                                output = "Successfully added item to cart.";
+                            switch (response[0]) {
+                                // View All Products
+                                case "GET_ALL_PRODUCTS" -> output = c.getAllProducts();
+                                // Get Product Info
+                                case "GET_PRODUCT_INFO" -> output = c.getProductInfo(Integer.parseInt(response[1]));
+                                // Add Product to Cart
+                                case "ADD_TO_CART" -> {
+                                    c.addToCart(Integer.parseInt(response[1]), Integer.parseInt(response[2]));
+                                    output = "Successfully added item to cart.";
+                                }
+                                // Remove Product from Cart
+                                case "REMOVE_FROM_CART" -> {
+                                    c.removeFromCart(Integer.parseInt(response[1]));
+                                    output = "Successfully removed item from cart.";
+                                }
+                                // View Cart
+                                case "GET_CART" -> output = c.getCart();
+                                // View Shopping History
+                                case "GET_SHOPPING_HISTORY" -> output = c.getShoppingHistory();
+                                // Search Products
+                                case "SEARCH_PRODUCTS" -> output = c.searchProducts(response[1]);
+                                // Sort Products
+                                case "SORT_PRODUCTS" -> output = c.sortProducts(response[1]);
+                                // Export Shopping History
+                                case "EXPORT_PURCHASE_HISTORY" -> {
+                                    c.exportPurchaseHistory();
+                                    output = "Successfully exported purchsae history.";
+                                }
+                                // View Store Dashboard
+                                case "STORE_DASHBOARD" ->
+                                    output = db.customerGetStoresDashboard(Integer.parseInt(response[1]),
+                                            response[2].equals("true")).toString();
+                                // View Purchases Dashboard
+                                case "PURCHASE_DASHBOARD" ->
+                                    output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
+                                            response[2].equals("true"), c.getUserID()).toString();
+                                // Modify Email
+                                case "1" -> c.setEmail(response[1]);
+                                // Modify Password
+                                case "2" -> c.setPassword(response[1]);
+                                // Delete Account (add reload program)
+                                case "3" -> {
+                                    c.deleteAccount();
+                                    exit = true;
+                                }
+                                default -> output = null;
+
                             }
-                            // Remove Product from Cart
-                            case "REMOVE_FROM_CART" -> {
-                                c.removeFromCart(Integer.parseInt(response[1]));
-                                output = "Successfully removed item from cart.";
-                            }
-                            // View Cart
-                            case "GET_CART" -> output = c.getCart();
-                            // View Shopping History
-                            case "GET_SHOPPING_HISTORY" -> output = c.getShoppingHistory();
-                            // Search Products
-                            case "SEARCH_PRODUCTS" -> output = c.searchProducts(response[1]);
-                            // Sort Products
-                            case "SORT_PRODUCTS" -> output = c.sortProducts(response[1]);
-                            // Export Shopping History
-                            case "EXPORT_PURCHASE_HISTORY" -> {
-                                c.exportPurchaseHistory();
-                                output = "Successfully exported purchsae history.";
-                            }
-                            // View Store Dashboard
-                            case "STORE_DASHBOARD" -> output = db.customerGetStoresDashboard(Integer.parseInt(response[1]),
-                                    response[2].equals("true")).toString();
-                            // View Purchases Dashboard
-                            case "PURCHASE_DASHBOARD" -> output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
-                                        response[2].equals("true"), c.getUserID()).toString();
-                            // Modify Email
-                            case "1" -> c.setEmail(response[1]);
-                            // Modify Password
-                            case "2" -> c.setPassword(response[1]);
-                            // Delete Account (add reload program)
-                            case "3" -> {
-                                c.deleteAccount();
-                                exit = true;
-                            }
-                            default -> output = null;
-                            
+                            oos.writeObject(new Object[] { "SUCCESS", output });
+
+                        } catch (CustomerException e) {
+                            oos.writeObject(new Object[] { "ERROR", e.getMessage() });
+
                         }
-                        oos.writeObject(new Object[] {"SUCCESS", output});
-
-                    } catch (CustomerException e) {
-                        oos.writeObject(new Object[] {"ERROR", e.getMessage()});
 
                     }
-
-                    }
-                } else if (userInfo[0].equals("S")) {
-                    //Need Id to create Seller
-                    //Id is the only data that is used to 
-                    Seller s = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
+                } else if (userInfo[1].equals("S") && !u.getUserID().isEmpty()) {
+                    Seller s = new Seller(u.getUserID(), userInfo[2], userInfo[3], UserRole.SELLER);
                     Server.activeUsers.add(s.getUserID());
                     oos.writeObject("Seller Connection to Server Established");
                     while (!exit) {
@@ -157,11 +176,13 @@ public class ServerThread extends Thread {
                                 // View Sales by Store
                                 case "VIEW_SALES_BY_STORE" -> output = s.viewStoreSales();
                                 // Sort Customer Dashboard
-                                case "CUSTOMERS_DASHBOARD" -> output = db.sellerGetCustomersDashboard(Integer.parseInt(response[1]),
-                                        response[2].equals("true")).toString();
+                                case "CUSTOMERS_DASHBOARD" ->
+                                    output = db.sellerGetCustomersDashboard(Integer.parseInt(response[1]),
+                                            response[2].equals("true")).toString();
                                 // Sort Products Dashboard
-                                case "PRODUCTS_DASHBOARD" -> output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
-                                        response[2].equals("true")).toString();
+                                case "PRODUCTS_DASHBOARD" ->
+                                    output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
+                                            response[2].equals("true")).toString();
                                 // Modify Email
                                 case "1" -> s.setEmail(response[1]);
                                 // Modify Password
@@ -173,9 +194,9 @@ public class ServerThread extends Thread {
                                 }
                                 default -> output = null;
                             }
-                            oos.writeObject(new Object[] {"SUCCESS", output});
+                            oos.writeObject(new Object[] { "SUCCESS", output });
                         } catch (SellerException e) {
-                            oos.writeObject(new Object[] {"ERROR", e.getMessage()});
+                            oos.writeObject(new Object[] { "ERROR", e.getMessage() });
                         }
                     }
                 }
