@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class SellerTest {
 
-    public static void main(String[] args) throws SellerException {
+    public static void main(String[] args) throws Exception, SellerException {
 
         CreateDatabaseData data = new CreateDatabaseData();
         data.clearData();

@@ -120,16 +120,14 @@ public class User {
      *
      * @param email The email to modify the current email to
      */
-    public void setEmail(String email) {
+    public void setEmail(String email) throws Exception {
         boolean modifyEmail = true;
         ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
         for (String userEntry : userEntries) {
             String userEmail = userEntry.split(",")[1];
             if (userEmail.equals(email)) {
                 modifyEmail = false;
-                System.out.println(
-                        "Another user exists with the same email. Please choose a different one and try again!");
-                break;
+                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
             }
         }
         if (modifyEmail) {
@@ -164,8 +162,9 @@ public class User {
      * Deletes the user's account in associated databases based on the user's role.
      * If a seller deletes their account, the associated entries containing that
      * seller's ID in a customer's purchase history won't be deleted.
+     * @throws Exception
      */
-    public void deleteAccount() {
+    public void deleteAccount() throws Exception {
         try {
             db.removeFromDatabase("users.csv", this.toString());
             if (this.role == UserRole.CUSTOMER) {
@@ -193,7 +192,7 @@ public class User {
                 }
             }
         } catch (Exception e) {
-            System.out.println("An error occurred when deleting this account. Please try again!");
+            throw new Exception("An error occurred when deleting this account. Please try again!");
         }
     }
 
