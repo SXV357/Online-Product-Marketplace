@@ -121,6 +121,9 @@ public class User {
      * @param email The email to modify the current email to
      */
     public void setEmail(String email) throws Exception {
+        if (email.equals("null") || email.isEmpty()) {
+            throw new Exception("The new email cannot be null or empty!");
+        }
         boolean modifyEmail = true;
         ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
         for (String userEntry : userEntries) {
@@ -140,7 +143,10 @@ public class User {
      *
      * @param password The password to modify the current password to
      */
-    public void setPassword(String password) {
+    public void setPassword(String password) throws Exception {
+        if (password.equals("null") || password.isEmpty()) {
+            throw new Exception("The new password cannot be null or empty!");
+        }
         this.password = password;
     }
 
