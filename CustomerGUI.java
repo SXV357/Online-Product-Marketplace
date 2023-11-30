@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 /**
  * Project 5 - CustomerGUI.java
@@ -20,7 +21,9 @@ public class CustomerGUI extends JComponent {
     private CustomerClient customerClient;
     private String email;
     private JLabel welcomeUserLabel;
-    private JButton manageAccountButton;
+    private JButton editEmailButton;
+    private JButton editPasswordButton;
+    private JButton deleteAccountButton;
     private JButton signOutButton;
     private final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
 
@@ -32,16 +35,15 @@ public class CustomerGUI extends JComponent {
     private JButton viewPurchaseDashboardButton;
     private JButton checkoutItemsButton;
     private JButton removeItemFromShoppingCartButton;
+    private JButton viewPurchaseHistoryButton;
 
-    // implement viewPurchaseHistory
-
-    public static void main(String[] args) {
-        // SwingUtilities.invokeLater(new Runnable() {
-        //     @Override
-        //     public void run() {
-        //         new CustomerGUI(null, "");
-        //     }
-        // });
+    public static void main(String[] args) { // For internal testing purposes only
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new CustomerGUI(null, "");
+            }
+        });
     }
 
     public void displayErrorDialog(String errorMessage) {
@@ -49,6 +51,16 @@ public class CustomerGUI extends JComponent {
            @Override
            public void run() {
             new ErrorMessageGUI(errorMessage);
+           } 
+        });
+    }
+
+    public void displayMiscInfo(String informationType, String data) {
+        SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+            JFrame customerMiscInfoFrame = displayInfo.displayMiscInfo(informationType, data);
+            customerMiscInfoFrame.setVisible(true);
            } 
         });
     }
@@ -63,60 +75,100 @@ public class CustomerGUI extends JComponent {
         });
     }
 
+    @SuppressWarnings("unchecked")
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == viewAllProductsButton) {
-                // String[] viewAllProductsResult = CustomerClient.getMarketplaceProducts("GET_MARKETPLACE_PRODUCTS");
-                /*
-                 * if (viewAllProductsResult[0].equals("ERROR")) {
-                 *      displayErrorDialog(viewAllProductsResult[1]);
-                 *      return;
-                 * }
-                 * 
-                 * String[] products = viewAllProductsResult[1].split("\n");
-                 * String productChoice = (String) JOptionPane.displayInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, productRepresentation, productRepresentation[0])
-                 * if (productChoice == null) {
-                 *  return;
-                 * }
-                 * int productSelection = Arrays.binarySearch(products, productChoice) + 1;
-                 * String[] productInfo = CustomerClient.getProductInfo(productSelection);
-                 * if (productInfo[0].equals("ERROR")) {
-                 *  displayErrorDialog(productInfo[1]);
-                 *  return;
-                 * } else {
-                 *  String addToCart = JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo, JOptionPane.QUESTION_MESSAGE);
-                 * if (addToCart == null || addToCart.isEmpty() || addToCart.toLowerCase().equals("no")) {
-                 *  return;
-                 * } else if (addToCart.toLowerCase().equals("yes")) {
-                 *  Integer desiredQuantity = Integer.parseInt(JOptionPane.showInputDialog(null, "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE));
-                 * String[] productAddedResult = CustomerClient.addToCart(productSelection, desiredQuantity);
-                 * if (productAddedResult[0].equals("SUCCESS")) {
-                 *      JOptionPane.showMessageDialog(null, productAddedResult[1], "Add To Cart", JOptionPane.INFORMATION_MESSAGE);
-                 * } else {
-                 *      displayErrorDialog(productAddedResult[1]);
-                 * }
-                 * 
-                 * 
-                 * }
-                 * 
-                 * }
-                 */
+                String[] viewAllProductsResult = customerClient.getAllProducts();
+                if (viewAllProductsResult[0].equals("ERROR")) {
+                    displayErrorDialog(viewAllProductsResult[1]);
+                    return;
+                }
+                
+                String[] products = viewAllProductsResult[1].split("\n");
+                String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, products, products[0]);
+                if (productChoice == null) {
+                    return;
+                }
+                
+                int productSelection = Arrays.binarySearch(products, productChoice) + 1;
+                String[] productInfo = customerClient.getProductInfo(productSelection);
+                
+                if (productInfo[0].equals("ERROR")) {
+                    displayErrorDialog(productInfo[1]);
+                    return;
+                } else {
+                    String addToCart = JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo, JOptionPane.QUESTION_MESSAGE);
+                
+                    if (addToCart == null || addToCart.isEmpty() || addToCart.toLowerCase().equals("no")) {
+                        return;
+                    } else if (addToCart.toLowerCase().equals("yes")) {
+                        Integer desiredQuantity = Integer.parseInt(JOptionPane.showInputDialog(null, "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE));
+                        String[] productAddedResult = customerClient.addToCart(productSelection, desiredQuantity);
+                
+                        if (productAddedResult[0].equals("SUCCESS")) {
+                            JOptionPane.showMessageDialog(null, productAddedResult[1], "Add To Cart", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            displayErrorDialog(productAddedResult[1]);
+                        }
+                    }
+                }
 
             } else if (e.getSource() == searchForProductButton) {
                 String query = JOptionPane.showInputDialog(null, "What would you like to search for?", "Search for Product", JOptionPane.QUESTION_MESSAGE);
-                // same behavior as view all products
-                    // select a product -> view its details -> choose if they want to add it to cart -> specify quantity -> add to cart
+                String[] viewAllProductsResult = customerClient.searchProducts(query);
+                if (viewAllProductsResult[0].equals("ERROR")) {
+                    displayErrorDialog(viewAllProductsResult[1]);
+                    return;
+                }
+                
+                String[] products = viewAllProductsResult[1].split("\n");
+                String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, products, products[0]);
+                if (productChoice == null) {
+                    return;
+                }
+                
+                int productSelection = Arrays.binarySearch(products, productChoice) + 1;
+                String[] productInfo = customerClient.getProductInfo(productSelection);
+                
+                if (productInfo[0].equals("ERROR")) {
+                    displayErrorDialog(productInfo[1]);
+                    return;
+                } else {
+                    String addToCart = JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo, JOptionPane.QUESTION_MESSAGE);
+                
+                    if (addToCart == null || addToCart.isEmpty() || addToCart.toLowerCase().equals("no")) {
+                        return;
+                    } else if (addToCart.toLowerCase().equals("yes")) {
+                        Integer desiredQuantity = Integer.parseInt(JOptionPane.showInputDialog(null, "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE));
+                        String[] productAddedResult = customerClient.addToCart(productSelection, desiredQuantity);
+                
+                        if (productAddedResult[0].equals("SUCCESS")) {
+                            JOptionPane.showMessageDialog(null, productAddedResult[1], "Add To Cart", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            displayErrorDialog(productAddedResult[1]);
+                        }
+                    }
+                }
 
             } else if (e.getSource() == exportPurchaseHistoryButton) {
-                // String[] exportPurchaseHistoryResult = CustomerClient.exportPurchaseHistory("EXPORT_PURCHASE_HISTORY")
-                /*
-                 * if (exportPurchaseHistoryResult[0].equals("SUCCESS")) {
-                 *     JOptionPane.displayMessageDialog(null, exportPurchaseHistory[1], "Export Purchase History", JOptionPane.INFORMATION_MESSAGE);
-                 * } else {
-                 *   displayErrorMessage(exportPurchaseHistoryResult[1]);
-                 * }
-                 */
+                String[] exportPurchaseHistoryResult = customerClient.exportPurchaseHistory();
+                
+                if (exportPurchaseHistoryResult[0].equals("SUCCESS")) {
+                    JOptionPane.showMessageDialog(null, exportPurchaseHistoryResult[1], "Export Purchase History", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    displayErrorDialog(exportPurchaseHistoryResult[1]);
+                } 
+
+            } else if (e.getSource() == viewPurchaseHistoryButton) {
+                String[] purchaseHistoryResult = customerClient.getShoppingHistory();
+                if (purchaseHistoryResult[0].equals("ERROR")) {
+                    displayErrorDialog(purchaseHistoryResult[1]);
+                } else {
+                    String purchaseHistoryEntries = purchaseHistoryResult[1];
+                    displayMiscInfo("Purchase History", purchaseHistoryEntries);
+                }
 
             } else if (e.getSource() == viewStoreDashboardButton) {
                 String[] sortChoices = {"Store name", "Number of product sales", "Total revenue"};
@@ -130,23 +182,23 @@ public class CustomerGUI extends JComponent {
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
                 int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
-                // Object[] storeDashboardResult = CustomerClient.customerGetStoresDashboard(sortSelection, ascending);
+                Object[] storeDashboardResult = customerClient.customerGetStoresDashboard(sortSelection, ascending);
 
-                // if (storeDashboardResult[0] instanceof String && storeDashboardResult[0].equals("ERROR")) { // error was thrown
-                //     String errorMessage = (String) storeDashboardResult[1];
-                //     displayErrorDialog(errorMessage);
-                //     return;
-                // }
-                // ArrayList<String> storeDashboard = (ArrayList<String>) storeDashboardResult[1];
-                // Object[][] data = new Object[storeDashboard.size()][3];
-                // for (int i = 0; i < storeDashboard.size(); i++) {
-                //     String[] elems = storeDashboard.get(i).split(",");
-                //     System.arraycopy(elems, 0, data[i], 0, elems.length);
-                // }
+                if (storeDashboardResult[0] instanceof String && storeDashboardResult[0].equals("ERROR")) { // error was thrown
+                    String errorMessage = (String) storeDashboardResult[1];
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<String> storeDashboard = (ArrayList<String>) storeDashboardResult[1];
+                Object[][] data = new Object[storeDashboard.size()][3];
+                for (int i = 0; i < storeDashboard.size(); i++) {
+                    String[] elems = storeDashboard.get(i).split(",");
+                    System.arraycopy(elems, 0, data[i], 0, elems.length);
+                }
 
-                // JTable table = new JTable(data, sortChoices);
-                // JScrollPane scrollPane = new JScrollPane(table);
-                // displayDashboard("Stores", scrollPane);
+                JTable table = new JTable(data, sortChoices);
+                JScrollPane scrollPane = new JScrollPane(table);
+                displayDashboard("Stores", scrollPane);
 
             } else if (e.getSource() == viewPurchaseDashboardButton) {
                 String[] sortChoices = {"Product name", "Number of products purchased", "Total spent"};
@@ -160,60 +212,92 @@ public class CustomerGUI extends JComponent {
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
                 int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
-                // Object[] purchasesDashboardResult = CustomerClient.customerGetPurchasesDashboard(sortSelection, ascending, customerClient.getcustomerID);
+                Object[] purchasesDashboardResult = customerClient.customerGetPersonalPurchasesDashboard(sortSelection, ascending, customerClient.getCustomer().getUserID());
                 
-                // if (purchasesDashboardResult[0] instanceof String && purchasesDashboardResult[0].equals("ERROR")) { // error was thrown
-                //     String errorMessage = (String) purchasesDashboardResult[1];
-                //     displayErrorDialog(errorMessage);
-                //     return;
-                // }
-                // ArrayList<String> purchaseDashboard = (ArrayList<String>) purchasesDashboardResult[1];
-                // Object[][] data = new Object[purchaseDashboard.size()][3];
-                // for (int i = 0; i < purchaseDashboard.size(); i++) {
-                //     String[] elems = purchaseDashboard.get(i).split(",");
-                //     System.arraycopy(elems, 0, data[i], 0, elems.length);
-                // }
+                if (purchasesDashboardResult[0] instanceof String && purchasesDashboardResult[0].equals("ERROR")) { // error was thrown
+                    String errorMessage = (String) purchasesDashboardResult[1];
+                    displayErrorDialog(errorMessage);
+                    return;
+                }
+                ArrayList<String> purchaseDashboard = (ArrayList<String>) purchasesDashboardResult[1];
+                Object[][] data = new Object[purchaseDashboard.size()][3];
+                for (int i = 0; i < purchaseDashboard.size(); i++) {
+                    String[] elems = purchaseDashboard.get(i).split(",");
+                    System.arraycopy(elems, 0, data[i], 0, elems.length);
+                }
 
-                // JTable table = new JTable(data, sortChoices);
-                // JScrollPane scrollPane = new JScrollPane(table);
-                // displayDashboard("Purchases", scrollPane);
+                JTable table = new JTable(data, sortChoices);
+                JScrollPane scrollPane = new JScrollPane(table);
+                displayDashboard("Purchases", scrollPane);
 
             } else if (e.getSource() == checkoutItemsButton) {
-                // String[] purchaseItemsResult = CustomerClient.purchaseItems("PURCHASE_ITEMS");
-                /*
-                 * if (purchaseItemsResult[0].equals("SUCCESS")) {
-                 *      JOptionPane.displayMessageDialog(null, purchaseItemsResult[1], "Purchase Items", JOptionPane.INFORMATION_MESSAGE);
-                 * } else {
-                 *  displayErrorMessage(purchaseItemsResult[1]);
-                 * }
-                 */
+                String[] purchaseItemsResult = customerClient.purchaseItems();
+                
+                if (purchaseItemsResult[0].equals("SUCCESS")) {
+                    JOptionPane.showMessageDialog(null, purchaseItemsResult[1], "Purchase Items", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    displayErrorDialog(purchaseItemsResult[1]);
+                }
+                 
 
             } else if (e.getSource() == removeItemFromShoppingCartButton) {
-                // String[] getShoppingCartResult = CustomerClient.getShoppingCart("GET_SHOPPING_CART");
-                /*
-                 * if (getShoppingCartResult[0].equals("ERROR")) {
-                 *      displayErrorDialog(getShoppingCartResult[1]);
-                 * } else {
-                 *      String[] shoppingCartItems = getShoppingCartResult[1].split("\n");
-                 *      String itemChoice = (String) JOptionPane.displayInputDialog(null, "Which item would you like to remove?", "Shopping Cart", JOptionPane.QUESTION_MESSAGE, null, shoppingCartItems, shoppingCartItems[0])
-                 * }
-                 * if (itemChoice == null) {
-                 *      return;
-                 * }
-                 * int itemSelection = Arrays.binarySearch(shoppingCartItems, itemChoice) + 1;
-                 * String[] removeFromCartResult = customerClient.removeFromCart(itemSelection);
-                 * if (removeFromCartResult[0].equals("SUCCESS")) {
-                 *      JOptionPane.displayMessageDialog(null, removeFromCartResult[1], "Remove from cart", JOptionPane.INFORMATION_MESSAGE);
-                 * } else {
-                 *      displayErrorDialog(removeFromCartResult[1]);
-                 * }
-                 */
+                String[] getShoppingCartResult = customerClient.getCart();
+                if (getShoppingCartResult[0].equals("ERROR")) {
+                       displayErrorDialog(getShoppingCartResult[1]);
+                  } else {
+                       String[] shoppingCartItems = getShoppingCartResult[1].split("\n");
+                       String itemChoice = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Shopping Cart", JOptionPane.QUESTION_MESSAGE, null, shoppingCartItems, shoppingCartItems[0]);
+                       if (itemChoice == null) {
+                        return;
+                        }
+                        int itemSelection = Arrays.binarySearch(shoppingCartItems, itemChoice) + 1;
+                        String[] removeFromCartResult = customerClient.removeFromCart(itemSelection);
+                        if (removeFromCartResult[0].equals("SUCCESS")) {
+                            JOptionPane.showMessageDialog(null, removeFromCartResult[1], "Remove from cart", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            displayErrorDialog(removeFromCartResult[1]);
+                        }
+                  }
                     
-            } else if (e.getSource() == manageAccountButton) {
-                // Behavior TBD
+            } else if (e.getSource() == editEmailButton) {
+                String newEmail = JOptionPane.showInputDialog(null, "What is the new email?", "Edit Email", JOptionPane.QUESTION_MESSAGE);
+                if (newEmail == null) {
+                    return;
+                }
+                String[] editEmailResult = customerClient.editEmail(newEmail);
+                if (editEmailResult[0].equals("SUCCESS")) {
+                    JOptionPane.showMessageDialog(null, editEmailResult[1], "Edit Email", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    displayErrorDialog(editEmailResult[1]);
+                }
+
+            } else if (e.getSource() == editPasswordButton) {
+                String newPassword = JOptionPane.showInputDialog(null, "What is the new password?", "Edit Password", JOptionPane.QUESTION_MESSAGE);
+                if (newPassword == null) {
+                    return;
+                }
+                String[] editPasswordResult = customerClient.editPassword(newPassword);
+                if (editPasswordResult[0].equals("SUCCESS")) {
+                    JOptionPane.showMessageDialog(null, editPasswordResult[1], "Edit Password", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    displayErrorDialog(editPasswordResult[1]);
+                }
+
+            } else if (e.getSource() == deleteAccountButton) {
+                int deleteAccount = JOptionPane.showOptionDialog(null, "Are you sure you want to delete your account?", "Delete Account", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
+                if (deleteAccount == JOptionPane.YES_OPTION) {
+                   String[] deleteAccountResult = customerClient.deleteAccount();
+                   if (deleteAccountResult[0].equals("SUCCESS")) {
+                        JOptionPane.showMessageDialog(null, deleteAccountResult[1], "Delete Account", JOptionPane.INFORMATION_MESSAGE);
+                        customerFrame.dispose();
+                        // redirect to the main menu GUI
+                   } else {
+                        displayErrorDialog(deleteAccountResult[1]);
+                   }
+                }
 
             } else if (e.getSource() == signOutButton) {
-                // Behavior TBD
+                // Need to discuss with team how this will be handled
             }
         }
     };
@@ -222,7 +306,7 @@ public class CustomerGUI extends JComponent {
         this.customerClient = customerClient;
         this.email = email;
         customerFrame = new JFrame("Customer Page");
-        JPanel buttonPanel = new JPanel(new GridLayout(3, 3, 5, 5));
+        JPanel buttonPanel = new JPanel(new GridLayout(6, 2 , 5, 5));
 
         // Source: https://stackoverflow.com/questions/5328405/jpanel-padding-in-java
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -245,6 +329,9 @@ public class CustomerGUI extends JComponent {
         exportPurchaseHistoryButton = new JButton("Export Purchase History");
         exportPurchaseHistoryButton.addActionListener(actionListener);
 
+        viewPurchaseHistoryButton = new JButton("View Purchase History");
+        viewPurchaseHistoryButton.addActionListener(actionListener);
+
         viewStoreDashboardButton = new JButton("View Stores Dashboard");
         viewStoreDashboardButton.addActionListener(actionListener);
 
@@ -257,8 +344,14 @@ public class CustomerGUI extends JComponent {
         removeItemFromShoppingCartButton = new JButton("Remove Item From Shopping Cart");
         removeItemFromShoppingCartButton.addActionListener(actionListener);
 
-        manageAccountButton = new JButton("Manage Account");
-        manageAccountButton.addActionListener(actionListener);
+        editEmailButton = new JButton("Edit Email");
+        editEmailButton.addActionListener(actionListener);
+
+        editPasswordButton = new JButton("Edit Password");
+        editPasswordButton.addActionListener(actionListener);
+
+        deleteAccountButton = new JButton("Delete Account");
+        deleteAccountButton.addActionListener(actionListener);
 
         signOutButton = new JButton("Sign Out");
         signOutButton.addActionListener(actionListener);
@@ -266,11 +359,14 @@ public class CustomerGUI extends JComponent {
         buttonPanel.add(viewAllProductsButton);
         buttonPanel.add(searchForProductButton);
         buttonPanel.add(exportPurchaseHistoryButton);
+        buttonPanel.add(viewPurchaseHistoryButton);
         buttonPanel.add(viewStoreDashboardButton);
         buttonPanel.add(viewPurchaseDashboardButton);
         buttonPanel.add(checkoutItemsButton);
         buttonPanel.add(removeItemFromShoppingCartButton);
-        buttonPanel.add(manageAccountButton);
+        buttonPanel.add(editEmailButton);
+        buttonPanel.add(editPasswordButton);
+        buttonPanel.add(deleteAccountButton);
         buttonPanel.add(signOutButton);
 
         customerFrame.add(welcomeUserLabel, BorderLayout.NORTH);

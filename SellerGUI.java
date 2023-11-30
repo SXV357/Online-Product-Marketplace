@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 28, 2023
+ * @version November 29, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -24,7 +24,9 @@ public class SellerGUI extends JComponent {
     private JFrame sellerFrame;
     private String email;
     private JLabel welcomeUserLabel;
-    private JButton manageAccountButton;
+    private JButton editEmailButton;
+    private JButton editPasswordButton;
+    private JButton deleteAccountButton;
     private JButton signOutButton;
 
     // Related to seller permissions
@@ -41,7 +43,7 @@ public class SellerGUI extends JComponent {
     private JButton viewCustomerDashboardButton;
     private JButton viewProductDashboardButton;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // For internal testing purposes only
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -63,7 +65,7 @@ public class SellerGUI extends JComponent {
         SwingUtilities.invokeLater(new Runnable() {
            @Override
            public void run() {
-            JFrame sellerMiscInfoFrame = displayInfo.displaySellerMiscInfo(informationType, data);
+            JFrame sellerMiscInfoFrame = displayInfo.displayMiscInfo(informationType, data);
             sellerMiscInfoFrame.setVisible(true);
            } 
         });
@@ -429,11 +431,43 @@ public class SellerGUI extends JComponent {
                 JScrollPane scrollPane = new JScrollPane(table);
                 displayDashboard("Products", scrollPane);
 
-            } else if (e.getSource() == manageAccountButton) {
-                // Behavior TBD
+            } else if (e.getSource() == editEmailButton) {
+                String newEmail = JOptionPane.showInputDialog(null, "What is the new email?", "Edit Email", JOptionPane.QUESTION_MESSAGE);
+                if (newEmail == null) {
+                    return;
+                }
+                String[] editEmailResult = sellerClient.editEmail(newEmail);
+                if (editEmailResult[0].equals("SUCCESS")) {
+                    JOptionPane.showMessageDialog(null, editEmailResult[1], "Edit Email", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    displayErrorDialog(editEmailResult[1]);
+                }
 
+            } else if (e.getSource() == editPasswordButton) {
+                String newPassword = JOptionPane.showInputDialog(null, "What is the new password?", "Edit Password", JOptionPane.QUESTION_MESSAGE);
+                if (newPassword == null) {
+                    return;
+                }
+                String[] editPasswordResult = sellerClient.editPassword(newPassword);
+                if (editPasswordResult[0].equals("SUCCESS")) {
+                    JOptionPane.showMessageDialog(null, editPasswordResult[1], "Edit Password", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    displayErrorDialog(editPasswordResult[1]);
+                }
+            } else if (e.getSource() == deleteAccountButton) {
+                int deleteAccount = JOptionPane.showOptionDialog(null, "Are you sure you want to delete your account?", "Delete Account", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
+                if (deleteAccount == JOptionPane.YES_OPTION) {
+                   String[] deleteAccountResult = sellerClient.deleteAccount();
+                   if (deleteAccountResult[0].equals("SUCCESS")) {
+                        JOptionPane.showMessageDialog(null, deleteAccountResult[1], "Delete Account", JOptionPane.INFORMATION_MESSAGE);
+                        sellerFrame.dispose();
+                        // redirect to the main menu GUI
+                   } else {
+                        displayErrorDialog(deleteAccountResult[1]);
+                   }
+                }
             } else if (e.getSource() == signOutButton) {
-                // Behavior TBD
+                // Need to discuss with team how this will be handled
             }
         }
     };
@@ -493,8 +527,14 @@ public class SellerGUI extends JComponent {
         viewProductDashboardButton = new JButton("View Products Dashboard");
         viewProductDashboardButton.addActionListener(actionListener);
 
-        manageAccountButton = new JButton("Manage Account");
-        manageAccountButton.addActionListener(actionListener);
+        editEmailButton = new JButton("Edit Email");
+        editEmailButton.addActionListener(actionListener);
+
+        editPasswordButton = new JButton("Edit Password");
+        editPasswordButton.addActionListener(actionListener);
+
+        deleteAccountButton = new JButton("Delete Account");
+        deleteAccountButton.addActionListener(actionListener);
 
         signOutButton = new JButton("Sign Out");
         signOutButton.addActionListener(actionListener);
@@ -511,7 +551,9 @@ public class SellerGUI extends JComponent {
         buttonPanel.add(viewSalesByStoreButton);
         buttonPanel.add(viewCustomerDashboardButton);
         buttonPanel.add(viewProductDashboardButton);
-        buttonPanel.add(manageAccountButton);
+        buttonPanel.add(editEmailButton);
+        buttonPanel.add(editPasswordButton);
+        buttonPanel.add(deleteAccountButton);
         buttonPanel.add(signOutButton);
 
         sellerFrame.add(welcomeUserLabel, BorderLayout.NORTH);

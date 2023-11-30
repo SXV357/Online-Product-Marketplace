@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 27, 2023
+ * @version November 29, 2023
  */
 public class DisplayInformationGUI {
 
@@ -22,14 +22,14 @@ public class DisplayInformationGUI {
         return dashboardFrame;
     }
 
-    public JFrame displaySellerMiscInfo(String informationType, String data) {
-        JFrame customerShoppingCartsFrame = new JFrame(informationType);
-        customerShoppingCartsFrame.setSize(900, 750);
-        customerShoppingCartsFrame.setLocationRelativeTo(null);
-        customerShoppingCartsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public JFrame displayMiscInfo(String informationType, String data) {
+        JFrame infoFrame = new JFrame(informationType);
+        infoFrame.setSize(900, 750);
+        infoFrame.setLocationRelativeTo(null);
+        infoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JTextArea textArea = new JTextArea(data);
         textArea.setEditable(false);
-        customerShoppingCartsFrame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
-        return customerShoppingCartsFrame;
+        infoFrame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
+        return infoFrame;
     }
 }
