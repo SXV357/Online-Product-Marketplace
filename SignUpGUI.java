@@ -1,84 +1,91 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-
-
+import java.awt.event.ActionListener;
 /**
- * Project 5 - SignUpForm.java
+ * Project 5 - SignUpGUI.java
  *
  * The interface associated with user signup.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version November 29, 2023
+ * @version November 30, 2023
  */
-
 public class SignUpGUI extends JFrame {
+    private JFrame signupFrame;
+    private JLabel emailLabel;
     private JTextField emailField;
+    private JLabel passwordLabel;
     private JPasswordField passwordField;
+    private JLabel roleLabel;
     private JComboBox<String> roleComboBox;
-    private JButton confirmButton;
-
+    private JButton signupButton;
     private InitialClient initialClient;
+
+    public static void main(String[] args) { // for temporary testing purposes
+        new SignUpGUI(null);
+    }
 
     // Constructor to initialize and set up the GUI components.
     public SignUpGUI(InitialClient initialClient) {
         this.initialClient = initialClient;
-        createUI();
-    }
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                signupFrame = new JFrame("Create Account");
+                signupFrame.setSize(275, 175);
+                signupFrame.setLocationRelativeTo(null);
+                signupFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-    // Creates and arranges all the GUI components in the form.
-    private void createUI() {
+                //Set up panel to hold buttons in frame
+                signupButton = new JButton("Sign Up");
 
-        setTitle("Sign Up");
-        setSize(300, 250);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+                signupButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String email = emailField.getText();
+                    char[] passwordChars = passwordField.getPassword();
+                    String password = new String(passwordChars);
+                    String role = (String) roleComboBox.getSelectedItem();
+                    if (role.equals("Customer")) {
+                        initialClient.attemptCreateNewCustomerAccount(email, password);
+                    } else {
+                        initialClient.attemptCreateNewSellerAccount(email, password);
+                    }
+                } 
+                });
 
-        setLayout(new GridLayout(5, 2, 5, 5));
+                emailLabel = new JLabel("Email:");
+                emailField = new JTextField(15);
+                passwordLabel = new JLabel("Password:");
+                passwordField = new JPasswordField(15); 
+                roleLabel = new JLabel("Role");
+                roleComboBox = new JComboBox<>(new String[]{"Customer", "Seller"});
+                
+                // Reset the contents of all fields when the GUI is opened
+                emailField.setText("");
+                passwordField.setText(null);
+                roleComboBox.setSelectedItem("Customer");
 
-        add(new JLabel("Email:"));
-        emailField = new JTextField();
-        add(emailField);
+                //Add panel for text fields and labels
+                JPanel textPanel = new JPanel();
+                textPanel.setLayout(new FlowLayout());
+                textPanel.add(emailLabel);
+                textPanel.add(emailField);
+                textPanel.add(passwordLabel);
+                textPanel.add(passwordField);
+                textPanel.add(roleLabel);
+                textPanel.add(roleComboBox);
 
-        add(new JLabel("Password:"));
-        passwordField = new JPasswordField();
-        add(passwordField);
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.add(signupButton);
 
-        add(new JLabel("Role:"));
-        roleComboBox = new JComboBox<>(new String[]{"Customer", "Seller"});
-        add(roleComboBox);
+                signupFrame.add(textPanel, BorderLayout.CENTER);
+                signupFrame.add(buttonPanel, BorderLayout.SOUTH);
 
-        confirmButton = new JButton("Confirm");
-        //confirmButton.addActionListener(this::confirmAction);
-        add(confirmButton);
-        getRole();
-    }
-
-    private void getRole() {
-        String email = emailField.getText();
-        String password = new String(passwordField.getPassword());
-        String role = (String) roleComboBox.getSelectedItem();
-
-        if (role.equals("Customer")) {
-            initialClient.attemptCreateNewCustomerAccount(email, password);
-        } else {
-            initialClient.attemptCreateNewSellerAccount(email, password);
-        }
-    }
-
-    // Clears all input fields in the form.
-    private void clearFields() {
-        emailField.setText("");
-        passwordField.setText("");
-        //confirmField.setText("");
-        roleComboBox.setSelectedIndex(0); // Resets to the first role option
-    }
-
-    // The entry point of the application. It creates and shows the sign-up form.
-    public static void main(String[] args) {
-        //Can't test without initial client
-        //SwingUtilities.invokeLater(() -> new SignUpGUI().setVisible(true));
+                signupFrame.setVisible(true);
+            }
+        });
     }
 }
