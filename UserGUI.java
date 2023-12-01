@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 
 public class UserGUI {
-    private final JFrame frame = new JFrame("");  //ADD TITLE HERE
+    private final JFrame frame = new JFrame("Boilermaker Market");  //ADD TITLE HERE
     private final JButton LOGIN_BUTTON = new JButton("Log In");
     private final JButton SIGN_UP_BUTTON = new JButton("Sign Up");
 
@@ -52,7 +52,7 @@ public class UserGUI {
 
     public void mainMenuDisplay () {
         //Set up frame for the display
-        frame.setSize(225, 150);
+        frame.setSize(320, 150);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -64,7 +64,7 @@ public class UserGUI {
         SIGN_UP_BUTTON.addActionListener(actionListener);
 
         //Set up textArea to hold welcome message
-        JTextArea welcomeMessage = new JTextArea("\nWelcome to Title!", 4, 5);  //ADD TITLE HERE
+        JTextArea welcomeMessage = new JTextArea("\nWelcome to the Boilermaker Market!", 4, 5);
         welcomeMessage.setFont(new Font("Georgia", Font.PLAIN,18));
 
         //Set up container to hold the button panel and textArea
