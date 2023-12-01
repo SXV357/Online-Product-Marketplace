@@ -19,7 +19,6 @@ public class LoginGUI {
     private final JLabel PASSWORD_LABEL = new JLabel("Password:");
     private JTextField password = new JTextField(15);
     private final JButton LOG_IN_BUTTON = new JButton("Log In");
-    private Database db = new Database();
 
     private InitialClient initialClient;
 
@@ -35,24 +34,14 @@ public class LoginGUI {
                 if (validateLogin()) {
                     FRAME.setVisible(false);
                 }
-
             }
         }
     };
 
     private boolean validateLogin() {
-        String valid = db.retrieveUserMatchForLogin(email.getText(), password.getText());
-        if (valid == null) {
-            JOptionPane.showMessageDialog(null, "Email or Password is incorrect",
-                    "Login Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else {
-
-
-            JOptionPane.showMessageDialog(null, "Login Successful",
-                    "Success", JOptionPane.PLAIN_MESSAGE);
-            return true;
-        }
+        initialClient.attemptLoginCustomer(email.getText(), password.getText());
+        initialClient.attemptLoginSeller(email.getText(), password.getText());
+        return false;
     }
 
     private void logInDisplay() {
@@ -84,7 +73,7 @@ public class LoginGUI {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //new LoginGUI();
+                new LoginGUI(null);
             }
         });
     }
