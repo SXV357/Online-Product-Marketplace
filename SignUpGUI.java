@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version November 30, 2023
+ * @version December 1, 2023
  */
 public class SignUpGUI extends JFrame {
     private JFrame signupFrame;
@@ -21,9 +21,10 @@ public class SignUpGUI extends JFrame {
     private JLabel roleLabel;
     private JComboBox<String> roleComboBox;
     private JButton signupButton;
+    private JButton returnToMainMenuButton;
     private InitialClient initialClient;
 
-    public static void main(String[] args) { // for temporary testing purposes
+    public static void main(String[] args) { // for temporary testing purposes  
         new SignUpGUI(null);
     }
 
@@ -38,9 +39,7 @@ public class SignUpGUI extends JFrame {
                 signupFrame.setLocationRelativeTo(null);
                 signupFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-                //Set up panel to hold buttons in frame
                 signupButton = new JButton("Sign Up");
-
                 signupButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -54,6 +53,15 @@ public class SignUpGUI extends JFrame {
                         initialClient.attemptCreateNewSellerAccount(email, password);
                     }
                 } 
+                });
+
+                returnToMainMenuButton = new JButton("Main Menu");
+                returnToMainMenuButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        signupFrame.dispose();
+                        new UserGUI(initialClient);
+                    }
                 });
 
                 emailLabel = new JLabel("Email:");
@@ -80,6 +88,7 @@ public class SignUpGUI extends JFrame {
 
                 JPanel buttonPanel = new JPanel();
                 buttonPanel.add(signupButton);
+                buttonPanel.add(returnToMainMenuButton);
 
                 signupFrame.add(textPanel, BorderLayout.CENTER);
                 signupFrame.add(buttonPanel, BorderLayout.SOUTH);
