@@ -14,19 +14,21 @@ import java.awt.event.ActionEvent;
  * @version November 29, 2023
  */
 
-public class SignUp extends JFrame {
+public class SignUpGUI extends JFrame {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JComboBox<String> roleComboBox;
     private JButton confirmButton;
 
     // Constructor to initialize and set up the GUI components.
-    public SignUp() {
+    public SignUpGUI() {
         createUI();
     }
 
     // Creates and arranges all the GUI components in the form.
     private void createUI() {
+
+        InitialClient 
 
         setTitle("Sign Up");
         setSize(300, 250);
@@ -73,6 +75,6 @@ public class SignUp extends JFrame {
 
     // The entry point of the application. It creates and shows the sign-up form.
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new SignUp().setVisible(true));
+        SwingUtilities.invokeLater(() -> new SignUpGUI().setVisible(true));
     }
 }
