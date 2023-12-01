@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version December 1, 2023
  */
 public class CustomerGUI extends JComponent {
 
@@ -295,10 +295,12 @@ public class CustomerGUI extends JComponent {
                 if (deleteAccount == JOptionPane.YES_OPTION) {
                    String[] deleteAccountResult = customerClient.deleteAccount();
                    if (deleteAccountResult[0].equals("SUCCESS")) {
-                        JOptionPane.showMessageDialog(null, deleteAccountResult[1], "Delete Account", JOptionPane.INFORMATION_MESSAGE);
                         try {
+                            customerFrame.dispose();
                             customerClient.handleAccountState();
-                        } catch (IOException ex) {}
+                        } catch (IOException ex) {
+                            return;
+                        }
                     } else {
                         displayErrorDialog(deleteAccountResult[1]);
                     }
@@ -307,10 +309,17 @@ public class CustomerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == signOutButton) {
-                try {
-                    customerFrame.dispose();
-                    customerClient.handleAccountState();
-                } catch (IOException ex) {}
+                int signOut = JOptionPane.showOptionDialog(null, "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
+                if (signOut == JOptionPane.YES_OPTION) {
+                   try {
+                        customerFrame.dispose();
+                        customerClient.handleAccountState();
+                    } catch (IOException ex) {
+                        return;
+                    }
+                } else {
+                    return;
+                }
             }
         }
     };
