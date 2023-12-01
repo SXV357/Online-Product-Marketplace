@@ -48,15 +48,14 @@ public class SignUp extends JFrame {
         add(roleComboBox);
 
         confirmButton = new JButton("Confirm");
-        confirmButton.addActionListener(this::confirmAction);
         add(confirmButton);
         getRole();
     }
 
     private void getRole() {
-        String eamil = new String(emailField.getEmail());
-        String password = new String(passwordField.getPassword());
-        String role = new String(roleComboBox.getRole());
+        String eamil = new String(emailField.getText());
+        String password = new String(passwordField.getText());
+        String role = new String(roleComboBox.getToolTipText());
 
         if (role.equals("Customer")) {
             InitialClient.attemptCreateNewCustomerAccount(eamil, password);
@@ -69,7 +68,6 @@ public class SignUp extends JFrame {
     private void clearFields() {
         emailField.setText("");
         passwordField.setText("");
-        confirmField.setText("");
         roleComboBox.setSelectedIndex(0); // Resets to the first role option
     }
 
