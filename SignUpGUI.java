@@ -20,8 +20,11 @@ public class SignUpGUI extends JFrame {
     private JComboBox<String> roleComboBox;
     private JButton confirmButton;
 
+    private InitialClient initialClient;
+
     // Constructor to initialize and set up the GUI components.
-    public SignUpGUI() {
+    public SignUpGUI(InitialClient initialClient) {
+        this.initialClient = initialClient;
         createUI();
     }
 
@@ -48,19 +51,21 @@ public class SignUpGUI extends JFrame {
         add(roleComboBox);
 
         confirmButton = new JButton("Confirm");
+        //confirmButton.addActionListener(this::confirmAction);
         add(confirmButton);
         getRole();
     }
 
     private void getRole() {
-        String eamil = new String(emailField.getText());
-        String password = new String(passwordField.getText());
-        String role = new String(roleComboBox.getToolTipText());
+
+        String email = emailField.getText();
+        String password = new String(passwordField.getPassword());
+        String role = (String) roleComboBox.getSelectedItem();
 
         if (role.equals("Customer")) {
-            InitialClient.attemptCreateNewCustomerAccount(eamil, password);
+            initialClient.attemptCreateNewCustomerAccount(email, password);
         } else {
-            InitialClient.attemptCreateNewSellerAccount(eamil, password);
+            initialClient.attemptCreateNewSellerAccount(email, password);
         }
     }
 
@@ -68,11 +73,13 @@ public class SignUpGUI extends JFrame {
     private void clearFields() {
         emailField.setText("");
         passwordField.setText("");
+        //confirmField.setText("");
         roleComboBox.setSelectedIndex(0); // Resets to the first role option
     }
 
     // The entry point of the application. It creates and shows the sign-up form.
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new SignUpGUI().setVisible(true));
+        //Can't test without initial client
+        //SwingUtilities.invokeLater(() -> new SignUpGUI().setVisible(true));
     }
 }
