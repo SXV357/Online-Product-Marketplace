@@ -4,7 +4,6 @@ import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 /**
  * Project 5 - InitialClient.java
  * 
@@ -39,24 +38,6 @@ public class InitialClient {
             @Override
             public void run() {
                 new UserGUI(InitialClient.this);
-            }
-        });
-    }
-    
-    public void loginPage(){
-       SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new LoginGUI(InitialClient.this);
-            }
-        });
-    }
-
-    public void signUpPage(){
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new SignUpGUI(InitialClient.this);
             }
         });
     }
