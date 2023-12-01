@@ -31,23 +31,23 @@ public class UserGUI {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == LOGIN_BUTTON) {
                 logIn();
-                frame.setVisible(false);
+                frame.dispose();
             }
             if (e.getSource() == SIGN_UP_BUTTON) {
                 signUp();
-                frame.setVisible(false);
+                frame.dispose();
             }
         }
     };
 
     private void logIn() {
         System.out.println("This is where Log In GUI starts");  //Change to call LogIn GUI when implemented
-        //initialClient.loginPage();
+        initialClient.loginPage();
     }
 
     private void signUp() {
         System.out.println("This is where Sign Up Gui starts");  //Change to call SignUp GUI when implemented
-        //initialClient.signUpPage();
+        initialClient.signUpPage();
     }
 
     public void mainMenuDisplay () {
