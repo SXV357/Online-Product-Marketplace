@@ -209,7 +209,7 @@ public class InitialClient {
         }
 
     }
-    //TODO
+
     public void attemptCreateNewCustomerAccount(String email, String password){
         try {
             //Check credentials with the database and retrieve user object
