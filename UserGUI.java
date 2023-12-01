@@ -15,8 +15,6 @@ import java.awt.event.ActionListener;
  */
 
 
-//TODO check for if static works with the concurrency
-
 public class UserGUI {
     private final JFrame frame = new JFrame("");  //ADD TITLE HERE
     private final JButton LOGIN_BUTTON = new JButton("Log In");
@@ -44,12 +42,12 @@ public class UserGUI {
 
     private void logIn() {
         System.out.println("This is where Log In GUI starts");  //Change to call LogIn GUI when implemented
-        initialClient.loginPage();
+        //initialClient.loginPage();
     }
 
     private void signUp() {
         System.out.println("This is where Sign Up Gui starts");  //Change to call SignUp GUI when implemented
-        initialClient.signUpPage();
+        //initialClient.signUpPage();
     }
 
     public void mainMenuDisplay () {
@@ -79,17 +77,12 @@ public class UserGUI {
         frame.setVisible(true);
     }
 
-    public void editUserDisplay() {
-
-    }
-
-
     //remove when done testing
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //new UserGUI();
+                new UserGUI(null);
             }
         });
     }
