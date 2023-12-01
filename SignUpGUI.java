@@ -28,8 +28,6 @@ public class SignUpGUI extends JFrame {
     // Creates and arranges all the GUI components in the form.
     private void createUI() {
 
-        InitialClient 
-
         setTitle("Sign Up");
         setSize(300, 250);
         setLocationRelativeTo(null);
