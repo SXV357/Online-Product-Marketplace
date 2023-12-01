@@ -1,5 +1,6 @@
 import java.net.Socket;
 import java.net.UnknownHostException;
+import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,9 +13,8 @@ import java.io.ObjectOutputStream;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 15, 2023
+ * @version November 30, 2023
  */
-
 public class InitialClient {
 
     private final String SERVER_ERROR_MSG = "Error occured when communicating with server";
@@ -35,15 +35,30 @@ public class InitialClient {
     //First method to call: initializes entire program through login GUI
     public void start(){
         //constructor calls the GUI
-        new UserGUI(this);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new UserGUI(InitialClient.this);
+            }
+        });
     }
     
     public void loginPage(){
-        new LoginGUI(this);
+       SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new LoginGUI(InitialClient.this);
+            }
+        });
     }
 
     public void signUpPage(){
-        new SignUpGUI(this);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new SignUpGUI(InitialClient.this);
+            }
+        });
     }
 
     public void attemptLoginSeller(String email, String password){
@@ -229,6 +244,4 @@ public class InitialClient {
         }
 
     }
-
-
 }
