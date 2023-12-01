@@ -66,10 +66,12 @@ public class InitialClient {
             //Check credentials with the database and retrieve user object
 
             //Write null to indicate logging in or signing up
-            oos.writeObject(null);
+            //oos.writeObject(null);
             //TODO implement this request in server
             String[] serverRequest = {"SELLER_LOGIN",email,password};
             oos.writeObject(serverRequest);
+            oos.flush();
+
 
             boolean loginSuccessful = true;
 
@@ -109,10 +111,12 @@ public class InitialClient {
         try {
             //Check credentials with the database and retrieve user object
             //Write null to indicate logging in or signing up
-            oos.writeObject(null);
+            //oos.writeObject(null);
             //TODO implement this request in server
             String[] serverRequest = {"CUSTOMER_LOGIN",email,password};
             oos.writeObject(serverRequest);
+            oos.flush();
+
 
             boolean loginSuccessful = true;
             try {
@@ -158,10 +162,12 @@ public class InitialClient {
         try{
             //Check credentials with the database and retrieve user object
             //Write null to indicate logging in or signing up
-            oos.writeObject(null);
+            //oos.writeObject(null);
             //TODO implement this request in server
             String[] serverRequest = {"CREATE_USER",email,password, "SELLER"};
             oos.writeObject(serverRequest);
+            oos.flush();
+
 
             boolean userCreated = true;
             try {
@@ -208,10 +214,11 @@ public class InitialClient {
         try {
             //Check credentials with the database and retrieve user object
             //Write null to indicate logging in or signing up
-            oos.writeObject(null);
+            //oos.writeObject(null);
             //TODO implement this request in server
             String[] serverRequest = {"CREATE_USER",email,password,"CUSTOMER"};
             oos.writeObject(serverRequest);
+            oos.flush();
 
             boolean userCreated = true;
 
