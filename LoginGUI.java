@@ -19,7 +19,7 @@ public class LoginGUI {
     private final JLabel PASSWORD_LABEL = new JLabel("Password:");
     private JTextField password = new JTextField(15);
     private final JButton LOG_IN_BUTTON = new JButton("Log In");
-    private final JButton EXIT_BUTTON = new JButton("Exit");
+    private final JButton EXIT_BUTTON = new JButton("Main Menu");
 
     private InitialClient initialClient;
 
@@ -33,7 +33,7 @@ public class LoginGUI {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == LOG_IN_BUTTON) {
                 if (validateLogin()) {
-                    FRAME.setVisible(false);
+                    FRAME.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Error: \nUsername or Password Incorrect"
                             , "Login Error", JOptionPane.ERROR_MESSAGE);
@@ -52,7 +52,7 @@ public class LoginGUI {
     }
 
     private void exitLogIn() {
-        FRAME.setVisible(false);
+        FRAME.dispose();
         new UserGUI(initialClient);
     }
 
