@@ -167,9 +167,7 @@ public class InitialClient {
                     
                     e.printStackTrace();
                 }
-                //Display Customer homepage
-                SellerClient sellerClient = new SellerClient(socket, seller);
-                sellerClient.homepage();  
+                new LoginGUI(this); 
             } else{
                 String errorMessage = "";
                 try {
@@ -212,8 +210,7 @@ public class InitialClient {
 
                 customer = (Customer) ois.readObject();
 
-                CustomerClient customerClient = new CustomerClient(socket, customer);
-                customerClient.homepage();  
+                new LoginGUI(this);
             } else {
                 //if invalid display error message and return to login page
                 String errorMessage = "";
