@@ -35,18 +35,30 @@ public class ServerThread extends Thread {
             Object output = null;
             boolean exit = false;
             Database database = new Database();
+            
 
             while (true) {
                 User u = new User();
                 String[] userInfo = (String[]) ois.readObject();
                 switch (userInfo[0]) {
-                    // Log In
-                    case "LOG_IN" -> u = new User(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
-                            userInfo[2], userInfo[3], UserRole.UNDECIDED);
-                    // Sign up
-                    case "SIGN UP" -> {
+                    // Customer Log In
+                    case "CUSTOMER_LOGIN" -> oos.writeObject(new Customer(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
+                            userInfo[2], userInfo[3], UserRole.UNDECIDED));
+                    // Seller Log In
+                    case "SELLER_LOGIN" -> oos.writeObject(new Seller(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
+                            userInfo[2], userInfo[3], UserRole.UNDECIDED));
+                    // Customer Sign up
+                    case "CREATE_CUSTOMER" -> {
                         try {
-                            u = new User(userInfo[2], userInfo[3], UserRole.UNDECIDED);
+                             oos.writeObject(new Customer(userInfo[2], userInfo[3], UserRole.SELLER));
+                        } catch (Exception e) {
+                            oos.writeObject(e.getMessage());
+                        }
+                    }
+                    // Seller Sign up
+                    case "CREATE_SELLER" -> {
+                        try {
+                             oos.writeObject(new Seller(userInfo[2], userInfo[3], UserRole.SELLER));
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                         }
@@ -55,11 +67,11 @@ public class ServerThread extends Thread {
                 }
 
                 if (userInfo[1].equals("C") && !u.getUserID().isEmpty()) {
-                    Customer c = new Customer(u.getUserID(), userInfo[2], userInfo[3], UserRole.CUSTOMER);
-                    Server.activeUsers.add(c.getUserID());
+                    //Server.activeUsers.add(c.getUserID());
                     oos.writeObject("Customer Connection to Server Established");
                     while (!exit) {
                         response = (String[]) ois.readObject();
+                        Customer c = (Customer) ois.readObject();
                         output = null;
                         try {
                             switch (response[0]) {
@@ -99,11 +111,11 @@ public class ServerThread extends Thread {
                                     output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
                                             response[2].equals("true"), c.getUserID()).toString();
                                 // Modify Email
-                                case "1" -> c.setEmail(response[1]);
+                                case "CHANGE_EMAIL" -> c.setEmail(response[1]);
                                 // Modify Password
-                                case "2" -> c.setPassword(response[1]);
-                                // Delete Account (add reload program)
-                                case "3" -> {
+                                case "CHANGE_PW" -> c.setPassword(response[1]);
+                                // Delete Account
+                                case "DELETE_ACC" -> {
                                     c.deleteAccount();
                                     exit = true;
                                 }
@@ -119,11 +131,11 @@ public class ServerThread extends Thread {
 
                     }
                 } else if (userInfo[1].equals("S") && !u.getUserID().isEmpty()) {
-                    Seller s = new Seller(u.getUserID(), userInfo[2], userInfo[3], UserRole.SELLER);
-                    Server.activeUsers.add(s.getUserID());
+                    //Server.activeUsers.add(s.getUserID());
                     oos.writeObject("Seller Connection to Server Established");
                     while (!exit) {
                         response = (String[]) ois.readObject();
+                        Seller s = (Seller) ois.readObject();
                         output = null;
                         try {
                             switch (response[0]) {
@@ -184,11 +196,11 @@ public class ServerThread extends Thread {
                                     output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
                                             response[2].equals("true")).toString();
                                 // Modify Email
-                                case "1" -> s.setEmail(response[1]);
+                                case "CHANGE_EMAIL" -> s.setEmail(response[1]);
                                 // Modify Password
-                                case "2" -> s.setPassword(response[1]);
+                                case "CHANGE_PW" -> s.setPassword(response[1]);
                                 // Delete Account
-                                case "3" -> {
+                                case "DELETE_ACC" -> {
                                     s.deleteAccount();
                                     exit = true;
                                 }

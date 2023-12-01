@@ -145,7 +145,7 @@ public class InitialClient {
             //Write null to indicate logging in or signing up
             //oos.writeObject(null);
             //TODO implement this request in server
-            String[] serverRequest = {"CREATE_USER",email,password, "SELLER"};
+            String[] serverRequest = {"CREATE_SELLER",email,password};
             oos.writeObject(serverRequest);
             oos.flush();
 
@@ -195,7 +195,7 @@ public class InitialClient {
             //Write null to indicate logging in or signing up
             //oos.writeObject(null);
             //TODO implement this request in server
-            String[] serverRequest = {"CREATE_USER",email,password,"CUSTOMER"};
+            String[] serverRequest = {"CREATE_CUSTOMER",email,password};
             oos.writeObject(serverRequest);
             oos.flush();
 
