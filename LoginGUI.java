@@ -4,13 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Project 5 - LoginGui.java
- * <p>
+ * Project 5 - LoginGUI.java
+ * 
  * Class that constructs the GUI for a user that is logging in
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version November 20, 2023
+ * 
+ * @version December 1, 2023
  */
 public class LoginGUI {
     private final JFrame FRAME = new JFrame("Log-In");
@@ -20,7 +21,6 @@ public class LoginGUI {
     private JTextField password = new JTextField(15);
     private final JButton LOG_IN_BUTTON = new JButton("Log In");
     private final JButton EXIT_BUTTON = new JButton("Main Menu");
-
     private InitialClient initialClient;
 
     public LoginGUI(InitialClient initialClient) {
@@ -32,58 +32,46 @@ public class LoginGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == LOG_IN_BUTTON) {
-                if (validateLogin()) {
-                    FRAME.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error: \nUsername or Password Incorrect"
-                            , "Login Error", JOptionPane.ERROR_MESSAGE);
-                }
+                // central method for login common to both customers and sellers
             }
             if (e.getSource() == EXIT_BUTTON) {
-                exitLogIn();
+                FRAME.dispose();
+                new UserGUI(initialClient);
             }
         }
     };
 
-    private boolean validateLogin() {
-        initialClient.attemptLoginCustomer(email.getText(), password.getText());
-        initialClient.attemptLoginSeller(email.getText(), password.getText());
-        return false;
-    }
-
-    private void exitLogIn() {
-        FRAME.dispose();
-        new UserGUI(initialClient);
-    }
-
     private void logInDisplay() {
         //Set up frame for the display
-        FRAME.setSize(275, 125);
-        FRAME.setLocationRelativeTo(null);
-        FRAME.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                FRAME.setSize(275, 125);
+                FRAME.setLocationRelativeTo(null);
+                FRAME.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        //Set up panel to hold buttons in frame
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(LOG_IN_BUTTON);
-        LOG_IN_BUTTON.addActionListener(actionListener);
-        buttonPanel.add(EXIT_BUTTON);
-        EXIT_BUTTON.addActionListener(actionListener);
-        FRAME.add(buttonPanel, BorderLayout.SOUTH);
-
-
-        //Add panel for text fields and labels
-        JPanel textPanel = new JPanel();
-        textPanel.add(EMAIL_LABEL);
-        textPanel.add(email);
-        textPanel.add(PASSWORD_LABEL);
-        textPanel.add(password);
-        FRAME.add(textPanel);
+                //Set up panel to hold buttons in frame
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.add(LOG_IN_BUTTON);
+                LOG_IN_BUTTON.addActionListener(actionListener);
+                buttonPanel.add(EXIT_BUTTON);
+                EXIT_BUTTON.addActionListener(actionListener);
+                FRAME.add(buttonPanel, BorderLayout.SOUTH);
 
 
-        FRAME.setVisible(true);
+                //Add panel for text fields and labels
+                JPanel textPanel = new JPanel();
+                textPanel.add(EMAIL_LABEL);
+                textPanel.add(email);
+                textPanel.add(PASSWORD_LABEL);
+                textPanel.add(password);
+                FRAME.add(textPanel);
+
+                FRAME.setVisible(true);
+            }
+        });
     }
 
-    //remove when done testing
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
