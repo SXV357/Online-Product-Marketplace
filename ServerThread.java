@@ -63,8 +63,10 @@ public class ServerThread extends Thread {
                     // Customer Sign up
                     case "CREATE_CUSTOMER" -> {
                         try {
+                            oos.writeObject(true);
                              oos.writeObject(new Customer(userInfo[2], userInfo[3], UserRole.CUSTOMER));
                         } catch (Exception e) {
+                            oos.writeObject(false);
                             oos.writeObject(e.getMessage());
                         }
                     }
