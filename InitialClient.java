@@ -42,6 +42,67 @@ public class InitialClient {
         });
     }
 
+        public void attemptLogin(String email, String password){
+        try {
+            //Check credentials with the database and retrieve user object
+            //Write null to indicate logging in or signing up
+            //oos.writeObject(null);
+            //TODO implement this request in server
+            String[] serverRequest = {"CUSTOMER_LOGIN",email,password};
+            oos.writeObject(serverRequest);
+            oos.flush();
+
+
+            boolean loginSuccessful = true;
+            try {
+                loginSuccessful = (boolean) ois.readObject();
+            } catch (ClassNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            if(loginSuccessful){
+                //get customer object from server
+                Object incoming;
+                Customer customer = null;
+                Seller seller = null;
+                try {
+                    incoming = ois.readObject();
+                    if (incoming instanceof Customer) {
+                        customer = (Customer) incoming;
+                        CustomerClient customerClient = new CustomerClient(socket, customer);
+                        customerClient.homepage();  
+                    } else {
+                        seller = (Seller) incoming;
+                        SellerClient sellerClient = new SellerClient(socket, seller);
+                        sellerClient.homepage(); 
+                    }
+                    
+                } catch (ClassNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } else {
+                //if invalid display error message and return to login page
+                String errorMessage = "";
+                try {
+                    errorMessage = (String) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                new ErrorMessageGUI(errorMessage);
+                new LoginGUI(this);
+            }
+        } catch (IOException e){
+            new ErrorMessageGUI(SERVER_ERROR_MSG);
+        } catch (Exception e){
+            //Should never come here
+            System.out.println("Internal Server Communication Error");
+            e.printStackTrace();
+        }
+
+    }
+
     public void attemptLoginSeller(String email, String password){
             try {
             //Check credentials with the database and retrieve user object

@@ -41,12 +41,25 @@ public class ServerThread extends Thread {
                 User u = new User();
                 String[] userInfo = (String[]) ois.readObject();
                 switch (userInfo[0]) {
-                    // Customer Log In
-                    case "CUSTOMER_LOGIN" -> oos.writeObject(new Customer(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
-                            userInfo[2], userInfo[3], UserRole.UNDECIDED));
-                    // Seller Log In
-                    case "SELLER_LOGIN" -> oos.writeObject(new Seller(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
-                            userInfo[2], userInfo[3], UserRole.UNDECIDED));
+                    // Log In
+                    case "LOGIN" -> {
+                        try {
+                            if (database.getMatchedEntries("users.csv", 1, userInfo[2]).get(3).equals("Customer")) {
+                                oos.writeObject(new Customer(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
+                            userInfo[2], userInfo[3], UserRole.CUSTOMER));
+                            } else {
+                                oos.writeObject(new Seller(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
+                            userInfo[2], userInfo[3], UserRole.SELLER));
+                            }
+                            oos.writeObject(true);
+
+                            
+                        } catch (Exception e) {
+                            oos.writeObject(false);
+                            oos.writeObject(e.getMessage());
+                        }
+                         
+                        }
                     // Customer Sign up
                     case "CREATE_CUSTOMER" -> {
                         try {
@@ -58,8 +71,10 @@ public class ServerThread extends Thread {
                     // Seller Sign up
                     case "CREATE_SELLER" -> {
                         try {
-                             oos.writeObject(new Seller(userInfo[2], userInfo[3], UserRole.SELLER));
+                            oos.writeObject(true);
+                            oos.writeObject(new Seller(userInfo[2], userInfo[3], UserRole.SELLER));
                         } catch (Exception e) {
+                            oos.writeObject(false);
                             oos.writeObject(e.getMessage());
                         }
                     }
