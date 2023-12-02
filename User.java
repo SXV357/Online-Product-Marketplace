@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version December 1, 2023
  */
 public class User {
 
@@ -51,7 +51,11 @@ public class User {
         } else {
             throw new Exception("Invalid email. Please enter a valid one and try again!");
         }
-        this.password = password;
+        if (password == null || password.isEmpty()) {
+            throw new Exception("Invalid password. Password cannot be null or empty");
+        } else {
+            this.password = password;
+        }
         this.role = role;
         int generatedID = generateUserIdentificationNumber();
         switch (role) {
@@ -59,6 +63,7 @@ public class User {
             case SELLER -> this.userID = "S" + String.valueOf(generatedID);
             case UNDECIDED -> this.userID = "";
         }
+        db.addToDatabase("users.csv", this.toString());
     }
 
     /**
