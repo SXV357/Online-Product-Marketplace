@@ -14,13 +14,13 @@ import java.awt.event.ActionListener;
  * @version December 1, 2023
  */
 public class LoginGUI {
-    private final JFrame FRAME = new JFrame("Log-In");
-    private final JLabel EMAIL_LABEL = new JLabel("Email:");
-    private JTextField email = new JTextField(15);
-    private final JLabel PASSWORD_LABEL = new JLabel("Password:");
-    private JTextField password = new JTextField(15);
-    private final JButton LOG_IN_BUTTON = new JButton("Log In");
-    private final JButton EXIT_BUTTON = new JButton("Main Menu");
+    private JFrame loginFrame;
+    private JLabel emailLabel;
+    private JTextField emailField;
+    private JLabel passwordLabel;
+    private JPasswordField passwordField;
+    private JButton loginButton;
+    private JButton returnToMainMenuButton;
     private InitialClient initialClient;
 
     public LoginGUI(InitialClient initialClient) {
@@ -28,55 +28,60 @@ public class LoginGUI {
         logInDisplay();
     }
 
-    private ActionListener actionListener = new ActionListener() {
+    public ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == LOG_IN_BUTTON) {
-                // central method for login common to both customers and sellers
-            }
-            if (e.getSource() == EXIT_BUTTON) {
-                FRAME.dispose();
+            if (e.getSource() == loginButton) {
+                String email = emailField.getText();
+                char[] passwordChars = passwordField.getPassword();
+                String password = new String(passwordChars);
+                initialClient.attemptLogin(email, password);
+            } else if (e.getSource() == returnToMainMenuButton) {
+                loginFrame.dispose();
                 new UserGUI(initialClient);
             }
         }
     };
 
-    private void logInDisplay() {
+    public void logInDisplay() {
         //Set up frame for the display
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                FRAME.setSize(275, 125);
-                FRAME.setLocationRelativeTo(null);
-                FRAME.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                loginFrame = new JFrame("Log In");
+                loginFrame.setSize(275, 125);
+                loginFrame.setLocationRelativeTo(null);
+                loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-                //Set up panel to hold buttons in frame
-                JPanel buttonPanel = new JPanel();
-                buttonPanel.add(LOG_IN_BUTTON);
-                LOG_IN_BUTTON.addActionListener(actionListener);
-                buttonPanel.add(EXIT_BUTTON);
-                EXIT_BUTTON.addActionListener(actionListener);
-                FRAME.add(buttonPanel, BorderLayout.SOUTH);
+                loginButton = new JButton("Log In");
+                loginButton.addActionListener(actionListener);
+                returnToMainMenuButton = new JButton("Main Menu");
+                returnToMainMenuButton.addActionListener(actionListener);
 
+                emailLabel = new JLabel("Email:");
+                emailField = new JTextField(15);
+                passwordLabel = new JLabel("Password:");
+                passwordField = new JPasswordField(15); 
 
-                //Add panel for text fields and labels
+                // Reset contents of all fields when GUI is opened
+                emailField.setText("");
+                passwordField.setText(null);
+
                 JPanel textPanel = new JPanel();
-                textPanel.add(EMAIL_LABEL);
-                textPanel.add(email);
-                textPanel.add(PASSWORD_LABEL);
-                textPanel.add(password);
-                FRAME.add(textPanel);
+                textPanel.setLayout(new FlowLayout());
+                textPanel.add(emailLabel);
+                textPanel.add(emailField);
+                textPanel.add(passwordLabel);
+                textPanel.add(passwordField);
 
-                FRAME.setVisible(true);
-            }
-        });
-    }
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.add(loginButton);
+                buttonPanel.add(returnToMainMenuButton);
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new LoginGUI(null);
+                loginFrame.add(textPanel, BorderLayout.CENTER);
+                loginFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+                loginFrame.setVisible(true);
             }
         });
     }
