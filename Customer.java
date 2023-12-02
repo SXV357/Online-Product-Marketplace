@@ -26,7 +26,7 @@ public class Customer extends User {
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
     }
 
-    public Customer(String userID, String email, String password, UserRole role) {
+    public Customer(String userID, String email, String password, UserRole role) throws Exception {
         super(userID, email, password, UserRole.CUSTOMER);
         shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());

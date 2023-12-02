@@ -41,8 +41,9 @@ public class Seller extends User {
      * @param email    The seller's existing email
      * @param password The seller's existing password
      * @param role     The seller's existing role
+     * @throws Exception
      */
-    public Seller(String userID, String email, String password, UserRole role) {
+    public Seller(String userID, String email, String password, UserRole role) throws Exception {
         super(userID, email, password, role);
     }
 

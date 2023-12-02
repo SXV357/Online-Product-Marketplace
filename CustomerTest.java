@@ -20,7 +20,7 @@ import org.junit.Test;
  */
 
 public class CustomerTest {
-        public static void main(String[] args) throws CustomerException {
+        public static void main(String[] args) throws Exception {
                 // Instatiated a new customer and database for testing
                 Customer c = new Customer("C100001", "customer@gmail.com", "customer", UserRole.CUSTOMER);
                 Customer c2 = new Customer("C100003", "empty@gmail.com", "customer", UserRole.CUSTOMER);
