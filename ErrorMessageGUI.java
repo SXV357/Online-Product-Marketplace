@@ -1,4 +1,5 @@
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 /**
  * Project 5 - ErrorMessageGUI.java
  * 
@@ -7,10 +8,15 @@ import javax.swing.JOptionPane;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 28, 2023
+ * @version December 2, 2023
  */
 public class ErrorMessageGUI {
     public ErrorMessageGUI(String message) {
-        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
 }
