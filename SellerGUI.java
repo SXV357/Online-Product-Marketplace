@@ -15,7 +15,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 1, 2023
+ * @version December 2, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -89,21 +89,21 @@ public class SellerGUI extends JComponent {
             // Perform certain actions based on which button is clicked
             if (e.getSource() == createStoreButton) {
                 String newStoreName = JOptionPane.showInputDialog(null, "What is the new store\'s name?", "New Store Name", JOptionPane.QUESTION_MESSAGE);
-                String[] result = sellerClient.createNewStore(newStoreName);
+                Object[] result = sellerClient.createNewStore(newStoreName);
                 if (result[0].equals("SUCCESS")) {
                     JOptionPane.showMessageDialog(null, result[1], "Create Store", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    displayErrorDialog(result[1]);
+                    displayErrorDialog((String) result[1]);
                 }
 
             } else if (e.getSource() == editStoreButton) {
                 Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
-                if (getStoresResult[0] instanceof String && getStoresResult[0].equals("ERROR")) {
+                if (getStoresResult[0].equals("ERROR")) {
                     String errorMessage = (String) getStoresResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getStoresResult[0] instanceof String && getStoresResult[0].equals("SUCCESS")) {
+                } else if (getStoresResult[0].equals("SUCCESS")) {
                     ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
                     ArrayList<String> storeNames = new ArrayList<>();
                     for (Store st: stores) {
@@ -117,22 +117,22 @@ public class SellerGUI extends JComponent {
                     if (newStoreName == null) {
                         return;
                     }
-                    String[] modifyStoreResult = sellerClient.modifyStoreName(prevStoreName, newStoreName);
+                    Object[] modifyStoreResult = sellerClient.modifyStoreName(prevStoreName, newStoreName);
                     if (modifyStoreResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, modifyStoreResult[1], "Edit Store", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        displayErrorDialog(modifyStoreResult[1]);
+                        displayErrorDialog((String) modifyStoreResult[1]);
                     }
                 }
 
             } else if (e.getSource() == deleteStoreButton) {
                 Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
-                if (getStoresResult[0] instanceof String && getStoresResult[0].equals("ERROR")) { // Error
+                if (getStoresResult[0].equals("ERROR")) { // Error
                     String errorMessage = (String) getStoresResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getStoresResult[0] instanceof String && getStoresResult[0].equals("SUCCESS")) {
+                } else if (getStoresResult[0].equals("SUCCESS")) {
                     ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
                     ArrayList<String> storeNames = new ArrayList<>();
                     for (Store st: stores) {
@@ -143,22 +143,22 @@ public class SellerGUI extends JComponent {
                         return;
                     }
 
-                    String[] deleteStoreResult = sellerClient.deleteStore(storeName);
+                    Object[] deleteStoreResult = sellerClient.deleteStore(storeName);
                     if (deleteStoreResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, deleteStoreResult[1], "Delete Store", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        displayErrorDialog(deleteStoreResult[1]);
+                        displayErrorDialog((String) deleteStoreResult[1]);
                     }
                 }
 
             } else if (e.getSource() == createProductButton) {
                 Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
-                if (getStoresResult[0] instanceof String && getStoresResult[0].equals("ERROR")) { // Error
+                if (getStoresResult[0].equals("ERROR")) { // Error
                     String errorMessage = (String) getStoresResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getStoresResult[0] instanceof String && getStoresResult[0].equals("SUCCESS")) {
+                } else if (getStoresResult[0].equals("SUCCESS")) {
                     ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
                     ArrayList<String> storeNames = new ArrayList<>();
                     for (Store st: stores) {
@@ -185,22 +185,22 @@ public class SellerGUI extends JComponent {
                     if (description == null) {
                         return;
                     }
-                    String[] createProductResult = sellerClient.createNewProduct(storeName, productName, availableQuantity, price, description);
+                    Object[] createProductResult = sellerClient.createNewProduct(storeName, productName, availableQuantity, price, description);
                     if (createProductResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, createProductResult[1], "Create Product", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        displayErrorDialog(createProductResult[1]);
+                        displayErrorDialog((String) createProductResult[1]);
                     }
                 }
 
             } else if (e.getSource() == editProductButton) {
                 Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
-                if (getStoresResult[0] instanceof String && getStoresResult[0].equals("ERROR")) { // Error
+                if (getStoresResult[0].equals("ERROR")) { // Error
                     String errorMessage = (String) getStoresResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getStoresResult[0] instanceof String && getStoresResult[0].equals("SUCCESS")) {
+                } else if (getStoresResult[0].equals("SUCCESS")) {
                     ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
                     ArrayList<String> storeNames = new ArrayList<>();
                     for (Store st: stores) {
@@ -212,11 +212,11 @@ public class SellerGUI extends JComponent {
                     }
                     // Get the products associated with the selected store
                     Object[] getProductsResult = sellerClient.getProducts(storeName);
-                    if (getProductsResult[0] instanceof String && getProductsResult[0].equals("ERROR")) {
+                    if (getProductsResult[0].equals("ERROR")) {
                         String errorMessage = (String) getProductsResult[1];
                         displayErrorDialog(errorMessage);
                         return;
-                    } else if (getProductsResult[0] instanceof String && getProductsResult[0].equals("SUCCESS")) {
+                    } else if (getProductsResult[0].equals("SUCCESS")) {
                         ArrayList<Product> products = (ArrayList<Product>) getProductsResult[1];
                         ArrayList<String> productNames = new ArrayList<>();
                         for (Product pr: products) {
@@ -236,11 +236,11 @@ public class SellerGUI extends JComponent {
                         if (newValue == null) {
                             return;
                         }
-                        String[] editProductResult = sellerClient.editProduct(storeName, productName, editParam.toLowerCase(), newValue);
+                        Object[] editProductResult = sellerClient.editProduct(storeName, productName, editParam.toLowerCase(), newValue);
                         if (editProductResult[0].equals("SUCCESS")) {
                             JOptionPane.showMessageDialog(null, editProductResult[1], "Edit Product", JOptionPane.INFORMATION_MESSAGE);
                         } else {
-                            displayErrorDialog(editProductResult[1]);
+                            displayErrorDialog((String) editProductResult[1]);
                         }
                     }
                 }
@@ -248,11 +248,11 @@ public class SellerGUI extends JComponent {
             } else if (e.getSource() == deleteProductButton) {
                 Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
-                if (getStoresResult[0] instanceof String && getStoresResult[0].equals("ERROR")) { // Error
+                if (getStoresResult[0].equals("ERROR")) { // Error
                     String errorMessage = (String) getStoresResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getStoresResult[0] instanceof String && getStoresResult[0].equals("SUCCESS")) {
+                } else if (getStoresResult[0].equals("SUCCESS")) {
                     ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
                     ArrayList<String> storeNames = new ArrayList<>();
                     for (Store st: stores) {
@@ -264,11 +264,11 @@ public class SellerGUI extends JComponent {
                     }
                     // Get the products associated with the selected store
                     Object[] getProductsResult = sellerClient.getProducts(storeName);
-                    if (getProductsResult[0] instanceof String && getProductsResult[0].equals("ERROR")) {
+                    if (getProductsResult[0].equals("ERROR")) {
                         String errorMessage = (String) getProductsResult[1];
                         displayErrorDialog(errorMessage);
                         return;
-                    } else if (getProductsResult[0] instanceof String && getProductsResult[0].equals("SUCCESS")) {
+                    } else if (getProductsResult[0].equals("SUCCESS")) {
                         ArrayList<Product> products = (ArrayList<Product>) getProductsResult[1];
                         ArrayList<String> productNames = new ArrayList<>();
                         for (Product pr: products) {
@@ -279,11 +279,11 @@ public class SellerGUI extends JComponent {
                             return;
                         }
 
-                        String[] deleteProductResult = sellerClient.deleteProduct(storeName, productName);
+                        Object[] deleteProductResult = sellerClient.deleteProduct(storeName, productName);
                         if (deleteProductResult[0].equals("SUCCESS")) {
                             JOptionPane.showMessageDialog(null, deleteProductResult[1], "Delete Product", JOptionPane.INFORMATION_MESSAGE);
                         } else {
-                            displayErrorDialog(deleteProductResult[1]);
+                            displayErrorDialog((String) deleteProductResult[1]);
                         }
                     }
                 }
@@ -295,11 +295,11 @@ public class SellerGUI extends JComponent {
               }
               Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
-                if (getStoresResult[0] instanceof String && getStoresResult[0].equals("ERROR")) { // Error
+                if (getStoresResult[0].equals("ERROR")) { // Error
                     String errorMessage = (String) getStoresResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getStoresResult[0] instanceof String && getStoresResult[0].equals("SUCCESS")) {
+                } else if (getStoresResult[0].equals("SUCCESS")) {
                     ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
                     ArrayList<String> storeNames = new ArrayList<>();
                     for (Store st: stores) {
@@ -310,22 +310,22 @@ public class SellerGUI extends JComponent {
                         return;
                     }
 
-                    String[] importProductsResult = sellerClient.importProducts(filePath, storeName);
+                    Object[] importProductsResult = sellerClient.importProducts(filePath, storeName);
                     if (importProductsResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, importProductsResult[1], "Import Products", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        displayErrorDialog(importProductsResult[1]);
+                        displayErrorDialog((String) importProductsResult[1]);
                     }
                 }
 
             } else if (e.getSource() == exportProductsButton) {
                 Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
-                if (getStoresResult[0] instanceof String && getStoresResult[0].equals("ERROR")) { // Error
+                if (getStoresResult[0].equals("ERROR")) { // Error
                     String errorMessage = (String) getStoresResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getStoresResult[0] instanceof String && getStoresResult[0].equals("SUCCESS")) {
+                } else if (getStoresResult[0].equals("SUCCESS")) {
                     ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
                     ArrayList<String> storeNames = new ArrayList<>();
                     for (Store st: stores) {
@@ -336,21 +336,21 @@ public class SellerGUI extends JComponent {
                         return;
                     }
 
-                    String[] exportProductsResult = sellerClient.exportProducts(storeName);
+                    Object[] exportProductsResult = sellerClient.exportProducts(storeName);
                     if (exportProductsResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, exportProductsResult[1], "Export Products", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        displayErrorDialog(exportProductsResult[1]);
+                        displayErrorDialog((String) exportProductsResult[1]);
                     }
                 }
 
             } else if (e.getSource() == viewCustomerShoppingCartsButton) {
                 Object[] getCustomerShoppingCartsResult = sellerClient.viewCustomerShoppingCarts();
-                if (getCustomerShoppingCartsResult[0] instanceof String && getCustomerShoppingCartsResult[0].equals("ERROR")) {
+                if (getCustomerShoppingCartsResult[0].equals("ERROR")) {
                     String errorMessage = (String) getCustomerShoppingCartsResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getCustomerShoppingCartsResult[0] instanceof String && getCustomerShoppingCartsResult[0].equals("SUCCESS")) {
+                } else if (getCustomerShoppingCartsResult[0].equals("SUCCESS")) {
                     HashMap<String, ArrayList<String>> shoppingCarts = (HashMap<String, ArrayList<String>>) getCustomerShoppingCartsResult[1];
                     String info = "";
                     for (String store : shoppingCarts.keySet()) {
@@ -364,11 +364,11 @@ public class SellerGUI extends JComponent {
 
             } else if (e.getSource() == viewSalesByStoreButton) {
                 Object[] getSalesByStoreResult = sellerClient.viewSalesByStore();
-                if (getSalesByStoreResult[0] instanceof String && getSalesByStoreResult[0].equals("ERROR")) {
+                if (getSalesByStoreResult[0].equals("ERROR")) {
                     String errorMessage = (String) getSalesByStoreResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (getSalesByStoreResult[0] instanceof String && getSalesByStoreResult[0].equals("SUCCESS")) {
+                } else if (getSalesByStoreResult[0].equals("SUCCESS")) {
                     HashMap<String, ArrayList<String>> salesByStore = (HashMap<String, ArrayList<String>>) getSalesByStoreResult[1];
                     String info = "";
                     for (String store : salesByStore.keySet()) {
@@ -395,11 +395,11 @@ public class SellerGUI extends JComponent {
 
                 Object[] customerDashboardResult = sellerClient.sellerGetCustomersDashboard(sortSelection, ascending);
 
-                if (customerDashboardResult[0] instanceof String && customerDashboardResult[0].equals("ERROR")) { 
+                if (customerDashboardResult[0].equals("ERROR")) { 
                     String errorMessage = (String) customerDashboardResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (customerDashboardResult[0] instanceof String && customerDashboardResult[0].equals("SUCCESS")) {
+                } else if (customerDashboardResult[0].equals("SUCCESS")) {
                     ArrayList<String> customerDashboard = (ArrayList<String>) customerDashboardResult[1];
                     Object[][] data = new Object[customerDashboard.size()][3];
                     for (int i = 0; i < customerDashboard.size(); i++) {
@@ -427,11 +427,11 @@ public class SellerGUI extends JComponent {
 
                 Object productDashboardResult[] = sellerClient.sellerGetProductsDashboard(sortSelection, ascending);
 
-                if (productDashboardResult[0] instanceof String && productDashboardResult[0].equals("ERROR")) {
+                if (productDashboardResult[0].equals("ERROR")) {
                     String errorMessage = (String) productDashboardResult[1];
                     displayErrorDialog(errorMessage);
                     return;
-                } else if (productDashboardResult[0] instanceof String && productDashboardResult[0].equals("SUCCESS")) {
+                } else if (productDashboardResult[0].equals("SUCCESS")) {
                     ArrayList<String> productDashboard = (ArrayList<String>) productDashboardResult[1];
                     Object[][] data = new Object[productDashboard.size()][3];
                     for (int i = 0; i < productDashboard.size(); i++) {
@@ -449,11 +449,11 @@ public class SellerGUI extends JComponent {
                 if (newEmail == null) {
                     return;
                 }
-                String[] editEmailResult = sellerClient.editEmail(newEmail);
+                Object[] editEmailResult = sellerClient.editEmail(newEmail);
                 if (editEmailResult[0].equals("SUCCESS")) {
                     JOptionPane.showMessageDialog(null, editEmailResult[1], "Edit Email", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    displayErrorDialog(editEmailResult[1]);
+                    displayErrorDialog((String) editEmailResult[1]);
                 }
 
             } else if (e.getSource() == editPasswordButton) {
@@ -461,16 +461,16 @@ public class SellerGUI extends JComponent {
                 if (newPassword == null) {
                     return;
                 }
-                String[] editPasswordResult = sellerClient.editPassword(newPassword);
+                Object[] editPasswordResult = sellerClient.editPassword(newPassword);
                 if (editPasswordResult[0].equals("SUCCESS")) {
                     JOptionPane.showMessageDialog(null, editPasswordResult[1], "Edit Password", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    displayErrorDialog(editPasswordResult[1]);
+                    displayErrorDialog((String) editPasswordResult[1]);
                 }
             } else if (e.getSource() == deleteAccountButton) {
                 int deleteAccount = JOptionPane.showOptionDialog(null, "Are you sure you want to delete your account?", "Delete Account", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (deleteAccount == JOptionPane.YES_OPTION) {
-                   String[] deleteAccountResult = sellerClient.deleteAccount();
+                   Object[] deleteAccountResult = sellerClient.deleteAccount();
                    if (deleteAccountResult[0].equals("SUCCESS")) {
                         try {
                             sellerFrame.dispose();
@@ -479,7 +479,7 @@ public class SellerGUI extends JComponent {
                             return;
                         }
                     } else {
-                        displayErrorDialog(deleteAccountResult[1]);
+                        displayErrorDialog((String) deleteAccountResult[1]);
                     }
                 } else {
                     return;

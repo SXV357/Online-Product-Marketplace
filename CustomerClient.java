@@ -46,16 +46,16 @@ public class CustomerClient {
     }
 
     // Get all the products from the marketplace
-    public String[] getAllProducts() {
+    public Object[] getAllProducts() {
         // action: GET_ALL_PRODUCTS
          // RETURN: ["ERROR", error message] or ["SUCCESS", products string]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"GET_ALL_PRODUCTS"});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -63,16 +63,16 @@ public class CustomerClient {
     }
 
     // Get a given products info
-    public String[] getProductInfo(int productSelection) {
+    public Object[] getProductInfo(int productSelection) {
         // action: GET_PRODUCT_INFO
          // RETURN: ["ERROR", error message] or ["SUCCESS", product info string]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"GET_PRODUCT_INFO", String.valueOf(productSelection)});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -80,16 +80,16 @@ public class CustomerClient {
     }
 
     // Adds product from the marketplace using index to cart
-    public String[] addToCart(int index, int quantity) {
+    public Object[] addToCart(int index, int quantity) {
         // action: ADD_TO_CART
          // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"ADD_TO_CART", String.valueOf(index), String.valueOf(quantity)});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -97,16 +97,16 @@ public class CustomerClient {
     }
 
     // Removes product using index from cart
-    public String[] removeFromCart(int index) {
+    public Object[] removeFromCart(int index) {
         // action: REMOVE_FROM_CART
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"REMOVE_FROM_CART", String.valueOf(index)});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -114,16 +114,16 @@ public class CustomerClient {
     }
 
     // Returns customer's shopping cart
-    public String[] getCart() {
+    public Object[] getCart() {
         // action: GET_CART
         // RETURN: ["ERROR", error message] or ["SUCCESS", shopping cart string]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"GET_CART"});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -131,16 +131,16 @@ public class CustomerClient {
     }
 
     // Returns customer's shopping history
-    public String[] getShoppingHistory() {
+    public Object[] getShoppingHistory() {
         // action: GET_SHOPPING_HISTORY
         // RETURN: ["ERROR", error message] or ["SUCCESS", shopping history string]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"GET_SHOPPING_HISTORY"});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -148,16 +148,16 @@ public class CustomerClient {
     }
 
     // Returns filtered product list by search
-    public String[] searchProducts(String query) {
+    public Object[] searchProducts(String query) {
         // action: SEARCH_PRODUCTS
         // RETURN: ["ERROR", error message] or ["SUCCESS", filtered product list]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"SEARCH_PRODUCTS", query});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -165,16 +165,16 @@ public class CustomerClient {
     }
 
     // Returns sorted products list by price or quantity
-    public String[] sortProducts(String choice) {
+    public Object[] sortProducts(String choice) {
         // action: SORT_PRODUCTS
         // RETURN: ["ERROR", error message] or ["SUCCESS", sorted product list]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"SORT_PRODUCTS", choice});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -182,32 +182,32 @@ public class CustomerClient {
     }
 
     // Exports Purchase History
-    public String[] exportPurchaseHistory() {
+    public Object[] exportPurchaseHistory() {
         // action: EXPORT_PURCHASE_HISTORY
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"EXPORT_PURCHASE_HISTORY"});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-    public String[] purchaseItems() {
+    public Object[] purchaseItems() {
         // action: PURCHASE_ITEMS
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"PURCHASE_ITEMS"});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -248,48 +248,48 @@ public class CustomerClient {
         return result;
     }
 
-    public String[] editEmail(String newEmail) {
+    public Object[] editEmail(String newEmail) {
         // action: EDIT_EMAIL
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"EDIT_EMAIL", newEmail});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-    public String[] editPassword(String newPassword) {
+    public Object[] editPassword(String newPassword) {
         // action: EDIT_PASSWORD
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"EDIT_PASSWORD", newPassword});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
         return result;
     }
 
-    public String[] deleteAccount() {
+    public Object[] deleteAccount() {
         // action: DELETE_ACCOUNT 
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        String[] result;
+        Object[] result;
         try {
             oos.writeObject(new String[] {"DELETE_ACCOUNT"});
             oos.flush();
             oos.writeObject(this.customer);
             oos.flush();
-            result = (String[]) ois.readObject();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
         }
