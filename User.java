@@ -139,7 +139,9 @@ public class User {
             }
         }
         if (modifyEmail) {
+            String prevUserString = this.toString();
             this.email = email;
+            db.modifyDatabase("users.csv", prevUserString, this.toString());
         }
     }
 
@@ -152,7 +154,9 @@ public class User {
         if (password.equals("null") || password.isEmpty()) {
             throw new Exception("The new password cannot be null or empty!");
         }
+        String prevUserString = this.toString();
         this.password = password;
+        db.modifyDatabase("users.csv", prevUserString, this.toString());
     }
 
     /**
