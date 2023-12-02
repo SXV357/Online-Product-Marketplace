@@ -47,9 +47,20 @@ public class User {
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
-            this.email = email;
+            boolean duplicateEmailExists = false;
+            ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
+            for (String userEntry : userEntries) {
+                String userEmail = userEntry.split(",")[1];
+                if (userEmail.equals(email)) {
+                    duplicateEmailExists = true;
+                    throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+                }
+            }
+            if (!duplicateEmailExists) {
+                this.email = email;
+            }
         } else {
-            throw new Exception("Invalid email. Please enter a valid one and try again!");
+            throw new Exception("Invalid email format. Please enter a valid one and try again!");
         }
         if (password == null || password.isEmpty()) {
             throw new Exception("Invalid password. Password cannot be null or empty");
