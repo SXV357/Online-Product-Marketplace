@@ -50,7 +50,7 @@ public class ServerThread extends Thread {
                     // Customer Sign up
                     case "CREATE_CUSTOMER" -> {
                         try {
-                             oos.writeObject(new Customer(userInfo[2], userInfo[3], UserRole.SELLER));
+                             oos.writeObject(new Customer(userInfo[2], userInfo[3], UserRole.CUSTOMER));
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                         }
@@ -111,11 +111,11 @@ public class ServerThread extends Thread {
                                     output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
                                             response[2].equals("true"), c.getUserID()).toString();
                                 // Modify Email
-                                case "CHANGE_EMAIL" -> c.setEmail(response[1]);
+                                case "EDIT_EMAIL" -> c.setEmail(response[1]);
                                 // Modify Password
-                                case "CHANGE_PW" -> c.setPassword(response[1]);
+                                case "EDIT_PASSWORD" -> c.setPassword(response[1]);
                                 // Delete Account
-                                case "DELETE_ACC" -> {
+                                case "DELETE_ACCOUNT" -> {
                                     c.deleteAccount();
                                     exit = true;
                                 }
@@ -196,11 +196,11 @@ public class ServerThread extends Thread {
                                     output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
                                             response[2].equals("true")).toString();
                                 // Modify Email
-                                case "CHANGE_EMAIL" -> s.setEmail(response[1]);
+                                case "EDIT_EMAIL" -> s.setEmail(response[1]);
                                 // Modify Password
-                                case "CHANGE_PW" -> s.setPassword(response[1]);
+                                case "EDIT_PASSWORD" -> s.setPassword(response[1]);
                                 // Delete Account
-                                case "DELETE_ACC" -> {
+                                case "DELETE_ACCOUNT" -> {
                                     s.deleteAccount();
                                     exit = true;
                                 }
