@@ -54,32 +54,15 @@ public class SellerGUI extends JComponent {
     }
 
     public void displayErrorDialog(String errorMessage) {
-        SwingUtilities.invokeLater(new Runnable() {
-           @Override
-           public void run() {
-            new ErrorMessageGUI(errorMessage);
-           } 
-        });
+        new ErrorMessageGUI(errorMessage);
     }
 
     public void displayMiscInfo(String informationType, String data) {
-        SwingUtilities.invokeLater(new Runnable() {
-           @Override
-           public void run() {
-            JFrame sellerMiscInfoFrame = displayInfo.displayMiscInfo(informationType, data);
-            sellerMiscInfoFrame.setVisible(true);
-           } 
-        });
+        displayInfo.displayMiscInfo(informationType, data);
     }
 
     public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
-        SwingUtilities.invokeLater(new Runnable() {
-           @Override
-           public void run() {
-            JFrame dashboardFrame = displayInfo.displayDashboard(dashboardType, scrollPane);
-            dashboardFrame.setVisible(true);
-           } 
-        });
+        displayInfo.displayDashboard(dashboardType, scrollPane);
     }
 
     @SuppressWarnings("unchecked")
