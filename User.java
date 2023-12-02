@@ -44,29 +44,24 @@ public class User {
      * @throws Exception
      */
     public User(String email, String password, UserRole role) throws Exception {
+        if (email == null || email.isBlank() || email.isEmpty()) {
+          throw new Exception("Invalid email. Email cannot be null, blank, or empty");  
+        } else if (password == null || password.isBlank() || password.isEmpty()) {
+            throw new Exception("Invalid password. Password cannot be null, blank, or empty");
+        }
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
-            boolean duplicateEmailExists = false;
-            ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
-            for (String userEntry : userEntries) {
-                String userEmail = userEntry.split(",")[1];
-                if (userEmail.equals(email)) {
-                    duplicateEmailExists = true;
-                    throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
-                }
-            }
-            if (!duplicateEmailExists) {
+            String matchedUser = db.retrieveUserMatchForSignUp(email);
+            if (matchedUser == null) {
                 this.email = email;
+            } else {
+                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
             }
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
         }
-        if (password == null || password.isEmpty()) {
-            throw new Exception("Invalid password. Password cannot be null or empty");
-        } else {
-            this.password = password;
-        }
+        this.password = password;
         this.role = role;
         int generatedID = generateUserIdentificationNumber();
         switch (role) {
@@ -86,7 +81,11 @@ public class User {
      * @param password The user's existing password
      * @param role     The user's existing role
      */
-    public User(String userID, String email, String password, UserRole role) {
+    public User(String userID, String email, String password, UserRole role) throws Exception {
+        String matchedUser = db.retrieveUserMatchForLogin(email, password);
+        if (matchedUser == null) {
+            throw new Exception("The email or password you entered is non-existent. Please try again");
+        }
         this.userID = userID;
         this.email = email;
         this.password = password;
@@ -137,17 +136,23 @@ public class User {
      * @param email The email to modify the current email to
      */
     public void setEmail(String email) throws Exception {
-        if (email.equals("null") || email.isEmpty()) {
-            throw new Exception("The new email cannot be null or empty!");
-        }
+        if (email == null || email.isBlank() || email.isEmpty()) {
+          throw new Exception("The email cannot be null, blank, or empty");  
+        } 
         boolean modifyEmail = true;
-        ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
-        for (String userEntry : userEntries) {
-            String userEmail = userEntry.split(",")[1];
-            if (userEmail.equals(email)) {
-                modifyEmail = false;
-                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        if (matcher.matches()) {
+            ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
+            for (String userEntry : userEntries) {
+                String userEmail = userEntry.split(",")[1];
+                if (userEmail.equals(email)) {
+                    modifyEmail = false;
+                    throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+                }
             }
+        } else {
+            throw new Exception("Invalid email format. Please enter a valid one and try again!");
         }
         if (modifyEmail) {
             String prevUserString = this.toString();
@@ -162,8 +167,8 @@ public class User {
      * @param password The password to modify the current password to
      */
     public void setPassword(String password) throws Exception {
-        if (password.equals("null") || password.isEmpty()) {
-            throw new Exception("The new password cannot be null or empty!");
+        if (password == null || password.isBlank() || password.isEmpty()) {
+            throw new Exception("The new password cannot be null, blank or empty!");
         }
         String prevUserString = this.toString();
         this.password = password;

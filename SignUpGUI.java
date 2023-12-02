@@ -24,13 +24,33 @@ public class SignUpGUI extends JFrame {
     private JButton returnToMainMenuButton;
     private InitialClient initialClient;
 
-    public static void main(String[] args) { // for temporary testing purposes  
-        new SignUpGUI(null);
-    }
-
     // Constructor to initialize and set up the GUI components.
     public SignUpGUI(InitialClient initialClient) {
         this.initialClient = initialClient;
+        signUpDisplay();
+    }
+
+    public ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == signupButton) {
+                String email = emailField.getText();
+                char[] passwordChars = passwordField.getPassword();
+                String password = new String(passwordChars);
+                String role = (String) roleComboBox.getSelectedItem();
+                if (role.equals("Customer")) {
+                    initialClient.attemptCreateNewCustomerAccount(email, password);
+                } else {
+                    initialClient.attemptCreateNewSellerAccount(email, password);
+                }
+            } else if (e.getSource() == returnToMainMenuButton) {
+                signupFrame.dispose();
+                new UserGUI(initialClient);
+            }
+        }
+    };
+
+    public void signUpDisplay() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -40,29 +60,9 @@ public class SignUpGUI extends JFrame {
                 signupFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
                 signupButton = new JButton("Sign Up");
-                signupButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String email = emailField.getText();
-                    char[] passwordChars = passwordField.getPassword();
-                    String password = new String(passwordChars);
-                    String role = (String) roleComboBox.getSelectedItem();
-                    if (role.equals("Customer")) {
-                        initialClient.attemptCreateNewCustomerAccount(email, password);
-                    } else {
-                        initialClient.attemptCreateNewSellerAccount(email, password);
-                    }
-                } 
-                });
-
+                signupButton.addActionListener(actionListener);
                 returnToMainMenuButton = new JButton("Main Menu");
-                returnToMainMenuButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        signupFrame.dispose();
-                        new UserGUI(initialClient);
-                    }
-                });
+                returnToMainMenuButton.addActionListener(actionListener);
 
                 emailLabel = new JLabel("Email:");
                 emailField = new JTextField(15);
