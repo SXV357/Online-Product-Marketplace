@@ -7,13 +7,13 @@
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version December 3, 2023
  */
 public class UserTest {
     public static void main(String[] args) throws Exception {
 
-        CreateDatabaseData data = new CreateDatabaseData();
-        data.clearData();
+        ClearDatabaseData cl = new ClearDatabaseData();
+        cl.clearData();
 
         /* CREATE NEW DATABASE INSTANCE FOR TESTING PURPOSES */
         Database db = new Database();

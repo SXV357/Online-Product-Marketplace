@@ -1,10 +1,8 @@
 import static org.junit.Assert.assertEquals;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
 import org.junit.Test;
 
 /**
@@ -16,9 +14,8 @@ import org.junit.Test;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version December 3, 2023
  */
-
 public class CustomerTest {
         public static void main(String[] args) throws Exception {
                 // Instatiated a new customer and database for testing
@@ -27,10 +24,11 @@ public class CustomerTest {
 
                 c2.exportPurchaseHistory();
                 Database db = new Database();
+                ClearDatabaseData cl = new ClearDatabaseData();
                 CreateDatabaseData data = new CreateDatabaseData();
 
                 // Creates testing data
-                data.clearData();
+                cl.clearData();
                 testGetAllProductsWhenEmpty(c);
                 data.createData();
 

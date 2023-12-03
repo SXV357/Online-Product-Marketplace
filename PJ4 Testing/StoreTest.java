@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-
 /**
- * Project 5 - TestStore.java
+ * Project 5 - StoreTest.java
  *
  * Class that handles all testing related to the functionalities implemented in
  * the store class.
@@ -9,13 +7,13 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 27, 2023
+ * @version December 3, 2023
  */
 public class StoreTest {
     public static void main(String[] args) {
 
-        CreateDatabaseData data = new CreateDatabaseData();
-        data.clearData();
+        ClearDatabaseData cl = new ClearDatabaseData();
+        cl.clearData();
 
         /* INITIALIZING A NEW STORE AND DATABASE FOR TESTING PURPOSES */
         Store newStore = new Store("Fruit Marketplace");

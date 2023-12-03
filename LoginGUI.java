@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 1, 2023
+ * @version December 3, 2023
  */
 public class LoginGUI {
     private JFrame loginFrame;
@@ -21,6 +21,7 @@ public class LoginGUI {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton returnToMainMenuButton;
+    private JButton signupButton;
     private InitialClient initialClient;
 
     public LoginGUI(InitialClient initialClient) {
@@ -40,6 +41,9 @@ public class LoginGUI {
             } else if (e.getSource() == returnToMainMenuButton) {
                 loginFrame.dispose();
                 new UserGUI(initialClient);
+            } else if (e.getSource() == signupButton) {
+                loginFrame.dispose();
+                new SignUpGUI(initialClient);
             }
         }
     };
@@ -56,6 +60,8 @@ public class LoginGUI {
 
                 loginButton = new JButton("Log In");
                 loginButton.addActionListener(actionListener);
+                signupButton = new JButton("Sign Up");
+                signupButton.addActionListener(actionListener);
                 returnToMainMenuButton = new JButton("Main Menu");
                 returnToMainMenuButton.addActionListener(actionListener);
 
