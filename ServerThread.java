@@ -27,6 +27,7 @@ public class ServerThread extends Thread {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            oos.flush();
 
             Dashboard db = new Dashboard();
 
@@ -35,55 +36,78 @@ public class ServerThread extends Thread {
             Object output = null;
             boolean exit = false;
             Database database = new Database();
-            
+            int user = -1;
 
-            while (true) {
-                User u = new User();
+            while (socket.isConnected()) {
+        
                 String[] userInfo = (String[]) ois.readObject();
                 switch (userInfo[0]) {
                     // Log In
                     case "LOGIN" -> {
                         try {
                             if (database.getMatchedEntries("users.csv", 1, userInfo[2]).get(3).equals("Customer")) {
-                                oos.writeObject(new Customer(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
-                            userInfo[2], userInfo[3], UserRole.CUSTOMER));
+                                Customer c = new Customer(database.getMatchedEntries("users.csv", 1, userInfo[2]).get(0),
+                            userInfo[2], userInfo[3], UserRole.CUSTOMER);
+                                oos.writeObject(true);
+                                oos.flush();
+                                oos.writeObject(c);
+                                user = 0;
                             } else {
-                                oos.writeObject(new Seller(database.retrieveUserMatchForLogin(userInfo[2], userInfo[3]),
-                            userInfo[2], userInfo[3], UserRole.SELLER));
+                                Seller s = new Seller(database.getMatchedEntries("users.csv", 1, userInfo[2]).get(0),
+                            userInfo[2], userInfo[3], UserRole.SELLER);
+                                oos.writeObject(true);
+                                oos.flush();
+                                oos.writeObject(s);
+                                oos.flush();
+                                user = 1;
                             }
-                            oos.writeObject(true);
 
                             
                         } catch (Exception e) {
                             oos.writeObject(false);
+                            oos.flush();
                             oos.writeObject(e.getMessage());
+                            oos.flush();
                         }
                          
                         }
                     // Customer Sign up
                     case "CREATE_CUSTOMER" -> {
                         try {
-                            oos.writeObject(true);
-                             oos.writeObject(new Customer(userInfo[2], userInfo[3], UserRole.CUSTOMER));
+                             Customer c = new Customer(userInfo[1], userInfo[2], UserRole.CUSTOMER);
+                             oos.writeObject(true);
+                             oos.flush();
+                             oos.writeObject(c);
+                             oos.flush();
+                             user = 0;
                         } catch (Exception e) {
                             oos.writeObject(false);
+                            oos.flush();
                             oos.writeObject(e.getMessage());
+                            oos.flush();
                         }
                     }
                     // Seller Sign up
                     case "CREATE_SELLER" -> {
                         try {
+                            Seller s = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
                             oos.writeObject(true);
-                            oos.writeObject(new Seller(userInfo[2], userInfo[3], UserRole.SELLER));
+                            oos.flush();
+                            oos.writeObject(s);
+                            oos.flush();
+                            user = 1;
                         } catch (Exception e) {
                             oos.writeObject(false);
+                            oos.flush();
                             oos.writeObject(e.getMessage());
+                            oos.flush();
                         }
                     }
                     default -> oos.writeObject("ERROR");
                 }
 
-                if (userInfo[1].equals("C") && !u.getUserID().isEmpty()) {
+                System.out.println("yes");
+                if (user == 0) {
                     //Server.activeUsers.add(c.getUserID());
                     oos.writeObject("Customer Connection to Server Established");
                     while (!exit) {
@@ -147,7 +171,7 @@ public class ServerThread extends Thread {
                         }
 
                     }
-                } else if (userInfo[1].equals("S") && !u.getUserID().isEmpty()) {
+                } else if (user == 1) {
                     //Server.activeUsers.add(s.getUserID());
                     oos.writeObject("Seller Connection to Server Established");
                     while (!exit) {

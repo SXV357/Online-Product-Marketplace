@@ -17,15 +17,14 @@ import java.util.ArrayList;
 public class Server {
 
     static ArrayList<String> activeUsers = new ArrayList<>(); //List of UserIDs on server
-    public static final int PORT_NUMBER = 1234;
+    public static final int PORT_NUMBER = 4242;
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException{
-        ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
-
-        while (true) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ServerSocket serverSocket = new ServerSocket(PORT_NUMBER); 
+        while (true) { 
             Socket socket = serverSocket.accept();
-            ServerThread serverThread = new ServerThread(socket);
-            serverThread.start();
+            ServerThread serverThread = new ServerThread(socket); 
+            serverThread.start(); 
         }
     }
     
