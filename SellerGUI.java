@@ -23,7 +23,6 @@ public class SellerGUI extends JComponent {
     private final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
     private SellerClient sellerClient;
     private JFrame sellerFrame;
-    private String email;
     private JLabel welcomeUserLabel;
     private JButton editEmailButton;
     private JButton editPasswordButton;
@@ -48,7 +47,7 @@ public class SellerGUI extends JComponent {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new SellerGUI(null, "");
+                new SellerGUI(null);
             }
         });
     }
@@ -87,11 +86,7 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
-                    ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
-                    ArrayList<String> storeNames = new ArrayList<>();
-                    for (Store st: stores) {
-                        storeNames.add(st.getStoreName());
-                    }
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String prevStoreName = (String) JOptionPane.showInputDialog(null, "Which store\'s name would you like to edit?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (prevStoreName == null) {
                         return;
@@ -116,11 +111,7 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
-                    ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
-                    ArrayList<String> storeNames = new ArrayList<>();
-                    for (Store st: stores) {
-                        storeNames.add(st.getStoreName());
-                    }
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null, "Which store would you like to delete?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (storeName == null) {
                         return;
@@ -142,11 +133,7 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
-                    ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
-                    ArrayList<String> storeNames = new ArrayList<>();
-                    for (Store st: stores) {
-                        storeNames.add(st.getStoreName());
-                    }
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null, "Which store would you like to add the product to?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (storeName == null) {
                         return;
@@ -184,11 +171,7 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
-                    ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
-                    ArrayList<String> storeNames = new ArrayList<>();
-                    for (Store st: stores) {
-                        storeNames.add(st.getStoreName());
-                    }
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null, "Which store contains the product you\'d like to edit?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (storeName == null) {
                         return;
@@ -200,11 +183,7 @@ public class SellerGUI extends JComponent {
                         displayErrorDialog(errorMessage);
                         return;
                     } else if (getProductsResult[0].equals("SUCCESS")) {
-                        ArrayList<Product> products = (ArrayList<Product>) getProductsResult[1];
-                        ArrayList<String> productNames = new ArrayList<>();
-                        for (Product pr: products) {
-                            productNames.add(pr.getName());
-                        }
+                        ArrayList<String> productNames = (ArrayList<String>) getProductsResult[1];
                         String productName = (String) JOptionPane.showInputDialog(null, "Which product would you like to edit?", "Products", JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
                         if (productName == null) {
                             return;
@@ -236,11 +215,7 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
-                    ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
-                    ArrayList<String> storeNames = new ArrayList<>();
-                    for (Store st: stores) {
-                        storeNames.add(st.getStoreName());
-                    }
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null, "Which store contains the product you\'d like to delete?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (storeName == null) {
                         return;
@@ -252,11 +227,7 @@ public class SellerGUI extends JComponent {
                         displayErrorDialog(errorMessage);
                         return;
                     } else if (getProductsResult[0].equals("SUCCESS")) {
-                        ArrayList<Product> products = (ArrayList<Product>) getProductsResult[1];
-                        ArrayList<String> productNames = new ArrayList<>();
-                        for (Product pr: products) {
-                            productNames.add(pr.getName());
-                        }
+                        ArrayList<String> productNames = (ArrayList<String>) getProductsResult[1];
                         String productName = (String) JOptionPane.showInputDialog(null, "Which product would you like to delete?", "Products", JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
                         if (productName == null) {
                             return;
@@ -283,11 +254,7 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
-                    ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
-                    ArrayList<String> storeNames = new ArrayList<>();
-                    for (Store st: stores) {
-                        storeNames.add(st.getStoreName());
-                    }
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null, "Which store would you like to import the products into?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (storeName == null) {
                         return;
@@ -309,11 +276,7 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
-                    ArrayList<Store> stores = (ArrayList<Store>) getStoresResult[1];
-                    ArrayList<String> storeNames = new ArrayList<>();
-                    for (Store st: stores) {
-                        storeNames.add(st.getStoreName());
-                    }
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null, "Which store would you like to export the products from?", "Stores", JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (storeName == null) {
                         return;
@@ -471,6 +434,7 @@ public class SellerGUI extends JComponent {
                 int signOut = JOptionPane.showOptionDialog(null, "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (signOut == JOptionPane.YES_OPTION) {
                    try {
+                        sellerClient.signOut();
                         sellerFrame.dispose();
                         sellerClient.handleAccountState();
                     } catch (IOException ex) {
@@ -483,9 +447,8 @@ public class SellerGUI extends JComponent {
         }
     };
 
-    public SellerGUI(SellerClient sellerClient, String email) {
+    public SellerGUI(SellerClient sellerClient) {
         this.sellerClient = sellerClient;
-        this.email = email;
         sellerFrame = new JFrame("Seller Page");
         JPanel buttonPanel = new JPanel(new GridLayout(8, 2, 5, 5));
 
@@ -497,7 +460,7 @@ public class SellerGUI extends JComponent {
         sellerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Welcome message label initialization
-        welcomeUserLabel = new JLabel("Welcome " + this.email, SwingConstants.CENTER);
+        welcomeUserLabel = new JLabel("Welcome!", SwingConstants.CENTER);
         welcomeUserLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
         welcomeUserLabel.setFont(new Font("Serif", Font.BOLD, 20));
 

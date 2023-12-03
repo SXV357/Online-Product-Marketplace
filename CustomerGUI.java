@@ -20,7 +20,6 @@ public class CustomerGUI extends JComponent {
     private DisplayInformationGUI displayInfo = new DisplayInformationGUI();
     private JFrame customerFrame;
     private CustomerClient customerClient;
-    private String email;
     private JLabel welcomeUserLabel;
     private JButton editEmailButton;
     private JButton editPasswordButton;
@@ -42,7 +41,7 @@ public class CustomerGUI extends JComponent {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new CustomerGUI(null, "");
+                new CustomerGUI(null);
             }
         });
     }
@@ -77,14 +76,14 @@ public class CustomerGUI extends JComponent {
                     }
                     
                     int productSelection = Arrays.binarySearch(originalProducts, productChoice);
-                    Object[] productInfo = customerClient.getProductInfo(productSelection);
-                    
-                    if (productInfo[0].equals("ERROR")) {
-                        displayErrorDialog((String) productInfo[1]);
+                    Object[] incoming = customerClient.getProductInfo(productSelection);  
+                    if (incoming[0].equals("ERROR")) {
+                        displayErrorDialog((String) incoming[1]);
                         return;
                     } else {
+                        String[] productInfo = ((String) incoming[1]).split(",");
                         String[] options = {"Yes", "No"};
-                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo, "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo[1], "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (addToCart == null || addToCart.equals("No")) {
                             return;
@@ -116,14 +115,15 @@ public class CustomerGUI extends JComponent {
                     }
                     
                     int productSelection = Arrays.binarySearch(originalProducts, productChoice);
-                    Object[] productInfo = customerClient.getProductInfo(productSelection);
+                    Object[] incoming = customerClient.getProductInfo(productSelection);
+                    String[] productInfo = ((String) incoming[1]).split(",");
                     
-                    if (productInfo[0].equals("ERROR")) {
+                    if (incoming[0].equals("ERROR")) {
                         displayErrorDialog((String) productInfo[1]);
                         return;
                     } else {
                         String[] options = {"Yes", "No"};
-                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo, "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo[1], "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (addToCart == null || addToCart.equals("No")) {
                             return;
@@ -201,7 +201,7 @@ public class CustomerGUI extends JComponent {
                 }
                 boolean ascending = orderChoice.equals("Ascending") ? true: false;
                 int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
-                Object[] purchasesDashboardResult = customerClient.customerGetPersonalPurchasesDashboard(sortSelection, ascending, customerClient.getCustomer().getUserID());
+                Object[] purchasesDashboardResult = customerClient.customerGetPersonalPurchasesDashboard(sortSelection, ascending);
                 
                 if (purchasesDashboardResult[0].equals("ERROR")) {
                     String errorMessage = (String) purchasesDashboardResult[1];
@@ -240,7 +240,7 @@ public class CustomerGUI extends JComponent {
                     if (itemChoice == null) {
                         return;
                     }
-                    int itemSelection = Arrays.binarySearch(shoppingCartItems, itemChoice) + 1;
+                    int itemSelection = Arrays.binarySearch(shoppingCartItems, itemChoice);
                     Object[] removeFromCartResult = customerClient.removeFromCart(itemSelection);
                     if (removeFromCartResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, removeFromCartResult[1], "Remove from cart", JOptionPane.INFORMATION_MESSAGE);
@@ -295,6 +295,7 @@ public class CustomerGUI extends JComponent {
                 int signOut = JOptionPane.showOptionDialog(null, "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (signOut == JOptionPane.YES_OPTION) {
                    try {
+                        customerClient.signOut();
                         customerFrame.dispose();
                         customerClient.handleAccountState();
                     } catch (IOException ex) {
@@ -307,9 +308,8 @@ public class CustomerGUI extends JComponent {
         }
     };
 
-    public CustomerGUI(CustomerClient customerClient, String email) {
+    public CustomerGUI(CustomerClient customerClient) {
         this.customerClient = customerClient;
-        this.email = email;
         customerFrame = new JFrame("Customer Page");
         JPanel buttonPanel = new JPanel(new GridLayout(6, 2 , 5, 5));
 
@@ -321,7 +321,7 @@ public class CustomerGUI extends JComponent {
         customerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Welcome message label initialization
-        welcomeUserLabel = new JLabel("Welcome " + this.email, SwingConstants.CENTER);
+        welcomeUserLabel = new JLabel("Welcome!", SwingConstants.CENTER);
         welcomeUserLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
         welcomeUserLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
