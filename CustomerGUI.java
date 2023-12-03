@@ -30,6 +30,7 @@ public class CustomerGUI extends JComponent {
     // Associated with customer permissions
     private JButton viewAllProductsButton;
     private JButton searchForProductButton;
+    private JButton sortProductsButton;
     private JButton exportPurchaseHistoryButton;
     private JButton viewStoreDashboardButton;
     private JButton viewPurchaseDashboardButton;
@@ -109,12 +110,12 @@ public class CustomerGUI extends JComponent {
 
             } else if (e.getSource() == searchForProductButton) {
                 String query = JOptionPane.showInputDialog(null, "What would you like to search for?", "Search for Product", JOptionPane.QUESTION_MESSAGE);
-                Object[] viewAllProductsResult = customerClient.searchProducts(query);
-                if (viewAllProductsResult[0].equals("ERROR")) {
-                    displayErrorDialog((String)viewAllProductsResult[1]);
+                Object[] searchProductsResult = customerClient.searchProducts(query);
+                if (searchProductsResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) searchProductsResult[1]);
                     return;
                 } else {
-                    String[] originalProducts = ((String) viewAllProductsResult[1]).split("\n");
+                    String[] originalProducts = ((String) searchProductsResult[1]).split("\n");
                     String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
                     String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
                     if (productChoice == null) {
@@ -135,23 +136,20 @@ public class CustomerGUI extends JComponent {
                         String price = productInfo[6];
                         String description = productInfo[7];
                         String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%s", storeName, productName, availableQuantity, price, description);
-                        String[] options = {"Yes", "No"};
-                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + info, "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-                        if (addToCart == null || addToCart.equals("No")) {
-                            return;
-                        } else {
-                            Integer desiredQuantity = Integer.parseInt(JOptionPane.showInputDialog(null, "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE));
-                            Object[] productAddedResult = customerClient.addToCart(productSelection, desiredQuantity);
-                    
-                            if (productAddedResult[0].equals("SUCCESS")) {
-                                JOptionPane.showMessageDialog(null, productAddedResult[1], "Add To Cart", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                displayErrorDialog((String) productAddedResult[1]);
-                            }
-                        }
+                        JOptionPane.showMessageDialog(null, info, "Product Information", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
+
+            } else if (e.getSource() == sortProductsButton) {
+                Object[] viewAllProductsResult = customerClient.getAllProducts();
+                if (viewAllProductsResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) viewAllProductsResult[1]);
+                    return;
+                } else {
+                    String[] originalProducts = ((String) viewAllProductsResult[1]).split("\n");
+                    String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
+                    new SortProductsGUI(modifiedProducts, customerClient);
+                } 
 
             } else if (e.getSource() == exportPurchaseHistoryButton) {
                 Object[] exportPurchaseHistoryResult = customerClient.exportPurchaseHistory();
@@ -344,6 +342,9 @@ public class CustomerGUI extends JComponent {
         searchForProductButton = new JButton("Search For Product");
         searchForProductButton.addActionListener(actionListener);
 
+        sortProductsButton = new JButton("Sort Products");
+        sortProductsButton.addActionListener(actionListener);
+
         exportPurchaseHistoryButton = new JButton("Export Purchase History");
         exportPurchaseHistoryButton.addActionListener(actionListener);
 
@@ -376,6 +377,7 @@ public class CustomerGUI extends JComponent {
 
         buttonPanel.add(viewAllProductsButton);
         buttonPanel.add(searchForProductButton);
+        buttonPanel.add(sortProductsButton);
         buttonPanel.add(exportPurchaseHistoryButton);
         buttonPanel.add(viewPurchaseHistoryButton);
         buttonPanel.add(viewStoreDashboardButton);
