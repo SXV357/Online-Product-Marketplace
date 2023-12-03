@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 1, 2023
+ * @version December 2, 2023
  */
 public class User {
 
@@ -52,11 +52,11 @@ public class User {
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
-            String matchedUser = db.retrieveUserMatchForSignUp(email);
-            if (matchedUser == null) {
-                this.email = email;
-            } else {
+            boolean emailExists = checkDuplicateEmail(email);
+            if (emailExists) {
                 throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+            } else {
+                this.email = email;
             }
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
@@ -67,7 +67,6 @@ public class User {
         switch (role) {
             case CUSTOMER -> this.userID = "C" + String.valueOf(generatedID);
             case SELLER -> this.userID = "S" + String.valueOf(generatedID);
-            case UNDECIDED -> this.userID = "";
         }
         db.addToDatabase("users.csv", this.toString());
     }
@@ -139,25 +138,19 @@ public class User {
         if (email == null || email.isBlank() || email.isEmpty()) {
           throw new Exception("The email cannot be null, blank, or empty");  
         } 
-        boolean modifyEmail = true;
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
-            ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
-            for (String userEntry : userEntries) {
-                String userEmail = userEntry.split(",")[1];
-                if (userEmail.equals(email)) {
-                    modifyEmail = false;
-                    throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
-                }
+            boolean emailExists = checkDuplicateEmail(email);
+            if (emailExists) {
+                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+            } else {
+                String prevUserString = this.toString();
+                this.email = email;
+                db.modifyDatabase("users.csv", prevUserString, this.toString());
             }
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
-        }
-        if (modifyEmail) {
-            String prevUserString = this.toString();
-            this.email = email;
-            db.modifyDatabase("users.csv", prevUserString, this.toString());
         }
     }
 
@@ -174,6 +167,16 @@ public class User {
         this.password = password;
         db.modifyDatabase("users.csv", prevUserString, this.toString());
     }
+
+    /**
+     * Takes in the user's email and returns whether it is is associated with an existing user
+     *
+     * @param email The email to check the existence for in database
+     * @return The existence of the email in the users.csv database
+     */
+    public boolean checkDuplicateEmail(String email) {
+        return db.retrieveUserMatchForSignUp(email) != null;
+    } 
 
     /**
      * Returns a unique 7-digit ID as long as the current ID is not already

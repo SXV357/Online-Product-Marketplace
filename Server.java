@@ -11,22 +11,20 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 15, 2023
+ * @version December 2, 2023
  */
-
 public class Server {
 
     static ArrayList<String> activeUsers = new ArrayList<>(); //List of UserIDs on server
     public static final int PORT_NUMBER = 4242;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        ServerSocket serverSocket = new ServerSocket(PORT_NUMBER); 
-        while (true) { 
-            Socket socket = serverSocket.accept();
-            ServerThread serverThread = new ServerThread(socket); 
-            serverThread.start(); 
+        try (ServerSocket serverSocket = new ServerSocket(PORT_NUMBER)) {
+            while (true) { 
+                Socket socket = serverSocket.accept();
+                ServerThread serverThread = new ServerThread(socket); 
+                serverThread.start(); 
+            }
         }
     }
-    
-    
 }

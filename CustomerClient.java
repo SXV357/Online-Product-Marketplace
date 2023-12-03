@@ -20,7 +20,7 @@ public class CustomerClient {
     private ObjectInputStream ois;
     private Customer customer;
 
-    public CustomerClient(Socket socket, Customer customer) throws IOException{
+    public CustomerClient(Socket socket, Customer customer) throws IOException {
         this.socket = socket;
         this.oos = new ObjectOutputStream(socket.getOutputStream());
         this.ois = new ObjectInputStream(socket.getInputStream());
