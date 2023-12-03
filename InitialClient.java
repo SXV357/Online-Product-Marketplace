@@ -24,6 +24,7 @@ public class InitialClient {
         this.socket = socket;
         this.oos = new ObjectOutputStream(socket.getOutputStream());
         this.ois = new ObjectInputStream(socket.getInputStream());
+        oos.flush();
     }
 
     public static void main(String[] args) throws UnknownHostException, IOException {
@@ -32,7 +33,7 @@ public class InitialClient {
         initialClient.start();
     }
     //First method to call: initializes entire program through login GUI
-    public void start(){
+    public void start() {
         //constructor calls the GUI
         SwingUtilities.invokeLater(new Runnable() {
             @Override
