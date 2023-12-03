@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version December 2, 2023
+ * @version December 3, 2023
  */
 public class SignUpGUI extends JFrame {
     private JFrame signupFrame;
@@ -22,6 +22,7 @@ public class SignUpGUI extends JFrame {
     private JComboBox<String> roleComboBox;
     private JButton signupButton;
     private JButton returnToMainMenuButton;
+    private JButton loginButton;
     private InitialClient initialClient;
 
     // Constructor to initialize and set up the GUI components.
@@ -53,6 +54,9 @@ public class SignUpGUI extends JFrame {
             } else if (e.getSource() == returnToMainMenuButton) {
                 signupFrame.dispose();
                 new UserGUI(initialClient);
+            } else if (e.getSource() == loginButton) {
+                signupFrame.dispose();
+                new LoginGUI(initialClient);
             }
         }
     };
@@ -68,6 +72,8 @@ public class SignUpGUI extends JFrame {
 
                 signupButton = new JButton("Sign Up");
                 signupButton.addActionListener(actionListener);
+                loginButton = new JButton("Log In");
+                loginButton.addActionListener(actionListener);
                 returnToMainMenuButton = new JButton("Main Menu");
                 returnToMainMenuButton.addActionListener(actionListener);
 
@@ -96,6 +102,7 @@ public class SignUpGUI extends JFrame {
                 JPanel buttonPanel = new JPanel();
                 buttonPanel.add(signupButton);
                 buttonPanel.add(returnToMainMenuButton);
+                buttonPanel.add(loginButton);
 
                 signupFrame.add(textPanel, BorderLayout.CENTER);
                 signupFrame.add(buttonPanel, BorderLayout.SOUTH);

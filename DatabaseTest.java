@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 21, 2023
+ * @version December 3, 2023
  */
 public class DatabaseTest {
     static final String NON_EXISTENT_USER_ENTRY = "100678,hello@yahoo.com,76ybgjh,SELLER";
@@ -18,10 +18,11 @@ public class DatabaseTest {
     static final String NON_EXISTENT_SHOPPING_CART_ENTRY = "100678,100912,Store100,Apple,5,10";
     static final String NON_EXISTENT_PURCHASE_HISTORY_ENTRY = "100678,100912,Store100,Apple,5,10";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
+        ClearDatabaseData cl = new ClearDatabaseData();
         CreateDatabaseData data = new CreateDatabaseData();
-        data.clearData();
+        cl.clearData();
         data.createDataForDatabaseTests();
 
         /* INITIALIZE A NEW DATABASE INSTANCE FOR TESTING PURPOSES */
@@ -291,7 +292,7 @@ public class DatabaseTest {
                 && !productIDNonMatch) ? "Test Passed" : "Test Failed";
     }
 
-    static String testUserRetrievalFromDatabaseForLogin(Database db) {
+    static String testUserRetrievalFromDatabaseForLogin(Database db) throws Exception {
         // Retrieve user with matched credentials
         String existentUserResult = db.retrieveUserMatchForLogin("cherry@gmail.com", "12345");
         String existentUserTwoResult = db.retrieveUserMatchForLogin("Cherry@Gmail.com", "12345");
