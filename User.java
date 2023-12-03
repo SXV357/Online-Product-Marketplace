@@ -81,10 +81,6 @@ public class User {
      * @param role     The user's existing role
      */
     public User(String userID, String email, String password, UserRole role) throws Exception {
-        String matchedUser = db.retrieveUserMatchForLogin(email, password);
-        if (matchedUser == null) {
-            throw new Exception("The email or password you entered is non-existent. Please try again");
-        }
         this.userID = userID;
         this.email = email;
         this.password = password;

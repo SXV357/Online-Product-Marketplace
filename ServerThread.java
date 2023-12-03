@@ -44,12 +44,17 @@ public class ServerThread extends Thread {
                     // Log In
                     case "LOGIN" -> {
                         try {
-                            if (database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[3].equals("CUSTOMER")) {
-                                u = new Customer(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
-                            } else if (database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[3].equals("SELLER")){
-                                u = new Seller(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
+                            String userMatch = database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]);
+                            if (userMatch == null) {
+                                throw new Exception("The email or password you entered is non-existent. Please try again");
+                            } else {
+                                if (userMatch.split(",")[3].equals("CUSTOMER")) {
+                                u = new Customer(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
+                            } else if (userMatch.split(",")[3].equals("SELLER")){
+                                u = new Seller(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
                             }   
                             System.out.println("user login");
+                            }
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                             oos.flush();
