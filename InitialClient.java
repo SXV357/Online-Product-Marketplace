@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 30, 2023
+ * @version December 2, 2023
  */
 public class InitialClient {
 
@@ -20,11 +20,12 @@ public class InitialClient {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
-    public InitialClient(Socket socket) throws IOException{
+
+    public InitialClient(Socket socket) throws IOException {
         this.socket = socket;
         this.oos = new ObjectOutputStream(socket.getOutputStream());
+        this.oos.flush();
         this.ois = new ObjectInputStream(socket.getInputStream());
-        oos.flush();
     }
 
     public static void main(String[] args) throws UnknownHostException, IOException {
@@ -32,6 +33,7 @@ public class InitialClient {
         InitialClient initialClient = new InitialClient(socket);
         initialClient.start();
     }
+
     //First method to call: initializes entire program through login GUI
     public void start() {
         //constructor calls the GUI
@@ -45,25 +47,15 @@ public class InitialClient {
 
         public void attemptLogin(String email, String password){
         try {
-            //Check credentials with the database and retrieve user object
-            //Write null to indicate logging in or signing up
-            //oos.writeObject(null);
-            //TODO implement this request in server
-            String[] serverRequest = {"CUSTOMER_LOGIN",email,password};
+            String[] serverRequest = {"LOGIN", email, password};
             oos.writeObject(serverRequest);
             oos.flush();
 
-
             boolean loginSuccessful = true;
-            try {
-                loginSuccessful = (boolean) ois.readObject();
-            } catch (ClassNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            loginSuccessful = (boolean) ois.readObject();
 
-            if(loginSuccessful){
-                //get customer object from server
+            if (loginSuccessful) {
+                //get user object from server
                 Object incoming;
                 Customer customer = null;
                 Seller seller = null;
@@ -80,121 +72,14 @@ public class InitialClient {
                     }
                     
                 } catch (ClassNotFoundException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } else {
-                //if invalid display error message and return to login page
-                String errorMessage = "";
-                try {
-                    errorMessage = (String) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                new ErrorMessageGUI(errorMessage);
-                new LoginGUI(this);
+                new ErrorMessageGUI((String) ois.readObject());
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             new ErrorMessageGUI(SERVER_ERROR_MSG);
-        } catch (Exception e){
-            //Should never come here
-            System.out.println("Internal Server Communication Error");
-            e.printStackTrace();
-        }
-
-    }
-
-    public void attemptLoginSeller(String email, String password){
-            try {
-            //Check credentials with the database and retrieve user object
-
-            //Write null to indicate logging in or signing up
-            //oos.writeObject(null);
-            //TODO implement this request in server
-            String[] serverRequest = {"SELLER_LOGIN",email,password};
-            oos.writeObject(serverRequest);
-            oos.flush();
-
-
-            boolean loginSuccessful = true;
-
-            loginSuccessful = (boolean) ois.readObject();
-            
-            //if invalid display error message and return to login page
-            if (loginSuccessful){
-                //Get seller object from server and move to new Seller Client
-                Seller seller = null;
-                
-                seller = (Seller) ois.readObject();
-                
-                SellerClient sellerClient = new SellerClient(socket, seller);
-                sellerClient.homepage();
-            } else {
-                //if invalid display error message and return to login page
-                String errorMessage = "";
-                try {
-                    errorMessage = (String) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                new ErrorMessageGUI(errorMessage);
-                new LoginGUI(this);
-            }
-        } catch (IOException e){
-            new ErrorMessageGUI(SERVER_ERROR_MSG);
-        } catch (Exception e){
-            //Should never come here
-            System.out.println("Internal Server Communication Error");
-            e.printStackTrace();
-        }
-
-    }
-
-    public void attemptLoginCustomer(String email, String password){
-        try {
-            //Check credentials with the database and retrieve user object
-            //Write null to indicate logging in or signing up
-            //oos.writeObject(null);
-            //TODO implement this request in server
-            String[] serverRequest = {"CUSTOMER_LOGIN",email,password};
-            oos.writeObject(serverRequest);
-            oos.flush();
-
-
-            boolean loginSuccessful = true;
-            try {
-                loginSuccessful = (boolean) ois.readObject();
-            } catch (ClassNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            if(loginSuccessful){
-                //get customer object from server
-                Customer customer = null;
-                try {
-                    customer = (Customer) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                CustomerClient customerClient = new CustomerClient(socket, customer);
-                customerClient.homepage();  
-            } else {
-                //if invalid display error message and return to login page
-                String errorMessage = "";
-                try {
-                    errorMessage = (String) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                new ErrorMessageGUI(errorMessage);
-                new LoginGUI(this);
-            }
-        } catch (IOException e){
-            new ErrorMessageGUI(SERVER_ERROR_MSG);
-        } catch (Exception e){
-            //Should never come here
+        } catch (Exception e) {
             System.out.println("Internal Server Communication Error");
             e.printStackTrace();
         }
@@ -202,93 +87,46 @@ public class InitialClient {
     }
 
     public void attemptCreateNewSellerAccount(String email, String password) {
-        try{
-            //Check credentials with the database and retrieve user object
-            //Write null to indicate logging in or signing up
-            //oos.writeObject(null);
-            //TODO implement this request in server
-            String[] serverRequest = {"CREATE_SELLER",email,password};
+        try {
+            String[] serverRequest = {"CREATE_SELLER", email, password};
             oos.writeObject(serverRequest);
             oos.flush();
 
-
             boolean userCreated = true;
-            try {
-                userCreated = (boolean) ois.readObject();
-            } catch (ClassNotFoundException e) {
-                //only come here if server mis outputted
-                e.printStackTrace();
-            }
+            userCreated = (boolean) ois.readObject();
 
-            if(userCreated){
-                //get Seller object from server
-                Seller seller = null;
-                try {
-                    seller = (Seller) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    
-                    e.printStackTrace();
-                }
+            if (userCreated) {
                 new LoginGUI(this); 
-            } else{
-                String errorMessage = "";
-                try {
-                    errorMessage = (String) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                new ErrorMessageGUI(errorMessage);
-                new LoginGUI(this);
+            } else {
+                new ErrorMessageGUI((String) ois.readObject());
             }
-
-        } catch (IOException e){
+        } catch (IOException e) {
             new ErrorMessageGUI(SERVER_ERROR_MSG);
-        } catch (Exception e){
-            //Should never come here
+        } catch (Exception e) {
             System.out.println("Internal Server Communication Error");
             e.printStackTrace();
         }
-
     }
 
     public void attemptCreateNewCustomerAccount(String email, String password){
         try {
-            //Check credentials with the database and retrieve user object
-            //Write null to indicate logging in or signing up
-            //oos.writeObject(null);
-            //TODO implement this request in server
-            String[] serverRequest = {"CREATE_CUSTOMER",email,password};
+            String[] serverRequest = {"CREATE_CUSTOMER", email, password};
             oos.writeObject(serverRequest);
             oos.flush();
 
             boolean userCreated = true;
-
             userCreated = (boolean) ois.readObject();
 
-
-            if(userCreated){
-                //get customer object from server
-                Customer customer = null;
-
-                customer = (Customer) ois.readObject();
-
+            if (userCreated) {
                 new LoginGUI(this);
             } else {
-                //if invalid display error message and return to login page
-                String errorMessage = "";
-
-                errorMessage = (String) ois.readObject();
-                
-                new ErrorMessageGUI(errorMessage);
-                new SignUpGUI(this);
+                new ErrorMessageGUI((String) ois.readObject());
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             new ErrorMessageGUI(SERVER_ERROR_MSG);
-        } catch (Exception e){
-            //Should never come here
+        } catch (Exception e) {
             System.out.println("Internal Server Communication Error");
             e.printStackTrace();
         }
-
     }
 }

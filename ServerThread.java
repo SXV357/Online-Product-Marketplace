@@ -1,8 +1,6 @@
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-
 /**
  * Project 5 - ServerThread.java
  * 
@@ -11,9 +9,8 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 15, 2023
+ * @version December 2, 2023
  */
-
 public class ServerThread extends Thread {
 
     Socket socket;
@@ -45,39 +42,32 @@ public class ServerThread extends Thread {
                     // Log In
                     case "LOGIN" -> {
                         try {
-                            if (database.getMatchedEntries("users.csv", 1, userInfo[2]).get(3).equals("Customer")) {
-                                Customer c = new Customer(database.getMatchedEntries("users.csv", 1, userInfo[2]).get(0),
-                            userInfo[2], userInfo[3], UserRole.CUSTOMER);
+                            if (database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[3].equals("CUSTOMER")) {
+                                Customer c = new Customer(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
                                 oos.writeObject(true);
                                 oos.flush();
                                 oos.writeObject(c);
                                 user = 0;
                             } else {
-                                Seller s = new Seller(database.getMatchedEntries("users.csv", 1, userInfo[2]).get(0),
-                            userInfo[2], userInfo[3], UserRole.SELLER);
+                                Seller s = new Seller(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
                                 oos.writeObject(true);
                                 oos.flush();
                                 oos.writeObject(s);
                                 oos.flush();
                                 user = 1;
-                            }
-
-                            
+                            }   
                         } catch (Exception e) {
                             oos.writeObject(false);
                             oos.flush();
                             oos.writeObject(e.getMessage());
                             oos.flush();
-                        }
-                         
-                        }
+                        } 
+                    }
                     // Customer Sign up
                     case "CREATE_CUSTOMER" -> {
                         try {
                              Customer c = new Customer(userInfo[1], userInfo[2], UserRole.CUSTOMER);
                              oos.writeObject(true);
-                             oos.flush();
-                             oos.writeObject(c);
                              oos.flush();
                              user = 0;
                         } catch (Exception e) {
@@ -93,8 +83,6 @@ public class ServerThread extends Thread {
                             Seller s = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
                             oos.writeObject(true);
                             oos.flush();
-                            oos.writeObject(s);
-                            oos.flush();
                             user = 1;
                         } catch (Exception e) {
                             oos.writeObject(false);
@@ -105,7 +93,6 @@ public class ServerThread extends Thread {
                     }
                     default -> oos.writeObject("ERROR");
                 }
-
                 System.out.println("yes");
                 if (user == 0) {
                     //Server.activeUsers.add(c.getUserID());
@@ -167,9 +154,7 @@ public class ServerThread extends Thread {
 
                         } catch (CustomerException e) {
                             oos.writeObject(new Object[] { "ERROR", e.getMessage() });
-
                         }
-
                     }
                 } else if (user == 1) {
                     //Server.activeUsers.add(s.getUserID());
@@ -254,10 +239,8 @@ public class ServerThread extends Thread {
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

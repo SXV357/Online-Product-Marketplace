@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  *
- * @version December 1, 2023
+ * @version December 2, 2023
  */
 public class SignUpGUI extends JFrame {
     private JFrame signupFrame;
@@ -38,10 +38,15 @@ public class SignUpGUI extends JFrame {
                 char[] passwordChars = passwordField.getPassword();
                 String password = new String(passwordChars);
                 String role = (String) roleComboBox.getSelectedItem();
-                if (role.equals("Customer")) {
-                    initialClient.attemptCreateNewCustomerAccount(email, password);
+                if (role == null) {
+                    new ErrorMessageGUI("You need to select a role in order to access the application");
+                    return;
                 } else {
-                    initialClient.attemptCreateNewSellerAccount(email, password);
+                    if (role.equals("Customer")) {
+                        initialClient.attemptCreateNewCustomerAccount(email, password);
+                    } else {
+                        initialClient.attemptCreateNewSellerAccount(email, password);
+                    }
                 }
             } else if (e.getSource() == returnToMainMenuButton) {
                 signupFrame.dispose();
@@ -74,7 +79,7 @@ public class SignUpGUI extends JFrame {
                 // Reset the contents of all fields when the GUI is opened
                 emailField.setText("");
                 passwordField.setText(null);
-                roleComboBox.setSelectedItem("Customer");
+                roleComboBox.setSelectedItem(null);
 
                 //Add panel for text fields and labels
                 JPanel textPanel = new JPanel();

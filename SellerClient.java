@@ -15,12 +15,12 @@ import javax.swing.SwingUtilities;
  */
 public class SellerClient {
     
-    private Socket socket;
-    private ObjectOutputStream oos;
-    private ObjectInputStream ois;
-    private Seller seller;
+    Socket socket;
+    ObjectOutputStream oos;
+    ObjectInputStream ois;
+    Seller seller;
 
-    public SellerClient(Socket socket, Seller seller) throws IOException{
+    public SellerClient(Socket socket, Seller seller) throws IOException {
         this.socket = socket;
         this.oos = new ObjectOutputStream(this.socket.getOutputStream());
         this.ois = new ObjectInputStream(this.socket.getInputStream());
