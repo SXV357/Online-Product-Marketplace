@@ -37,14 +37,10 @@ public class Customer extends User {
      *
      * @return String of array's contents
      */
-    public String arrToString(ArrayList<String> array, boolean quantity) {
+    public String arrToString(ArrayList<String> array) {
 
         StringBuilder output = new StringBuilder();
-        if (quantity) {
-            output.append("Product Name - Store Name - Quantity - Price\n");
-        } else {
-            output.append("Product Name - Store Name - Price\n");
-        }
+        output.append("Product Name - Store Name - Quantity - Price\n");
         for (int i = 0; i < array.size(); i++) {
             output.append(i + 1).append(") ").append(array.get(i)).append("\n");
         }
@@ -77,7 +73,7 @@ public class Customer extends User {
                 output.add(sb.toString());
             }
         }
-        return arrToString(output, true);
+        return arrToString(output);
     }
 
     /**
@@ -133,7 +129,7 @@ public class Customer extends User {
                 output.add(sb.toString());
             }
         }
-        return arrToString(output, true);
+        return arrToString(output);
 
     }
 
@@ -156,14 +152,12 @@ public class Customer extends User {
                 info = product.split(",");
                 sb.append(info[4]).append("     ");
                 sb.append(info[3]).append("     ");
-                if (quantity) {
-                    sb.append(info[5]).append("     ");
-                }
+                sb.append(info[5]).append("     ");
                 sb.append(info[6]).append("     ");
                 output.add(sb.toString());
             }
         }
-        return arrToString(output, quantity);
+        return arrToString(output);
 
     }
 
@@ -192,7 +186,7 @@ public class Customer extends User {
                 output.add(sb.toString());
             }
         }
-        return arrToString(output, true);
+        return arrToString(output);
     }
 
     /**
