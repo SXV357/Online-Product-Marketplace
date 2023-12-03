@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 2, 2023
+ * @version December 3, 2023
  */
 public class InitialClient {
 
@@ -69,7 +69,6 @@ public class InitialClient {
             System.out.println("Internal Server Communication Error");
             e.printStackTrace();
         }
-
     }
 
     public void attemptCreateNewSellerAccount(String email, String password) {
