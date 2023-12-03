@@ -128,11 +128,12 @@ public class Customer extends User {
                 info = product.split(",");
                 sb.append(info[4]).append("     ");
                 sb.append(info[3]).append("     ");
+                sb.append(info[5]).append("     ");
                 sb.append(info[6]).append("     ");
                 output.add(sb.toString());
             }
         }
-        return arrToString(output, false);
+        return arrToString(output, true);
 
     }
 
