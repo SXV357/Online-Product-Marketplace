@@ -15,6 +15,10 @@ public class CreateDatabaseData {
 
     private Database database = new Database();
 
+    public static void main(String[] args) {
+        new CreateDatabaseData().createData();
+    }
+
     public void clearData() {
         // Users
         ArrayList<String> testUsers = new ArrayList<>();

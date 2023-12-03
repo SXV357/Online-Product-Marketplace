@@ -43,8 +43,10 @@ public class SignUpGUI extends JFrame {
                     return;
                 } else {
                     if (role.equals("Customer")) {
+                        signupFrame.dispose();
                         initialClient.attemptCreateNewCustomerAccount(email, password);
                     } else {
+                        signupFrame.dispose();
                         initialClient.attemptCreateNewSellerAccount(email, password);
                     }
                 }
