@@ -1,3 +1,6 @@
 ID,Email,Password,Role
-S1000000,sdas@gmail.com,1234,SELLER
-C1000001,ew@gmail.com,1234,CUSTOMER
+C100001,cherry@gmail.com,12345,Customer
+C100002,banana@gmail.com,1234567,Customer
+C100003,apple@gmail.com,765543,Customer
+S100001,apricot@gmail.com,12313,Seller
+S100002,balogne@gmail.com,12315436,Seller

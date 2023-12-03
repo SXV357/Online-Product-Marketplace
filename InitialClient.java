@@ -52,6 +52,7 @@ public class InitialClient {
             oos.flush();
 
             String response = (String) ois.readObject();
+            System.out.println(response);
             if (response.equals("Customer Connection to Server Established")) {
                 new CustomerClient(oos, ois).homepage();
 
