@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 2, 2023
+ * @version December 3, 2023
  */
 public class CustomerGUI extends JComponent {
 
@@ -77,13 +77,20 @@ public class CustomerGUI extends JComponent {
                     
                     int productSelection = Arrays.binarySearch(originalProducts, productChoice);
                     Object[] incoming = customerClient.getProductInfo(productSelection);  
+
                     if (incoming[0].equals("ERROR")) {
                         displayErrorDialog((String) incoming[1]);
                         return;
                     } else {
                         String[] productInfo = ((String) incoming[1]).split(",");
+                        String storeName = productInfo[3];
+                        String productName = productInfo[4];
+                        String availableQuantity = productInfo[5]; 
+                        String price = productInfo[6];
+                        String description = productInfo[7];
+                        String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%s", storeName, productName, availableQuantity, price, description);
                         String[] options = {"Yes", "No"};
-                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo[1], "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + info, "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (addToCart == null || addToCart.equals("No")) {
                             return;
@@ -116,14 +123,20 @@ public class CustomerGUI extends JComponent {
                     
                     int productSelection = Arrays.binarySearch(originalProducts, productChoice);
                     Object[] incoming = customerClient.getProductInfo(productSelection);
-                    String[] productInfo = ((String) incoming[1]).split(",");
                     
                     if (incoming[0].equals("ERROR")) {
-                        displayErrorDialog((String) productInfo[1]);
+                        displayErrorDialog((String) incoming[1]);
                         return;
                     } else {
+                        String[] productInfo = ((String) incoming[1]).split(",");
+                        String storeName = productInfo[3];
+                        String productName = productInfo[4];
+                        String availableQuantity = productInfo[5]; 
+                        String price = productInfo[6];
+                        String description = productInfo[7];
+                        String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%s", storeName, productName, availableQuantity, price, description);
                         String[] options = {"Yes", "No"};
-                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + productInfo[1], "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + info, "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (addToCart == null || addToCart.equals("No")) {
                             return;

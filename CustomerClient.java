@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import javax.swing.SwingUtilities;
 /**
  * Project 5 - CustomerClient.java
@@ -11,7 +10,7 @@ import javax.swing.SwingUtilities;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 30, 2023
+ * @version December 3, 2023
  */
 public class CustomerClient {
 
@@ -23,7 +22,7 @@ public class CustomerClient {
         this.ois =  ois;
     }
 
-    public void handleAccountState() throws IOException{
+    public void handleAccountState() throws IOException {
         InitialClient initialClient = new InitialClient(oos, ois);
         initialClient.start();
     }
@@ -37,7 +36,6 @@ public class CustomerClient {
                     cc = new CustomerClient(oos, ois);
                     new CustomerGUI(cc);
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }    
             }
@@ -82,7 +80,7 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"ADD_TO_CART", String.valueOf(index), String.valueOf(quantity)});
             oos.flush();
-            
+        
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -98,7 +96,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"REMOVE_FROM_CART", String.valueOf(index)});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -114,7 +111,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"GET_CART"});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -130,7 +126,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"GET_SHOPPING_HISTORY"});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -146,7 +141,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"SEARCH_PRODUCTS", query});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -162,7 +156,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"SORT_PRODUCTS", choice});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -178,7 +171,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"EXPORT_PURCHASE_HISTORY"});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -193,7 +185,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"PURCHASE_ITEMS"});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -209,7 +200,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new Object[] {"EXPORT_PURCHASE_HISTORY", sortSelection, ascending});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -225,7 +215,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new Object[] {"PURCHASE_DASHBOARD", sortSelection, ascending});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -240,7 +229,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"EDIT_EMAIL", newEmail});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -255,7 +243,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"EDIT_PASSWORD", newPassword});
             oos.flush();
-            
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
@@ -270,7 +257,6 @@ public class CustomerClient {
         try {
             oos.writeObject(new String[] {"DELETE_ACCOUNT"});
             oos.flush();
-
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
             return null;
