@@ -88,15 +88,16 @@ public class Customer extends User {
      */
     public String getProductInfo(int index) throws CustomerException {
         try {
-            index -= 1;
+            index++;
+            
             StringBuilder sb = new StringBuilder();
             String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
 
-            sb.append("Store Name: ").append(prodInfo[3]).append(System.getProperty("line.separator"));
-            sb.append("Product Name: ").append(prodInfo[4]).append(System.getProperty("line.separator"));
-            sb.append("Available Quantity: ").append(prodInfo[5]).append(System.getProperty("line.separator"));
-            sb.append("Price: ").append(prodInfo[6]).append(System.getProperty("line.separator"));
-            sb.append("Description: ").append(prodInfo[7]);
+            sb.append(prodInfo[3]).append(",");
+            sb.append(prodInfo[4]).append(",");
+            sb.append(prodInfo[5]).append(",");
+            sb.append(prodInfo[6]).append(",");
+            sb.append(prodInfo[7]);
             for (int i = 8; i < prodInfo.length; i++) {
                 sb.append(prodInfo[i]);
             }
@@ -200,7 +201,7 @@ public class Customer extends User {
      * @throws CustomerException
      */
     public void removeFromCart(int index) throws CustomerException {
-        index -= 1;
+        
         try {
             db.removeFromDatabase("shoppingCarts.csv", shoppingCart.get(index));
             shoppingCart.remove(index);
@@ -217,7 +218,7 @@ public class Customer extends User {
      * @throws CustomerException
      */
     public void addToCart(int index, int quantity) throws CustomerException {
-        index -= 1;
+        index++;
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)

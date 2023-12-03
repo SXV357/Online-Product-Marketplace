@@ -36,6 +36,7 @@ public class LoginGUI {
                 char[] passwordChars = passwordField.getPassword();
                 String password = new String(passwordChars);
                 initialClient.attemptLogin(email, password);
+                loginFrame.dispose();
             } else if (e.getSource() == returnToMainMenuButton) {
                 loginFrame.dispose();
                 new UserGUI(initialClient);

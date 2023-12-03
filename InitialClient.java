@@ -17,20 +17,20 @@ import java.io.ObjectOutputStream;
 public class InitialClient {
 
     private final String SERVER_ERROR_MSG = "Error occured when communicating with server";
-    private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
-    public InitialClient(Socket socket) throws IOException {
-        this.socket = socket;
-        this.oos = new ObjectOutputStream(socket.getOutputStream());
-        this.oos.flush();
-        this.ois = new ObjectInputStream(socket.getInputStream());
+    public InitialClient(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
+        this.oos = oos;
+        this.ois = ois;
     }
 
     public static void main(String[] args) throws UnknownHostException, IOException {
         Socket socket = new Socket("localhost", Server.PORT_NUMBER);
-        InitialClient initialClient = new InitialClient(socket);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        oos.flush();
+        InitialClient initialClient = new InitialClient(oos, ois);
         initialClient.start();
     }
 
@@ -51,33 +51,19 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
-            boolean loginSuccessful = true;
-            loginSuccessful = (boolean) ois.readObject();
+            String response = (String) ois.readObject();
+            if (response.equals("Customer Connection to Server Established")) {
+                new CustomerClient(oos, ois).homepage();
 
-            if (loginSuccessful) {
-                //get user object from server
-                Object incoming;
-                Customer customer = null;
-                Seller seller = null;
-                try {
-                    incoming = ois.readObject();
-                    if (incoming instanceof Customer) {
-                        customer = (Customer) incoming;
-                        CustomerClient customerClient = new CustomerClient(socket, customer);
-                        customerClient.homepage();  
-                    } else {
-                        seller = (Seller) incoming;
-                        SellerClient sellerClient = new SellerClient(socket, seller);
-                        sellerClient.homepage(); 
-                    }
-                    
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+            } else if (response.equals("Seller Connection to Server Established")) {
+                new SellerClient(oos, ois).homepage();
             } else {
-                new ErrorMessageGUI((String) ois.readObject());
+                new ErrorMessageGUI(response);
+                new LoginGUI(this);
             }
+    
         } catch (IOException e) {
+            e.printStackTrace();
             new ErrorMessageGUI(SERVER_ERROR_MSG);
         } catch (Exception e) {
             System.out.println("Internal Server Communication Error");
@@ -92,14 +78,17 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
-            boolean userCreated = true;
-            userCreated = (boolean) ois.readObject();
+            String response = (String) ois.readObject();
+            if (response.equals("Customer Connection to Server Established")) {
+                new CustomerClient(oos, ois).homepage();
 
-            if (userCreated) {
-                new LoginGUI(this); 
+            } else if (response.equals("Seller Connection to Server Established")) {
+                new SellerClient(oos, ois).homepage();
             } else {
-                new ErrorMessageGUI((String) ois.readObject());
+                new ErrorMessageGUI(response);
+                new LoginGUI(this);
             }
+
         } catch (IOException e) {
             new ErrorMessageGUI(SERVER_ERROR_MSG);
         } catch (Exception e) {
@@ -114,13 +103,14 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
-            boolean userCreated = true;
-            userCreated = (boolean) ois.readObject();
-
-            if (userCreated) {
-                new LoginGUI(this);
+            String response = (String) ois.readObject();
+            if (response.equals("Customer Connection to Server Established")) {
+                new CustomerClient(oos, ois).homepage();
+            } else if (response.equals("Seller Connection to Server Established")) {
+                new SellerClient(oos, ois).homepage();
             } else {
-                new ErrorMessageGUI((String) ois.readObject());
+                new ErrorMessageGUI(response);
+                new LoginGUI(this);
             }
         } catch (IOException e) {
             new ErrorMessageGUI(SERVER_ERROR_MSG);

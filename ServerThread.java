@@ -33,9 +33,11 @@ public class ServerThread extends Thread {
             Object output = null;
             boolean exit = false;
             Database database = new Database();
-            int user = -1;
+            User u = null;
 
             while (socket.isConnected()) {
+                exit = false;
+                u = new User();
         
                 String[] userInfo = (String[]) ois.readObject();
                 switch (userInfo[0]) {
@@ -43,22 +45,12 @@ public class ServerThread extends Thread {
                     case "LOGIN" -> {
                         try {
                             if (database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[3].equals("CUSTOMER")) {
-                                Customer c = new Customer(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
-                                oos.writeObject(true);
-                                oos.flush();
-                                oos.writeObject(c);
-                                user = 0;
-                            } else {
-                                Seller s = new Seller(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
-                                oos.writeObject(true);
-                                oos.flush();
-                                oos.writeObject(s);
-                                oos.flush();
-                                user = 1;
+                                u = new Customer(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
+                            } else if (database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[3].equals("SELLER")){
+                                u = new Seller(database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]).split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
                             }   
+                            System.out.println("user login");
                         } catch (Exception e) {
-                            oos.writeObject(false);
-                            oos.flush();
                             oos.writeObject(e.getMessage());
                             oos.flush();
                         } 
@@ -66,13 +58,8 @@ public class ServerThread extends Thread {
                     // Customer Sign up
                     case "CREATE_CUSTOMER" -> {
                         try {
-                             Customer c = new Customer(userInfo[1], userInfo[2], UserRole.CUSTOMER);
-                             oos.writeObject(true);
-                             oos.flush();
-                             user = 0;
+                             u = new Customer(userInfo[1], userInfo[2], UserRole.CUSTOMER);
                         } catch (Exception e) {
-                            oos.writeObject(false);
-                            oos.flush();
                             oos.writeObject(e.getMessage());
                             oos.flush();
                         }
@@ -80,26 +67,22 @@ public class ServerThread extends Thread {
                     // Seller Sign up
                     case "CREATE_SELLER" -> {
                         try {
-                            Seller s = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
-                            oos.writeObject(true);
-                            oos.flush();
-                            user = 1;
+                            u = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
                         } catch (Exception e) {
-                            oos.writeObject(false);
-                            oos.flush();
                             oos.writeObject(e.getMessage());
                             oos.flush();
                         }
                     }
                     default -> oos.writeObject("ERROR");
                 }
-                System.out.println("yes");
-                if (user == 0) {
+                if (u instanceof Customer) {
                     //Server.activeUsers.add(c.getUserID());
+                    Customer c = (Customer) u;
+                    System.out.println("Hello");
                     oos.writeObject("Customer Connection to Server Established");
+                    oos.flush();
                     while (!exit) {
                         response = (String[]) ois.readObject();
-                        Customer c = (Customer) ois.readObject();
                         output = null;
                         try {
                             switch (response[0]) {
@@ -147,21 +130,30 @@ public class ServerThread extends Thread {
                                     c.deleteAccount();
                                     exit = true;
                                 }
+                                case "SIGN_OUT" -> {
+                                    exit = true;
+                                }
                                 default -> output = null;
 
                             }
-                            oos.writeObject(new Object[] { "SUCCESS", output });
+                            if (!exit) {
+                                oos.writeObject(new Object[] { "SUCCESS", output });
+                                oos.flush();
+                            }
+                            
 
                         } catch (CustomerException e) {
                             oos.writeObject(new Object[] { "ERROR", e.getMessage() });
+                            oos.flush();
                         }
                     }
-                } else if (user == 1) {
+                } else if (u instanceof Seller) {
                     //Server.activeUsers.add(s.getUserID());
+                    Seller s = (Seller) u;
                     oos.writeObject("Seller Connection to Server Established");
+                    oos.flush();
                     while (!exit) {
                         response = (String[]) ois.readObject();
-                        Seller s = (Seller) ois.readObject();
                         output = null;
                         try {
                             switch (response[0]) {
@@ -230,11 +222,20 @@ public class ServerThread extends Thread {
                                     s.deleteAccount();
                                     exit = true;
                                 }
+
+                                case "SIGN_OUT" -> {
+                                    exit = true;
+                                }
                                 default -> output = null;
                             }
-                            oos.writeObject(new Object[] { "SUCCESS", output });
+                            if (!exit) {
+                                oos.writeObject(new Object[] { "SUCCESS", output });
+                                oos.flush();
+                            }
+                            
                         } catch (SellerException e) {
                             oos.writeObject(new Object[] { "ERROR", e.getMessage() });
+                            oos.flush();
                         }
                     }
                 }
