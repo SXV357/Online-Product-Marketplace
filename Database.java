@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 26, 2023
+ * @version December 3, 2023
  */
 public class Database {
     private final String DATABASES_DIRECTORY = "databases/";
@@ -121,22 +121,34 @@ public class Database {
      * @return A comma-separated string containing the matched user's information in
      *         the users.csv database
      */
-    public String retrieveUserMatchForLogin(String email, String password) {
+    public String retrieveUserMatchForLogin(String email, String password) throws Exception {
         synchronized (lock) {
+            String matchedUser = "";
+            email = email.toLowerCase();
+            password = password.toLowerCase();
             ArrayList<String> userEntries = getDatabaseContents("users.csv");
             // If the very first user in the application tries logging in instead of signing
             // up
             if (userEntries.isEmpty()) {
-                return null;
-            }
-            for (int j = 0; j < userEntries.size(); j++) {
-                String[] userRepresentation = userEntries.get(j).split(",");
-                if (email.toLowerCase().equals(userRepresentation[1].toLowerCase())
-                        && password.toLowerCase().equals(userRepresentation[2].toLowerCase())) {
-                    return userEntries.get(j);
+                throw new Exception("Both the email and password are non-existent. Please try again");
+            } else {
+                for (int j = 0; j < userEntries.size(); j++) {
+                    String[] userRepresentation = userEntries.get(j).split(",");
+                    String comparisonEmail = userRepresentation[1].toLowerCase();
+                    String comparisonPassword = userRepresentation[2].toLowerCase();
+                    if (comparisonEmail.equals(email) && comparisonPassword.equals(password)) {
+                        matchedUser = userEntries.get(j);
+                        break;
+                    } else if (!(comparisonEmail.equals(email)) && !(comparisonPassword.equals(password))) {
+                        throw new Exception("Both the email and password are non-existent. Please try again");
+                    } else if (!(comparisonEmail.equals(email)) && comparisonPassword.equals(password)) {
+                        throw new Exception("The email is non-existent. Please try again");
+                    } else if (comparisonEmail.equals(email) && !(comparisonPassword.equals(password))) {
+                        throw new Exception("The password is non-existent. Please try again");
+                    }
                 }
             }
-            return null;
+            return matchedUser;
         }
     }
 
