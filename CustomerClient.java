@@ -201,7 +201,6 @@ public class CustomerClient {
             oos.writeObject(new String[] {"EXPORT_PURCHASE_HISTORY", String.valueOf(sortSelection), String.valueOf(ascending)});
             oos.flush();
             result = (Object[]) ois.readObject();
-            System.out.println(result);
         } catch (Exception e) {
             return null;
         }
@@ -217,7 +216,6 @@ public class CustomerClient {
             oos.writeObject(new String[] {"PURCHASE_DASHBOARD", String.valueOf(sortSelection), String.valueOf(ascending)});
             oos.flush();
             result = (Object[]) ois.readObject();
-            System.out.println(result);
         } catch (Exception e) {
             return null;
         }
