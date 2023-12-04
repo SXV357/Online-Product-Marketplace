@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 3, 2023
+ * @version December 4, 2023
  */
 public class CustomerClient {
 
@@ -251,9 +251,8 @@ public class CustomerClient {
     }
 
     public Object[] deleteAccount() {
-        // action: DELETE_ACCOUNT 
-        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
-        Object[] result;
+        // action: DELETE_ACCOUNT
+        Object[] result; 
         try {
             oos.writeObject(new String[] {"DELETE_ACCOUNT"});
             oos.flush();
@@ -264,13 +263,16 @@ public class CustomerClient {
         return result;
     }
 
-    public void signOut() {
+    public Object[] signOut() {
         // action: SIGN_OUT 
+        Object[] result;
         try {
             oos.writeObject(new String[] {"SIGN_OUT"});
             oos.flush();
+            result = (Object[]) ois.readObject();
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
+        return result;
     }
 }

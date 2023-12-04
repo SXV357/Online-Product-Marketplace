@@ -15,7 +15,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 2, 2023
+ * @version December 4, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -416,8 +416,8 @@ public class SellerGUI extends JComponent {
             } else if (e.getSource() == deleteAccountButton) {
                 int deleteAccount = JOptionPane.showOptionDialog(null, "Are you sure you want to delete your account?", "Delete Account", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (deleteAccount == JOptionPane.YES_OPTION) {
-                   Object[] deleteAccountResult = sellerClient.deleteAccount();
-                   if (deleteAccountResult[0].equals("SUCCESS")) {
+                    Object[] deleteAccountResult = sellerClient.deleteAccount();
+                    if (deleteAccountResult[0].equals("SUCCESS")) {
                         try {
                             sellerFrame.dispose();
                             sellerClient.handleAccountState();
@@ -433,12 +433,16 @@ public class SellerGUI extends JComponent {
             } else if (e.getSource() == signOutButton) {
                 int signOut = JOptionPane.showOptionDialog(null, "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (signOut == JOptionPane.YES_OPTION) {
-                   try {
-                        sellerClient.signOut();
-                        sellerFrame.dispose();
-                        sellerClient.handleAccountState();
-                    } catch (IOException ex) {
-                        return;
+                   Object[] signOutResult = sellerClient.signOut();
+                    if (signOutResult[0].equals("SUCCESS")) {
+                        try {
+                            sellerFrame.dispose();
+                            sellerClient.handleAccountState();
+                        } catch (IOException ex) {
+                            return;
+                        }
+                    } else {
+                        displayErrorDialog((String) signOutResult[1]);
                     }
                 } else {
                     return;
