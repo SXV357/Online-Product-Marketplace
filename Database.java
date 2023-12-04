@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 3, 2023
+ * @version December 4, 2023
  */
 public class Database {
     private final String DATABASES_DIRECTORY = "databases/";
@@ -124,11 +124,12 @@ public class Database {
     public String retrieveUserMatchForLogin(String email, String password) throws Exception {
         synchronized (lock) {
             String matchedUser = "";
+            boolean fullMatchFound = false;
+            boolean partialMatchFound = false;
             email = email.toLowerCase();
             password = password.toLowerCase();
             ArrayList<String> userEntries = getDatabaseContents("users.csv");
-            // If the very first user in the application tries logging in instead of signing
-            // up
+            // If the very first user in the application tries logging in instead of signing up
             if (userEntries.isEmpty()) {
                 throw new Exception("Both the email and password are non-existent. Please try again");
             } else {
@@ -137,15 +138,20 @@ public class Database {
                     String comparisonEmail = userRepresentation[1].toLowerCase();
                     String comparisonPassword = userRepresentation[2].toLowerCase();
                     if (comparisonEmail.equals(email) && comparisonPassword.equals(password)) {
+                        fullMatchFound = true;
                         matchedUser = userEntries.get(j);
                         break;
-                    } else if (!(comparisonEmail.equals(email)) && !(comparisonPassword.equals(password))) {
-                        throw new Exception("Both the email and password are non-existent. Please try again");
-                    } else if (!(comparisonEmail.equals(email)) && comparisonPassword.equals(password)) {
-                        throw new Exception("The email is non-existent. Please try again");
                     } else if (comparisonEmail.equals(email) && !(comparisonPassword.equals(password))) {
-                        throw new Exception("The password is non-existent. Please try again");
+                        partialMatchFound = true;
+                        throw new Exception("Wrong password. Please try again");
+                    } else if (comparisonPassword.equals(password) && !(comparisonEmail.equals(email))) {
+                        partialMatchFound = true;
+                        throw new Exception("Wrong email. Please try again");
                     }
+                }
+                // After going through the non-empty database, if no entries match the credentials provided
+                if (!fullMatchFound && !partialMatchFound) {
+                    throw new Exception("Both the email and password are non-existent. Please try again");
                 }
             }
             return matchedUser;
@@ -165,8 +171,7 @@ public class Database {
     public String retrieveUserMatchForSignUp(String email) {
         synchronized (lock) {
             ArrayList<String> userEntries = getDatabaseContents("users.csv");
-            // If the very first user in the application tries creating an account, no
-            // matches found yet
+            // If the very first user in the application tries creating an account, no matches found yet
             if (userEntries.isEmpty()) {
                 return null;
             }
