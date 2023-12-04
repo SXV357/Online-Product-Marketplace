@@ -9,7 +9,7 @@ import java.net.Socket;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 2, 2023
+ * @version December 4, 2023
  */
 public class ServerThread extends Thread {
 
@@ -113,6 +113,11 @@ public class ServerThread extends Thread {
                                     c.exportPurchaseHistory();
                                     output = "Successfully exported purchsae history.";
                                 }
+                                // Purchase Items
+                                case "PURCHASE_ITEMS" -> {
+                                    c.purchaseItems();
+                                    output = "Items checked out successfully!";
+                                }
                                 // View Store Dashboard
                                 case "STORE_DASHBOARD" ->
                                     output = db.customerGetStoresDashboard(Integer.parseInt(response[1]),
@@ -128,9 +133,13 @@ public class ServerThread extends Thread {
                                 // Delete Account
                                 case "DELETE_ACCOUNT" -> {
                                     c.deleteAccount();
+                                    oos.writeObject(new Object[] { "SUCCESS", "Account deleted successfully!" });
+                                    oos.flush();
                                     exit = true;
                                 }
                                 case "SIGN_OUT" -> {
+                                    oos.writeObject(new Object[] { "SUCCESS", "Signed out successfully!" });
+                                    oos.flush();
                                     exit = true;
                                 }
                                 default -> output = null;
@@ -214,16 +223,26 @@ public class ServerThread extends Thread {
                                     output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
                                             response[2].equals("true")).toString();
                                 // Modify Email
-                                case "EDIT_EMAIL" -> s.setEmail(response[1]);
+                                case "EDIT_EMAIL" -> {
+                                    s.setEmail(response[1]);
+                                    output = "Email edited successfully!";
+                                }
                                 // Modify Password
-                                case "EDIT_PASSWORD" -> s.setPassword(response[1]);
+                                case "EDIT_PASSWORD" -> {
+                                     s.setPassword(response[1]);
+                                     output = "Password edited successfully!";
+                                }
                                 // Delete Account
                                 case "DELETE_ACCOUNT" -> {
                                     s.deleteAccount();
+                                    oos.writeObject(new Object[] { "SUCCESS", "Account deleted successfully!" });
+                                    oos.flush();
                                     exit = true;
                                 }
 
                                 case "SIGN_OUT" -> {
+                                    oos.writeObject(new Object[] { "SUCCESS", "Signed out successfully!" });
+                                    oos.flush();
                                     exit = true;
                                 }
                                 default -> output = null;

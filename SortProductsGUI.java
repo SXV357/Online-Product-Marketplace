@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 3, 2023
+ * @version December 4, 2023
  */
 public class SortProductsGUI extends JComponent {
     public SortProductsGUI(String[] initialProducts, CustomerClient customerClient) {
@@ -21,6 +21,7 @@ public class SortProductsGUI extends JComponent {
             public void run() {
                 JFrame sortProductsFrame = new JFrame("Sort Products");
                 sortProductsFrame.setSize(350, 350);
+                sortProductsFrame.setLocationRelativeTo(null);
                 sortProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 JPanel mainPanel = new JPanel(new BorderLayout());
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -64,6 +65,8 @@ public class SortProductsGUI extends JComponent {
                         }
                     }
                 });
+                buttonPanel.add(sortByPriceButton);
+                buttonPanel.add(sortByQuantityButton);
                 mainPanel.add(products, BorderLayout.NORTH);
                 mainPanel.add(buttonPanel, BorderLayout.SOUTH);
                 sortProductsFrame.add(mainPanel);

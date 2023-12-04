@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 3, 2023
+ * @version December 4, 2023
  */
 public class CustomerGUI extends JComponent {
 
@@ -76,7 +76,7 @@ public class CustomerGUI extends JComponent {
                         return;
                     }
                     
-                    int productSelection = Arrays.binarySearch(originalProducts, productChoice);
+                    int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
                     Object[] incoming = customerClient.getProductInfo(productSelection);  
 
                     if (incoming[0].equals("ERROR")) {
@@ -122,7 +122,7 @@ public class CustomerGUI extends JComponent {
                         return;
                     }
                     
-                    int productSelection = Arrays.binarySearch(originalProducts, productChoice);
+                    int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
                     Object[] incoming = customerClient.getProductInfo(productSelection);
                     
                     if (incoming[0].equals("ERROR")) {
@@ -287,8 +287,8 @@ public class CustomerGUI extends JComponent {
             } else if (e.getSource() == deleteAccountButton) {
                 int deleteAccount = JOptionPane.showOptionDialog(null, "Are you sure you want to delete your account?", "Delete Account", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (deleteAccount == JOptionPane.YES_OPTION) {
-                   Object[] deleteAccountResult = customerClient.deleteAccount();
-                   if (deleteAccountResult[0].equals("SUCCESS")) {
+                    Object[] deleteAccountResult = customerClient.deleteAccount();
+                    if (deleteAccountResult[0].equals("SUCCESS")) {
                         try {
                             customerFrame.dispose();
                             customerClient.handleAccountState();
@@ -305,16 +305,20 @@ public class CustomerGUI extends JComponent {
             } else if (e.getSource() == signOutButton) {
                 int signOut = JOptionPane.showOptionDialog(null, "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (signOut == JOptionPane.YES_OPTION) {
-                   try {
-                        customerClient.signOut();
-                        customerFrame.dispose();
-                        customerClient.handleAccountState();
-                    } catch (IOException ex) {
-                        return;
-                    }
-                } else {
-                    return;
-                }
+                    Object[] signOutResult = customerClient.signOut();
+                     if (signOutResult[0].equals("SUCCESS")) {
+                         try {
+                             customerFrame.dispose();
+                             customerClient.handleAccountState();
+                         } catch (IOException ex) {
+                             return;
+                         }
+                        } else {
+                            displayErrorDialog((String) signOutResult[1]);
+                        }
+                 } else {
+                     return;
+                 }
             }
         }
     };
