@@ -119,13 +119,13 @@ public class ServerThread extends Thread {
                                     output = "Items checked out successfully!";
                                 }
                                 // View Store Dashboard
-                                case "STORE_DASHBOARD" ->
+                                case "CUSTOMER_GET_STORES_DASHBOARD" ->
                                     output = db.customerGetStoresDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true")).toString();
+                                            response[2].equals("true"));
                                 // View Purchases Dashboard
-                                case "PURCHASE_DASHBOARD" ->
+                                case "CUSTOMER_GET_PURCHASES_DASHBOARD" ->
                                     output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true"), c.getUserID()).toString();
+                                            response[2].equals("true"), c.getUserID());
                                 // Modify Email
                                 case "EDIT_EMAIL" -> c.setEmail(response[1]);
                                 // Modify Password
@@ -215,13 +215,13 @@ public class ServerThread extends Thread {
                                 // View Sales by Store
                                 case "VIEW_SALES_BY_STORE" -> output = s.viewStoreSales();
                                 // Sort Customer Dashboard
-                                case "CUSTOMERS_DASHBOARD" ->
+                                case "SELLER_GET_CUSTOMERS_DASHBOARD" ->
                                     output = db.sellerGetCustomersDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true")).toString();
+                                            response[2].equals("true"));
                                 // Sort Products Dashboard
-                                case "PRODUCTS_DASHBOARD" ->
+                                case "SELLER_GET_PRODUCTS_DASHBOARD" ->
                                     output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true")).toString();
+                                            response[2].equals("true"));
                                 // Modify Email
                                 case "EDIT_EMAIL" -> {
                                     s.setEmail(response[1]);
