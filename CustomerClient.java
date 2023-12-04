@@ -198,7 +198,7 @@ public class CustomerClient {
         // RETURN: ["ERROR", error message] or ["SUCCESS", arraylist of Stores]
         Object[] result;
         try {
-            oos.writeObject(new Object[] {"EXPORT_PURCHASE_HISTORY", sortSelection, ascending});
+            oos.writeObject(new String[] {"EXPORT_PURCHASE_HISTORY", String.valueOf(sortSelection), String.valueOf(ascending)});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
@@ -213,7 +213,7 @@ public class CustomerClient {
         // RETURN: ["ERROR", error message] or ["SUCCESS", arraylist of personal dashboard items]
         Object[] result;
         try {
-            oos.writeObject(new Object[] {"PURCHASE_DASHBOARD", sortSelection, ascending});
+            oos.writeObject(new String[] {"PURCHASE_DASHBOARD", String.valueOf(sortSelection), String.valueOf(ascending)});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
