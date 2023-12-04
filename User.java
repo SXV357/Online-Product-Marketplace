@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 2, 2023
+ * @version December 4, 2023
  */
 public class User {
 
@@ -61,7 +61,12 @@ public class User {
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
         }
-        this.password = password;
+        boolean passwordExists = checkDuplicatePassword(password);
+        if (passwordExists) {
+            throw new Exception("Password is already in use. Please enter a different one and try again!");
+        } else {
+            this.password = password;
+        }
         this.role = role;
         int generatedID = generateUserIdentificationNumber();
         switch (role) {
@@ -159,9 +164,14 @@ public class User {
         if (password == null || password.isBlank() || password.isEmpty()) {
             throw new Exception("The new password cannot be null, blank or empty!");
         }
-        String prevUserString = this.toString();
-        this.password = password;
-        db.modifyDatabase("users.csv", prevUserString, this.toString());
+        boolean passwordExists = checkDuplicatePassword(password);
+        if (passwordExists) {
+            throw new Exception("Password is already in use. Please enter a different one and try again!");
+        } else {
+            String prevUserString = this.toString();
+            this.password = password;
+            db.modifyDatabase("users.csv", prevUserString, this.toString());
+        }
     }
 
     /**
@@ -173,6 +183,23 @@ public class User {
     public boolean checkDuplicateEmail(String email) {
         return db.retrieveUserMatchForSignUp(email) != null;
     } 
+
+    public boolean checkDuplicatePassword(String password) {
+        boolean duplicatePasswordExists = false;
+        ArrayList<String> userEntries = db.getDatabaseContents("users.csv");
+        if (userEntries.isEmpty()) {
+            duplicatePasswordExists = false; // There are no entries so password cannot be duplicate
+        } else {
+            for (String userEntry: userEntries) {
+                String[] userRepresentation = userEntry.split(",");
+                if (userRepresentation[2].toLowerCase().equals(password.toLowerCase())) {
+                    duplicatePasswordExists = true;
+                    break;
+                }
+            }
+        }
+        return duplicatePasswordExists;
+    }
 
     /**
      * Returns a unique 7-digit ID as long as the current ID is not already
