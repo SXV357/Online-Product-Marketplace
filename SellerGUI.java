@@ -19,7 +19,7 @@ import java.util.HashMap;
  */
 public class SellerGUI extends JComponent {
 
-    private DisplayInformationGUI displayInfo = new DisplayInformationGUI();
+    private DisplayDashboardGUI displayDashboard = new DisplayDashboardGUI();
     private final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
     private SellerClient sellerClient;
     private JFrame sellerFrame;
@@ -56,12 +56,8 @@ public class SellerGUI extends JComponent {
         new ErrorMessageGUI(errorMessage);
     }
 
-    public void displayMiscInfo(String informationType, String data) {
-        displayInfo.displayMiscInfo(informationType, data);
-    }
-
     public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
-        displayInfo.displayDashboard(dashboardType, scrollPane);
+        displayDashboard.showDashboard(dashboardType, scrollPane);
     }
 
     @SuppressWarnings("unchecked")
@@ -305,7 +301,7 @@ public class SellerGUI extends JComponent {
                             info += saleInformation;
                         }
                     }
-                    displayMiscInfo("Customer Shopping Carts", info);
+                    JOptionPane.showMessageDialog(null, info, "Customer Shopping Carts", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             } else if (e.getSource() == viewSalesByStoreButton) {
@@ -323,7 +319,7 @@ public class SellerGUI extends JComponent {
                             info += saleInformation;
                         }
                     }
-                    displayMiscInfo("Sales by Store", info);
+                    JOptionPane.showMessageDialog(null, info, "Sales by Store", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             } else if (e.getSource() == viewCustomerDashboardButton) {

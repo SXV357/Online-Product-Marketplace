@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version December 4, 2023
  */
 public class Seller extends User {
 
@@ -143,9 +142,8 @@ public class Seller extends User {
             if (storeName == null || storeName.isEmpty()) {
                 throw new SellerException("Unable to delete store. The store name cannot be null or empty!");
             }
-            storeName = storeName.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
-            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1, storeName.split(",")[0]);
             db.removeFromDatabase("stores.csv", matchedStore);
             for (int i = 0; i < matchedProducts.size(); i++) {
                 db.removeFromDatabase("products.csv", matchedProducts.get(i));
@@ -175,7 +173,6 @@ public class Seller extends User {
                 throw new SellerException(
                         "Unable to modify store name. Either the previous store name and the new store name are null or empty or both are null or empty");
             }
-            prevStoreName = prevStoreName.replace(",", "");
             newStoreName = newStoreName.replace(",", "");
             String matchedPrevStoreName = db.getMatchedEntries("stores.csv", 2, prevStoreName).get(0);
             ArrayList<String> matchedNewStoreName = db.getMatchedEntries("stores.csv", 2, newStoreName);
@@ -183,6 +180,26 @@ public class Seller extends User {
                 String[] newStoreRepresentation = matchedPrevStoreName.split(",");
                 newStoreRepresentation[2] = newStoreName;
                 db.modifyDatabase("stores.csv", matchedPrevStoreName, String.join(",", newStoreRepresentation));
+
+                ArrayList<String> matchedProductEntries = db.getMatchedEntries("products.csv", 3, prevStoreName);
+                ArrayList<String> matchedShoppingCartEntries = db.getMatchedEntries("shoppingCarts.csv", 4, prevStoreName);
+                ArrayList<String> matchedPurchaseHistoryEntries = db.getMatchedEntries("purchaseHistories.csv", 4, prevStoreName);
+
+                for (String prodEntry: matchedProductEntries) {
+                    String[] prodRep = prodEntry.split(",");
+                    prodRep[3] = newStoreName;
+                    db.modifyDatabase("products.csv", prodEntry, String.join(",", prodRep));
+                }
+                for (String shoppingCartEntry: matchedShoppingCartEntries) {
+                    String[] shoppingCartRep = shoppingCartEntry.split(",");
+                    shoppingCartRep[4] = newStoreName;
+                    db.modifyDatabase("shoppingCarts.csv", shoppingCartEntry, String.join(",", shoppingCartRep));
+                }
+                for (String purchaseHistoryEntry: matchedPurchaseHistoryEntries) {
+                    String[] purchaseHistoryRep = purchaseHistoryEntry.split(",");
+                    purchaseHistoryRep[4] = newStoreName;
+                    db.modifyDatabase("purchaseHistories.csv", purchaseHistoryEntry, String.join(",", purchaseHistoryRep));
+                }
             } else {
                 throw new SellerException(
                         "Unable to modify store name. The new name provided is already associated with an existing store!");

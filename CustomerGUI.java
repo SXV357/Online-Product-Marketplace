@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class CustomerGUI extends JComponent {
 
-    private DisplayInformationGUI displayInfo = new DisplayInformationGUI();
+    private DisplayDashboardGUI displayDashboard = new DisplayDashboardGUI();
     private JFrame customerFrame;
     private CustomerClient customerClient;
     private JLabel welcomeUserLabel;
@@ -51,12 +51,8 @@ public class CustomerGUI extends JComponent {
         new ErrorMessageGUI(errorMessage);
     }
 
-    public void displayMiscInfo(String informationType, String data) {
-        displayInfo.displayMiscInfo(informationType, data);
-    }
-
     public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
-        displayInfo.displayDashboard(dashboardType, scrollPane);
+        displayDashboard.showDashboard(dashboardType, scrollPane);
     }
 
     @SuppressWarnings("unchecked")
@@ -166,7 +162,7 @@ public class CustomerGUI extends JComponent {
                     displayErrorDialog((String) purchaseHistoryResult[1]);
                 } else {
                     String purchaseHistoryEntries = (String) purchaseHistoryResult[1];
-                    displayMiscInfo("Purchase History", purchaseHistoryEntries);
+                    JOptionPane.showMessageDialog(null, purchaseHistoryEntries, "Purchase History", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             } else if (e.getSource() == viewStoreDashboardButton) {
