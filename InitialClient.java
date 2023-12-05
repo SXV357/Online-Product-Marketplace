@@ -51,13 +51,14 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
+            String userEmail = (String) ois.readObject();
+
             String response = (String) ois.readObject();
-            System.out.println(response);
             if (response.equals("Customer Connection to Server Established")) {
-                new CustomerClient(oos, ois).homepage();
+                new CustomerClient(oos, ois).homepage(userEmail);
 
             } else if (response.equals("Seller Connection to Server Established")) {
-                new SellerClient(oos, ois).homepage();
+                new SellerClient(oos, ois).homepage(userEmail);
             } else {
                 new ErrorMessageGUI(response);
                 new LoginGUI(this);
@@ -78,12 +79,14 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
+            String userEmail = (String) ois.readObject();
+
             String response = (String) ois.readObject();
             if (response.equals("Customer Connection to Server Established")) {
-                new CustomerClient(oos, ois).homepage();
+                new CustomerClient(oos, ois).homepage(userEmail);
 
             } else if (response.equals("Seller Connection to Server Established")) {
-                new SellerClient(oos, ois).homepage();
+                new SellerClient(oos, ois).homepage(userEmail);
             } else {
                 new ErrorMessageGUI(response);
                 new LoginGUI(this);
@@ -103,11 +106,13 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
+            String userEmail = (String) ois.readObject();
+
             String response = (String) ois.readObject();
             if (response.equals("Customer Connection to Server Established")) {
-                new CustomerClient(oos, ois).homepage();
+                new CustomerClient(oos, ois).homepage(userEmail);
             } else if (response.equals("Seller Connection to Server Established")) {
-                new SellerClient(oos, ois).homepage();
+                new SellerClient(oos, ois).homepage(userEmail);
             } else {
                 new ErrorMessageGUI(response);
                 new LoginGUI(this);

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version November 29, 2023
+ * @version December 5, 2023
  */
 public class Customer extends User {
 
@@ -84,7 +84,6 @@ public class Customer extends User {
      */
     public String getProductInfo(int index) throws CustomerException {
         try {
-            index++;
             
             StringBuilder sb = new StringBuilder();
             String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
@@ -94,9 +93,6 @@ public class Customer extends User {
             sb.append(prodInfo[5]).append(",");
             sb.append(prodInfo[6]).append(",");
             sb.append(prodInfo[7]);
-            for (int i = 8; i < prodInfo.length; i++) {
-                sb.append(prodInfo[i]);
-            }
 
             return sb.toString();
         } catch (IndexOutOfBoundsException e) {
@@ -139,7 +135,7 @@ public class Customer extends User {
      * @return The products formatted as a string
      * @throws CustomerException
      */
-    public String formatProducts(ArrayList<String> productList, boolean quantity) throws CustomerException{
+    public String formatProducts(ArrayList<String> productList) throws CustomerException{
         StringBuilder sb = new StringBuilder();
         String[] info;
         ArrayList<String> output = new ArrayList<>();
@@ -196,7 +192,6 @@ public class Customer extends User {
      * @throws CustomerException
      */
     public void removeFromCart(int index) throws CustomerException {
-        
         try {
             db.removeFromDatabase("shoppingCarts.csv", shoppingCart.get(index));
             shoppingCart.remove(index);
@@ -213,7 +208,6 @@ public class Customer extends User {
      * @throws CustomerException
      */
     public void addToCart(int index, int quantity) throws CustomerException {
-        index++;
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
@@ -245,7 +239,6 @@ public class Customer extends User {
         } catch (IndexOutOfBoundsException e) {
             throw new CustomerException("Invalid Index");
         }
-
     }
 
     /**
@@ -259,6 +252,10 @@ public class Customer extends User {
         int quantity;
         shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
+
+        if (shoppingCart.isEmpty()) {
+            throw new CustomerException("You don\'t have any items added to your cart yet!");
+        }
 
         output.append(getUserID()).append(",");
         String item;
@@ -311,12 +308,10 @@ public class Customer extends User {
         int n = sorted.size();
         String temp = "";
         int searchIndex = -1;
-        boolean quantity = false;
         if (choice.equals("price")) {
             searchIndex = 6;
         } else if (choice.equals("quantity")) {
             searchIndex = 5;
-            quantity = true;
         }
 
         if (searchIndex != -1) {
@@ -332,7 +327,7 @@ public class Customer extends User {
                     }
                 }
             }
-            return formatProducts(sorted, quantity);
+            return formatProducts(sorted);
         } else {
             throw new CustomerException("Invalid Choice");
         }
@@ -385,9 +380,9 @@ public class Customer extends User {
             }
         }
         if (productsFound.isEmpty()) {
-            throw new CustomerException("Invalid Query");
+            throw new CustomerException("There are no products that match your query. Please try again!");
         } else {
-            return formatProducts(productsFound, false);
+            return formatProducts(productsFound);
         }
 
     }

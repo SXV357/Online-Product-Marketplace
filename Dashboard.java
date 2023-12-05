@@ -15,36 +15,11 @@ import java.util.Collections;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 4, 2023
+ * @version December 5, 2023
  */
 public class Dashboard {
 
     private Database database = new Database();
-
-    // To display a dashboard to the terminal with a relevant header.
-    // Input the type of dashbard to display and the dashboard array returned by one
-    // of the other functions
-    public void printDashboardData(String dashboardType, ArrayList<String> dashboardData) {
-        // Print the relevant header for the data
-        switch (dashboardType) {
-            case "Customers":
-                System.out.println("Email, Quantity Purchased, Money Spent");
-                break;
-            case "Products":
-                System.out.println("Product, Quantity Sold,Total Revenue");
-                break;
-            case "Stores":
-                System.out.println("Store, Product Sales,Total Revenue");
-                break;
-            case "PersonalPurchases":
-                System.out.println("Product, Amount bought, Amount spent:");
-                break;
-        }
-
-        for (String line : dashboardData) {
-            System.out.println(line);
-        }
-    }
 
     // Seller's method to view all customers
     // Return line format: email,totalQuantity,totalSpent
@@ -90,7 +65,11 @@ public class Dashboard {
 
         // Sorts the processed data
         // See here for allowed values of sortType
-        return sortResults(sortIndex, sortAscending, customerStatisticsStrings);
+        if (customerStatisticsStrings.isEmpty()) {
+            throw new SellerException("No customers have purchased products from any of your stores yet!");
+        } else {
+            return sortResults(sortIndex, sortAscending, customerStatisticsStrings);
+        }
     }
 
     // Seller's method to view all products
@@ -140,8 +119,11 @@ public class Dashboard {
             String statsString = String.format("%s,%.2f,%.2f", productName, totalSold, totalRevenue);
             productStatisticsStrings.add(statsString);
         }
-
-        return sortResults(sortIndex, sortAscending, productStatisticsStrings);
+        if (productStatisticsStrings.isEmpty()) {
+            throw new SellerException("No products have been purchased from any of your stores yet!");
+        } else {
+            return sortResults(sortIndex, sortAscending, productStatisticsStrings);
+        }
     }
 
     // Customer's method to view all stores and their products sold
@@ -189,8 +171,11 @@ public class Dashboard {
             String statsString = String.format("%s,%.2f,%.2f", storeName, totalProductsSold, totalRevenue);
             storeStatisticsStrings.add(statsString);
         }
-
-        return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
+        if (storeStatisticsStrings.isEmpty()) {
+            throw new CustomerException("No products have been purchased from any of the stores yet!");
+        } else {
+            return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
+        }
     }
 
     // Personal Dashboard requires CustomerID
@@ -246,7 +231,11 @@ public class Dashboard {
             String statsString = String.format("%s,%.2f,%.2f", storeName, totalProductsBought, totalSpent);
             storeStatisticsStrings.add(statsString);
         }
-        return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
+        if (storeStatisticsStrings.isEmpty()) {
+            throw new CustomerException("You haven\'t purchased items from any of the stores yet!");
+        } else {
+             return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
+        }
     }
 
     // Assuming strings are in format: String, Double, Double
