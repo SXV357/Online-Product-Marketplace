@@ -143,7 +143,7 @@ public class Seller extends User {
                 throw new SellerException("Unable to delete store. The store name cannot be null or empty!");
             }
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
-            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1, storeName.split(",")[0]);
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1, matchedStore.split(",")[0]);
             db.removeFromDatabase("stores.csv", matchedStore);
             for (int i = 0; i < matchedProducts.size(); i++) {
                 db.removeFromDatabase("products.csv", matchedProducts.get(i));

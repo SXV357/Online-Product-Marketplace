@@ -1,8 +1,6 @@
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import javax.swing.*;
 /**
  * Project 5 - SortProductsGUI.java
@@ -23,13 +21,22 @@ public class SortProductsGUI extends JComponent {
                 sortProductsFrame.setSize(350, 350);
                 sortProductsFrame.setLocationRelativeTo(null);
                 sortProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
                 JPanel mainPanel = new JPanel(new BorderLayout());
-                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                JComboBox<String> products = new JComboBox<>();
-                for (String product: initialProducts) {
-                    products.addItem(product);
-                }
+                JPanel buttonPanel = new JPanel();
+
                 JButton sortByPriceButton = new JButton("Sort By Price");
+                JButton sortByQuantityButton = new JButton("Sort By Quantity");
+                buttonPanel.add(sortByPriceButton);
+                buttonPanel.add(sortByQuantityButton);
+
+                DefaultListModel<String> listModel = new DefaultListModel<>();
+                JList<String> list = new JList<>(listModel);
+
+                for (String product: initialProducts) {
+                    listModel.addElement(product);
+                }
+                
                 sortByPriceButton.addActionListener(new ActionListener() {
                     @Override 
                     public void actionPerformed(ActionEvent e) {
@@ -39,15 +46,13 @@ public class SortProductsGUI extends JComponent {
                             return;
                         } else {
                             String[] originalProducts = ((String) sortProductsResult[1]).split("\n");
-                            String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
-                            products.removeAllItems();
-                            for (String p: modifiedProducts) {
-                                products.addItem(p);
+                            listModel.clear();
+                            for (String product: originalProducts) {
+                                listModel.addElement(product);
                             }
                         }
                     }
                 });
-                JButton sortByQuantityButton = new JButton("Sort By Quantity");
                 sortByQuantityButton.addActionListener(new ActionListener() {
                     @Override 
                     public void actionPerformed(ActionEvent e) {
@@ -57,17 +62,15 @@ public class SortProductsGUI extends JComponent {
                             return;
                         } else {
                             String[] originalProducts = ((String) sortProductsResult[1]).split("\n");
-                            String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
-                            products.removeAllItems();
-                            for (String p: modifiedProducts) {
-                                products.addItem(p);
+                            listModel.clear();
+                            for (String product: originalProducts) {
+                                listModel.addElement(product);
                             }
                         }
                     }
                 });
-                buttonPanel.add(sortByPriceButton);
-                buttonPanel.add(sortByQuantityButton);
-                mainPanel.add(products, BorderLayout.NORTH);
+
+                mainPanel.add(new JScrollPane(list), BorderLayout.CENTER);
                 mainPanel.add(buttonPanel, BorderLayout.SOUTH);
                 sortProductsFrame.add(mainPanel);
                 sortProductsFrame.setVisible(true);
