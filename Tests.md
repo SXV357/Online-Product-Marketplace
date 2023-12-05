@@ -254,11 +254,6 @@ Test Status: Passed
 
 Expected result: User is able to log in
 
-
-Expected result:
-Result:
-### Test 2: Concurrent customer purchases
-
 ## Miscalaneous Tests 
 - Each test case performed independently of other test cases
 - Database populated where necessary
