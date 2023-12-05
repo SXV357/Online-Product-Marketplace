@@ -1,2 +1,4 @@
 Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description
-S1000001,ST1000000,PR1000000,Wholegreens,Broccoli,14,2.00,A not so tasty treat
+S1000001,ST1000000,PR1000000,stop n shop,biscuits,15,6.99,a tasty treat
+S1000001,ST1000000,PR1000001,stop n shop,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick
+S1000001,ST1000000,PR1000002,stop n shop,Margherita Pizza,30,9.99,Classic pizza topped with fresh tomatoes mozzarella and basil
