@@ -47,10 +47,8 @@ public class ServerThread extends Thread {
                             String userMatch = database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]);
                             if (userMatch.split(",")[3].equals("CUSTOMER")) {
                                 u = new Customer(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
-                                
                             } else if (userMatch.split(",")[3].equals("SELLER")){
                                 u = new Seller(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
-    
                             }  
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
@@ -61,8 +59,6 @@ public class ServerThread extends Thread {
                     case "CREATE_CUSTOMER" -> {
                         try {
                             u = new Customer(userInfo[1], userInfo[2], UserRole.CUSTOMER);
-                            oos.writeObject(u.getEmail());
-                            oos.flush();
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                             oos.flush();
@@ -72,8 +68,6 @@ public class ServerThread extends Thread {
                     case "CREATE_SELLER" -> {
                         try {
                             u = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
-                            oos.writeObject(u.getEmail());
-                            oos.flush();
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                             oos.flush();
