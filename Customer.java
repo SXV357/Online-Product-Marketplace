@@ -32,6 +32,14 @@ public class Customer extends User {
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
     }
 
+    public ArrayList<String> fetchAllStores() throws CustomerException {
+        ArrayList<String> allStores = db.getDatabaseContents("stores.csv");
+        if (allStores.isEmpty()) {
+            throw new CustomerException("No stores have been created yet!");
+        }
+        return allStores;
+    }
+
     /**
      * Converts arrays to list of strings
      *

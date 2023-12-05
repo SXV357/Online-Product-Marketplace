@@ -27,10 +27,6 @@ public class Dashboard {
         // Get all customer Users
         ArrayList<String> allCustomers = database.getMatchedEntries("users.csv", 3, "CUSTOMER");
 
-        if (allCustomers.isEmpty()) {
-            throw new SellerException("There are no existent customer accounts!");
-        }
-
         // return array
         ArrayList<String> customerStatisticsStrings = new ArrayList<>();
 
@@ -78,10 +74,6 @@ public class Dashboard {
         // Get all products:Seller ID,Store ID,Product ID,Store Name,Product
         // Name,Available Quantity,Price,Description
         ArrayList<String> allProducts = database.getDatabaseContents("products.csv");
-
-        if (allProducts.isEmpty()) {
-            throw new SellerException("No products have been added to any stores yet!");
-        }
 
         // return array
         ArrayList<String> productStatisticsStrings = new ArrayList<>();
@@ -131,10 +123,6 @@ public class Dashboard {
     public ArrayList<String> customerGetStoresDashboard(int sortIndex, boolean sortAscending) throws CustomerException {
         // Get all stores:Store ID,Seller ID,Store Name,Number of Products
         ArrayList<String> allStores = database.getDatabaseContents("stores.csv");
-
-        if (allStores.isEmpty()) {
-            throw new CustomerException("No stores have been created yet!");
-        }
 
         // return array
         ArrayList<String> storeStatisticsStrings = new ArrayList<>();
@@ -186,10 +174,6 @@ public class Dashboard {
             String customerID) throws CustomerException {
         // Get all stores:Store ID,Seller ID,Store Name,Number of Products
         ArrayList<String> allStores = database.getDatabaseContents("stores.csv");
-
-        if (allStores.isEmpty()) {
-            throw new CustomerException("No stores have been created yet!");
-        }
 
         // return array
         ArrayList<String> storeStatisticsStrings = new ArrayList<>();

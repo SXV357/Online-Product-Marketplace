@@ -47,6 +47,22 @@ public class Seller extends User {
         super(userID, email, password, role);
     }
 
+    public ArrayList<String> getAllCustomers() throws SellerException {
+        ArrayList<String> allCustomers = db.getMatchedEntries("users.csv", 3, "CUSTOMER");
+        if (allCustomers.isEmpty()) {
+            throw new SellerException("There are no existent customer accounts!");
+        } 
+        return allCustomers;
+    }
+
+    public ArrayList<String> getAllProducts() throws SellerException {
+        ArrayList<String> allProducts = db.getDatabaseContents("products.csv");
+        if (allProducts.isEmpty()) {
+            throw new SellerException("No products have been added to any stores yet!");
+        }
+        return allProducts;
+    }
+
     /**
      * Retrieves all the stores associated with this seller and returns the entries
      * in the form of an arraylist of store objects

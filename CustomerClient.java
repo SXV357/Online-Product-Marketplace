@@ -27,19 +27,34 @@ public class CustomerClient {
         initialClient.start();
     }
 
-    public void homepage(){
+    public void homepage(String customerEmail){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 CustomerClient cc;
                 try {
                     cc = new CustomerClient(oos, ois);
-                    new CustomerGUI(cc);
+                    new CustomerGUI(cc, customerEmail);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }    
             }
         });
+    }
+
+    // Get all the products from the marketplace
+    public Object[] fetchAllStores() {
+        // action: FETCH_ALL_STORES
+         // RETURN: ["ERROR", error message] or ["SUCCESS", stores arraylist]
+        Object[] result;
+        try {
+            oos.writeObject(new String[] {"FETCH_ALL_STORES"});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
     }
 
     // Get all the products from the marketplace
