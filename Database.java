@@ -144,15 +144,16 @@ public class Database {
                     } else if (comparisonEmail.equals(email) && !(comparisonPassword.equals(password))) {
                         partialMatchFound = true;
                         throw new Exception("Wrong password. Please try again");
+                    }
                 }
                 // After going through the non-empty database, if no entries match the credentials provided
                 if (!fullMatchFound && !partialMatchFound) {
                     throw new Exception("Login failed. Please try again!");
                 }
-            }
             return matchedUser;
         }
     }
+}
 
     /**
      * Takes in the user's email and retrieves a match for the credential in the

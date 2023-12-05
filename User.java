@@ -61,7 +61,11 @@ public class User {
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
         }
-        this.password = password;
+        if (password.contains(",")) {
+            throw new Exception("Password cannot contain commas");
+        } else {
+            this.password = password;
+        }
         this.role = role;
         int generatedID = generateUserIdentificationNumber();
         switch (role) {
@@ -158,6 +162,8 @@ public class User {
     public void setPassword(String password) throws Exception {
         if (password == null || password.isBlank() || password.isEmpty()) {
             throw new Exception("The new password cannot be null, blank or empty!");
+        } else if (password.contains(",")) {
+            throw new Exception("New password cannot contain commas.");
         }
         String prevUserString = this.toString();
         this.password = password;
