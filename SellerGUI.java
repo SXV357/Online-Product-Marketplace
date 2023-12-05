@@ -287,9 +287,9 @@ public class SellerGUI extends JComponent {
                     HashMap<String, ArrayList<String>> shoppingCarts = (HashMap<String, ArrayList<String>>) getCustomerShoppingCartsResult[1];
                     String info = "";
                     for (String store : shoppingCarts.keySet()) {
-                        info += store;
+                        info += store + "\n";
                         for (String saleInformation : shoppingCarts.get(store)) {
-                            info += saleInformation;
+                            info += saleInformation + "\n";
                         }
                     }
                     JOptionPane.showMessageDialog(null, info, "Customer Shopping Carts", JOptionPane.INFORMATION_MESSAGE);
@@ -305,9 +305,9 @@ public class SellerGUI extends JComponent {
                     HashMap<String, ArrayList<String>> salesByStore = (HashMap<String, ArrayList<String>>) getSalesByStoreResult[1];
                     String info = "";
                     for (String store : salesByStore.keySet()) {
-                        info += store;
+                        info += store + "\n";
                         for (String saleInformation : salesByStore.get(store)) {
-                            info += saleInformation;
+                            info += saleInformation + "\n";
                         }
                     }
                     JOptionPane.showMessageDialog(null, info, "Sales by Store", JOptionPane.INFORMATION_MESSAGE);
