@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 4, 2023
+ * @version December 5, 2023
  */
 public class Seller extends User {
 
@@ -47,6 +47,12 @@ public class Seller extends User {
         super(userID, email, password, role);
     }
 
+    /**
+     * Fetches all the customers that exist in the application and returns them in the form of an arraylist.
+     * Utilized to determine seller dashboard behavior.
+     *
+     * @return An arraylist containing all the customers
+     */
     public ArrayList<String> getAllCustomers() throws SellerException {
         ArrayList<String> allCustomers = db.getMatchedEntries("users.csv", 3, "CUSTOMER");
         if (allCustomers.isEmpty()) {
@@ -55,6 +61,12 @@ public class Seller extends User {
         return allCustomers;
     }
 
+    /**
+     * Fetches all the products that exist in the application and returns them in the form of an arraylist.
+     * Utilized to determine seller dashboard behavior.
+     *
+     * @return An arraylist containing all the products
+     */
     public ArrayList<String> getAllProducts() throws SellerException {
         ArrayList<String> allProducts = db.getDatabaseContents("products.csv");
         if (allProducts.isEmpty()) {
