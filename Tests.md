@@ -183,7 +183,69 @@ Test Status: Passed
 Expected result: The customer can view purchase history
 Test Status: Passed
 Expected result: User is able to log in
-Result: TODO
+
+### Test 20: View Stores Dashboard
+- Customer clicks "View Stores Dashboard" button
+- Customer can click "Sort Name" from drop-down menu
+- Customer can click "Ascending" from drop-down menu
+- Information panel displays the all the stores with product sales and revenue
+- Customer can exit out to main menu
+Expected result: The customer can view stores page
+Test Status: Passed
+
+### Test 21: View Purchases Dashboard
+- Customer clicks "View Purchases Dashboard" button
+- Customer can click "Sort Name" from drop-down menu
+- Customer can click "Ascending" from drop-down menu
+- Information panel displays the all the stores the customer has purchased products and their money spent
+- Customer can exit out to main menu
+Expected result: The customer can view their personal purchase dashboard
+Test Status: Passed
+
+### Test 22: Remove Item From Shopping Cart
+- Customer clicks "View All Products" button
+- Select "Spicy Chicken Wings" from the drop-down menu of all products
+- GUI displays product information and a question panel regarding purchase
+- Customer selects "Yes"
+- Customer writes "5" for purchase quantity
+- Information panel displays a success message Customer clicks "Remove Item From Shopping Cart" button
+- Customer can click "Spicy Chicken Wings" from drop-down menu
+- Information panel displays a success message
+Expected result: The customer can remove items
+Test Status: Passed
+
+## User Account Testing
+*Stay signed into example customer account*
+
+### Test 23: Edit Email
+- Customer clicks "Edit Email" button
+- Customer can change their email to "CS180@gmail.com"
+- Information panel displays a success message
+- Log out of customer account
+- Log in with email: "CS180@gmail.com" and password: "test"
+- The main menu displays new email at the top of the panel
+Expected result: The customer can change their email
+Test Status: Passed
+
+### Test 24: Edit Email
+- Customer clicks "Edit Password" button
+- Customer can change their password to "yes"
+- Information panel displays a success message
+- Log out of customer account
+- Log in successfully with email: "CS180@gmail.com" and password: "yes"
+Expected result: The customer can change their password
+Test Status: Passed
+
+### Test 24: Delete Account
+- Customer clicks "Delete Account" button
+- Customer clicks "yes" to confirm
+- Program returns to main log in menu
+- Log in with email: "CS180@gmail.com" and password: "yes"
+- Error message is displayed
+Expected result: The customer can delete their account
+Test Status: Passed
+
+Expected result: User is able to log in
 
 Expected result:
 Result:
