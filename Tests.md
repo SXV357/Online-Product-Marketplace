@@ -1,7 +1,7 @@
-#Testing Document
+# Testing Document
 
 ## Initial Login / Sign Up
-
+- The following tests were performed in sequence starting with an empty database
 ### Test 1: Customer Account
 - User clicks to sign up and create a new customer account
 - For example: email "customer@gmail.com" and password "customer"
@@ -312,7 +312,6 @@ Result: as expected
 Expected result: user recieves error message (user already exists) and is sent back to sign up
 Result: as expected
 
-### Test 30: User inputs commas in any field
-Expected result: Program likely crashes, our software cannot support commas in some inputs
-Result: Program crashes
-
+### Test 30: User inputs commas in a text field
+Expected result: Error message is shown and user is returned to previous state
+Result: as expected
