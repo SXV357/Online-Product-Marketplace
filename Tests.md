@@ -254,9 +254,16 @@ Test Status: Passed
 
 Expected result: User is able to log in
 
+
 Expected result:
 Result:
 ### Test 2: Concurrent customer purchases
+
+## Miscalaneous Tests 
+- Each test case performed independently of other test cases
+- Database populated where necessary
+### Test 20: Concurrent customer purchases
+
 - Customer 1 logs in
 - Customer 2 logs in
 - Customer 1 adds all of a product to cart
@@ -298,3 +305,27 @@ Result: as expected
 - Sign in without selecting a user type from the drop down menu
 Expected result: user recieves error message and is sent back to login
 Result: as expected
+
+### Test 27: Invalid data type for products:
+- Seller attempts to input non-numerical data to price or quantity
+Expected result: user recieves error message at end of product creation and is sent back to homepage
+Result: as expected
+
+### Test 28: Signing up with existing email
+- Sign up for a customer account
+- Close program
+- Sign up for a customer account with the same credentials as step 1
+Expected result: user recieves error message  (user already exists) and is sent back to sign up
+Result: as expected
+
+### Test 29: Signing up with existing email
+- Sign up for a customer account
+- Close program
+- Sign up for a seller account with the same credentials as step 1
+Expected result: user recieves error message (user already exists) and is sent back to sign up
+Result: as expected
+
+### Test 30: User inputs commas in any field
+Expected result: Program likely crashes, our software cannot support commas in some inputs
+Result: Program crashes
+

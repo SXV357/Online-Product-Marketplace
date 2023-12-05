@@ -115,7 +115,7 @@ public class Seller extends User {
         ArrayList<Product> products = new ArrayList<>();
         ArrayList<String> productEntries = db.getMatchedEntries("products.csv", 3, storeName);
         if (productEntries.isEmpty()) {
-            throw new SellerException(storeName + "doesn\'t have any products!");
+            throw new SellerException(storeName + " doesn\'t have any products!");
         }
         for (int i = 0; i < productEntries.size(); i++) {
             String[] productEntry = productEntries.get(i).split(",");
