@@ -37,6 +37,7 @@ public class CustomerGUI extends JComponent {
     private JButton checkoutItemsButton;
     private JButton removeItemFromShoppingCartButton;
     private JButton viewPurchaseHistoryButton;
+    private JButton viewShoppingCartButton;
 
     public void displayErrorDialog(String errorMessage) {
         new ErrorMessageGUI(errorMessage);
@@ -161,6 +162,15 @@ public class CustomerGUI extends JComponent {
                     JOptionPane.showMessageDialog(null, purchaseHistoryEntries, "Purchase History", JOptionPane.INFORMATION_MESSAGE);
                 }
 
+            } else if (e.getSource() == viewShoppingCartButton) {
+                Object[] getShoppingCartResult = customerClient.getCart();
+                if (getShoppingCartResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) getShoppingCartResult[1]);
+                    return;
+                } else {
+                    String shoppingCartItems = (String) getShoppingCartResult[1];
+                    JOptionPane.showMessageDialog(null, shoppingCartItems, "View Shopping Cart", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else if (e.getSource() == viewStoreDashboardButton) {
                 Object[] getAllStoresResult = customerClient.fetchAllStores();
                 if (getAllStoresResult[0].equals("ERROR")) {
@@ -358,6 +368,9 @@ public class CustomerGUI extends JComponent {
         viewPurchaseHistoryButton = new JButton("View Purchase History");
         viewPurchaseHistoryButton.addActionListener(actionListener);
 
+        viewShoppingCartButton = new JButton("View Shopping Cart");
+        viewShoppingCartButton.addActionListener(actionListener);
+
         viewStoreDashboardButton = new JButton("View Stores Dashboard");
         viewStoreDashboardButton.addActionListener(actionListener);
 
@@ -387,6 +400,7 @@ public class CustomerGUI extends JComponent {
         buttonPanel.add(sortProductsButton);
         buttonPanel.add(exportPurchaseHistoryButton);
         buttonPanel.add(viewPurchaseHistoryButton);
+        buttonPanel.add(viewShoppingCartButton);
         buttonPanel.add(viewStoreDashboardButton);
         buttonPanel.add(viewPurchaseDashboardButton);
         buttonPanel.add(checkoutItemsButton);
