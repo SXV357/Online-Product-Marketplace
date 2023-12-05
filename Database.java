@@ -144,7 +144,7 @@ public class Database {
                     } else if (comparisonEmail.equals(email) && !(comparisonPassword.equals(password))) {
                         partialMatchFound = true;
                         throw new Exception("Wrong password. Please try again");
-                    } else if (comparisonPassword.equals(password) && !(comparisonEmail.equals(email))) {
+                    } else if (!(comparisonEmail.equals(email))) {
                         partialMatchFound = true;
                         throw new Exception("Wrong email. Please try again");
                     }
