@@ -51,12 +51,12 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
-            String userEmail = (String) ois.readObject();
-
             String response = (String) ois.readObject();
             if (response.equals("Customer Connection to Server Established")) {
+                String userEmail = (String) ois.readObject();
                 new CustomerClient(oos, ois).homepage(userEmail);
             } else if (response.equals("Seller Connection to Server Established")) {
+                String userEmail = (String) ois.readObject();
                 new SellerClient(oos, ois).homepage(userEmail);
             } else {
                 new ErrorMessageGUI(response);
@@ -78,11 +78,9 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
-            String userEmail = (String) ois.readObject();
-
             String response = (String) ois.readObject();
             if (response.equals("Seller Connection to Server Established")) {
-                new SellerClient(oos, ois).homepage(userEmail);
+                new SellerClient(oos, ois).homepage((String) ois.readObject());
             } else {
                 new ErrorMessageGUI(response);
                 new SignUpGUI(this);
@@ -102,11 +100,9 @@ public class InitialClient {
             oos.writeObject(serverRequest);
             oos.flush();
 
-            String userEmail = (String) ois.readObject();
-
             String response = (String) ois.readObject();
             if (response.equals("Customer Connection to Server Established")) {
-                new CustomerClient(oos, ois).homepage(userEmail);
+                new CustomerClient(oos, ois).homepage((String) ois.readObject());
             } else {
                 new ErrorMessageGUI(response);
                 new SignUpGUI(this);
