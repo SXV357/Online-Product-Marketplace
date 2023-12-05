@@ -47,12 +47,10 @@ public class ServerThread extends Thread {
                             String userMatch = database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]);
                             if (userMatch.split(",")[3].equals("CUSTOMER")) {
                                 u = new Customer(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
-                                oos.writeObject(u.getEmail());
-                                oos.flush();
+                                
                             } else if (userMatch.split(",")[3].equals("SELLER")){
                                 u = new Seller(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
-                                oos.writeObject(u.getEmail());
-                                oos.flush();
+    
                             }  
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
@@ -88,6 +86,8 @@ public class ServerThread extends Thread {
                     Customer c = (Customer) u;
                     System.out.println("Hello");
                     oos.writeObject("Customer Connection to Server Established");
+                    oos.flush();
+                    oos.writeObject(u.getEmail());
                     oos.flush();
                     while (!exit) {
                         response = (String[]) ois.readObject();
@@ -176,6 +176,8 @@ public class ServerThread extends Thread {
                     //Server.activeUsers.add(s.getUserID());
                     Seller s = (Seller) u;
                     oos.writeObject("Seller Connection to Server Established");
+                    oos.flush();
+                    oos.writeObject(u.getEmail());
                     oos.flush();
                     while (!exit) {
                         response = (String[]) ois.readObject();
