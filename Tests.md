@@ -296,4 +296,18 @@ Expected result: user recieves error message at end of product creation and is s
 Result: as expected
 
 ### Test 28: Signing up with existing email
+- Sign up for a customer account
+- Close program
+- Sign up for a customer account with the same credentials as step 1
+Expected result: user recieves error message  (user already exists) and is sent back to sign up
+Result: as expected
+### Test 29: Signing up with existing email
+- Sign up for a customer account
+- Close program
+- Sign up for a seller account with the same credentials as step 1
+Expected result: user recieves error message (user already exists) and is sent back to sign up
+Result: as expected
 
+### Test 30: User inputs commas in any field
+Expected result: user recieves error message at end of product creation and is sent back to homepage
+Result: as expected
