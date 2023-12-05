@@ -330,7 +330,7 @@ public class CustomerGUI extends JComponent {
 
     public CustomerGUI(CustomerClient customerClient, String email) {
         this.customerClient = customerClient;
-        customerFrame = new JFrame("Customer Page");
+        customerFrame = new JFrame(email + "\'s" + " Home Page");
         JPanel buttonPanel = new JPanel(new GridLayout(6, 2 , 5, 5));
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -339,7 +339,7 @@ public class CustomerGUI extends JComponent {
         customerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Welcome message label initialization
-        welcomeUserLabel = new JLabel("Welcome" + email + "!", SwingConstants.CENTER);
+        welcomeUserLabel = new JLabel("Welcome " + email + "!", SwingConstants.CENTER);
         welcomeUserLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
         welcomeUserLabel.setFont(new Font("Serif", Font.BOLD, 20));
 

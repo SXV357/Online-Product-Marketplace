@@ -32,6 +32,12 @@ public class Customer extends User {
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
     }
 
+    /**
+     * Fetches all the stores that exist in the application and returns them in the form of an arraylist.
+     * Utilized to determine customer dashboard behavior.
+     *
+     * @return An arraylist containing all the stores
+     */
     public ArrayList<String> fetchAllStores() throws CustomerException {
         ArrayList<String> allStores = db.getDatabaseContents("stores.csv");
         if (allStores.isEmpty()) {
