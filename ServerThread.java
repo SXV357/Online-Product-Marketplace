@@ -47,8 +47,12 @@ public class ServerThread extends Thread {
                             String userMatch = database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]);
                             if (userMatch.split(",")[3].equals("CUSTOMER")) {
                                 u = new Customer(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
+                                oos.writeObject(u.getEmail());
+                                oos.flush();
                             } else if (userMatch.split(",")[3].equals("SELLER")){
                                 u = new Seller(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
+                                oos.writeObject(u.getEmail());
+                                oos.flush();
                             }  
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
@@ -59,6 +63,8 @@ public class ServerThread extends Thread {
                     case "CREATE_CUSTOMER" -> {
                         try {
                             u = new Customer(userInfo[1], userInfo[2], UserRole.CUSTOMER);
+                            oos.writeObject(u.getEmail());
+                            oos.flush();
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                             oos.flush();
@@ -68,6 +74,8 @@ public class ServerThread extends Thread {
                     case "CREATE_SELLER" -> {
                         try {
                             u = new Seller(userInfo[1], userInfo[2], UserRole.SELLER);
+                            oos.writeObject(u.getEmail());
+                            oos.flush();
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                             oos.flush();
@@ -86,6 +94,8 @@ public class ServerThread extends Thread {
                         output = null;
                         try {
                             switch (response[0]) {
+                                // Get all stores
+                                case "FETCH_ALL_STORES" -> output = c.fetchAllStores();
                                 // View All Products
                                 case "GET_ALL_PRODUCTS" -> output = c.getAllProducts();
                                 // Get Product Info
@@ -172,10 +182,14 @@ public class ServerThread extends Thread {
                         output = null;
                         try {
                             switch (response[0]) {
+                                // Get all customers
+                                case "FETCH_ALL_CUSTOMERS" -> output = s.getAllCustomers();
+                                // Get all products
+                                case "FETCH_ALL_PRODUCTS" -> output = s.getAllProducts();
                                 // Get Stores
                                 case "GET_ALL_STORES" -> output = s.getStores();
                                 // Get Products
-                                case "GET_ALL_PRODUCTS" -> output = s.getProducts(response[1]);
+                                case "GET_STORE_PRODUCTS" -> output = s.getProducts(response[1]);
                                 // Create Product
                                 case "CREATE_NEW_PRODUCT" -> {
                                     s.createNewProduct(response[1], response[2], response[3], response[4], response[5]);

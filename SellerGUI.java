@@ -164,7 +164,7 @@ public class SellerGUI extends JComponent {
                         return;
                     }
                     // Get the products associated with the selected store
-                    Object[] getProductsResult = sellerClient.getProducts(storeName);
+                    Object[] getProductsResult = sellerClient.getStoreProducts(storeName);
                     if (getProductsResult[0].equals("ERROR")) {
                         String errorMessage = (String) getProductsResult[1];
                         displayErrorDialog(errorMessage);
@@ -208,7 +208,7 @@ public class SellerGUI extends JComponent {
                         return;
                     }
                     // Get the products associated with the selected store
-                    Object[] getProductsResult = sellerClient.getProducts(storeName);
+                    Object[] getProductsResult = sellerClient.getStoreProducts(storeName);
                     if (getProductsResult[0].equals("ERROR")) {
                         String errorMessage = (String) getProductsResult[1];
                         displayErrorDialog(errorMessage);
@@ -314,67 +314,79 @@ public class SellerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == viewCustomerDashboardButton) {
-                String[] sortChoices = {"Customer Email", "Quantity Purchased", "Money Spent"};
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
-                if (sortChoice == null) {
+                Object[] getAllCustomersResult = sellerClient.fetchAllCustomers();
+                if (getAllCustomersResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) getAllCustomersResult[1]);
                     return;
-                }
-                String orderChoice = (String) JOptionPane.showInputDialog(null, "In what order would you like to sort the dashboard?", "Sorting Order", JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
-                if (orderChoice == null) {
-                    return;
-                }
-                boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                int sortSelection = Arrays.binarySearch(sortChoices, sortChoice) + 1;
-
-                Object[] customerDashboardResult = sellerClient.sellerGetCustomersDashboard(sortSelection, ascending);
-
-                if (customerDashboardResult[0].equals("ERROR")) { 
-                    String errorMessage = (String) customerDashboardResult[1];
-                    displayErrorDialog(errorMessage);
-                    return;
-                } else if (customerDashboardResult[0].equals("SUCCESS")) {
-                    ArrayList<String> customerDashboard = (ArrayList<String>) customerDashboardResult[1];
-                    Object[][] data = new Object[customerDashboard.size()][3];
-                    for (int i = 0; i < customerDashboard.size(); i++) {
-                        String[] elems = customerDashboard.get(i).split(",");
-                        System.arraycopy(elems, 0, data[i], 0, elems.length);
+                } else {
+                    String[] sortChoices = {"Customer Email", "Quantity Purchased", "Money Spent"};
+                    String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                    if (sortChoice == null) {
+                        return;
                     }
+                    String orderChoice = (String) JOptionPane.showInputDialog(null, "In what order would you like to sort the dashboard?", "Sorting Order", JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
+                    if (orderChoice == null) {
+                        return;
+                    }
+                    boolean ascending = orderChoice.equals("Ascending") ? true: false;
+                    int sortSelection = Arrays.binarySearch(sortChoices, sortChoice) + 1;
 
-                    JTable table = new JTable(data, sortChoices);
-                    JScrollPane scrollPane = new JScrollPane(table);
-                    displayDashboard("Customers", scrollPane);
+                    Object[] customerDashboardResult = sellerClient.sellerGetCustomersDashboard(sortSelection, ascending);
+
+                    if (customerDashboardResult[0].equals("ERROR")) { 
+                        String errorMessage = (String) customerDashboardResult[1];
+                        displayErrorDialog(errorMessage);
+                        return;
+                    } else if (customerDashboardResult[0].equals("SUCCESS")) {
+                        ArrayList<String> customerDashboard = (ArrayList<String>) customerDashboardResult[1];
+                        Object[][] data = new Object[customerDashboard.size()][3];
+                        for (int i = 0; i < customerDashboard.size(); i++) {
+                            String[] elems = customerDashboard.get(i).split(",");
+                            System.arraycopy(elems, 0, data[i], 0, elems.length);
+                        }
+
+                        JTable table = new JTable(data, sortChoices);
+                        JScrollPane scrollPane = new JScrollPane(table);
+                        displayDashboard("Customers", scrollPane);
+                    }
                 }
 
             } else if (e.getSource() == viewProductDashboardButton) {
-                String[] sortChoices = {"Product Name", "Quantity Sold", "Total revenue"};
-                String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
-                if (sortChoice == null) {
+                Object[] getAllProductsResult = sellerClient.fetchAllProducts();
+                if (getAllProductsResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) getAllProductsResult[1]);
                     return;
-                }
-                String orderChoice = (String) JOptionPane.showInputDialog(null, "In what order would you like to sort the dashboard?", "Sorting Order", JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
-                if (orderChoice == null) {
-                    return;
-                }
-                boolean ascending = orderChoice.equals("Ascending") ? true: false;
-                int sortSelection = Arrays.binarySearch(sortChoices, sortChoice) + 1;
-
-                Object productDashboardResult[] = sellerClient.sellerGetProductsDashboard(sortSelection, ascending);
-
-                if (productDashboardResult[0].equals("ERROR")) {
-                    String errorMessage = (String) productDashboardResult[1];
-                    displayErrorDialog(errorMessage);
-                    return;
-                } else if (productDashboardResult[0].equals("SUCCESS")) {
-                    ArrayList<String> productDashboard = (ArrayList<String>) productDashboardResult[1];
-                    Object[][] data = new Object[productDashboard.size()][3];
-                    for (int i = 0; i < productDashboard.size(); i++) {
-                        String[] elems = productDashboard.get(i).split(",");
-                        System.arraycopy(elems, 0, data[i], 0, elems.length);
+                } else {
+                    String[] sortChoices = {"Product Name", "Quantity Sold", "Total revenue"};
+                    String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                    if (sortChoice == null) {
+                        return;
                     }
+                    String orderChoice = (String) JOptionPane.showInputDialog(null, "In what order would you like to sort the dashboard?", "Sorting Order", JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
+                    if (orderChoice == null) {
+                        return;
+                    }
+                    boolean ascending = orderChoice.equals("Ascending") ? true: false;
+                    int sortSelection = Arrays.binarySearch(sortChoices, sortChoice) + 1;
 
-                    JTable table = new JTable(data, sortChoices);
-                    JScrollPane scrollPane = new JScrollPane(table);
-                    displayDashboard("Products", scrollPane);
+                    Object productDashboardResult[] = sellerClient.sellerGetProductsDashboard(sortSelection, ascending);
+
+                    if (productDashboardResult[0].equals("ERROR")) {
+                        String errorMessage = (String) productDashboardResult[1];
+                        displayErrorDialog(errorMessage);
+                        return;
+                    } else if (productDashboardResult[0].equals("SUCCESS")) {
+                        ArrayList<String> productDashboard = (ArrayList<String>) productDashboardResult[1];
+                        Object[][] data = new Object[productDashboard.size()][3];
+                        for (int i = 0; i < productDashboard.size(); i++) {
+                            String[] elems = productDashboard.get(i).split(",");
+                            System.arraycopy(elems, 0, data[i], 0, elems.length);
+                        }
+
+                        JTable table = new JTable(data, sortChoices);
+                        JScrollPane scrollPane = new JScrollPane(table);
+                        displayDashboard("Products", scrollPane);
+                    }
                 }
 
             } else if (e.getSource() == editEmailButton) {
@@ -438,7 +450,7 @@ public class SellerGUI extends JComponent {
         }
     };
 
-    public SellerGUI(SellerClient sellerClient) {
+    public SellerGUI(SellerClient sellerClient, String email) {
         this.sellerClient = sellerClient;
         sellerFrame = new JFrame("Seller Page");
         JPanel buttonPanel = new JPanel(new GridLayout(8, 2, 5, 5));
@@ -449,7 +461,7 @@ public class SellerGUI extends JComponent {
         sellerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Welcome message label initialization
-        welcomeUserLabel = new JLabel("Welcome!", SwingConstants.CENTER);
+        welcomeUserLabel = new JLabel("Welcome" + email + "!", SwingConstants.CENTER);
         welcomeUserLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
         welcomeUserLabel.setFont(new Font("Serif", Font.BOLD, 20));
 

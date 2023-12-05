@@ -27,19 +27,47 @@ public class SellerClient {
         initialClient.start();
     }
 
-    public void homepage(){
+    public void homepage(String sellerEmail){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 SellerClient sc;
                 try {
                     sc = new SellerClient(oos, ois);
-                    new SellerGUI(sc);
+                    new SellerGUI(sc, sellerEmail);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    public Object[] fetchAllCustomers() {
+        // action: FETCH_ALL_CUSTOMERS
+        // RETURN: ["ERROR", error message] or ["SUCCESS", customers arraylist]
+        Object[] result;
+        try {
+            oos.writeObject(new String[] {"FETCH_ALL_CUSTOMERS"});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
+    public Object[] fetchAllProducts() {
+        // action: FETCH_ALL_PRODUCTS
+        // RETURN: ["ERROR", error message] or ["SUCCESS", products arraylist]
+        Object[] result;
+        try {
+            oos.writeObject(new String[] {"FETCH_ALL_PRODUCTS"});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
     }
 
     // Get all the stores associated with the current seller
@@ -58,12 +86,12 @@ public class SellerClient {
     }
 
     // Get all the products associated with a certain store of the current seller
-    public Object[] getProducts(String storeName) {
+    public Object[] getStoreProducts(String storeName) {
         // action: GET_ALL_PRODUCTS
         // RETURN: ["ERROR", error message] or ["SUCCESS", products arraylist]
         Object[] result;
         try {
-            oos.writeObject(new String[] {"GET_ALL_PRODUCTS", storeName});
+            oos.writeObject(new String[] {"GET_STORE_PRODUCTS", storeName});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
