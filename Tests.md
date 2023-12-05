@@ -1,7 +1,187 @@
-### Test 1
-- User creates a new account with a valid email
+#Testing Document
+
+## Initial Login / Sign Up
+
+### Test 1: Customer Account
+- User clicks to sign up and create a new customer account
+- For example: email "customer@gmail.com" and password "customer"
+- Select the "Customer" role from the drop-down
 - User logs out and closes the program
 - User logs in with the same credentials
+- Customer GUI is visible
+- Customer logs out
+Expected result: The user can log in and see GUI
+Test Status: Passed
+
+### Test 2: Seller Account
+- User clicks to sign up and create a new seller account
+- For example: email "seller@gmail.com" and password "seller"
+- Select the "Seller" role from the drop-down 
+- User logs out and closes the program
+- User logs in with the same credentials
+- Seller GUI is visible
+- Seller logs out
+Expected result: The user can log in and see GUI
+Test Status: Passed
+
+## Seller Functionality
+*Log into test account with email: "test_seller@gmail.com" and password: "test"*
+
+### Test 3: Create Store
+- Seller clicks "Create Store"
+- Seller enters store name (ex: "Fish Market")
+- Information prompt states success message
+- Program returns to the main menu
+- Fish Market exists in the "stores.csv" database
+Expected result: The seller can create a store
+Test Status: Passed
+
+### Test 4: Edit Store
+- Seller clicks "Edit Store"
+- Seller uses drop-down menu and clicks "Fish Market"
+- Seller renames store to "Stop & Shop"
+- Information prompt states success message
+- Program returns to the main menu
+- "Fish Market" changed to "Stop & Shop" in the "stores.csv" database
+Expected result: The seller can edit a store's name
+Test Status: Passed
+
+### Test 5: Add Product
+- Seller clicks "Add Product"
+- Seller uses drop-down menu and clicks "Stop & Shop"
+- Seller names the product "Oreos"
+- Seller sets 20 units of the product for sale
+- Seller sets the price of the product as "6.99"
+- Seller sets the description as "A tasty treat"
+- Information prompt states success message
+- Program returns to the main menu
+- "Oreos" added in the "products.csv" database
+Expected result: The seller can add a product to a store
+Test Status: Passed
+
+### Test 6: Edit Product
+- Seller clicks "Edit Product"
+- Seller uses drop-down menu and selects "Stop & Shop"
+- Seller uses drop-down menu and selects "Oreos"
+- Seller uses drop-down menu and selects "Name"
+- Seller renames the product "Oreos" to "Biscuits"
+- Information prompt states success message
+- Program returns to the main menu
+- "Oreos" changed to "Biscuits" in the "products.csv" database
+Expected result: The seller can edit a product in a store
+Test Status: Passed
+
+### Test 7: Import Products
+- Seller clicks "Import Products"
+- Seller types "ProductsToImport.csv"
+- Seller selects "Stop & Shop"
+- Information prompt states success message
+- Program returns to the main menu
+- Products added to store in "products.csv"
+Expected result: The seller can import products into a store
+Test Status: Passed
+
+### Test 8: Delete Products
+- Seller clicks "Delete Products"
+- Seller uses drop-down menu and selects "Stop & Shop"
+- Seller uses drop-down menu and selects "Pasta"
+- Information prompt states success message
+- Program returns to the main menu
+- Product "Pasta" removed from the store "Stop & Shop" in "products.csv"
+Expected result: The seller can remove products from a store
+Test Status: Passed
+
+### Test 9: Export Products
+- Seller clicks "Export Products"
+- Seller uses drop-down menu and selects "Stop & Shop"
+- Information prompt states success message
+- Program returns to the main menu
+- File path "/exportProducts/"Stop & Shop.csv" is created with this given store's products
+Expected result: The seller can remove products from a store
+Test Status: Passed
+
+### Test 10: View Sales by Store
+- Seller clicks "View Sales by Store"
+- Seller can view all stores with the products purchased by customers
+- Seller clicks "Ok" and program returns to main menu
+Expected result: The seller can view stores by sales
+Test Status: Passed
+
+### Test 11: View Customer Shopping Carts
+- Seller clicks "View Customer Shopping Carts"
+- Seller can view all the their items that are currently in customer's shopping carts
+- Seller clicks "Ok" and program returns to main menu
+Expected result: The seller can view their customer's shopping carts
+Test Status: Passed
+
+### Test 12: View Customer Dashboard
+- Seller clicks "View Customer Dashboard"
+- Seller uses drop-down menu and selects "Customer Email"
+- Seller uses drop-down menu and selects "Ascending"
+- Seller can view all customers with their emails in alphabetical ascending order
+- Seller can exit out and return to main menu
+Expected result: The seller can view all customers in a sorted manner
+Test Status: Passed
+
+### Test 13: View Products Dashboard
+- Seller clicks "View Customer Dashboard"
+- Seller uses drop-down menu and selects "Product Name"
+- Seller uses drop-down menu and selects "Ascending"
+- Seller can view all their products' names in alphabetical ascending order
+- Seller can exit out and return to main menu
+Expected result: The seller can view their products' names in a sorted manner
+Test Status: Passed
+
+## Customer Functionality
+*Sign out of the previous seller and sign into the customer account with email: "customer_test@gmail.com" and password: "test"
+
+### Test 14: Add Item to cart
+- Customer clicks "View All Products" button
+- Select "Biscuits" from the drop-down menu of all products
+- GUI displays product information and a question panel regarding purchase
+- Customer selects "Yes"
+- Customer writes "5" for purchase quantity
+- Information panel displays a success message
+Expected result: The customer can add items to their cart
+Test Status: Passed
+
+### Test 15: Search For Product
+- Customer clicks "Search For Product" button
+- Customer write "Biscuits" for product search
+- Customer selects "Biscuits" from the drop-down menu of all products
+- GUI displays product information
+- Customer selects "Ok"
+- Program returns to the main menu
+Expected result: The customer search for products
+Test Status: Passed
+
+### Test 16: Sort Product
+- Customer clicks "Sort Products" button
+- GUI appears with all products and "Sort by Price" and "Sort By Quantity" buttons
+- Customer can click "Sort by Price for ascending products by price
+- Customer can click "Sort by Quantity for ascending products by quantity available
+- Customer can exit out to return to the main menu
+Expected result: The customer sort products
+Test Status: Passed
+
+### Test 17: View Shopping Cart
+- Customer clicks "View Shopping Cart" button
+- Information panel displays the "Biscuits" item in the cart with relevant information
+Expected result: The customer can purchase items
+Test Status: Passed
+
+### Test 18: Checkout Items
+- Customer clicks "Checkout Items" button
+- Information panel displays a success message
+- The customer's entries in "shoppingCarts.csv" are cleared, the "products.csv" quantity is updated, and "shoppinghistories.csv" is updated
+Expected result: The customer can purchase items
+Test Status: Passed
+
+### Test 19: View Purchase History
+- Customer clicks "View Purchase History" button
+- Information panel displays the "Biscuits" item in the cart with relevant information (Same format as View Shopping Cart)
+Expected result: The customer can view purchase history
+Test Status: Passed
 Expected result: User is able to log in
 Result: TODO
 
