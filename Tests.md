@@ -185,8 +185,6 @@ Test Status: Passed
 Expected result: User is able to log in
 Result: TODO
 
-Expected result:
-Result:
 ### Test 20: Concurrent customer purchases
 - Customer 1 logs in
 - Customer 2 logs in
@@ -229,3 +227,11 @@ Result: as expected
 - Sign in without selecting a user type from the drop down menu
 Expected result: user recieves error message and is sent back to login
 Result: as expected
+
+### Test 27: Invalid data type for products:
+- Seller attempts to input non-numerical data to price or quantity
+Expected result: user recieves error message at end of product creation and is sent back to homepage
+Result: as expected
+
+### Test 28: Signing up with existing email
+
