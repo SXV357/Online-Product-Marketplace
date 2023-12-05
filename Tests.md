@@ -247,6 +247,9 @@ Test Status: Passed
 
 Expected result: User is able to log in
 
+## Miscalaneous Tests 
+- Each test case performed independently of other test cases
+- Database populated where necessary
 ### Test 20: Concurrent customer purchases
 - Customer 1 logs in
 - Customer 2 logs in
@@ -301,6 +304,7 @@ Result: as expected
 - Sign up for a customer account with the same credentials as step 1
 Expected result: user recieves error message  (user already exists) and is sent back to sign up
 Result: as expected
+
 ### Test 29: Signing up with existing email
 - Sign up for a customer account
 - Close program
@@ -309,5 +313,6 @@ Expected result: user recieves error message (user already exists) and is sent b
 Result: as expected
 
 ### Test 30: User inputs commas in any field
-Expected result: user recieves error message at end of product creation and is sent back to homepage
-Result: as expected
+Expected result: Program likely crashes, our software cannot support commas in some inputs
+Result: Program crashes
+
