@@ -80,11 +80,11 @@ public class CustomerGUI extends JComponent {
                         return;
                     } else {
                         String[] productInfo = ((String) incoming[1]).split(",");
-                        String storeName = productInfo[3];
-                        String productName = productInfo[4];
-                        String availableQuantity = productInfo[5]; 
-                        String price = productInfo[6];
-                        String description = productInfo[7];
+                        String storeName = productInfo[0];
+                        String productName = productInfo[1];
+                        String availableQuantity = productInfo[2]; 
+                        String price = productInfo[3];
+                        String description = productInfo[4];
                         String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%s", storeName, productName, availableQuantity, price, description);
                         String[] options = {"Yes", "No"};
                         String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + info, "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -126,11 +126,11 @@ public class CustomerGUI extends JComponent {
                         return;
                     } else {
                         String[] productInfo = ((String) incoming[1]).split(",");
-                        String storeName = productInfo[3];
-                        String productName = productInfo[4];
-                        String availableQuantity = productInfo[5]; 
-                        String price = productInfo[6];
-                        String description = productInfo[7];
+                        String storeName = productInfo[0];
+                        String productName = productInfo[1];
+                        String availableQuantity = productInfo[2]; 
+                        String price = productInfo[3];
+                        String description = productInfo[4];
                         String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%s", storeName, productName, availableQuantity, price, description);
                         JOptionPane.showMessageDialog(null, info, "Product Information", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -143,8 +143,7 @@ public class CustomerGUI extends JComponent {
                     return;
                 } else {
                     String[] originalProducts = ((String) viewAllProductsResult[1]).split("\n");
-                    String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
-                    new SortProductsGUI(modifiedProducts, customerClient);
+                    new SortProductsGUI(originalProducts, customerClient);
                 } 
 
             } else if (e.getSource() == exportPurchaseHistoryButton) {

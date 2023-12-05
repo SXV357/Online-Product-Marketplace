@@ -15,7 +15,7 @@ import java.util.Collections;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version November 27, 2023
+ * @version December 4, 2023
  */
 public class Dashboard {
 
@@ -50,7 +50,7 @@ public class Dashboard {
     // Return line format: email,totalQuantity,totalSpent
     public ArrayList<String> sellerGetCustomersDashboard(int sortIndex, boolean sortAscending) throws SellerException {
         // Get all customer Users
-        ArrayList<String> allCustomers = database.getMatchedEntries("users.csv", 3, "Customer");
+        ArrayList<String> allCustomers = database.getMatchedEntries("users.csv", 3, "CUSTOMER");
 
         if (allCustomers.isEmpty()) {
             throw new SellerException("There are no existent customer accounts!");

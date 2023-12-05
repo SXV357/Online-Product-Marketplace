@@ -20,7 +20,7 @@ public class DisplayDashboardGUI {
                 JFrame dashboardFrame = new JFrame(dashboardType + " Dashboard");
                 dashboardFrame.setSize(900, 750);
                 dashboardFrame.setLocationRelativeTo(null);
-                dashboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                dashboardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 dashboardFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
                 dashboardFrame.setVisible(true);
             }
