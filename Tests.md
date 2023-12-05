@@ -187,7 +187,7 @@ Result: TODO
 
 Expected result:
 Result:
-### Test 2
+### Test 20: Concurrent customer purchases
 - Customer 1 logs in
 - Customer 2 logs in
 - Customer 1 adds all of a product to cart
@@ -196,7 +196,16 @@ Result:
 Expected result: Customer 2 sucessfully checks out. Customer 1 gets an error message and the product with too much quantity is removed.
 Result: as expected
 
-### Test 3
+### Test 22: Concurrent customers purchases while another checks-out
+- Customer 1 logs in
+- Customer 2 logs in
+- Customer 1 adds all of product 1 to cart, does not finish adding to cart
+- Customer 2 adds one of product 1to cart and checks out
+- Customer 1 attempts to check out
+Expected result: Customer 2 sucessfully checks out. Customer 1 attempts to add to cart with a previously valid value and recieves an error.
+Result: as expected
+
+### Test 23: Concurrent customer purchases multiple items
 - Customer 1 logs in
 - Customer 2 logs in
 - Customer 1 adds all of product 1 to cart
@@ -206,17 +215,17 @@ Result: as expected
 Expected result: Customer 2 sucessfully checks out. Customer 1 gets an error message and the first product with too much quantity is removed. The second product remains in cart
 Result: as expected
 
-### Test 4
+### Test 24
 - Sign in with a non-existent account with valid format
 Expected result: user recieves error message and is sent back to login
 Result: as expected
 
-### Test 5
+### Test 25
 - Sign in with a invalid format email
 Expected result: user recieves error message and is sent back to login
 Result: as expected
 
-### Test 6
+### Test 26
 - Sign in without selecting a user type from the drop down menu
 Expected result: user recieves error message and is sent back to login
 Result: as expected
