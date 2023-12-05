@@ -13,10 +13,11 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 4, 2023
+ * @version December 5, 2023
  */
 public class CustomerGUI extends JComponent {
 
+    private String customerEmail;
     private DisplayDashboardGUI displayDashboard = new DisplayDashboardGUI();
     private JFrame customerFrame;
     private CustomerClient customerClient;
@@ -37,15 +38,6 @@ public class CustomerGUI extends JComponent {
     private JButton checkoutItemsButton;
     private JButton removeItemFromShoppingCartButton;
     private JButton viewPurchaseHistoryButton;
-
-    public static void main(String[] args) { // For internal testing purposes only
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new CustomerGUI(null);
-            }
-        });
-    }
 
     public void displayErrorDialog(String errorMessage) {
         new ErrorMessageGUI(errorMessage);
@@ -85,7 +77,7 @@ public class CustomerGUI extends JComponent {
                         String availableQuantity = productInfo[2]; 
                         String price = productInfo[3];
                         String description = productInfo[4];
-                        String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%s", storeName, productName, availableQuantity, price, description);
+                        String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%n", storeName, productName, availableQuantity, price, description);
                         String[] options = {"Yes", "No"};
                         String addToCart = (String) JOptionPane.showInputDialog(null, "Would you like to add this item to your cart?\n" + info, "Add Item", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
@@ -105,34 +97,40 @@ public class CustomerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == searchForProductButton) {
-                String query = JOptionPane.showInputDialog(null, "What would you like to search for?", "Search for Product", JOptionPane.QUESTION_MESSAGE);
-                Object[] searchProductsResult = customerClient.searchProducts(query);
-                if (searchProductsResult[0].equals("ERROR")) {
-                    displayErrorDialog((String) searchProductsResult[1]);
+                Object[] viewAllProductsResult = customerClient.getAllProducts();
+                if (viewAllProductsResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) viewAllProductsResult[1]);
                     return;
                 } else {
-                    String[] originalProducts = ((String) searchProductsResult[1]).split("\n");
-                    String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
-                    String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
-                    if (productChoice == null) {
-                        return;
-                    }
-                    
-                    int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
-                    Object[] incoming = customerClient.getProductInfo(productSelection);
-                    
-                    if (incoming[0].equals("ERROR")) {
-                        displayErrorDialog((String) incoming[1]);
+                    String query = JOptionPane.showInputDialog(null, "What would you like to search for?", "Search for Product", JOptionPane.QUESTION_MESSAGE);
+                    Object[] searchProductsResult = customerClient.searchProducts(query);
+                    if (searchProductsResult[0].equals("ERROR")) {
+                        displayErrorDialog((String) searchProductsResult[1]);
                         return;
                     } else {
-                        String[] productInfo = ((String) incoming[1]).split(",");
-                        String storeName = productInfo[0];
-                        String productName = productInfo[1];
-                        String availableQuantity = productInfo[2]; 
-                        String price = productInfo[3];
-                        String description = productInfo[4];
-                        String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%s", storeName, productName, availableQuantity, price, description);
-                        JOptionPane.showMessageDialog(null, info, "Product Information", JOptionPane.INFORMATION_MESSAGE);
+                        String[] originalProducts = ((String) searchProductsResult[1]).split("\n");
+                        String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
+                        String productChoice = (String) JOptionPane.showInputDialog(null, "Which product\'s details would you like to view?", "Products", JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
+                        if (productChoice == null) {
+                            return;
+                        }
+                        
+                        int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
+                        Object[] incoming = customerClient.getProductInfo(productSelection);
+                        
+                        if (incoming[0].equals("ERROR")) {
+                            displayErrorDialog((String) incoming[1]);
+                            return;
+                        } else {
+                            String[] productInfo = ((String) incoming[1]).split(",");
+                            String storeName = productInfo[0];
+                            String productName = productInfo[1];
+                            String availableQuantity = productInfo[2]; 
+                            String price = productInfo[3];
+                            String description = productInfo[4];
+                            String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%n", storeName, productName, availableQuantity, price, description);
+                            JOptionPane.showMessageDialog(null, info, "Product Information", JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                 }
 
@@ -196,7 +194,7 @@ public class CustomerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == viewPurchaseDashboardButton) {
-                String[] sortChoices = {"Product name", "Number of products purchased", "Total spent"};
+                String[] sortChoices = {"Store name", "Number of products purchased", "Total spent"};
                 String sortChoice = (String) JOptionPane.showInputDialog(null, "How would you like to sort the dashboard?", "Dashboard Sort Choice", JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
                 if (sortChoice == null) {
                     return;
@@ -242,11 +240,12 @@ public class CustomerGUI extends JComponent {
                        return;
                 } else {
                     String[] shoppingCartItems = ((String) getShoppingCartResult[1]).split("\n");
-                    String itemChoice = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Shopping Cart", JOptionPane.QUESTION_MESSAGE, null, shoppingCartItems, shoppingCartItems[0]);
+                    String[] modifiedCart = Arrays.copyOfRange(shoppingCartItems, 1, shoppingCartItems.length);
+                    String itemChoice = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Shopping Cart", JOptionPane.QUESTION_MESSAGE, null, modifiedCart, modifiedCart[0]);
                     if (itemChoice == null) {
                         return;
                     }
-                    int itemSelection = Arrays.binarySearch(shoppingCartItems, itemChoice);
+                    int itemSelection = Arrays.binarySearch(modifiedCart, itemChoice);
                     Object[] removeFromCartResult = customerClient.removeFromCart(itemSelection);
                     if (removeFromCartResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, removeFromCartResult[1], "Remove from cart", JOptionPane.INFORMATION_MESSAGE);
@@ -318,12 +317,11 @@ public class CustomerGUI extends JComponent {
         }
     };
 
-    public CustomerGUI(CustomerClient customerClient) {
+    public CustomerGUI(CustomerClient customerClient, String customerEmail) {
         this.customerClient = customerClient;
+        this.customerEmail = customerEmail;
         customerFrame = new JFrame("Customer Page");
         JPanel buttonPanel = new JPanel(new GridLayout(6, 2 , 5, 5));
-
-        // Source: https://stackoverflow.com/questions/5328405/jpanel-padding-in-java
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         customerFrame.setSize(800, 500);
@@ -331,7 +329,7 @@ public class CustomerGUI extends JComponent {
         customerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Welcome message label initialization
-        welcomeUserLabel = new JLabel("Welcome!", SwingConstants.CENTER);
+        welcomeUserLabel = new JLabel("Welcome!" + customerEmail, SwingConstants.CENTER);
         welcomeUserLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
         welcomeUserLabel.setFont(new Font("Serif", Font.BOLD, 20));
 

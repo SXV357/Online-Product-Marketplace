@@ -19,6 +19,7 @@ import java.util.HashMap;
  */
 public class SellerGUI extends JComponent {
 
+    private String sellerEmail;
     private DisplayDashboardGUI displayDashboard = new DisplayDashboardGUI();
     private final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
     private SellerClient sellerClient;
@@ -42,15 +43,6 @@ public class SellerGUI extends JComponent {
     private JButton viewSalesByStoreButton;
     private JButton viewCustomerDashboardButton;
     private JButton viewProductDashboardButton;
-
-    public static void main(String[] args) { // For internal testing purposes only
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new SellerGUI(null);
-            }
-        });
-    }
 
     public void displayErrorDialog(String errorMessage) {
         new ErrorMessageGUI(errorMessage);
@@ -447,12 +439,11 @@ public class SellerGUI extends JComponent {
         }
     };
 
-    public SellerGUI(SellerClient sellerClient) {
+    public SellerGUI(SellerClient sellerClient, String sellerEmail) {
         this.sellerClient = sellerClient;
+        this.sellerEmail = sellerEmail;
         sellerFrame = new JFrame("Seller Page");
         JPanel buttonPanel = new JPanel(new GridLayout(8, 2, 5, 5));
-
-        // Source: https://stackoverflow.com/questions/5328405/jpanel-padding-in-java
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         sellerFrame.setSize(650, 750);
@@ -460,7 +451,7 @@ public class SellerGUI extends JComponent {
         sellerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Welcome message label initialization
-        welcomeUserLabel = new JLabel("Welcome!", SwingConstants.CENTER);
+        welcomeUserLabel = new JLabel("Welcome!" + sellerEmail, SwingConstants.CENTER);
         welcomeUserLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
         welcomeUserLabel.setFont(new Font("Serif", Font.BOLD, 20));
 

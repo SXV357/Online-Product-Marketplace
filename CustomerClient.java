@@ -27,14 +27,14 @@ public class CustomerClient {
         initialClient.start();
     }
 
-    public void homepage(){
+    public void homepage(String customerEmail){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 CustomerClient cc;
                 try {
                     cc = new CustomerClient(oos, ois);
-                    new CustomerGUI(cc);
+                    new CustomerGUI(cc, customerEmail);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }    
