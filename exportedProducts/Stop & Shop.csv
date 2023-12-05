@@ -1,0 +1,4 @@
+Seller ID,Store ID,Product ID,Product Name,Available Quantity,Price,Description
+S1000003,ST1000002,PR1000002,Biscuits,20,6.99,A tasty treat
+S1000003,ST1000002,PR1000001,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick
+S1000003,ST1000002,PR1000003,Margherita Pizza,30,9.99,Classic pizza topped with fresh tomatoes mozzarella and basil

@@ -144,10 +144,11 @@ public class Database {
                     } else if (comparisonEmail.equals(email) && !(comparisonPassword.equals(password))) {
                         partialMatchFound = true;
                         throw new Exception("Wrong password. Please try again");
-                    } else if (!(comparisonEmail.equals(email))) {
+                    } /*else if (!(comparisonEmail.equals(email))) {
                         partialMatchFound = true;
                         throw new Exception("Wrong email. Please try again");
                     }
+                    */
                 }
                 // After going through the non-empty database, if no entries match the credentials provided
                 if (!fullMatchFound && !partialMatchFound) {
