@@ -17,7 +17,6 @@ import java.util.Arrays;
  */
 public class CustomerGUI extends JComponent {
 
-    private String customerEmail;
     private DisplayDashboardGUI displayDashboard = new DisplayDashboardGUI();
     private JFrame customerFrame;
     private CustomerClient customerClient;
@@ -317,9 +316,8 @@ public class CustomerGUI extends JComponent {
         }
     };
 
-    public CustomerGUI(CustomerClient customerClient, String customerEmail) {
+    public CustomerGUI(CustomerClient customerClient) {
         this.customerClient = customerClient;
-        this.customerEmail = customerEmail;
         customerFrame = new JFrame("Customer Page");
         JPanel buttonPanel = new JPanel(new GridLayout(6, 2 , 5, 5));
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -329,7 +327,7 @@ public class CustomerGUI extends JComponent {
         customerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Welcome message label initialization
-        welcomeUserLabel = new JLabel("Welcome!" + customerEmail, SwingConstants.CENTER);
+        welcomeUserLabel = new JLabel("Welcome!", SwingConstants.CENTER);
         welcomeUserLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
         welcomeUserLabel.setFont(new Font("Serif", Font.BOLD, 20));
 

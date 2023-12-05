@@ -27,14 +27,14 @@ public class SellerClient {
         initialClient.start();
     }
 
-    public void homepage(String sellerEmail){
+    public void homepage(){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 SellerClient sc;
                 try {
                     sc = new SellerClient(oos, ois);
-                    new SellerGUI(sc, sellerEmail);
+                    new SellerGUI(sc);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
