@@ -3,13 +3,11 @@ import javax.swing.*;
 
 /**
  * Project 5 - DisplayInformationGUI.java
- * 
  * The interface associated with displaying various kinds of information for both customers and sellers.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 4, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class DisplayDashboardGUI {
 

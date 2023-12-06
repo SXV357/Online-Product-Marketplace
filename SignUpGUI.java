@@ -2,15 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 /**
  * Project 5 - SignUpGUI.java
- *
  * The interface associated with user signup.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- *
- * @version December 3, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class SignUpGUI extends JFrame {
     private JFrame signupFrame;
@@ -29,7 +28,7 @@ public class SignUpGUI extends JFrame {
         this.initialClient = initialClient;
         signUpDisplay();
     }
-    
+
     public ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -74,10 +73,10 @@ public class SignUpGUI extends JFrame {
                 emailLabel = new JLabel("Email:");
                 emailField = new JTextField(15);
                 passwordLabel = new JLabel("Password:");
-                passwordField = new JPasswordField(15); 
+                passwordField = new JPasswordField(15);
                 roleLabel = new JLabel("Role");
                 roleComboBox = new JComboBox<>(new String[]{"Customer", "Seller"});
-                
+
                 // Reset the contents of all fields when the GUI is opened
                 emailField.setText("");
                 passwordField.setText(null);

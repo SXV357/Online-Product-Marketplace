@@ -5,13 +5,11 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - LoginGUI.java
- * 
  * Class that constructs the GUI for a user that is logging in
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
- * @version December 3, 2023
+ * @version December 6, 2023
  */
 public class LoginGUI {
     private JFrame loginFrame;
@@ -62,7 +60,7 @@ public class LoginGUI {
                 emailLabel = new JLabel("Email:");
                 emailField = new JTextField(15);
                 passwordLabel = new JLabel("Password:");
-                passwordField = new JPasswordField(15); 
+                passwordField = new JPasswordField(15);
 
                 // Reset contents of all fields when GUI is opened
                 emailField.setText("");

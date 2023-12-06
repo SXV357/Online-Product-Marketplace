@@ -8,24 +8,23 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Database.java
- * 
  * Class that handles all database access and modification functionality related
  * to the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 4, 2023
+ * @version December 6, 2023
  */
 public class Database {
-    private final String DATABASES_DIRECTORY = "databases/";
-    private final String USERS_DATABASE_HEADERS = "ID,Email,Password,Role";
-    private final String STORES_DATABASE_HEADERS = "Store ID,Seller ID,Store Name,Number of Products";
-    private final String PRODUCTS_DATABASE_HEADERS = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
+    private final String databasesDirectory = "databases/";
+    private final String usersDatabaseHeaders = "ID,Email,Password,Role";
+    private final String storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
+    private final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
             "Available Quantity,Price,Description";
-    private final String PURCHASE_HISTORY_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store "
+    private final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store "
             + "Name,Product Name,Purchase Quantity,Price";
-    private final String SHOPPING_CART_DATABASE_HEADERS = "Customer ID,Seller ID,Store ID,Product ID,Store Name,"
+    private final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,"
             + "Product Name,Purchase Quantity,Price";
     static Object lock = new Object();
 
@@ -39,11 +38,11 @@ public class Database {
     public String getFileHeaders(String fileName) {
         String fileHeaders = "";
         switch (fileName) {
-            case "users.csv" -> fileHeaders = USERS_DATABASE_HEADERS;
-            case "stores.csv" -> fileHeaders = STORES_DATABASE_HEADERS;
-            case "products.csv" -> fileHeaders = PRODUCTS_DATABASE_HEADERS;
-            case "shoppingCarts.csv" -> fileHeaders = SHOPPING_CART_DATABASE_HEADERS;
-            case "purchaseHistories.csv" -> fileHeaders = PURCHASE_HISTORY_DATABASE_HEADERS;
+            case "users.csv" -> fileHeaders = usersDatabaseHeaders;
+            case "stores.csv" -> fileHeaders = storesDatabaseHeaders;
+            case "products.csv" -> fileHeaders = productsDatabaseHeaders;
+            case "shoppingCarts.csv" -> fileHeaders = shoppingCartDatabaseHeaders;
+            case "purchaseHistories.csv" -> fileHeaders = purchaseHistoryDatabaseHeaders;
         }
         return fileHeaders;
     }
@@ -150,10 +149,10 @@ public class Database {
                 if (!fullMatchFound && !partialMatchFound) {
                     throw new Exception("Login failed. Please try again!");
                 }
-            return matchedUser;
+                return matchedUser;
+            }
         }
     }
-}
 
     /**
      * Takes in the user's email and retrieves a match for the credential in the
@@ -343,7 +342,7 @@ public class Database {
      */
     public boolean checkEntryExists(String fileName, String entry) {
         synchronized (lock) {
-            File target = new File(DATABASES_DIRECTORY + fileName);
+            File target = new File(databasesDirectory + fileName);
             try (BufferedReader br = new BufferedReader(new FileReader(target))) {
                 br.readLine(); // skip the header
                 String line;
@@ -375,7 +374,7 @@ public class Database {
             ArrayList<String> matchedEntries = new ArrayList<>();
             try {
                 if (checkColumnBounds(fileName, index)) {
-                    File target = new File(DATABASES_DIRECTORY + fileName);
+                    File target = new File(databasesDirectory + fileName);
                     BufferedReader br = new BufferedReader(new FileReader(target));
                     br.readLine(); // skip the header
                     String line;
@@ -404,7 +403,7 @@ public class Database {
     public ArrayList<String> getDatabaseContents(String fileName) {
         synchronized (lock) {
             ArrayList<String> fileContents = new ArrayList<String>();
-            File output = new File(DATABASES_DIRECTORY + fileName);
+            File output = new File(databasesDirectory + fileName);
             try {
                 BufferedReader br = new BufferedReader(new FileReader(output));
                 br.readLine(); // skipping the headers
@@ -430,7 +429,7 @@ public class Database {
      */
     public void updateDatabaseContents(String fileName, ArrayList<String> contents) {
         synchronized (lock) {
-            File dir = new File(DATABASES_DIRECTORY);
+            File dir = new File(databasesDirectory);
             try {
                 if (!dir.exists()) {
                     dir.mkdir();

@@ -4,19 +4,17 @@ import java.util.regex.Pattern;
 
 /**
  * Project 5 - User.java
- * 
  * Class that represents the characteristics associated with all users in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
- * @version December 4, 2023
+ * @version December 6, 2023
  */
 public class User {
 
     private Database db = new Database();
-    private final String EMAIL_REGEX = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}$";
+    private final String emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}$";
     private String email;
     private String password;
     private UserRole role;
@@ -45,16 +43,17 @@ public class User {
      */
     public User(String email, String password, UserRole role) throws Exception {
         if (email == null || email.isBlank() || email.isEmpty()) {
-          throw new Exception("Invalid email. Email cannot be null, blank, or empty");  
+            throw new Exception("Invalid email. Email cannot be null, blank, or empty");
         } else if (password == null || password.isBlank() || password.isEmpty()) {
             throw new Exception("Invalid password. Password cannot be null, blank, or empty");
         }
-        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
             boolean emailExists = checkDuplicateEmail(email);
             if (emailExists) {
-                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+                throw new Exception("Another user exists with the same email. Please choose a different" +
+                        " one and try again!");
             } else {
                 this.email = email;
             }
@@ -136,14 +135,15 @@ public class User {
      */
     public void setEmail(String email) throws Exception {
         if (email == null || email.isBlank() || email.isEmpty()) {
-          throw new Exception("The email cannot be null, blank, or empty");  
-        } 
-        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+            throw new Exception("The email cannot be null, blank, or empty");
+        }
+        Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
             boolean emailExists = checkDuplicateEmail(email);
             if (emailExists) {
-                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+                throw new Exception("Another user exists with the same email. Please choose a different one" +
+                        " and try again!");
             } else {
                 String prevUserString = this.toString();
                 this.email = email;
@@ -171,13 +171,13 @@ public class User {
     }
 
     /**
-     * Takes in the user's email and returns whether it is is associated with an existing user
+     * Takes in the user's email and returns whether it is associated with an existing user
      *
-     * @param email The email to check the existence for in database
+     * @param checkEmail The email to check the existence for in database
      * @return The existence of the email in the users.csv database
      */
-    public boolean checkDuplicateEmail(String email) {
-        return db.retrieveUserMatchForSignUp(email) != null;
+    public boolean checkDuplicateEmail(String checkEmail) {
+        return db.retrieveUserMatchForSignUp(checkEmail) != null;
     }
 
     /**
@@ -198,14 +198,17 @@ public class User {
      * Deletes the user's account in associated databases based on the user's role.
      * If a seller deletes their account, the associated entries containing that
      * seller's ID in a customer's purchase history won't be deleted.
+     *
      * @throws Exception
      */
     public void deleteAccount() throws Exception {
         try {
             db.removeFromDatabase("users.csv", this.toString());
             if (this.role == UserRole.CUSTOMER) {
-                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv", 0, this.userID);
-                ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv", 0,
+                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv",
+                        0, this.userID);
+                ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv",
+                        0,
                         this.userID);
                 for (String shoppingCartEntry : matchedShoppingCarts) {
                     db.removeFromDatabase("shoppingCarts.csv", shoppingCartEntry);
@@ -216,7 +219,8 @@ public class User {
             } else if (this.role == UserRole.SELLER) {
                 ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, this.userID);
                 ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, this.userID);
-                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv", 1, this.userID);
+                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv",
+                        1, this.userID);
                 for (String storeEntry : matchedStores) {
                     db.removeFromDatabase("stores.csv", storeEntry);
                 }

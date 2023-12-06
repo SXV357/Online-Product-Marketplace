@@ -6,13 +6,11 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Customer.java
- * 
  * Class to represent the permissions and details associated with a customer
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
- * @version December 5, 2023
+ * @version December 6, 2023
  */
 public class Customer extends User {
 
@@ -98,7 +96,7 @@ public class Customer extends User {
      */
     public String getProductInfo(int index) throws CustomerException {
         try {
-            
+
             StringBuilder sb = new StringBuilder();
             String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
 
@@ -149,7 +147,7 @@ public class Customer extends User {
      * @return The products formatted as a string
      * @throws CustomerException
      */
-    public String formatProducts(ArrayList<String> productList) throws CustomerException{
+    public String formatProducts(ArrayList<String> productList) throws CustomerException {
         StringBuilder sb = new StringBuilder();
         String[] info;
         ArrayList<String> output = new ArrayList<>();
@@ -257,6 +255,7 @@ public class Customer extends User {
 
     /**
      * Purchases the items in the cart
+     *
      * @throws CustomerException
      */
     public void purchaseItems() throws CustomerException {

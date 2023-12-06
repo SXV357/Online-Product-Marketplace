@@ -2,15 +2,14 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
 /**
  * Project 5 - SortProductsGUI.java
- * 
  * The interface associated with a customer wanting to sort products in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 4, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class SortProductsGUI extends JComponent {
     public SortProductsGUI(String[] initialProducts, CustomerClient customerClient) {
@@ -33,12 +32,12 @@ public class SortProductsGUI extends JComponent {
                 DefaultListModel<String> listModel = new DefaultListModel<>();
                 JList<String> list = new JList<>(listModel);
 
-                for (String product: initialProducts) {
+                for (String product : initialProducts) {
                     listModel.addElement(product);
                 }
-                
+
                 sortByPriceButton.addActionListener(new ActionListener() {
-                    @Override 
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         Object[] sortProductsResult = customerClient.sortProducts("price");
                         if (sortProductsResult[0].equals("ERROR")) {
@@ -47,14 +46,14 @@ public class SortProductsGUI extends JComponent {
                         } else {
                             String[] originalProducts = ((String) sortProductsResult[1]).split("\n");
                             listModel.clear();
-                            for (String product: originalProducts) {
+                            for (String product : originalProducts) {
                                 listModel.addElement(product);
                             }
                         }
                     }
                 });
                 sortByQuantityButton.addActionListener(new ActionListener() {
-                    @Override 
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         Object[] sortProductsResult = customerClient.sortProducts("quantity");
                         if (sortProductsResult[0].equals("ERROR")) {
@@ -63,7 +62,7 @@ public class SortProductsGUI extends JComponent {
                         } else {
                             String[] originalProducts = ((String) sortProductsResult[1]).split("\n");
                             listModel.clear();
-                            for (String product: originalProducts) {
+                            for (String product : originalProducts) {
                                 listModel.addElement(product);
                             }
                         }

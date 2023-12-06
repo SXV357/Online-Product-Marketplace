@@ -1,12 +1,10 @@
 /**
  * Project 5 - Product.java
- * 
  * Class that represents an individual product available in a seller's store.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
- * @version November 21, 2023
+ * @version December 6, 2023
  */
 public class Product {
 
