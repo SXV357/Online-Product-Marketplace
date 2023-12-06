@@ -3,7 +3,7 @@ import java.util.Collections;
 
 /**
  * Project 5 - Dashboard.java
- * 
+ * <p>
  * Class that encompasses functionality for customers to view store and seller
  * information, and for sellers to view statistics for each of their stores
  * Uses four methods, two for sellers and two for customers.
@@ -11,11 +11,10 @@ import java.util.Collections;
  * the resulting data. Each Dashboard will return an arraylist with three
  * collumns: Name, Total
  * quantity, and Total revenue. Sort index is which collumn to sort by.
- * 
+ *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 5, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class Dashboard {
 
@@ -171,7 +170,7 @@ public class Dashboard {
     // customer with customer ID at that store
     // Return line format: storeName, Products Bought, Total Spent
     public ArrayList<String> customerGetPersonalPurchasesDashboard(int sortIndex, boolean sortAscending,
-            String customerID) throws CustomerException {
+                                                                   String customerID) throws CustomerException {
         // Get all stores:Store ID,Seller ID,Store Name,Number of Products
         ArrayList<String> allStores = database.getDatabaseContents("stores.csv");
 
@@ -218,7 +217,7 @@ public class Dashboard {
         if (storeStatisticsStrings.isEmpty()) {
             throw new CustomerException("You haven\'t purchased items from any of the stores yet!");
         } else {
-             return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
+            return sortResults(sortIndex, sortAscending, storeStatisticsStrings);
         }
     }
 

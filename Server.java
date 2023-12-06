@@ -5,13 +5,12 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Server.java
- * 
+ * <p>
  * Class that handles server host and port connection and thread allocation.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 2, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class Server {
 
@@ -20,10 +19,10 @@ public class Server {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         try (ServerSocket serverSocket = new ServerSocket(PORT_NUMBER)) {
-            while (true) { 
+            while (true) {
                 Socket socket = serverSocket.accept();
-                ServerThread serverThread = new ServerThread(socket); 
-                serverThread.start(); 
+                ServerThread serverThread = new ServerThread(socket);
+                serverThread.start();
             }
         }
     }

@@ -5,15 +5,15 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 /**
  * Project 5 - CustomerGUI.java
- * 
+ * <p>
  * The interface associated with a customer in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 5, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class CustomerGUI extends JComponent {
 
@@ -63,9 +63,9 @@ public class CustomerGUI extends JComponent {
                     if (productChoice == null) {
                         return;
                     }
-                    
+
                     int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
-                    Object[] incoming = customerClient.getProductInfo(productSelection);  
+                    Object[] incoming = customerClient.getProductInfo(productSelection);
 
                     if (incoming[0].equals("ERROR")) {
                         displayErrorDialog((String) incoming[1]);
@@ -74,7 +74,7 @@ public class CustomerGUI extends JComponent {
                         String[] productInfo = ((String) incoming[1]).split(",");
                         String storeName = productInfo[0];
                         String productName = productInfo[1];
-                        String availableQuantity = productInfo[2]; 
+                        String availableQuantity = productInfo[2];
                         String price = productInfo[3];
                         String description = productInfo[4];
                         String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%n", storeName, productName, availableQuantity, price, description);
@@ -86,7 +86,7 @@ public class CustomerGUI extends JComponent {
                         } else {
                             Integer desiredQuantity = Integer.parseInt(JOptionPane.showInputDialog(null, "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE));
                             Object[] productAddedResult = customerClient.addToCart(productSelection, desiredQuantity);
-                    
+
                             if (productAddedResult[0].equals("SUCCESS")) {
                                 JOptionPane.showMessageDialog(null, productAddedResult[1], "Add To Cart", JOptionPane.INFORMATION_MESSAGE);
                             } else {
@@ -114,10 +114,10 @@ public class CustomerGUI extends JComponent {
                         if (productChoice == null) {
                             return;
                         }
-                        
+
                         int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
                         Object[] incoming = customerClient.getProductInfo(productSelection);
-                        
+
                         if (incoming[0].equals("ERROR")) {
                             displayErrorDialog((String) incoming[1]);
                             return;
@@ -125,7 +125,7 @@ public class CustomerGUI extends JComponent {
                             String[] productInfo = ((String) incoming[1]).split(",");
                             String storeName = productInfo[0];
                             String productName = productInfo[1];
-                            String availableQuantity = productInfo[2]; 
+                            String availableQuantity = productInfo[2];
                             String price = productInfo[3];
                             String description = productInfo[4];
                             String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity: %s%nPrice: %s%nDescription: %s%n", storeName, productName, availableQuantity, price, description);
@@ -142,16 +142,16 @@ public class CustomerGUI extends JComponent {
                 } else {
                     String[] originalProducts = ((String) viewAllProductsResult[1]).split("\n");
                     new SortProductsGUI(originalProducts, customerClient);
-                } 
+                }
 
             } else if (e.getSource() == exportPurchaseHistoryButton) {
                 Object[] exportPurchaseHistoryResult = customerClient.exportPurchaseHistory();
-                
+
                 if (exportPurchaseHistoryResult[0].equals("SUCCESS")) {
                     JOptionPane.showMessageDialog(null, exportPurchaseHistoryResult[1], "Export Purchase History", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     displayErrorDialog((String) exportPurchaseHistoryResult[1]);
-                } 
+                }
 
             } else if (e.getSource() == viewPurchaseHistoryButton) {
                 Object[] purchaseHistoryResult = customerClient.getShoppingHistory();
@@ -186,11 +186,11 @@ public class CustomerGUI extends JComponent {
                     if (orderChoice == null) {
                         return;
                     }
-                    boolean ascending = orderChoice.equals("Ascending") ? true: false;
+                    boolean ascending = orderChoice.equals("Ascending") ? true : false;
                     int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
                     Object[] storeDashboardResult = customerClient.customerGetStoresDashboard(sortSelection, ascending);
 
-                    if (storeDashboardResult[0].equals("ERROR")) { 
+                    if (storeDashboardResult[0].equals("ERROR")) {
                         String errorMessage = (String) storeDashboardResult[1];
                         displayErrorDialog(errorMessage);
                         return;
@@ -223,10 +223,10 @@ public class CustomerGUI extends JComponent {
                     if (orderChoice == null) {
                         return;
                     }
-                    boolean ascending = orderChoice.equals("Ascending") ? true: false;
+                    boolean ascending = orderChoice.equals("Ascending") ? true : false;
                     int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
                     Object[] purchasesDashboardResult = customerClient.customerGetPersonalPurchasesDashboard(sortSelection, ascending);
-                    
+
                     if (purchasesDashboardResult[0].equals("ERROR")) {
                         String errorMessage = (String) purchasesDashboardResult[1];
                         displayErrorDialog(errorMessage);
@@ -247,7 +247,7 @@ public class CustomerGUI extends JComponent {
 
             } else if (e.getSource() == checkoutItemsButton) {
                 Object[] purchaseItemsResult = customerClient.purchaseItems();
-                
+
                 if (purchaseItemsResult[0].equals("SUCCESS")) {
                     JOptionPane.showMessageDialog(null, purchaseItemsResult[1], "Purchase Items", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -257,8 +257,8 @@ public class CustomerGUI extends JComponent {
             } else if (e.getSource() == removeItemFromShoppingCartButton) {
                 Object[] getShoppingCartResult = customerClient.getCart();
                 if (getShoppingCartResult[0].equals("ERROR")) {
-                       displayErrorDialog((String) getShoppingCartResult[1]);
-                       return;
+                    displayErrorDialog((String) getShoppingCartResult[1]);
+                    return;
                 } else {
                     String[] shoppingCartItems = ((String) getShoppingCartResult[1]).split("\n");
                     String[] modifiedCart = Arrays.copyOfRange(shoppingCartItems, 1, shoppingCartItems.length);
@@ -274,7 +274,7 @@ public class CustomerGUI extends JComponent {
                         displayErrorDialog((String) removeFromCartResult[1]);
                     }
                 }
-                    
+
             } else if (e.getSource() == editEmailButton) {
                 String newEmail = JOptionPane.showInputDialog(null, "What is the new email?", "Edit Email", JOptionPane.QUESTION_MESSAGE);
                 if (newEmail == null) {
@@ -321,19 +321,19 @@ public class CustomerGUI extends JComponent {
                 int signOut = JOptionPane.showOptionDialog(null, "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (signOut == JOptionPane.YES_OPTION) {
                     Object[] signOutResult = customerClient.signOut();
-                     if (signOutResult[0].equals("SUCCESS")) {
-                         try {
-                             customerFrame.dispose();
-                             customerClient.handleAccountState();
-                         } catch (IOException ex) {
-                             return;
-                         }
-                        } else {
-                            displayErrorDialog((String) signOutResult[1]);
+                    if (signOutResult[0].equals("SUCCESS")) {
+                        try {
+                            customerFrame.dispose();
+                            customerClient.handleAccountState();
+                        } catch (IOException ex) {
+                            return;
                         }
-                 } else {
-                     return;
-                 }
+                    } else {
+                        displayErrorDialog((String) signOutResult[1]);
+                    }
+                } else {
+                    return;
+                }
             }
         }
     };
@@ -341,7 +341,7 @@ public class CustomerGUI extends JComponent {
     public CustomerGUI(CustomerClient customerClient, String email) {
         this.customerClient = customerClient;
         customerFrame = new JFrame(email + "\'s" + " Home Page");
-        JPanel buttonPanel = new JPanel(new GridLayout(6, 2 , 5, 5));
+        JPanel buttonPanel = new JPanel(new GridLayout(6, 2, 5, 5));
         buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         customerFrame.setSize(800, 500);

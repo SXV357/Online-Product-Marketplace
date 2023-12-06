@@ -5,14 +5,13 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - UserGUI.java
- * 
+ * <p>
  * Class that represents the characteristics associated with all users in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
- * @version December 1, 2023
+ * @version December 6, 2023
  */
 public class UserGUI {
     private final JFrame frame = new JFrame("Boilermaker Market");
@@ -39,7 +38,7 @@ public class UserGUI {
         }
     };
 
-    public void mainMenuDisplay () {
+    public void mainMenuDisplay() {
         //Set up frame for the display
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -57,7 +56,7 @@ public class UserGUI {
 
                 //Set up textArea to hold welcome message
                 JTextArea welcomeMessage = new JTextArea("\nWelcome to the Boilermaker Market!", 4, 5);
-                welcomeMessage.setFont(new Font("Georgia", Font.PLAIN,18));
+                welcomeMessage.setFont(new Font("Georgia", Font.PLAIN, 18));
 
                 //Set up container to hold the button panel and textArea
                 Container content = frame.getContentPane();

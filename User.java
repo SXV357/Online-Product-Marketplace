@@ -4,14 +4,13 @@ import java.util.regex.Pattern;
 
 /**
  * Project 5 - User.java
- * 
+ * <p>
  * Class that represents the characteristics associated with all users in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
- * @version December 4, 2023
+ * @version December 6, 2023
  */
 public class User {
 
@@ -45,7 +44,7 @@ public class User {
      */
     public User(String email, String password, UserRole role) throws Exception {
         if (email == null || email.isBlank() || email.isEmpty()) {
-          throw new Exception("Invalid email. Email cannot be null, blank, or empty");  
+            throw new Exception("Invalid email. Email cannot be null, blank, or empty");
         } else if (password == null || password.isBlank() || password.isEmpty()) {
             throw new Exception("Invalid password. Password cannot be null, blank, or empty");
         }
@@ -136,8 +135,8 @@ public class User {
      */
     public void setEmail(String email) throws Exception {
         if (email == null || email.isBlank() || email.isEmpty()) {
-          throw new Exception("The email cannot be null, blank, or empty");  
-        } 
+            throw new Exception("The email cannot be null, blank, or empty");
+        }
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
@@ -198,6 +197,7 @@ public class User {
      * Deletes the user's account in associated databases based on the user's role.
      * If a seller deletes their account, the associated entries containing that
      * seller's ID in a customer's purchase history won't be deleted.
+     *
      * @throws Exception
      */
     public void deleteAccount() throws Exception {

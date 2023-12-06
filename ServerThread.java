@@ -1,15 +1,15 @@
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
 /**
  * Project 5 - ServerThread.java
- * 
+ * <p>
  * Class that handles database interactions with client.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 5, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class ServerThread extends Thread {
 
@@ -38,7 +38,7 @@ public class ServerThread extends Thread {
             while (socket.isConnected()) {
                 exit = false;
                 u = new User();
-        
+
                 String[] userInfo = (String[]) ois.readObject();
                 switch (userInfo[0]) {
                     // Log In
@@ -47,13 +47,13 @@ public class ServerThread extends Thread {
                             String userMatch = database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]);
                             if (userMatch.split(",")[3].equals("CUSTOMER")) {
                                 u = new Customer(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
-                            } else if (userMatch.split(",")[3].equals("SELLER")){
+                            } else if (userMatch.split(",")[3].equals("SELLER")) {
                                 u = new Seller(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
-                            }  
+                            }
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
                             oos.flush();
-                        } 
+                        }
                     }
                     // Customer Sign up
                     case "CREATE_CUSTOMER" -> {
@@ -124,12 +124,12 @@ public class ServerThread extends Thread {
                                 }
                                 // View Store Dashboard
                                 case "CUSTOMER_GET_STORES_DASHBOARD" ->
-                                    output = db.customerGetStoresDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true"));
+                                        output = db.customerGetStoresDashboard(Integer.parseInt(response[1]),
+                                                response[2].equals("true"));
                                 // View Purchases Dashboard
                                 case "CUSTOMER_GET_PURCHASES_DASHBOARD" ->
-                                    output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true"), c.getUserID());
+                                        output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
+                                                response[2].equals("true"), c.getUserID());
                                 // Modify Email
                                 case "EDIT_EMAIL" -> {
                                     c.setEmail(response[1]);
@@ -143,12 +143,12 @@ public class ServerThread extends Thread {
                                 // Delete Account
                                 case "DELETE_ACCOUNT" -> {
                                     c.deleteAccount();
-                                    oos.writeObject(new Object[] { "SUCCESS", "Account deleted successfully!" });
+                                    oos.writeObject(new Object[]{"SUCCESS", "Account deleted successfully!"});
                                     oos.flush();
                                     exit = true;
                                 }
                                 case "SIGN_OUT" -> {
-                                    oos.writeObject(new Object[] { "SUCCESS", "Signed out successfully!" });
+                                    oos.writeObject(new Object[]{"SUCCESS", "Signed out successfully!"});
                                     oos.flush();
                                     exit = true;
                                 }
@@ -156,13 +156,13 @@ public class ServerThread extends Thread {
 
                             }
                             if (!exit) {
-                                oos.writeObject(new Object[] { "SUCCESS", output });
+                                oos.writeObject(new Object[]{"SUCCESS", output});
                                 oos.flush();
                             }
-                            
+
 
                         } catch (CustomerException e) {
-                            oos.writeObject(new Object[] { "ERROR", e.getMessage() });
+                            oos.writeObject(new Object[]{"ERROR", e.getMessage()});
                             oos.flush();
                         }
                     }
@@ -232,12 +232,12 @@ public class ServerThread extends Thread {
                                 case "VIEW_SALES_BY_STORE" -> output = s.viewStoreSales();
                                 // Sort Customer Dashboard
                                 case "SELLER_GET_CUSTOMERS_DASHBOARD" ->
-                                    output = db.sellerGetCustomersDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true"));
+                                        output = db.sellerGetCustomersDashboard(Integer.parseInt(response[1]),
+                                                response[2].equals("true"));
                                 // Sort Products Dashboard
                                 case "SELLER_GET_PRODUCTS_DASHBOARD" ->
-                                    output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
-                                            response[2].equals("true"));
+                                        output = db.sellerGetProductsDashboard(Integer.parseInt(response[1]),
+                                                response[2].equals("true"));
                                 // Modify Email
                                 case "EDIT_EMAIL" -> {
                                     s.setEmail(response[1]);
@@ -245,31 +245,31 @@ public class ServerThread extends Thread {
                                 }
                                 // Modify Password
                                 case "EDIT_PASSWORD" -> {
-                                     s.setPassword(response[1]);
-                                     output = "Password edited successfully!";
+                                    s.setPassword(response[1]);
+                                    output = "Password edited successfully!";
                                 }
                                 // Delete Account
                                 case "DELETE_ACCOUNT" -> {
                                     s.deleteAccount();
-                                    oos.writeObject(new Object[] { "SUCCESS", "Account deleted successfully!" });
+                                    oos.writeObject(new Object[]{"SUCCESS", "Account deleted successfully!"});
                                     oos.flush();
                                     exit = true;
                                 }
 
                                 case "SIGN_OUT" -> {
-                                    oos.writeObject(new Object[] { "SUCCESS", "Signed out successfully!" });
+                                    oos.writeObject(new Object[]{"SUCCESS", "Signed out successfully!"});
                                     oos.flush();
                                     exit = true;
                                 }
                                 default -> output = null;
                             }
                             if (!exit) {
-                                oos.writeObject(new Object[] { "SUCCESS", output });
+                                oos.writeObject(new Object[]{"SUCCESS", output});
                                 oos.flush();
                             }
-                            
+
                         } catch (SellerException e) {
-                            oos.writeObject(new Object[] { "ERROR", e.getMessage() });
+                            oos.writeObject(new Object[]{"ERROR", e.getMessage()});
                             oos.flush();
                         }
                     }

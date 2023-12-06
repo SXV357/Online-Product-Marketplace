@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  *         Miller, Oliver Long
  * 
- * @version December 4, 2023
+ * @version December 6, 2023
  */
 public class Database {
     private final String DATABASES_DIRECTORY = "databases/";
