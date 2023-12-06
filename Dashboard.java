@@ -3,7 +3,6 @@ import java.util.Collections;
 
 /**
  * Project 5 - Dashboard.java
- * <p>
  * Class that encompasses functionality for customers to view store and seller
  * information, and for sellers to view statistics for each of their stores
  * Uses four methods, two for sellers and two for customers.

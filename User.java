@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 /**
  * Project 5 - User.java
- * <p>
  * Class that represents the characteristics associated with all users in the
  * application.
  *

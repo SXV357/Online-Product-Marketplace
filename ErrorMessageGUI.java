@@ -3,7 +3,6 @@ import javax.swing.SwingUtilities;
 
 /**
  * Project 5 - ErrorMessageGUI.java
- * <p>
  * The interface associated with displaying error messages caused due to actions taken by both customers and sellers.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

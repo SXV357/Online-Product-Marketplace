@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - UserGUI.java
- * <p>
  * Class that represents the characteristics associated with all users in the
  * application.
  *

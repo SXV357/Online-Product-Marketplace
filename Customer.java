@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Customer.java
- * <p>
  * Class to represent the permissions and details associated with a customer
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

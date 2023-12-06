@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Database.java
- * 
  * Class that handles all database access and modification functionality related
  * to the application.
  *

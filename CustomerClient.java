@@ -5,7 +5,6 @@ import javax.swing.SwingUtilities;
 
 /**
  * Project 5 - CustomerClient.java
- * <p>
  * Class that handles communication with the server for a customer.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

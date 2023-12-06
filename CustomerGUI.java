@@ -8,7 +8,6 @@ import java.util.Arrays;
 
 /**
  * Project 5 - CustomerGUI.java
- * <p>
  * The interface associated with a customer in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
