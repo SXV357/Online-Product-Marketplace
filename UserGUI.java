@@ -15,8 +15,8 @@ import java.awt.event.ActionListener;
  */
 public class UserGUI {
     private final JFrame frame = new JFrame("Boilermaker Market");
-    private final JButton LOGIN_BUTTON = new JButton("Log In");
-    private final JButton SIGN_UP_BUTTON = new JButton("Sign Up");
+    private final JButton logIn = new JButton("Log In");
+    private final JButton signUp = new JButton("Sign Up");
     private InitialClient initialClient;
 
     public UserGUI(InitialClient initialClient) {
@@ -27,11 +27,11 @@ public class UserGUI {
     private ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == LOGIN_BUTTON) {
+            if (e.getSource() == logIn) {
                 frame.dispose();
                 new LoginGUI(initialClient);
             }
-            if (e.getSource() == SIGN_UP_BUTTON) {
+            if (e.getSource() == signUp) {
                 frame.dispose();
                 new SignUpGUI(initialClient);
             }
@@ -49,10 +49,10 @@ public class UserGUI {
 
                 //Set up panel to hold buttons in frame
                 JPanel buttonPanel = new JPanel();
-                buttonPanel.add(LOGIN_BUTTON);
-                buttonPanel.add(SIGN_UP_BUTTON);
-                LOGIN_BUTTON.addActionListener(actionListener);
-                SIGN_UP_BUTTON.addActionListener(actionListener);
+                buttonPanel.add(logIn);
+                buttonPanel.add(signUp);
+                logIn.addActionListener(actionListener);
+                signUp.addActionListener(actionListener);
 
                 //Set up textArea to hold welcome message
                 JTextArea welcomeMessage = new JTextArea("\nWelcome to the Boilermaker Market!", 4, 5);

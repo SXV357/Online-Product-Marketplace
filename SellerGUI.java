@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class SellerGUI extends JComponent {
 
     private DisplayDashboardGUI displayDashboard = new DisplayDashboardGUI();
-    private final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
+    private final String[] sortOrderChoices = {"Ascending", "Descending"};
     private SellerClient sellerClient;
     private JFrame sellerFrame;
     private JLabel welcomeUserLabel;
@@ -370,7 +370,7 @@ public class SellerGUI extends JComponent {
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
                     if (orderChoice == null) {
                         return;
                     }
@@ -413,7 +413,7 @@ public class SellerGUI extends JComponent {
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
                     if (orderChoice == null) {
                         return;
                     }
