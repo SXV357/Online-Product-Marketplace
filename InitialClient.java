@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
  */
 public class InitialClient {
 
-    private final String SERVER_ERROR_MSG = "Error occured when communicating with server";
+    private final String serverErrorMsg = "Error occured when communicating with server";
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
@@ -64,7 +64,7 @@ public class InitialClient {
 
         } catch (IOException e) {
             e.printStackTrace();
-            new ErrorMessageGUI(SERVER_ERROR_MSG);
+            new ErrorMessageGUI(serverErrorMsg);
         } catch (Exception e) {
             System.out.println("Internal Server Communication Error");
             e.printStackTrace();
@@ -86,7 +86,7 @@ public class InitialClient {
             }
 
         } catch (IOException e) {
-            new ErrorMessageGUI(SERVER_ERROR_MSG);
+            new ErrorMessageGUI(serverErrorMsg);
         } catch (Exception e) {
             System.out.println("Internal Server Communication Error");
             e.printStackTrace();
@@ -107,7 +107,7 @@ public class InitialClient {
                 new SignUpGUI(this);
             }
         } catch (IOException e) {
-            new ErrorMessageGUI(SERVER_ERROR_MSG);
+            new ErrorMessageGUI(serverErrorMsg);
         } catch (Exception e) {
             System.out.println("Internal Server Communication Error");
             e.printStackTrace();
