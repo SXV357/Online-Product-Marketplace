@@ -149,10 +149,10 @@ public class Database {
                 if (!fullMatchFound && !partialMatchFound) {
                     throw new Exception("Login failed. Please try again!");
                 }
-            return matchedUser;
+                return matchedUser;
+            }
         }
     }
-}
 
     /**
      * Takes in the user's email and retrieves a match for the credential in the

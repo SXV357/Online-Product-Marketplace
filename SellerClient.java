@@ -148,7 +148,7 @@ public class SellerClient {
         Object[] result;
         try {
             oos.writeObject(new String[]{"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity,
-                    price, description});
+                price, description});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
