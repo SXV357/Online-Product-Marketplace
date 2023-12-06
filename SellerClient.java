@@ -142,12 +142,14 @@ public class SellerClient {
         return result;
     }
 
-    public Object[] createNewProduct(String storeName, String productName, String availableQuantity, String price, String description) {
+    public Object[] createNewProduct(String storeName, String productName, String availableQuantity,
+                                     String price, String description) {
         // action: CREATE_NEW_PRODUCT
         // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         Object[] result;
         try {
-            oos.writeObject(new String[]{"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity, price, description});
+            oos.writeObject(new String[]{"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity,
+                    price, description});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
@@ -245,7 +247,8 @@ public class SellerClient {
         // RETURN: ["ERROR", error message] or ["SUCCESS", dashboard arraylist]
         Object[] result;
         try {
-            oos.writeObject(new String[]{"SELLER_GET_CUSTOMERS_DASHBOARD", String.valueOf(sortSelection), String.valueOf(ascending)});
+            oos.writeObject(new String[]{"SELLER_GET_CUSTOMERS_DASHBOARD", String.valueOf(sortSelection),
+                    String.valueOf(ascending)});
             oos.flush();
             result = (Object[]) ois.readObject(); // Represents the arraylist or the string error message
         } catch (Exception e) {
@@ -259,7 +262,8 @@ public class SellerClient {
         // RETURN: ["ERROR", error message] or ["SUCCESS", dashboard arraylist]
         Object[] result;
         try {
-            oos.writeObject(new String[]{"SELLER_GET_PRODUCTS_DASHBOARD", String.valueOf(sortSelection), String.valueOf(ascending)});
+            oos.writeObject(new String[]{"SELLER_GET_PRODUCTS_DASHBOARD", String.valueOf(sortSelection),
+                    String.valueOf(ascending)});
             oos.flush();
             result = (Object[]) ois.readObject(); // Represents the arraylist or the string error message
         } catch (Exception e) {
