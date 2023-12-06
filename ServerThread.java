@@ -130,7 +130,8 @@ public class ServerThread extends Thread {
                                 // View Purchases Dashboard
                                 case "CUSTOMER_GET_PURCHASES_DASHBOARD" ->
                                         output =
-                                                db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
+                                                db.customerGetPersonalPurchasesDashboard
+                                                (Integer.parseInt(response[1]),
                                                 response[2].equals("true"), c.getUserID());
                                 // Modify Email
                                 case "EDIT_EMAIL" -> {
