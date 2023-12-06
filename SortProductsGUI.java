@@ -5,7 +5,6 @@ import javax.swing.*;
 
 /**
  * Project 5 - SortProductsGUI.java
- * <p>
  * The interface associated with a customer wanting to sort products in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

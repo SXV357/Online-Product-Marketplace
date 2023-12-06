@@ -5,7 +5,6 @@ import javax.swing.SwingUtilities;
 
 /**
  * Project 5 - SellerClient.java
- * <p>
  * Class that handles a seller's connection and requests to the database server.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - SignUpGUI.java
- * <p>
  * The interface associated with user signup.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

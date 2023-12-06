@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 
 /**
  * Project 5 - InitialClient.java
- * <p>
  * Class that handles initial database interactions with user login.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

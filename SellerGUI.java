@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 /**
  * Project 5 - SellerGUI.java
- * <p>
  * The interface associated with a seller in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

@@ -8,7 +8,6 @@ import java.util.Arrays;
 
 /**
  * Project 5 - CustomerGUI.java
- * <p>
  * The interface associated with a customer in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
@@ -25,7 +24,7 @@ public class CustomerGUI extends JComponent {
     private JButton editPasswordButton;
     private JButton deleteAccountButton;
     private JButton signOutButton;
-    private final String[] SORT_ORDER_CHOICES = {"Ascending", "Descending"};
+    private final String[] sortOrderChoices = {"Ascending", "Descending"};
 
     // Associated with customer permissions
     private JButton viewAllProductsButton;
@@ -204,7 +203,7 @@ public class CustomerGUI extends JComponent {
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
                     if (orderChoice == null) {
                         return;
                     }
@@ -245,7 +244,7 @@ public class CustomerGUI extends JComponent {
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, SORT_ORDER_CHOICES, SORT_ORDER_CHOICES[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
                     if (orderChoice == null) {
                         return;
                     }

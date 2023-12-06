@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 /**
  * Project 5 - Seller.java
- * <p>
  * Class to represent the permissions and details associated with a seller
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic

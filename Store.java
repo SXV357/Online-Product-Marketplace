@@ -1,6 +1,5 @@
 /**
  * Project 5 - Store.java
- * <p>
  * Class that represents an individual store that belongs to a seller in the
  * application.
  *

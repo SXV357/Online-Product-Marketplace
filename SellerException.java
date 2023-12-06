@@ -1,6 +1,5 @@
 /**
  * Project 5 - SellerException.java
- * <p>
  * A custom exception class to deal with exceptions thrown as a result of actions that sellers take.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
