@@ -370,8 +370,8 @@ public class Seller extends User {
                                 for (int j = 0; j < productMatches.size(); j++) {
                                     if (productMatches.get(j).split(",")[4].equals(newValue)) {
                                         throw new SellerException(
-                                                "Unable to edit product. The new name provided is already associated" +
-                                                        " with an existing product in the given store");
+                                                "Unable to edit product. The new name provided is already" +
+                                                        " associated with an existing product in the given store");
                                     }
                                 }
                                 productRep[4] = newValue;
