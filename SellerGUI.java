@@ -9,13 +9,12 @@ import java.util.HashMap;
 
 /**
  * Project 5 - SellerGUI.java
- * 
+ * <p>
  * The interface associated with a seller in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 4, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -175,7 +174,7 @@ public class SellerGUI extends JComponent {
                         if (productName == null) {
                             return;
                         }
-            
+
                         String[] editParameters = {"Name", "Price", "Description", "Quantity"};
                         String editParam = (String) JOptionPane.showInputDialog(null, "Which parameter would you like to edit?", "Edit Parameter", JOptionPane.QUESTION_MESSAGE, null, editParameters, editParameters[0]);
                         if (editParam == null) {
@@ -230,11 +229,11 @@ public class SellerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == importProductsButton) {
-              String filePath = JOptionPane.showInputDialog(null, "What is the name of the file that contains the products?", "File Name", JOptionPane.QUESTION_MESSAGE);
-              if (filePath == null) {
-                return;
-              }
-              Object[] getStoresResult = sellerClient.getStores();
+                String filePath = JOptionPane.showInputDialog(null, "What is the name of the file that contains the products?", "File Name", JOptionPane.QUESTION_MESSAGE);
+                if (filePath == null) {
+                    return;
+                }
+                Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
                 if (getStoresResult[0].equals("ERROR")) { // Error
                     String errorMessage = (String) getStoresResult[1];
@@ -328,12 +327,12 @@ public class SellerGUI extends JComponent {
                     if (orderChoice == null) {
                         return;
                     }
-                    boolean ascending = orderChoice.equals("Ascending") ? true: false;
+                    boolean ascending = orderChoice.equals("Ascending") ? true : false;
                     int sortSelection = Arrays.binarySearch(sortChoices, sortChoice) + 1;
 
                     Object[] customerDashboardResult = sellerClient.sellerGetCustomersDashboard(sortSelection, ascending);
 
-                    if (customerDashboardResult[0].equals("ERROR")) { 
+                    if (customerDashboardResult[0].equals("ERROR")) {
                         String errorMessage = (String) customerDashboardResult[1];
                         displayErrorDialog(errorMessage);
                         return;
@@ -366,7 +365,7 @@ public class SellerGUI extends JComponent {
                     if (orderChoice == null) {
                         return;
                     }
-                    boolean ascending = orderChoice.equals("Ascending") ? true: false;
+                    boolean ascending = orderChoice.equals("Ascending") ? true : false;
                     int sortSelection = Arrays.binarySearch(sortChoices, sortChoice) + 1;
 
                     Object productDashboardResult[] = sellerClient.sellerGetProductsDashboard(sortSelection, ascending);
@@ -432,7 +431,7 @@ public class SellerGUI extends JComponent {
             } else if (e.getSource() == signOutButton) {
                 int signOut = JOptionPane.showOptionDialog(null, "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
                 if (signOut == JOptionPane.YES_OPTION) {
-                   Object[] signOutResult = sellerClient.signOut();
+                    Object[] signOutResult = sellerClient.signOut();
                     if (signOutResult[0].equals("SUCCESS")) {
                         try {
                             sellerFrame.dispose();

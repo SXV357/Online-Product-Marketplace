@@ -8,13 +8,12 @@ import java.util.HashMap;
 
 /**
  * Project 5 - Seller.java
- * 
+ * <p>
  * Class to represent the permissions and details associated with a seller
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 5, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class Seller extends User {
 
@@ -57,7 +56,7 @@ public class Seller extends User {
         ArrayList<String> allCustomers = db.getMatchedEntries("users.csv", 3, "CUSTOMER");
         if (allCustomers.isEmpty()) {
             throw new SellerException("There are no existent customer accounts!");
-        } 
+        }
         return allCustomers;
     }
 
@@ -162,7 +161,7 @@ public class Seller extends User {
      *
      * @param storeName The name of the store to remove
      * @return An indication of whether or not the store, including all associated
-     *         products were deleted successfully.
+     * products were deleted successfully.
      * @throws SellerException
      */
     public void deleteStore(String storeName) throws SellerException {
@@ -192,7 +191,7 @@ public class Seller extends User {
      *                      choose to modify.
      * @param newStoreName  The store's new name.
      * @return An indication of whether the store name modification took place
-     *         successfully.
+     * successfully.
      * @throws SellerException
      */
     public void modifyStoreName(String prevStoreName, String newStoreName) throws SellerException {
@@ -213,17 +212,17 @@ public class Seller extends User {
                 ArrayList<String> matchedShoppingCartEntries = db.getMatchedEntries("shoppingCarts.csv", 4, prevStoreName);
                 ArrayList<String> matchedPurchaseHistoryEntries = db.getMatchedEntries("purchaseHistories.csv", 4, prevStoreName);
 
-                for (String prodEntry: matchedProductEntries) {
+                for (String prodEntry : matchedProductEntries) {
                     String[] prodRep = prodEntry.split(",");
                     prodRep[3] = newStoreName;
                     db.modifyDatabase("products.csv", prodEntry, String.join(",", prodRep));
                 }
-                for (String shoppingCartEntry: matchedShoppingCartEntries) {
+                for (String shoppingCartEntry : matchedShoppingCartEntries) {
                     String[] shoppingCartRep = shoppingCartEntry.split(",");
                     shoppingCartRep[4] = newStoreName;
                     db.modifyDatabase("shoppingCarts.csv", shoppingCartEntry, String.join(",", shoppingCartRep));
                 }
-                for (String purchaseHistoryEntry: matchedPurchaseHistoryEntries) {
+                for (String purchaseHistoryEntry : matchedPurchaseHistoryEntries) {
                     String[] purchaseHistoryRep = purchaseHistoryEntry.split(",");
                     purchaseHistoryRep[4] = newStoreName;
                     db.modifyDatabase("purchaseHistories.csv", purchaseHistoryEntry, String.join(",", purchaseHistoryRep));
@@ -249,11 +248,11 @@ public class Seller extends User {
      * @param price              The price of the product
      * @param productDescription A description associated with the product
      * @return An indication of whether the product was succcessfully added to the
-     *         selected store or not.
+     * selected store or not.
      * @throws SellerException
      */
     public void createNewProduct(String storeName, String productName, String availableQuantity, String price,
-            String productDescription) throws SellerException {
+                                 String productDescription) throws SellerException {
         try {
             if (storeName == null || storeName.isEmpty()) {
                 throw new SellerException("Unable to add product. The store name cannot be null or empty");
@@ -322,7 +321,7 @@ public class Seller extends User {
      *                    wants to edit(Name, Price, Quantity, Description)
      * @param newValue    The new value of the property to modify
      * @return An indication of whether the product in the given store was modified
-     *         successfully
+     * successfully
      * @throws SellerException
      */
     @SuppressWarnings("unused")
@@ -380,7 +379,7 @@ public class Seller extends User {
                         db.modifyDatabase("products.csv", productMatches.get(i), String.join(",", productRep));
                     }
                 }
-              
+
             }
         } catch (IndexOutOfBoundsException e) {
             throw new SellerException("Unable to edit product. The given store name is non-existent.");
@@ -395,7 +394,7 @@ public class Seller extends User {
      * @param storeName   The name of the store to delete the product from
      * @param productName The name of the product to delete from the store
      * @return An indication whether the specified product was deleted from the
-     *         specified store successfully
+     * specified store successfully
      * @throws SellerException
      */
     public void deleteProduct(String storeName, String productName) throws SellerException {
@@ -489,7 +488,7 @@ public class Seller extends User {
      *                  store
      * @param storeName The name of the store to add the products to
      * @return An indication whether the product import took place successfully or
-     *         not.
+     * not.
      * @throws SellerException
      */
     public void importProducts(String filePath, String storeName) throws SellerException {

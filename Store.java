@@ -1,13 +1,12 @@
 /**
  * Project 5 - Store.java
- * 
+ * <p>
  * Class that represents an individual store that belongs to a seller in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
- * @version November 27, 2023
+ * @version December 6, 2023
  */
 public class Store {
 

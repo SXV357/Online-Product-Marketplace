@@ -4,15 +4,15 @@ import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 /**
  * Project 5 - InitialClient.java
- * 
+ * <p>
  * Class that handles initial database interactions with user login.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
- *         Miller, Oliver Long
- * 
- * @version December 3, 2023
+ * Miller, Oliver Long
+ * @version December 6, 2023
  */
 public class InitialClient {
 
@@ -45,7 +45,7 @@ public class InitialClient {
         });
     }
 
-        public void attemptLogin(String email, String password){
+    public void attemptLogin(String email, String password) {
         try {
             String[] serverRequest = {"LOGIN", email, password};
             oos.writeObject(serverRequest);
@@ -62,7 +62,7 @@ public class InitialClient {
                 new ErrorMessageGUI(response);
                 new LoginGUI(this);
             }
-    
+
         } catch (IOException e) {
             e.printStackTrace();
             new ErrorMessageGUI(SERVER_ERROR_MSG);
@@ -94,7 +94,7 @@ public class InitialClient {
         }
     }
 
-    public void attemptCreateNewCustomerAccount(String email, String password){
+    public void attemptCreateNewCustomerAccount(String email, String password) {
         try {
             String[] serverRequest = {"CREATE_CUSTOMER", email, password};
             oos.writeObject(serverRequest);
