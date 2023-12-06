@@ -419,7 +419,7 @@ public class SellerGUI extends JComponent {
                     boolean ascending = orderChoice.equals("Ascending") ? true : false;
                     int sortSelection = Arrays.binarySearch(sortChoices, sortChoice) + 1;
 
-                    Object productDashboardResult[] = sellerClient.sellerGetProductsDashboard(sortSelection, ascending);
+                    Object[] productDashboardResult = sellerClient.sellerGetProductsDashboard(sortSelection, ascending);
 
                     if (productDashboardResult[0].equals("ERROR")) {
                         String errorMessage = (String) productDashboardResult[1];
