@@ -130,7 +130,8 @@ public class ServerThread extends Thread {
                                                 response[2].equals("true"));
                                 // View Purchases Dashboard
                                 case "CUSTOMER_GET_PURCHASES_DASHBOARD" ->
-                                        output = db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
+                                        output =
+                                                db.customerGetPersonalPurchasesDashboard(Integer.parseInt(response[1]),
                                                 response[2].equals("true"), c.getUserID());
                                 // Modify Email
                                 case "EDIT_EMAIL" -> {
@@ -190,7 +191,8 @@ public class ServerThread extends Thread {
                                 case "GET_STORE_PRODUCTS" -> output = s.getProducts(response[1]);
                                 // Create Product
                                 case "CREATE_NEW_PRODUCT" -> {
-                                    s.createNewProduct(response[1], response[2], response[3], response[4], response[5]);
+                                    s.createNewProduct(response[1], response[2], response[3], response[4],
+                                            response[5]);
                                     output = "Successfully created new product.";
                                 }
                                 // Edit Product
