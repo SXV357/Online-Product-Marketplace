@@ -53,7 +53,8 @@ public class User {
         if (matcher.matches()) {
             boolean emailExists = checkDuplicateEmail(email);
             if (emailExists) {
-                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+                throw new Exception("Another user exists with the same email. Please choose a different" +
+                        " one and try again!");
             } else {
                 this.email = email;
             }
@@ -142,7 +143,8 @@ public class User {
         if (matcher.matches()) {
             boolean emailExists = checkDuplicateEmail(email);
             if (emailExists) {
-                throw new Exception("Another user exists with the same email. Please choose a different one and try again!");
+                throw new Exception("Another user exists with the same email. Please choose a different one" +
+                        " and try again!");
             } else {
                 String prevUserString = this.toString();
                 this.email = email;
@@ -204,8 +206,10 @@ public class User {
         try {
             db.removeFromDatabase("users.csv", this.toString());
             if (this.role == UserRole.CUSTOMER) {
-                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv", 0, this.userID);
-                ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv", 0,
+                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv",
+                        0, this.userID);
+                ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv",
+                        0,
                         this.userID);
                 for (String shoppingCartEntry : matchedShoppingCarts) {
                     db.removeFromDatabase("shoppingCarts.csv", shoppingCartEntry);
@@ -216,7 +220,8 @@ public class User {
             } else if (this.role == UserRole.SELLER) {
                 ArrayList<String> matchedStores = db.getMatchedEntries("stores.csv", 1, this.userID);
                 ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, this.userID);
-                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv", 1, this.userID);
+                ArrayList<String> matchedShoppingCarts = db.getMatchedEntries("shoppingCarts.csv",
+                        1, this.userID);
                 for (String storeEntry : matchedStores) {
                     db.removeFromDatabase("stores.csv", storeEntry);
                 }
