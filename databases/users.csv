@@ -1,4 +1,1 @@
 ID,Email,Password,Role
-S1000001,test_seller@gmail.com,test,SELLER
-C1000002,customer@gmail.com,customer,CUSTOMER
-S1000003,seller@gmail.com,seller,SELLER

@@ -259,12 +259,6 @@ public class SellerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == importProductsButton) {
-                String filePath = JOptionPane.showInputDialog(null,
-                        "What is the name of the file that contains the products?", "File Name",
-                        JOptionPane.QUESTION_MESSAGE);
-                if (filePath == null) {
-                    return;
-                }
                 Object[] getStoresResult = sellerClient.getStores();
                 // If this seller doesn't have any stores, display error message
                 if (getStoresResult[0].equals("ERROR")) { // Error
@@ -272,6 +266,12 @@ public class SellerGUI extends JComponent {
                     displayErrorDialog(errorMessage);
                     return;
                 } else if (getStoresResult[0].equals("SUCCESS")) {
+                    String filePath = JOptionPane.showInputDialog(null,
+                        "What is the name of the file that contains the products?", "File Name",
+                        JOptionPane.QUESTION_MESSAGE);
+                    if (filePath == null) {
+                        return;
+                    }
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null,
                             "Which store would you like to import the products into?", "Stores",
