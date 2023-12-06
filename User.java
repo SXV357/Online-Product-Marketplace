@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class User {
 
     private Database db = new Database();
-    private final String EMAIL_REGEX = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}$";
+    private final String emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}$";
     private String email;
     private String password;
     private UserRole role;
@@ -47,7 +47,7 @@ public class User {
         } else if (password == null || password.isBlank() || password.isEmpty()) {
             throw new Exception("Invalid password. Password cannot be null, blank, or empty");
         }
-        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
             boolean emailExists = checkDuplicateEmail(email);
@@ -137,7 +137,7 @@ public class User {
         if (email == null || email.isBlank() || email.isEmpty()) {
             throw new Exception("The email cannot be null, blank, or empty");
         }
-        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
             boolean emailExists = checkDuplicateEmail(email);
@@ -171,13 +171,13 @@ public class User {
     }
 
     /**
-     * Takes in the user's email and returns whether it is is associated with an existing user
+     * Takes in the user's email and returns whether it is associated with an existing user
      *
-     * @param email The email to check the existence for in database
+     * @param checkEmail The email to check the existence for in database
      * @return The existence of the email in the users.csv database
      */
-    public boolean checkDuplicateEmail(String email) {
-        return db.retrieveUserMatchForSignUp(email) != null;
+    public boolean checkDuplicateEmail(String checkEmail) {
+        return db.retrieveUserMatchForSignUp(checkEmail) != null;
     }
 
     /**
