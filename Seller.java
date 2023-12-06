@@ -170,7 +170,8 @@ public class Seller extends User {
                 throw new SellerException("Unable to delete store. The store name cannot be null or empty!");
             }
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
-            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1, matchedStore.split(",")[0]);
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1,
+                    matchedStore.split(",")[0]);
             db.removeFromDatabase("stores.csv", matchedStore);
             for (int i = 0; i < matchedProducts.size(); i++) {
                 db.removeFromDatabase("products.csv", matchedProducts.get(i));
@@ -198,7 +199,8 @@ public class Seller extends User {
         try {
             if (prevStoreName == null || prevStoreName.isEmpty() || newStoreName == null || newStoreName.isEmpty()) {
                 throw new SellerException(
-                        "Unable to modify store name. Either the previous store name and the new store name are null or empty or both are null or empty");
+                        "Unable to modify store name. Either the previous store name and the new store name are null" +
+                                " or empty or both are null or empty");
             }
             newStoreName = newStoreName.replace(",", "");
             String matchedPrevStoreName = db.getMatchedEntries("stores.csv", 2, prevStoreName).get(0);
@@ -206,11 +208,15 @@ public class Seller extends User {
             if (matchedNewStoreName.isEmpty()) {
                 String[] newStoreRepresentation = matchedPrevStoreName.split(",");
                 newStoreRepresentation[2] = newStoreName;
-                db.modifyDatabase("stores.csv", matchedPrevStoreName, String.join(",", newStoreRepresentation));
+                db.modifyDatabase("stores.csv", matchedPrevStoreName, String.join(",",
+                        newStoreRepresentation));
 
-                ArrayList<String> matchedProductEntries = db.getMatchedEntries("products.csv", 3, prevStoreName);
-                ArrayList<String> matchedShoppingCartEntries = db.getMatchedEntries("shoppingCarts.csv", 4, prevStoreName);
-                ArrayList<String> matchedPurchaseHistoryEntries = db.getMatchedEntries("purchaseHistories.csv", 4, prevStoreName);
+                ArrayList<String> matchedProductEntries = db.getMatchedEntries("products.csv",
+                        3, prevStoreName);
+                ArrayList<String> matchedShoppingCartEntries = db.getMatchedEntries("shoppingCarts.csv",
+                        4, prevStoreName);
+                ArrayList<String> matchedPurchaseHistoryEntries = db.getMatchedEntries("purchaseHistories.csv",
+                        4, prevStoreName);
 
                 for (String prodEntry : matchedProductEntries) {
                     String[] prodRep = prodEntry.split(",");
@@ -220,16 +226,19 @@ public class Seller extends User {
                 for (String shoppingCartEntry : matchedShoppingCartEntries) {
                     String[] shoppingCartRep = shoppingCartEntry.split(",");
                     shoppingCartRep[4] = newStoreName;
-                    db.modifyDatabase("shoppingCarts.csv", shoppingCartEntry, String.join(",", shoppingCartRep));
+                    db.modifyDatabase("shoppingCarts.csv", shoppingCartEntry, String.join(",",
+                            shoppingCartRep));
                 }
                 for (String purchaseHistoryEntry : matchedPurchaseHistoryEntries) {
                     String[] purchaseHistoryRep = purchaseHistoryEntry.split(",");
                     purchaseHistoryRep[4] = newStoreName;
-                    db.modifyDatabase("purchaseHistories.csv", purchaseHistoryEntry, String.join(",", purchaseHistoryRep));
+                    db.modifyDatabase("purchaseHistories.csv", purchaseHistoryEntry, String.join(",",
+                            purchaseHistoryRep));
                 }
             } else {
                 throw new SellerException(
-                        "Unable to modify store name. The new name provided is already associated with an existing store!");
+                        "Unable to modify store name. The new name provided is already associated with" +
+                                " an existing store!");
             }
         } catch (IndexOutOfBoundsException e) {
             throw new SellerException("Unable to modify store name. The previous store name provided is non-existent!");
@@ -286,7 +295,8 @@ public class Seller extends User {
                 String[] productEntry = matchedProducts.get(i).split(",");
                 if (productEntry[4].equals(productName)) {
                     throw new SellerException(
-                            "Unable to add product. The name of this product is already associated with an existing product in the given store");
+                            "Unable to add product. The name of this product is already associated with an existing" +
+                                    " product in the given store");
                 }
             }
 
@@ -301,7 +311,8 @@ public class Seller extends User {
             String[] newStoreRepresentation = matchedStoreEntry.split(",");
             int previousNumProducts = Integer.parseInt(newStoreRepresentation[3]);
             newStoreRepresentation[3] = String.valueOf(previousNumProducts + 1);
-            db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",", newStoreRepresentation));
+            db.modifyDatabase("stores.csv", matchedStoreEntry, String.join(",",
+                    newStoreRepresentation));
 
         } catch (Exception e) {
             throw new SellerException("Unable to add product to the given store. Please try again");
@@ -359,7 +370,8 @@ public class Seller extends User {
                                 for (int j = 0; j < productMatches.size(); j++) {
                                     if (productMatches.get(j).split(",")[4].equals(newValue)) {
                                         throw new SellerException(
-                                                "Unable to edit product. The new name provided is already associated with an existing product in the given store");
+                                                "Unable to edit product. The new name provided is already associated" +
+                                                        " with an existing product in the given store");
                                     }
                                 }
                                 productRep[4] = newValue;
@@ -376,7 +388,8 @@ public class Seller extends User {
                                 productRep[5] = String.valueOf(newValue);
                             }
                         }
-                        db.modifyDatabase("products.csv", productMatches.get(i), String.join(",", productRep));
+                        db.modifyDatabase("products.csv", productMatches.get(i), String.join(",",
+                                productRep));
                     }
                 }
 
@@ -407,7 +420,8 @@ public class Seller extends User {
             storeName = storeName.replace(",", "");
             productName = productName.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
-            ArrayList<String> matchedProductsForGivenStore = db.getMatchedEntries("products.csv", 3, storeName);
+            ArrayList<String> matchedProductsForGivenStore = db.getMatchedEntries("products.csv", 3,
+                    storeName);
             // If the store exists but it doesn't contain any products
             if (matchedProductsForGivenStore.isEmpty()) {
                 throw new SellerException("Unable to delete product. This store doesn\'t contain any products.");
@@ -421,7 +435,8 @@ public class Seller extends User {
                     String[] newStoreRepresentation = matchedStore.split(",");
                     int previousNumProducts = Integer.parseInt(newStoreRepresentation[3]);
                     newStoreRepresentation[3] = String.valueOf(previousNumProducts - 1);
-                    db.modifyDatabase("stores.csv", matchedStore, String.join(",", newStoreRepresentation));
+                    db.modifyDatabase("stores.csv", matchedStore, String.join(",",
+                            newStoreRepresentation));
                     break;
                 }
             }
@@ -446,12 +461,13 @@ public class Seller extends User {
         } else {
             // The seller has stores. Check if there are products associated with any of the
             // stores
-            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, super.getUserID());
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0,
+                    super.getUserID());
             if (matchedProducts.isEmpty()) {
                 throw new SellerException("No products have been added to any of your stores!");
             } else { // Products are associated with the seller's store(s)
-                ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv", 1,
-                        super.getUserID());
+                ArrayList<String> matchedPurchaseHistories = db.getMatchedEntries("purchaseHistories.csv",
+                        1, super.getUserID());
                 if (matchedPurchaseHistories.isEmpty()) {
                     throw new SellerException("Customers have not purchased items from any of your stores!");
                 } else {
@@ -589,11 +605,13 @@ public class Seller extends User {
         } else {
             // The seller has stores. Check if there are products associated with any of the
             // stores
-            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0, super.getUserID());
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 0,
+                    super.getUserID());
             if (matchedProducts.isEmpty()) {
                 throw new SellerException("No products have been added to any of your stores!");
             } else { // The seller has products associated with their stores
-                ArrayList<String> matchedCarts = db.getMatchedEntries("shoppingCarts.csv", 1, super.getUserID());
+                ArrayList<String> matchedCarts = db.getMatchedEntries("shoppingCarts.csv", 1,
+                        super.getUserID());
                 if (matchedCarts.isEmpty()) {
                     throw new SellerException(
                             "No customers have added products to their shopping cart from any of your stores!");

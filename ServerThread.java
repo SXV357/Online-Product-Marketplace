@@ -46,9 +46,11 @@ public class ServerThread extends Thread {
                         try {
                             String userMatch = database.retrieveUserMatchForLogin(userInfo[1], userInfo[2]);
                             if (userMatch.split(",")[3].equals("CUSTOMER")) {
-                                u = new Customer(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.CUSTOMER);
+                                u = new Customer(userMatch.split(",")[0], userInfo[1], userInfo[2],
+                                        UserRole.CUSTOMER);
                             } else if (userMatch.split(",")[3].equals("SELLER")) {
-                                u = new Seller(userMatch.split(",")[0], userInfo[1], userInfo[2], UserRole.SELLER);
+                                u = new Seller(userMatch.split(",")[0], userInfo[1], userInfo[2],
+                                        UserRole.SELLER);
                             }
                         } catch (Exception e) {
                             oos.writeObject(e.getMessage());
