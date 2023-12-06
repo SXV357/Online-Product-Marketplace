@@ -231,7 +231,7 @@ Test Status: Passed
 - Log out of customer account
 - Log in with email: "CS180@gmail.com" and password: "test"
 - The main menu displays new email at the top of the panel
-- Expected result: The customer can change their email
+- Expected result: The customer can change their email (They must log in with the new email)
 - Test Status: Passed
 
 ### Test 25: Edit Password
@@ -240,7 +240,7 @@ Test Status: Passed
 - Information panel displays a success message
 - Log out of customer account
 - Log in successfully with email: "CS180@gmail.com" and password: "yes"
-- Expected result: The customer can change their password
+- Expected result: The customer can change their password (They must log in with the new password)
 - Test Status: Passed
 
 ### Test 26: Delete Account
@@ -249,10 +249,9 @@ Test Status: Passed
 - Program returns to main log in menu
 - Log in with email: "CS180@gmail.com" and password: "yes"
 - Error message is displayed
-- Expected result: The customer can delete their account
+- Expected result: The customer can delete their account (They can no longer log in)
 - Test Status: Passed
 
-Expected result: User is able to log in
 
 ## Miscalaneous Tests 
 - Each test case performed independently of other test cases
