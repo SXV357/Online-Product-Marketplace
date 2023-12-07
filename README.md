@@ -9,13 +9,13 @@ Vocareum - Submitted by Shreyas Viswanathan
 
 Report - Submitted by Shafer Hofmann
 
-Presentation - Submitted by Oliver Long
+Presentation - Submitted by Nathan Miller
 
 # Testing
 
 Detailed testing information can be found in Tests.md in the project root directory.
 
-# Class Information
+# Class Information (Classes added in project 5)
 
 ## SellerGUI
 The interface associated with a seller in the application.
