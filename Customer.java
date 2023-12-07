@@ -388,6 +388,9 @@ public class Customer extends User {
      * @throws CustomerException
      */
     public String searchProducts(String query) throws CustomerException {
+        if (query.contains(",")) {
+            throw new CustomerException("The query cannot contain any commas!");
+        }
         ArrayList<String> productsFound = new ArrayList<>();
         for (String product : db.getDatabaseContents("products.csv")) {
             if (product.contains(query)) {

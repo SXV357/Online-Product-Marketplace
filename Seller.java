@@ -142,12 +142,13 @@ public class Seller extends User {
         ArrayList<String> matchedStoreEntries = db.getMatchedEntries("stores.csv", 2, newStoreName);
         if (newStoreName == null || newStoreName.isEmpty()) {
             throw new SellerException("Unable to create a new store. The name cannot be null or empty!");
+        } else if (newStoreName.contains(",")) {
+            throw new SellerException("The store name cannot contain any commas");
         }
         if (!matchedStoreEntries.isEmpty()) {
             throw new SellerException(
                     "Unable to create a new store. There is already a store that exists with the same name!");
         } else {
-            newStoreName = newStoreName.replace(",", "");
             Store newStore = new Store(newStoreName);
             String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(),
                     super.getUserID(), newStore.getStoreName(), 0);
@@ -207,7 +208,9 @@ public class Seller extends User {
                         "Unable to modify store name. Either the previous store name and the new store name are null" +
                                 " or empty or both are null or empty");
             }
-            newStoreName = newStoreName.replace(",", "");
+            if (newStoreName.contains(",")) {
+                throw new SellerException("The new store name cannot contain any commas!");
+            }
             String matchedPrevStoreName = db.getMatchedEntries("stores.csv", 2, prevStoreName).get(0);
             ArrayList<String> matchedNewStoreName = db.getMatchedEntries("stores.csv", 2, newStoreName);
             if (matchedNewStoreName.isEmpty()) {
