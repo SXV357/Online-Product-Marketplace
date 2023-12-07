@@ -478,7 +478,7 @@ public class Seller extends User {
                 } else {
                     for (int i = 0; i < matchedPurchaseHistories.size(); i++) {
                         String[] purchaseHistoryEntry = matchedPurchaseHistories.get(i).split(",");
-                        String storeIdentifier = String.format("Store %s Sales\n", purchaseHistoryEntry[4]);
+                        String storeIdentifier = String.format("%s Sales\n", purchaseHistoryEntry[4]);
                         String customer = db.retrieveUserEmail(purchaseHistoryEntry[0]);
                         int purchaseQuantity = Integer.parseInt(purchaseHistoryEntry[6]);
                         double revenues = Double.parseDouble(purchaseHistoryEntry[7]);
@@ -621,7 +621,7 @@ public class Seller extends User {
                 } else {
                     for (int i = 0; i < matchedCarts.size(); i++) {
                         String[] shoppingCartEntry = matchedCarts.get(i).split(",");
-                        String storeIdentifier = String.format("Store %s Shopping Carts\n", shoppingCartEntry[4]);
+                        String storeIdentifier = String.format("%s Shopping Carts\n", shoppingCartEntry[4]);
                         String customer = db.retrieveUserEmail(shoppingCartEntry[0]);
                         int addedQuantity = Integer.parseInt(shoppingCartEntry[6]);
                         double price = Double.parseDouble(shoppingCartEntry[7]);
