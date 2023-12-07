@@ -90,7 +90,6 @@ public class ServerThread extends Thread {
                 // Handle communication with the customer client
                 if (u instanceof Customer) {
                     Customer c = (Customer) u;
-                    System.out.println("Hello");
                     oos.writeObject("Customer Connection to Server Established");
                     oos.flush();
                     oos.writeObject(u.getEmail());
