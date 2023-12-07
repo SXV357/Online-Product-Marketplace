@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 6, 2023
+ * @version December 7, 2023
  */
 public class UserGUI {
     private final JFrame frame = new JFrame("Boilermaker Market");
@@ -20,11 +20,19 @@ public class UserGUI {
     private final JButton signUp = new JButton("Sign Up");
     private InitialClient initialClient;
 
+    /**
+     * Creates a new UserGUI instance utilizing the initial client for making requests to the server
+     * 
+     * @param initialClient The client for handling creating user account creation and logging in
+     */
     public UserGUI(InitialClient initialClient) {
         this.initialClient = initialClient;
         mainMenuDisplay();
     }
 
+    /**
+     * Add event listeners for all buttons
+     */
     private ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -39,6 +47,9 @@ public class UserGUI {
         }
     };
 
+    /**
+     * Constructs the main menu GUI and displays it
+     */
     public void mainMenuDisplay() {
         //Set up frame for the display
         SwingUtilities.invokeLater(new Runnable() {

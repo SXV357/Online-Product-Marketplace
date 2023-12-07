@@ -40,14 +40,28 @@ public class CustomerGUI extends JComponent {
     private JButton viewPurchaseHistoryButton;
     private JButton viewShoppingCartButton;
 
+    /**
+     * Invokes the error message dialog to display a custom error message when an action taken by this customer fails.
+     * 
+     * @param errorMessage The custom error message retrieved through the client
+     */
     public void displayErrorDialog(String errorMessage) {
         new ErrorMessageGUI(errorMessage);
     }
 
+    /**
+     * Invokes the dashboard GUI to display the two dashboards that this customer is capable of viewing
+     * 
+     * @param dashboardType The type of the dashboard the customer elects to view
+     * @param scrollPane The pane containing the data to be displayed on the dashboard
+     */
     public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
         displayDashboard.showDashboard(dashboardType, scrollPane);
     }
 
+    /*
+     * Add event listeners for all buttons in the GUI
+    */
     @SuppressWarnings("unchecked")
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -382,6 +396,12 @@ public class CustomerGUI extends JComponent {
         }
     };
 
+    /**
+     * Constructs the GUI for a Customer and displays it
+     * 
+     * @param customerClient The client to handle this customer GUI's communication with the server
+     * @param email The current customer's email
+     */
     public CustomerGUI(CustomerClient customerClient, String email) {
         this.customerClient = customerClient;
         customerFrame = new JFrame(email + "\'s" + " Home Page");
