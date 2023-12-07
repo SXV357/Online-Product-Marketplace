@@ -175,6 +175,10 @@ public class Seller extends User {
             for (int i = 0; i < matchedProducts.size(); i++) {
                 db.removeFromDatabase("products.csv", matchedProducts.get(i));
             }
+            ArrayList<String> matchedShoppingCartEntries = db.getMatchedEntries("shoppingCarts.csv", 4, storeName);
+            for (int j = 0; j < matchedShoppingCartEntries.size(); j++) {
+                db.removeFromDatabase("shoppingCarts.csv", matchedShoppingCartEntries.get(j));
+            }
         } catch (IndexOutOfBoundsException e) {
             throw new SellerException("Unable to delete store. The given store name is non-existent!");
         }
@@ -617,7 +621,7 @@ public class Seller extends User {
                 } else {
                     for (int i = 0; i < matchedCarts.size(); i++) {
                         String[] shoppingCartEntry = matchedCarts.get(i).split(",");
-                        String storeIdentifier = String.format("Store %s-%s Shopping Carts\n", shoppingCartEntry[2],
+                        String storeIdentifier = String.format("Store %s Shopping Carts\n", shoppingCartEntry[2],
                                 shoppingCartEntry[4]);
                         String customer = shoppingCartEntry[0];
                         int addedQuantity = Integer.parseInt(shoppingCartEntry[6]);
