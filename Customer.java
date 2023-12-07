@@ -397,7 +397,7 @@ public class Customer extends User {
             String[] productEntry = product.split(",");
             productEntry = Arrays.copyOfRange(productEntry, 3, productEntry.length);
             String queryLine = String.join(",", productEntry);
-            if (queryLine.contains(query)) {
+            if (queryLine.toLowerCase().contains(query.toLowerCase())) {
                 productsFound.add(product);
             }
         }
