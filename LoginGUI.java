@@ -5,10 +5,12 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - LoginGUI.java
+ * 
  * Class that constructs the GUI for a user that is logging in
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class LoginGUI {

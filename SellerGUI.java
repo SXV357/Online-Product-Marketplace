@@ -9,10 +9,12 @@ import java.util.HashMap;
 
 /**
  * Project 5 - SellerGUI.java
+ * 
  * The interface associated with a seller in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class SellerGUI extends JComponent {

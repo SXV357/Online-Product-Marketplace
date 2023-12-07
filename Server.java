@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Server.java
+ * 
  * Class that handles server host and port connection and thread allocation.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class Server {

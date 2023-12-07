@@ -5,10 +5,12 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - SignUpGUI.java
+ * 
  * The interface associated with user signup.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class SignUpGUI extends JFrame {
