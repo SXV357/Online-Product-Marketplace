@@ -9,10 +9,16 @@ import javax.swing.*;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 6, 2023
+ * @version December 7, 2023
  */
 public class DisplayDashboardGUI {
 
+    /**
+     * Displays the corresponding dashboard for both customers and sellers based on the data passed in
+     * 
+     * @param dashboardType The type of the dashboard to display
+     * @param scrollPane The data to display in the dashboard
+     */
     public void showDashboard(String dashboardType, JScrollPane scrollPane) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

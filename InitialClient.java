@@ -13,7 +13,7 @@ import java.io.ObjectOutputStream;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 6, 2023
+ * @version December 7, 2023
  */
 public class InitialClient {
 
@@ -21,6 +21,13 @@ public class InitialClient {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
+    /**
+     * Constructs an InitialClient instance using the output and input streams initialized via the socket
+     * 
+     * @param oos The object output stream to utilize to send data to the server
+     * @param ois The object input stream to utilize to send data to the server
+     * @throws IOException
+     */
     public InitialClient(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
         this.oos = oos;
         this.ois = ois;
@@ -35,9 +42,10 @@ public class InitialClient {
         initialClient.start();
     }
 
-    //First method to call: initializes entire program through login GUI
+    /**
+     * Ground-zero of the application from where execution begins.
+     */
     public void start() {
-        //constructor calls the GUI
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -46,6 +54,12 @@ public class InitialClient {
         });
     }
 
+    /**
+     * Handles communication with the server for a logging an existing user back into the application
+     * 
+     * @param email The email the user logged in with
+     * @param password The password the user logged in with
+     */
     public void attemptLogin(String email, String password) {
         try {
             String[] serverRequest = {"LOGIN", email, password};
@@ -73,6 +87,12 @@ public class InitialClient {
         }
     }
 
+    /**
+     * Handles communication with the server for creating a new customer account
+     * 
+     * @param email The email the user provided
+     * @param password The password the user provided
+     */
     public void attemptCreateNewSellerAccount(String email, String password) {
         try {
             String[] serverRequest = {"CREATE_SELLER", email, password};
@@ -95,6 +115,12 @@ public class InitialClient {
         }
     }
 
+    /**
+     * Handles communication with the server for creating a new seller account
+     * 
+     * @param email The email the user provided
+     * @param password The password the user provided
+     */
     public void attemptCreateNewCustomerAccount(String email, String password) {
         try {
             String[] serverRequest = {"CREATE_CUSTOMER", email, password};

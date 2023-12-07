@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 6, 2023
+ * @version December 7, 2023
  */
 public class User {
 
@@ -57,7 +57,11 @@ public class User {
                 throw new Exception("Another user exists with the same email. Please choose a different" +
                         " one and try again!");
             } else {
-                this.email = email;
+                if (email.contains(",")) {
+                    throw new Exception("The email cannot contain any commas!");
+                } else {
+                    this.email = email;
+                }
             }
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
@@ -147,9 +151,13 @@ public class User {
                 throw new Exception("Another user exists with the same email. Please choose a different one" +
                         " and try again!");
             } else {
-                String prevUserString = this.toString();
-                this.email = email;
-                db.modifyDatabase("users.csv", prevUserString, this.toString());
+                if (email.contains(",")) {
+                    throw new Exception("The new email cannot contain any commas!");
+                } else {
+                    String prevUserString = this.toString();
+                    this.email = email;
+                    db.modifyDatabase("users.csv", prevUserString, this.toString());
+                }
             }
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");

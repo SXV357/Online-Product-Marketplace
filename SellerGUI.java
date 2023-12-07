@@ -15,7 +15,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 6, 2023
+ * @version December 7, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -43,14 +43,28 @@ public class SellerGUI extends JComponent {
     private JButton viewCustomerDashboardButton;
     private JButton viewProductDashboardButton;
 
+    /**
+     * Invokes the error message dialog to display a custom error message when an action taken by this seller fails.
+     * 
+     * @param errorMessage The custom error message retrieved through the client
+     */
     public void displayErrorDialog(String errorMessage) {
         new ErrorMessageGUI(errorMessage);
     }
 
+    /**
+     * Invokes the dashboard GUI to display the two dashboards that this seller is capable of viewing
+     * 
+     * @param dashboardType The type of the dashboard the seller elects to view
+     * @param scrollPane The pane containing the data to be displayed on the dashboard
+     */
     public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
         displayDashboard.showDashboard(dashboardType, scrollPane);
     }
 
+    /*
+     * Add event listeners for all buttons in the GUI
+    */
     @SuppressWarnings("unchecked")
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -511,6 +525,12 @@ public class SellerGUI extends JComponent {
         }
     };
 
+    /**
+     * Constructs the GUI for a Seller and displays it
+     * 
+     * @param customerClient The client to handle this seller GUI's communication with the server
+     * @param email The current seller's email
+     */
     public SellerGUI(SellerClient sellerClient, String email) {
         this.sellerClient = sellerClient;
         sellerFrame = new JFrame(email + "\'s" + " Home Page");

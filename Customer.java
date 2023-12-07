@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Project 5 - Customer.java
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 6, 2023
+ * @version December 7, 2023
  */
 public class Customer extends User {
 
@@ -393,7 +394,10 @@ public class Customer extends User {
         }
         ArrayList<String> productsFound = new ArrayList<>();
         for (String product : db.getDatabaseContents("products.csv")) {
-            if (product.contains(query)) {
+            String[] productEntry = product.split(",");
+            productEntry = Arrays.copyOfRange(productEntry, 3, productEntry.length);
+            String queryLine = String.join(",", productEntry);
+            if (queryLine.contains(query)) {
                 productsFound.add(product);
             }
         }

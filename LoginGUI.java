@@ -23,11 +23,19 @@ public class LoginGUI {
     private JButton returnToMainMenuButton;
     private InitialClient initialClient;
 
+    /**
+     * Creates a new LoginGUI instance utilizing the initial client for making requests to the server
+     * 
+     * @param initialClient The client for handling logging the user back into the application
+     */
     public LoginGUI(InitialClient initialClient) {
         this.initialClient = initialClient;
         logInDisplay();
     }
 
+    /**
+     * Add event listeners for all buttons
+     */
     public ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -44,6 +52,9 @@ public class LoginGUI {
         }
     };
 
+    /**
+     * Constructs the login GUI and displays it
+     */
     public void logInDisplay() {
         //Set up frame for the display
         SwingUtilities.invokeLater(new Runnable() {
