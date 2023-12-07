@@ -178,6 +178,9 @@ public class ServerThread extends Thread {
                         } catch (CustomerException e) {
                             oos.writeObject(new Object[]{"ERROR", e.getMessage()});
                             oos.flush();
+                        } catch (Exception e) {
+                            oos.writeObject(new Object[]{"ERROR", e.getMessage()});
+                            oos.flush();
                         }
                     }
                 // Handle communication with the seller client
@@ -284,6 +287,9 @@ public class ServerThread extends Thread {
                             }
 
                         } catch (SellerException e) {
+                            oos.writeObject(new Object[]{"ERROR", e.getMessage()});
+                            oos.flush();
+                        } catch (Exception e) {
                             oos.writeObject(new Object[]{"ERROR", e.getMessage()});
                             oos.flush();
                         }

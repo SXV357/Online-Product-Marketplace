@@ -57,11 +57,7 @@ public class User {
                 throw new Exception("Another user exists with the same email. Please choose a different" +
                         " one and try again!");
             } else {
-                if (email.contains(",")) {
-                    throw new Exception("The email cannot contain any commas!");
-                } else {
-                    this.email = email;
-                }
+                this.email = email;
             }
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
@@ -151,13 +147,9 @@ public class User {
                 throw new Exception("Another user exists with the same email. Please choose a different one" +
                         " and try again!");
             } else {
-                if (email.contains(",")) {
-                    throw new Exception("The new email cannot contain any commas!");
-                } else {
-                    String prevUserString = this.toString();
-                    this.email = email;
-                    db.modifyDatabase("users.csv", prevUserString, this.toString());
-                }
+                String prevUserString = this.toString();
+                this.email = email;
+                db.modifyDatabase("users.csv", prevUserString, this.toString());
             }
         } else {
             throw new Exception("Invalid email format. Please enter a valid one and try again!");
