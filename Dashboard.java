@@ -46,7 +46,7 @@ public class Dashboard {
                 double purchaseQuantity = Double.parseDouble(splitPurchase[6]);
                 totalQuantity += purchaseQuantity;
                 // price times quantity
-                double purchaseCost = Double.parseDouble(splitPurchase[7]) * purchaseQuantity;
+                double purchaseCost = Double.parseDouble(splitPurchase[7]);
                 totalSpent += purchaseCost;
             }
 
@@ -99,7 +99,7 @@ public class Dashboard {
                 double purchaseQuantity = Double.parseDouble(splitPurchase[6]);
                 totalSold += purchaseQuantity;
                 // price times quantity
-                double saleRevenue = Double.parseDouble(splitPurchase[7]) * purchaseQuantity;
+                double saleRevenue = Double.parseDouble(splitPurchase[7]);
                 totalRevenue += saleRevenue;
             }
             // Product's name is stored in the 4th collumn
@@ -147,7 +147,7 @@ public class Dashboard {
                 double purchaseQuantity = Double.parseDouble(splitPurchase[6]);
                 totalProductsSold += purchaseQuantity;
                 // price times quantity
-                double saleRevenue = Double.parseDouble(splitPurchase[7]) * purchaseQuantity;
+                double saleRevenue = Double.parseDouble(splitPurchase[7]);
                 totalRevenue += saleRevenue;
             }
             // Store name is stored in the 3rd collumn
@@ -203,7 +203,7 @@ public class Dashboard {
                 double purchaseQuantity = Double.parseDouble(splitPurchase[6]);
                 totalProductsBought += purchaseQuantity;
                 // price times quantity
-                double saleRevenue = Double.parseDouble(splitPurchase[7]) * purchaseQuantity;
+                double saleRevenue = Double.parseDouble(splitPurchase[7]);
                 totalSpent += saleRevenue;
             }
             // Store name is stored in the 3th collumn
