@@ -113,6 +113,9 @@ public class CustomerGUI extends JComponent {
                 } else {
                     String query = JOptionPane.showInputDialog(null, "What would you like to search for?",
                             "Search for Product", JOptionPane.QUESTION_MESSAGE);
+                    if (query == null) {
+                        return;
+                    }
                     Object[] searchProductsResult = customerClient.searchProducts(query);
                     if (searchProductsResult[0].equals("ERROR")) {
                         displayErrorDialog((String) searchProductsResult[1]);
