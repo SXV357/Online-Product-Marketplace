@@ -1,4 +1,4 @@
-# CS-180-Project4_5 - Product Marketplace
+# CS-180-Project5 - Online Product Marketplace
 
 # Instructions
 From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it. To acces the main application, you will either need to create a new account or log into an existing account, which will then redirect you to the corresponding page from where you can take a variety of actions.
@@ -15,7 +15,7 @@ Presentation - Submitted by Nathan Miller
 
 Detailed testing information can be found in Tests.md in the project root directory.
 
-# Class Information (Classes added in project 5)
+# Class Information
 
 ## SellerGUI
 The interface associated with a seller in the application.
