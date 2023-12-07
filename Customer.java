@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Customer.java
+ * 
  * Class to represent the permissions and details associated with a customer
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class Customer extends User {

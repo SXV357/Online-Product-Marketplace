@@ -8,10 +8,12 @@ import java.util.HashMap;
 
 /**
  * Project 5 - Seller.java
+ * 
  * Class to represent the permissions and details associated with a seller
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class Seller extends User {
@@ -476,16 +478,14 @@ public class Seller extends User {
                 } else {
                     for (int i = 0; i < matchedPurchaseHistories.size(); i++) {
                         String[] purchaseHistoryEntry = matchedPurchaseHistories.get(i).split(",");
-                        String storeIdentifier = String.format("Store %s-%s Sales\n", purchaseHistoryEntry[2],
-                                purchaseHistoryEntry[4]);
-                        String customer = purchaseHistoryEntry[0];
+                        String storeIdentifier = String.format("Store %s Sales\n", purchaseHistoryEntry[4]);
+                        String customer = db.retrieveUserEmail(purchaseHistoryEntry[0]);
                         int purchaseQuantity = Integer.parseInt(purchaseHistoryEntry[6]);
                         double revenues = Double.parseDouble(purchaseHistoryEntry[7]);
 
                         String salesInformation = String.format(
-                                "\tCustomer: %s, Product: %s-%s, Quantity Purchased: %d, Revenues: %.2f",
-                                customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5],
-                                purchaseQuantity, revenues);
+                                "\tCustomer: %s, Product: %s, Quantity Purchased: %d, Revenues: %.2f",
+                                customer, purchaseHistoryEntry[5], purchaseQuantity, revenues);
 
                         if (!salesByStore.containsKey(storeIdentifier)) {
                             salesByStore.put(storeIdentifier, new ArrayList<String>());
@@ -621,15 +621,14 @@ public class Seller extends User {
                 } else {
                     for (int i = 0; i < matchedCarts.size(); i++) {
                         String[] shoppingCartEntry = matchedCarts.get(i).split(",");
-                        String storeIdentifier = String.format("Store %s Shopping Carts\n", shoppingCartEntry[2],
-                                shoppingCartEntry[4]);
-                        String customer = shoppingCartEntry[0];
+                        String storeIdentifier = String.format("Store %s Shopping Carts\n", shoppingCartEntry[4]);
+                        String customer = db.retrieveUserEmail(shoppingCartEntry[0]);
                         int addedQuantity = Integer.parseInt(shoppingCartEntry[6]);
                         double price = Double.parseDouble(shoppingCartEntry[7]);
 
                         String shoppingCartInformation = String.format(
-                                "\tCustomer: %s, Product: %s-%s, Quantity: %d, Estimated Costs: %.2f",
-                                customer, shoppingCartEntry[3], shoppingCartEntry[5], addedQuantity, price);
+                                "\tCustomer: %s, Product: %s, Quantity: %d, Estimated Costs: %.2f",
+                                customer, shoppingCartEntry[5], addedQuantity, price);
 
                         if (!cartsByStore.containsKey(storeIdentifier)) {
                             cartsByStore.put(storeIdentifier, new ArrayList<String>());

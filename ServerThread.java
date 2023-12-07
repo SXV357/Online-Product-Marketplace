@@ -4,10 +4,12 @@ import java.net.Socket;
 
 /**
  * Project 5 - ServerThread.java
+ * 
  * Class that handles database interactions with client.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class ServerThread extends Thread {
