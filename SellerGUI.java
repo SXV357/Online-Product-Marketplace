@@ -9,11 +9,13 @@ import java.util.HashMap;
 
 /**
  * Project 5 - SellerGUI.java
+ * 
  * The interface associated with a seller in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version December 6, 2023
+ * 
+ * @version December 7, 2023
  */
 public class SellerGUI extends JComponent {
 
@@ -41,14 +43,28 @@ public class SellerGUI extends JComponent {
     private JButton viewCustomerDashboardButton;
     private JButton viewProductDashboardButton;
 
+    /**
+     * Invokes the error message dialog to display a custom error message when an action taken by this seller fails.
+     * 
+     * @param errorMessage The custom error message retrieved through the client
+     */
     public void displayErrorDialog(String errorMessage) {
         new ErrorMessageGUI(errorMessage);
     }
 
+    /**
+     * Invokes the dashboard GUI to display the two dashboards that this seller is capable of viewing
+     * 
+     * @param dashboardType The type of the dashboard the seller elects to view
+     * @param scrollPane The pane containing the data to be displayed on the dashboard
+     */
     public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
         displayDashboard.showDashboard(dashboardType, scrollPane);
     }
 
+    /*
+     * Add event listeners for all buttons in the GUI
+    */
     @SuppressWarnings("unchecked")
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -57,6 +73,9 @@ public class SellerGUI extends JComponent {
             if (e.getSource() == createStoreButton) {
                 String newStoreName = JOptionPane.showInputDialog(null, "What is the new store\'s name?",
                         "New Store Name", JOptionPane.QUESTION_MESSAGE);
+                if (newStoreName == null) {
+                    return;
+                }
                 Object[] result = sellerClient.createNewStore(newStoreName);
                 if (result[0].equals("SUCCESS")) {
                     JOptionPane.showMessageDialog(null, result[1], "Create Store",
@@ -76,7 +95,7 @@ public class SellerGUI extends JComponent {
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String prevStoreName = (String) JOptionPane.showInputDialog(null,
                             "Which store\'s name would you like to edit?", "Stores",
-                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), null);
                     if (prevStoreName == null) {
                         return;
                     }
@@ -105,11 +124,10 @@ public class SellerGUI extends JComponent {
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null,
                             "Which store would you like to delete?", "Stores",
-                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), null);
                     if (storeName == null) {
                         return;
                     }
-
                     Object[] deleteStoreResult = sellerClient.deleteStore(storeName);
                     if (deleteStoreResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, deleteStoreResult[1], "Delete Store",
@@ -130,11 +148,10 @@ public class SellerGUI extends JComponent {
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null,
                             "Which store would you like to add the product to?", "Stores",
-                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), null);
                     if (storeName == null) {
                         return;
                     }
-
                     String productName = JOptionPane.showInputDialog(null, "What is the name of the product?",
                             "Product Name", JOptionPane.QUESTION_MESSAGE);
                     if (productName == null) {
@@ -176,7 +193,7 @@ public class SellerGUI extends JComponent {
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null,
                             "Which store contains the product you\'d like to edit?", "Stores",
-                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), null);
                     if (storeName == null) {
                         return;
                     }
@@ -190,7 +207,7 @@ public class SellerGUI extends JComponent {
                         ArrayList<String> productNames = (ArrayList<String>) getProductsResult[1];
                         String productName = (String) JOptionPane.showInputDialog(null,
                                 "Which product would you like to edit?", "Products",
-                                JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
+                                JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), null);
                         if (productName == null) {
                             return;
                         }
@@ -198,7 +215,7 @@ public class SellerGUI extends JComponent {
                         String[] editParameters = {"Name", "Price", "Description", "Quantity"};
                         String editParam = (String) JOptionPane.showInputDialog(null,
                                 "Which parameter would you like to edit?", "Edit Parameter",
-                                JOptionPane.QUESTION_MESSAGE, null, editParameters, editParameters[0]);
+                                JOptionPane.QUESTION_MESSAGE, null, editParameters, null);
                         if (editParam == null) {
                             return;
                         }
@@ -229,7 +246,7 @@ public class SellerGUI extends JComponent {
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null,
                             "Which store contains the product you\'d like to delete?", "Stores",
-                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), null);
                     if (storeName == null) {
                         return;
                     }
@@ -243,7 +260,7 @@ public class SellerGUI extends JComponent {
                         ArrayList<String> productNames = (ArrayList<String>) getProductsResult[1];
                         String productName = (String) JOptionPane.showInputDialog(null,
                                 "Which product would you like to delete?", "Products",
-                                JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
+                                JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), null);
                         if (productName == null) {
                             return;
                         }
@@ -275,11 +292,10 @@ public class SellerGUI extends JComponent {
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null,
                             "Which store would you like to import the products into?", "Stores",
-                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), null);
                     if (storeName == null) {
                         return;
                     }
-
                     Object[] importProductsResult = sellerClient.importProducts(filePath, storeName);
                     if (importProductsResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, importProductsResult[1],
@@ -300,11 +316,10 @@ public class SellerGUI extends JComponent {
                     ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
                     String storeName = (String) JOptionPane.showInputDialog(null,
                             "Which store would you like to export the products from?", "Stores",
-                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), null);
                     if (storeName == null) {
                         return;
                     }
-
                     Object[] exportProductsResult = sellerClient.exportProducts(storeName);
                     if (exportProductsResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, exportProductsResult[1],
@@ -363,13 +378,13 @@ public class SellerGUI extends JComponent {
                     String[] sortChoices = {"Customer Email", "Quantity Purchased", "Money Spent"};
                     String sortChoice = (String) JOptionPane.showInputDialog(null,
                             "How would you like to sort the dashboard?", "Dashboard Sort Choice",
-                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, null);
                     if (sortChoice == null) {
                         return;
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, null);
                     if (orderChoice == null) {
                         return;
                     }
@@ -406,13 +421,13 @@ public class SellerGUI extends JComponent {
                     String[] sortChoices = {"Product Name", "Quantity Sold", "Total revenue"};
                     String sortChoice = (String) JOptionPane.showInputDialog(null,
                             "How would you like to sort the dashboard?", "Dashboard Sort Choice",
-                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, null);
                     if (sortChoice == null) {
                         return;
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, null);
                     if (orderChoice == null) {
                         return;
                     }
@@ -469,8 +484,7 @@ public class SellerGUI extends JComponent {
             } else if (e.getSource() == deleteAccountButton) {
                 int deleteAccount = JOptionPane.showOptionDialog(null,
                         "Are you sure you want to delete your account?", "Delete Account",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"},
-                        "Yes");
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, null);
                 if (deleteAccount == JOptionPane.YES_OPTION) {
                     Object[] deleteAccountResult = sellerClient.deleteAccount();
                     if (deleteAccountResult[0].equals("SUCCESS")) {
@@ -483,13 +497,11 @@ public class SellerGUI extends JComponent {
                     } else {
                         displayErrorDialog((String) deleteAccountResult[1]);
                     }
-                } else {
-                    return;
-                }
+                } 
             } else if (e.getSource() == signOutButton) {
                 int signOut = JOptionPane.showOptionDialog(null,
                         "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
+                        JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, null);
                 if (signOut == JOptionPane.YES_OPTION) {
                     Object[] signOutResult = sellerClient.signOut();
                     if (signOutResult[0].equals("SUCCESS")) {
@@ -502,13 +514,17 @@ public class SellerGUI extends JComponent {
                     } else {
                         displayErrorDialog((String) signOutResult[1]);
                     }
-                } else {
-                    return;
-                }
+                } 
             }
         }
     };
 
+    /**
+     * Constructs the GUI for a Seller and displays it
+     * 
+     * @param customerClient The client to handle this seller GUI's communication with the server
+     * @param email The current seller's email
+     */
     public SellerGUI(SellerClient sellerClient, String email) {
         this.sellerClient = sellerClient;
         sellerFrame = new JFrame(email + "\'s" + " Home Page");

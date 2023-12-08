@@ -8,10 +8,12 @@ import java.util.HashMap;
 
 /**
  * Project 5 - Seller.java
+ * 
  * Class to represent the permissions and details associated with a seller
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class Seller extends User {
@@ -140,12 +142,13 @@ public class Seller extends User {
         ArrayList<String> matchedStoreEntries = db.getMatchedEntries("stores.csv", 2, newStoreName);
         if (newStoreName == null || newStoreName.isEmpty()) {
             throw new SellerException("Unable to create a new store. The name cannot be null or empty!");
+        } else if (newStoreName.contains(",")) {
+            throw new SellerException("The store name cannot contain any commas");
         }
         if (!matchedStoreEntries.isEmpty()) {
             throw new SellerException(
                     "Unable to create a new store. There is already a store that exists with the same name!");
         } else {
-            newStoreName = newStoreName.replace(",", "");
             Store newStore = new Store(newStoreName);
             String newStoreEntry = String.format("%s,%s,%s,%d", newStore.getStoreIdentificationNumber(),
                     super.getUserID(), newStore.getStoreName(), 0);
@@ -205,7 +208,9 @@ public class Seller extends User {
                         "Unable to modify store name. Either the previous store name and the new store name are null" +
                                 " or empty or both are null or empty");
             }
-            newStoreName = newStoreName.replace(",", "");
+            if (newStoreName.contains(",")) {
+                throw new SellerException("The new store name cannot contain any commas!");
+            }
             String matchedPrevStoreName = db.getMatchedEntries("stores.csv", 2, prevStoreName).get(0);
             ArrayList<String> matchedNewStoreName = db.getMatchedEntries("stores.csv", 2, newStoreName);
             if (matchedNewStoreName.isEmpty()) {
@@ -476,16 +481,14 @@ public class Seller extends User {
                 } else {
                     for (int i = 0; i < matchedPurchaseHistories.size(); i++) {
                         String[] purchaseHistoryEntry = matchedPurchaseHistories.get(i).split(",");
-                        String storeIdentifier = String.format("Store %s-%s Sales\n", purchaseHistoryEntry[2],
-                                purchaseHistoryEntry[4]);
-                        String customer = purchaseHistoryEntry[0];
+                        String storeIdentifier = String.format("%s Sales\n", purchaseHistoryEntry[4]);
+                        String customer = db.retrieveUserEmail(purchaseHistoryEntry[0]);
                         int purchaseQuantity = Integer.parseInt(purchaseHistoryEntry[6]);
                         double revenues = Double.parseDouble(purchaseHistoryEntry[7]);
 
                         String salesInformation = String.format(
-                                "\tCustomer: %s, Product: %s-%s, Quantity Purchased: %d, Revenues: %.2f",
-                                customer, purchaseHistoryEntry[3], purchaseHistoryEntry[5],
-                                purchaseQuantity, revenues);
+                                "\tCustomer: %s, Product: %s, Quantity Purchased: %d, Revenues: %.2f",
+                                customer, purchaseHistoryEntry[5], purchaseQuantity, revenues);
 
                         if (!salesByStore.containsKey(storeIdentifier)) {
                             salesByStore.put(storeIdentifier, new ArrayList<String>());
@@ -621,15 +624,14 @@ public class Seller extends User {
                 } else {
                     for (int i = 0; i < matchedCarts.size(); i++) {
                         String[] shoppingCartEntry = matchedCarts.get(i).split(",");
-                        String storeIdentifier = String.format("Store %s Shopping Carts\n", shoppingCartEntry[2],
-                                shoppingCartEntry[4]);
-                        String customer = shoppingCartEntry[0];
+                        String storeIdentifier = String.format("%s Shopping Carts\n", shoppingCartEntry[4]);
+                        String customer = db.retrieveUserEmail(shoppingCartEntry[0]);
                         int addedQuantity = Integer.parseInt(shoppingCartEntry[6]);
                         double price = Double.parseDouble(shoppingCartEntry[7]);
 
                         String shoppingCartInformation = String.format(
-                                "\tCustomer: %s, Product: %s-%s, Quantity: %d, Estimated Costs: %.2f",
-                                customer, shoppingCartEntry[3], shoppingCartEntry[5], addedQuantity, price);
+                                "\tCustomer: %s, Product: %s, Quantity: %d, Estimated Costs: %.2f",
+                                customer, shoppingCartEntry[5], addedQuantity, price);
 
                         if (!cartsByStore.containsKey(storeIdentifier)) {
                             cartsByStore.put(storeIdentifier, new ArrayList<String>());

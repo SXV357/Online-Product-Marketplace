@@ -5,10 +5,12 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - LoginGUI.java
+ * 
  * Class that constructs the GUI for a user that is logging in
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
+ * 
  * @version December 6, 2023
  */
 public class LoginGUI {
@@ -21,11 +23,19 @@ public class LoginGUI {
     private JButton returnToMainMenuButton;
     private InitialClient initialClient;
 
+    /**
+     * Creates a new LoginGUI instance utilizing the initial client for making requests to the server
+     * 
+     * @param initialClient The client for handling logging the user back into the application
+     */
     public LoginGUI(InitialClient initialClient) {
         this.initialClient = initialClient;
         logInDisplay();
     }
 
+    /**
+     * Add event listeners for all buttons
+     */
     public ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -42,6 +52,9 @@ public class LoginGUI {
         }
     };
 
+    /**
+     * Constructs the login GUI and displays it
+     */
     public void logInDisplay() {
         //Set up frame for the display
         SwingUtilities.invokeLater(new Runnable() {

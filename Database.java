@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Project 5 - Database.java
+ * 
  * Class that handles all database access and modification functionality related
  * to the application.
  *
@@ -60,6 +61,22 @@ public class Database {
     public boolean checkColumnBounds(String fileName, int index) {
         String[] columns = getFileHeaders(fileName).split(",");
         return ((index >= 0) && (index <= columns.length - 1));
+    }
+
+    /**
+     * Takes in a user's ID and returns the corresponding user's email in the database
+     *
+     * @param userID The ID to check for a match in the users.csv database
+     * 
+     * @return The email associated with the ID in the users.csv database
+     */
+    public String retrieveUserEmail(String userID) {
+        for (String entry: getDatabaseContents("users.csv")) {
+            if (entry.split(",")[0].equals(userID)) {
+                return entry.split(",")[1];
+            }
+        }
+        return null;
     }
 
     /**

@@ -5,11 +5,13 @@ import java.awt.event.ActionListener;
 
 /**
  * Project 5 - SignUpGUI.java
+ * 
  * The interface associated with user signup.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version December 6, 2023
+ * 
+ * @version December 7, 2023
  */
 public class SignUpGUI extends JFrame {
     private JFrame signupFrame;
@@ -23,12 +25,19 @@ public class SignUpGUI extends JFrame {
     private JButton returnToMainMenuButton;
     private InitialClient initialClient;
 
-    // Constructor to initialize and set up the GUI components.
+    /**
+     * Creates a new SignUpGUI instance utilizing the initial client for making requests to the server
+     * 
+     * @param initialClient The client for handling creating a new account
+     */
     public SignUpGUI(InitialClient initialClient) {
         this.initialClient = initialClient;
         signUpDisplay();
     }
 
+    /**
+     * Add event listeners for all buttons
+     */
     public ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -56,6 +65,9 @@ public class SignUpGUI extends JFrame {
         }
     };
 
+     /**
+     * Constructs the signup GUI and displays it
+     */
     public void signUpDisplay() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

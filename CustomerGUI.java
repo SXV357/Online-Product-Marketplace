@@ -8,11 +8,13 @@ import java.util.Arrays;
 
 /**
  * Project 5 - CustomerGUI.java
+ * 
  * The interface associated with a customer in the application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version December 6, 2023
+ * 
+ * @version December 7, 2023
  */
 public class CustomerGUI extends JComponent {
 
@@ -38,14 +40,28 @@ public class CustomerGUI extends JComponent {
     private JButton viewPurchaseHistoryButton;
     private JButton viewShoppingCartButton;
 
+    /**
+     * Invokes the error message dialog to display a custom error message when an action taken by this customer fails.
+     * 
+     * @param errorMessage The custom error message retrieved through the client
+     */
     public void displayErrorDialog(String errorMessage) {
         new ErrorMessageGUI(errorMessage);
     }
 
+    /**
+     * Invokes the dashboard GUI to display the two dashboards that this customer is capable of viewing
+     * 
+     * @param dashboardType The type of the dashboard the customer elects to view
+     * @param scrollPane The pane containing the data to be displayed on the dashboard
+     */
     public void displayDashboard(String dashboardType, JScrollPane scrollPane) {
         displayDashboard.showDashboard(dashboardType, scrollPane);
     }
 
+    /*
+     * Add event listeners for all buttons in the GUI
+    */
     @SuppressWarnings("unchecked")
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -60,11 +76,10 @@ public class CustomerGUI extends JComponent {
                     String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
                     String productChoice = (String) JOptionPane.showInputDialog(null,
                             "Which product\'s details would you like to view?", "Products",
-                            JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, null);
                     if (productChoice == null) {
                         return;
                     }
-
                     int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
                     Object[] incoming = customerClient.getProductInfo(productSelection);
 
@@ -84,7 +99,7 @@ public class CustomerGUI extends JComponent {
                         String[] options = {"Yes", "No"};
                         String addToCart = (String) JOptionPane.showInputDialog(null,
                                 "Would you like to add this item to your cart?\n" + info, "Add Item",
-                                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                                JOptionPane.QUESTION_MESSAGE, null, options, null);
 
                         if (addToCart == null || addToCart.equals("No")) {
                             return;
@@ -111,6 +126,9 @@ public class CustomerGUI extends JComponent {
                 } else {
                     String query = JOptionPane.showInputDialog(null, "What would you like to search for?",
                             "Search for Product", JOptionPane.QUESTION_MESSAGE);
+                    if (query == null) {
+                        return;
+                    }
                     Object[] searchProductsResult = customerClient.searchProducts(query);
                     if (searchProductsResult[0].equals("ERROR")) {
                         displayErrorDialog((String) searchProductsResult[1]);
@@ -121,14 +139,12 @@ public class CustomerGUI extends JComponent {
                                 originalProducts.length);
                         String productChoice = (String) JOptionPane.showInputDialog(null,
                                 "Which product\'s details would you like to view?", "Products",
-                                JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
+                                JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, null);
                         if (productChoice == null) {
                             return;
                         }
-
                         int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
                         Object[] incoming = customerClient.getProductInfo(productSelection);
-
                         if (incoming[0].equals("ERROR")) {
                             displayErrorDialog((String) incoming[1]);
                             return;
@@ -197,13 +213,13 @@ public class CustomerGUI extends JComponent {
                     String[] sortChoices = {"Store name", "Number of product sales", "Total revenue"};
                     String sortChoice = (String) JOptionPane.showInputDialog(null,
                             "How would you like to sort the dashboard?", "Dashboard Sort Choice",
-                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, null);
                     if (sortChoice == null) {
                         return;
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, null);
                     if (orderChoice == null) {
                         return;
                     }
@@ -238,13 +254,13 @@ public class CustomerGUI extends JComponent {
                     String[] sortChoices = {"Store name", "Number of products purchased", "Total spent"};
                     String sortChoice = (String) JOptionPane.showInputDialog(null,
                             "How would you like to sort the dashboard?", "Dashboard Sort Choice",
-                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, null);
                     if (sortChoice == null) {
                         return;
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, null);
                     if (orderChoice == null) {
                         return;
                     }
@@ -291,7 +307,7 @@ public class CustomerGUI extends JComponent {
                     String[] modifiedCart = Arrays.copyOfRange(shoppingCartItems, 1, shoppingCartItems.length);
                     String itemChoice = (String) JOptionPane.showInputDialog(null,
                             "Which item would you like to remove?", "Shopping Cart",
-                            JOptionPane.QUESTION_MESSAGE, null, modifiedCart, modifiedCart[0]);
+                            JOptionPane.QUESTION_MESSAGE, null, modifiedCart, null);
                     if (itemChoice == null) {
                         return;
                     }
@@ -337,7 +353,7 @@ public class CustomerGUI extends JComponent {
                 int deleteAccount = JOptionPane.showOptionDialog(null,
                         "Are you sure you want to delete your account?", "Delete Account",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"},
-                        "Yes");
+                        null);
                 if (deleteAccount == JOptionPane.YES_OPTION) {
                     Object[] deleteAccountResult = customerClient.deleteAccount();
                     if (deleteAccountResult[0].equals("SUCCESS")) {
@@ -350,14 +366,12 @@ public class CustomerGUI extends JComponent {
                     } else {
                         displayErrorDialog((String) deleteAccountResult[1]);
                     }
-                } else {
-                    return;
-                }
+                } 
 
             } else if (e.getSource() == signOutButton) {
                 int signOut = JOptionPane.showOptionDialog(null,
                         "Are you sure you want to sign out?", "Sign out", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, "Yes");
+                        JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Yes", "No"}, null);
                 if (signOut == JOptionPane.YES_OPTION) {
                     Object[] signOutResult = customerClient.signOut();
                     if (signOutResult[0].equals("SUCCESS")) {
@@ -370,13 +384,17 @@ public class CustomerGUI extends JComponent {
                     } else {
                         displayErrorDialog((String) signOutResult[1]);
                     }
-                } else {
-                    return;
-                }
+                } 
             }
         }
     };
 
+    /**
+     * Constructs the GUI for a Customer and displays it
+     * 
+     * @param customerClient The client to handle this customer GUI's communication with the server
+     * @param email The current customer's email
+     */
     public CustomerGUI(CustomerClient customerClient, String email) {
         this.customerClient = customerClient;
         customerFrame = new JFrame(email + "\'s" + " Home Page");

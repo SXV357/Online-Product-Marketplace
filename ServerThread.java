@@ -4,20 +4,30 @@ import java.net.Socket;
 
 /**
  * Project 5 - ServerThread.java
+ * 
  * Class that handles database interactions with client.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version December 6, 2023
+ * 
+ * @version December 7, 2023
  */
 public class ServerThread extends Thread {
 
     Socket socket;
 
+    /**
+     * Constructs a new ServerThread instance utilizing the socket that communication will be taking place over.
+     * 
+     * @param socket The communication channel between all clients and the server
+     */
     public ServerThread(Socket socket) {
         this.socket = socket;
     }
 
+    /**
+     * Process initial client, seller client, and customer client requests and send data back to all of them
+     */
     @Override
     public void run() {
         try {
@@ -38,6 +48,7 @@ public class ServerThread extends Thread {
                 exit = false;
                 u = new User();
 
+                // Handle communication with the initial client
                 String[] userInfo = (String[]) ois.readObject();
                 switch (userInfo[0]) {
                     // Log In
@@ -76,10 +87,9 @@ public class ServerThread extends Thread {
                     }
                     default -> oos.writeObject("ERROR");
                 }
+                // Handle communication with the customer client
                 if (u instanceof Customer) {
-                    //Server.activeUsers.add(c.getUserID());
                     Customer c = (Customer) u;
-                    System.out.println("Hello");
                     oos.writeObject("Customer Connection to Server Established");
                     oos.flush();
                     oos.writeObject(u.getEmail());
@@ -167,10 +177,13 @@ public class ServerThread extends Thread {
                         } catch (CustomerException e) {
                             oos.writeObject(new Object[]{"ERROR", e.getMessage()});
                             oos.flush();
+                        } catch (Exception e) {
+                            oos.writeObject(new Object[]{"ERROR", e.getMessage()});
+                            oos.flush();
                         }
                     }
+                // Handle communication with the seller client
                 } else if (u instanceof Seller) {
-                    //Server.activeUsers.add(s.getUserID());
                     Seller s = (Seller) u;
                     oos.writeObject("Seller Connection to Server Established");
                     oos.flush();
@@ -273,6 +286,9 @@ public class ServerThread extends Thread {
                             }
 
                         } catch (SellerException e) {
+                            oos.writeObject(new Object[]{"ERROR", e.getMessage()});
+                            oos.flush();
+                        } catch (Exception e) {
                             oos.writeObject(new Object[]{"ERROR", e.getMessage()});
                             oos.flush();
                         }

@@ -1,4 +1,4 @@
-# CS-180-Project4_5 - Product Marketplace
+# CS-180-Project5 - Online Product Marketplace
 
 # Instructions
 From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it. To acces the main application, you will either need to create a new account or log into an existing account, which will then redirect you to the corresponding page from where you can take a variety of actions.
@@ -9,11 +9,13 @@ Vocareum - Submitted by Shreyas Viswanathan
 
 Report - Submitted by Shafer Hofmann
 
-Presentation - Submitted by Oliver Long
+Presentation - Submitted by Nathan Miller
 
 # Testing
 
-Detailed testing information can be found in Tests.md in the project root directory.
+Detailed testing information can be found in Tests.md in the project root directory. 
+
+NOTE: A limitation of this application is that it allows the same user to be logged in on two separate or multiple clients. As such, when choosing to delete the account from one of the clients, it doesn't affect the other one, similarly with signing out. The other client will remain unaffected by the changes from a visual perspective, but may crash if certain actions are taken, which holds true only if the account was deleted. On the same note, when choosing to edit email and the operation going through successfully, the email is not updated right away on the home page because of how real-time updates haven't been enabled for the application. Viewing the new change will require logging out and logging back in with the new credentials to view the new email. These are fixes that will be implemented in the near future in order to ensure a better user experience.
 
 # Class Information
 

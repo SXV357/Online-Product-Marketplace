@@ -4,12 +4,14 @@ import java.util.regex.Pattern;
 
 /**
  * Project 5 - User.java
+ * 
  * Class that represents the characteristics associated with all users in the
  * application.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version December 6, 2023
+ * 
+ * @version December 7, 2023
  */
 public class User {
 

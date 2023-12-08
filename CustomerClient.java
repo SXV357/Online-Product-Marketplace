@@ -5,27 +5,46 @@ import javax.swing.SwingUtilities;
 
 /**
  * Project 5 - CustomerClient.java
+ * 
  * Class that handles communication with the server for a customer.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * @version December 6, 2023
+ * 
+ * @version December 7, 2023
  */
 public class CustomerClient {
 
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
+    /**
+     * Constructs a CustomerClient instance using the output and input streams passed in through Initial Client
+     * 
+     * @param oos The object output stream to utilize to send data to the server
+     * @param ois The object input stream to utilize to receive data from the server
+     * @throws IOException
+     */
     public CustomerClient(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
         this.oos = oos;
         this.ois = ois;
     }
 
+    /**
+     * Launches the main menu GUI in response to a customer deleting their account or signing out.
+     * 
+     * @throws IOException
+     */
     public void handleAccountState() throws IOException {
         InitialClient initialClient = new InitialClient(oos, ois);
         initialClient.start();
     }
 
+    /**
+     * Launches the Customer GUI
+     * 
+     * @param customerEmail The customer's email to display on their home page
+     */
     public void homepage(String customerEmail) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -41,10 +60,12 @@ public class CustomerClient {
         });
     }
 
-    // Get all the products from the marketplace
+    /**
+     * Makes a call to the server to fetch all the stores that exist in the application and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @return An object array in the form of ["SUCCESS", Stores] or ["ERROR", Error Message]
+     */
     public Object[] fetchAllStores() {
-        // action: FETCH_ALL_STORES
-        // RETURN: ["ERROR", error message] or ["SUCCESS", stores arraylist]
         Object[] result;
         try {
             oos.writeObject(new String[]{"FETCH_ALL_STORES"});
@@ -56,10 +77,12 @@ public class CustomerClient {
         return result;
     }
 
-    // Get all the products from the marketplace
+    /**
+     * Makes a call to the server to fetch all the products that exist in the application and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @return An object array in the form of ["SUCCESS", Products] or ["ERROR", Error Message]
+     */
     public Object[] getAllProducts() {
-        // action: GET_ALL_PRODUCTS
-        // RETURN: ["ERROR", error message] or ["SUCCESS", products string]
         Object[] result;
         try {
             oos.writeObject(new String[]{"GET_ALL_PRODUCTS"});
@@ -71,10 +94,13 @@ public class CustomerClient {
         return result;
     }
 
-    // Get a given products info
+    /**
+     * Makes a call to the server to fetch information for a product that a customer selects from the list of all products and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param productSelection The index of the customer's product selection from the products menu
+     * @return An object array in the form of ["SUCCESS", Product Information] or ["ERROR", Error Message]
+     */
     public Object[] getProductInfo(int productSelection) {
-        // action: GET_PRODUCT_INFO
-        // RETURN: ["ERROR", error message] or ["SUCCESS", product info string]
         Object[] result;
         try {
             oos.writeObject(new String[]{"GET_PRODUCT_INFO", String.valueOf(productSelection)});
@@ -86,10 +112,14 @@ public class CustomerClient {
         return result;
     }
 
-    // Adds product from the marketplace using index to cart
+   /**
+    * Makes a call to the server to add a product to a customer's cart and retrieves the result of the operation to be sent back to the CustomerGUI.
+    *
+    * @param index The index of the customer's product selection
+    * @param quantity The amount of the product the customer wants to add to cart
+    * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+    */
     public Object[] addToCart(int index, int quantity) {
-        // action: ADD_TO_CART
-        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         Object[] result;
         try {
             oos.writeObject(new String[]{"ADD_TO_CART", String.valueOf(index), String.valueOf(quantity)});
@@ -102,10 +132,13 @@ public class CustomerClient {
         return result;
     }
 
-    // Removes product using index from cart
+    /**
+     * Makes a call to the server to remove a product to a customer's cart and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param index The index of the customer's product selection
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] removeFromCart(int index) {
-        // action: REMOVE_FROM_CART
-        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         Object[] result;
         try {
             oos.writeObject(new String[]{"REMOVE_FROM_CART", String.valueOf(index)});
@@ -117,10 +150,12 @@ public class CustomerClient {
         return result;
     }
 
-    // Returns customer's shopping cart
+   /**
+    * Makes a call to the server to fetch all items in a customer's shopping cart and retrieves the result of the operation to be sent back to the CustomerGUI.
+    * 
+    * @return An object array in the form of ["SUCCESS", Shopping Cart Items] or ["ERROR", Error Message]
+    */
     public Object[] getCart() {
-        // action: GET_CART
-        // RETURN: ["ERROR", error message] or ["SUCCESS", shopping cart string]
         Object[] result;
         try {
             oos.writeObject(new String[]{"GET_CART"});
@@ -132,10 +167,12 @@ public class CustomerClient {
         return result;
     }
 
-    // Returns customer's shopping history
+    /**
+     * Makes a call to the server to fetch a customer's purchase history and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @return An object array in the form of ["SUCCESS", Purchase History Items] or ["ERROR", Error Message]
+     */
     public Object[] getShoppingHistory() {
-        // action: GET_SHOPPING_HISTORY
-        // RETURN: ["ERROR", error message] or ["SUCCESS", shopping history string]
         Object[] result;
         try {
             oos.writeObject(new String[]{"GET_SHOPPING_HISTORY"});
@@ -147,10 +184,13 @@ public class CustomerClient {
         return result;
     }
 
-    // Returns filtered product list by search
+    /**
+     * Makes a call to the server to fetch products in the marketplace based on a query and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param query The parameter to use to search the marketplace for
+     * @return An object array in the form of ["SUCCESS", Matched Products] or ["ERROR", Error Message]
+     */
     public Object[] searchProducts(String query) {
-        // action: SEARCH_PRODUCTS
-        // RETURN: ["ERROR", error message] or ["SUCCESS", filtered product list]
         Object[] result;
         try {
             oos.writeObject(new String[]{"SEARCH_PRODUCTS", query});
@@ -162,10 +202,13 @@ public class CustomerClient {
         return result;
     }
 
-    // Returns sorted products list by price or quantity
+    /**
+     * Makes a call to the server to fetch an upated product list based on the sort parameter and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param choice The parameter to use to sort the marketplace
+     * @return An object array in the form of ["SUCCESS", Sorted Product List] or ["ERROR", Error Message]
+     */
     public Object[] sortProducts(String choice) {
-        // action: SORT_PRODUCTS
-        // RETURN: ["ERROR", error message] or ["SUCCESS", sorted product list]
         Object[] result;
         try {
             oos.writeObject(new String[]{"SORT_PRODUCTS", choice});
@@ -177,10 +220,12 @@ public class CustomerClient {
         return result;
     }
 
-    // Exports Purchase History
+    /**
+     * Makes a call to the server to export the current customer's purchase history and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] exportPurchaseHistory() {
-        // action: EXPORT_PURCHASE_HISTORY
-        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         Object[] result;
         try {
             oos.writeObject(new String[]{"EXPORT_PURCHASE_HISTORY"});
@@ -192,9 +237,12 @@ public class CustomerClient {
         return result;
     }
 
+    /**
+     * Makes a call to the server to purchase all the items in the current customer's shopping cart and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] purchaseItems() {
-        // action: PURCHASE_ITEMS
-        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         Object[] result;
         try {
             oos.writeObject(new String[]{"PURCHASE_ITEMS"});
@@ -206,10 +254,14 @@ public class CustomerClient {
         return result;
     }
 
-    // View Store Dashboard
+    /**
+     * Makes a call to the server to fetch the stores dashboard and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param sortSelection The parameter to sort the dashboard by
+     * @param ascending The order to sort the dashboard in
+     * @return An object array in the form of ["SUCCESS", Stores Dashboard] or ["ERROR", Error Message]
+     */
     public Object[] customerGetStoresDashboard(int sortSelection, boolean ascending) {
-        // action: EXPORT_PURCHASE_HISTORY
-        // RETURN: ["ERROR", error message] or ["SUCCESS", arraylist of Stores]
         Object[] result;
         try {
             oos.writeObject(new String[]{"CUSTOMER_GET_STORES_DASHBOARD", String.valueOf(sortSelection),
@@ -222,10 +274,14 @@ public class CustomerClient {
         return result;
     }
 
-    // View Personal Purchase Dashboard
+    /**
+     * Makes a call to the server to fetch the current customers purchase history dashboard and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param sortSelection The parameter to sort the dashboard by
+     * @param ascending The order to sort the dashboard in
+     * @return An object array in the form of ["SUCCESS", Purchase History Dashboard] or ["ERROR", Error Message]
+     */
     public Object[] customerGetPersonalPurchasesDashboard(int sortSelection, boolean ascending) {
-        // action: PURCHASE_DASHBOARD
-        // RETURN: ["ERROR", error message] or ["SUCCESS", arraylist of personal dashboard items]
         Object[] result;
         try {
             oos.writeObject(new String[]{"CUSTOMER_GET_PURCHASES_DASHBOARD", String.valueOf(sortSelection),
@@ -238,9 +294,13 @@ public class CustomerClient {
         return result;
     }
 
+    /**
+     * Makes a call to the server to edit the current customer's email and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param newEmail The new email to replace the previous email with
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] editEmail(String newEmail) {
-        // action: EDIT_EMAIL
-        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         Object[] result;
         try {
             oos.writeObject(new String[]{"EDIT_EMAIL", newEmail});
@@ -252,9 +312,13 @@ public class CustomerClient {
         return result;
     }
 
+    /**
+     * Makes a call to the server to edit the current customer's password and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @param newEmail The new password to replace the previous password with
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] editPassword(String newPassword) {
-        // action: EDIT_PASSWORD
-        // RETURN: ["ERROR", error message] or ["SUCCESS", success message]
         Object[] result;
         try {
             oos.writeObject(new String[]{"EDIT_PASSWORD", newPassword});
@@ -265,9 +329,13 @@ public class CustomerClient {
         }
         return result;
     }
-
+    
+    /**
+     * Makes a call to the server to delete the current customer's account and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] deleteAccount() {
-        // action: DELETE_ACCOUNT
         Object[] result;
         try {
             oos.writeObject(new String[]{"DELETE_ACCOUNT"});
@@ -279,8 +347,12 @@ public class CustomerClient {
         return result;
     }
 
+    /**
+     * Makes a call to the server to log the current customer out and retrieves the result of the operation to be sent back to the CustomerGUI.
+     * 
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] signOut() {
-        // action: SIGN_OUT 
         Object[] result;
         try {
             oos.writeObject(new String[]{"SIGN_OUT"});
