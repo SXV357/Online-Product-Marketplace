@@ -5,12 +5,12 @@ import javax.swing.SwingUtilities;
 
 /**
  * Project 5 - SellerClient.java
- * 
+ *
  * Class that handles a seller's connection and requests to the database server.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
+ *
  * @version December 7, 2023
  */
 public class SellerClient {
@@ -20,7 +20,7 @@ public class SellerClient {
 
     /**
      * Constructs a SellerClient instance using the output and input streams passed in through Initial Client
-     * 
+     *
      * @param oos The object output stream to utilize to send data to the server
      * @param ois The object input stream to utilize to receive data from the server
      * @throws IOException
@@ -32,7 +32,7 @@ public class SellerClient {
 
     /**
      * Launches the main menu GUI in response to a seller deleting their account or signing out.
-     * 
+     *
      * @throws IOException
      */
     public void handleAccountState() throws IOException {
@@ -42,7 +42,7 @@ public class SellerClient {
 
     /**
      * Launches the Seller GUI
-     * 
+     *
      * @param customerEmail The seller's email to display on their home page
      */
     public void homepage(String sellerEmail) {
@@ -61,8 +61,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to fetch all the customers that exist in the application and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to fetch all the customers that exist in the application and retrieves the result
+     * of the operation to be sent back to the SellerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Customers] or ["ERROR", Error Message]
      */
     public Object[] fetchAllCustomers() {
@@ -78,8 +79,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to fetch all the products that exist in the application and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to fetch all the products that exist in the application and retrieves the result
+     * of the operation to be sent back to the SellerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Products] or ["ERROR", Error Message]
      */
     public Object[] fetchAllProducts() {
@@ -95,8 +97,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to fetch all the stores associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to fetch all the stores associated with the current seller and retrieves the
+     * result of the operation to be sent back to the SellerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Stores] or ["ERROR", Error Message]
      */
     public Object[] getStores() {
@@ -112,8 +115,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to fetch all the products associated with one of the current seller's stores and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to fetch all the products associated with one of the current seller's stores and
+     * retrieves the result of the operation to be sent back to the SellerGUI.
+     *
      * @param storeName The store name to fetch the products from
      * @return An object array in the form of ["SUCCESS", Products] or ["ERROR", Error Message]
      */
@@ -130,9 +134,10 @@ public class SellerClient {
     }
 
     /**
-     * 
-     * Makes a call to the server to create a new store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     *
+     * Makes a call to the server to create a new store associated with the current seller and retrieves the result
+     * of the operation to be sent back to the SellerGUI.
+     *
      * @param storeName The name of the new store
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -149,8 +154,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to modify an existing store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to modify an existing store associated with the current seller and retrieves the
+     * result of the operation to be sent back to the SellerGUI.
+     *
      * @param prevStoreName The name of the store to edit
      * @param newStoreName The new name of the store
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
@@ -168,8 +174,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to delete an existing store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to delete an existing store associated with the current seller and retrieves the
+     * result of the operation to be sent back to the SellerGUI.
+     *
      * @param storeName The name of the store to delete
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -186,8 +193,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to create a new product in an existing store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to create a new product in an existing store associated with the current seller
+     * and retrieves the result of the operation to be sent back to the SellerGUI.
+     *
      * @param storeName The store to create the product in
      * @param productName The product's name
      * @param availableQuantity The quantity available for sale
@@ -200,7 +208,7 @@ public class SellerClient {
         Object[] result;
         try {
             oos.writeObject(new String[]{"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity,
-                price, description});
+                                        price, description});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
@@ -210,8 +218,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to edit an existing product in an existing store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to edit an existing product in an existing store associated with the current seller
+     * and retrieves the result of the operation to be sent back to the SellerGUI.
+     *
      * @param storeName The store to edit the product in
      * @param productName The name of the product to edit
      * @param editParam The parameter of the product to edit
@@ -231,8 +240,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to delete an existing product in an existing store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to delete an existing product in an existing store associated with the current
+     * seller and retrieves the result of the operation to be sent back to the SellerGUI.
+     *
      * @param storeName The store to delete the product in
      * @param productName The name of the product to delete
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
@@ -250,8 +260,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to import products into an existing store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to import products into an existing store associated with the current seller and
+     * retrieves the result of the operation to be sent back to the SellerGUI.
+     *
      * @param filePath The file containing the products to import
      * @param storeName The name of the store to import the products into
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
@@ -269,8 +280,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to export products from an existing store associated with the current seller and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to export products from an existing store associated with the current seller and
+     * retrieves the result of the operation to be sent back to the SellerGUI.
+     *
      * @param storeName The name of the store to export the products from
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -287,8 +299,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to fetch items in customers shopping carts associated with the current seller's stores and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to fetch items in customers shopping carts associated with the current seller's
+     * stores and retrieves the result of the operation to be sent back to the SellerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Customer Shopping Carts] or ["ERROR", Error Message]
      */
     public Object[] viewCustomerShoppingCarts() {
@@ -304,8 +317,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to view sales by store for the current seller's stores and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to view sales by store for the current seller's stores and retrieves the result
+     * of the operation to be sent back to the SellerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Customer Shopping Carts] or ["ERROR", Error Message]
      */
     public Object[] viewSalesByStore() {
@@ -319,10 +333,11 @@ public class SellerClient {
         }
         return result;
     }
-    
+
     /**
-     * Makes a call to the server to fetch the customers dashboard and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to fetch the customers dashboard and retrieves the result of the operation to be
+     * sent back to the SellerGUI.
+     *
      * @param sortSelection The parameter to sort the dashboard by
      * @param ascending The order to sort the dashboard in
      * @return An object array in the form of ["SUCCESS", Customers Dashboard] or ["ERROR", Error Message]
@@ -341,8 +356,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to fetch the current seller's products dashboard and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to fetch the current seller's products dashboard and retrieves the result of the
+     * operation to be sent back to the SellerGUI.
+     *
      * @param sortSelection The parameter to sort the dashboard by
      * @param ascending The order to sort the dashboard in
      * @return An object array in the form of ["SUCCESS", Products Dashboard] or ["ERROR", Error Message]
@@ -361,8 +377,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to edit the current seller's email and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to edit the current seller's email and retrieves the result of the operation to
+     * be sent back to the SellerGUI.
+     *
      * @param newEmail The new email to replace the previous email with
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -379,8 +396,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to edit the current seller's password and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to edit the current seller's password and retrieves the result of the operation to
+     * be sent back to the SellerGUI.
+     *
      * @param newEmail The new password to replace the previous password with
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -397,8 +415,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to delete the current seller's account and retrieves the result of the operation to be sent back to the SellerGUI.
-     * 
+     * Makes a call to the server to delete the current seller's account and retrieves the result of the operation
+     * to be sent back to the SellerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] deleteAccount() {
@@ -414,8 +433,9 @@ public class SellerClient {
     }
 
     /**
-     * Makes a call to the server to log the current seller out and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to log the current seller out and retrieves the result of the operation to be
+     * sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] signOut() {

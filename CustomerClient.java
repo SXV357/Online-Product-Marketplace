@@ -5,12 +5,12 @@ import javax.swing.SwingUtilities;
 
 /**
  * Project 5 - CustomerClient.java
- * 
+ *
  * Class that handles communication with the server for a customer.
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
+ *
  * @version December 7, 2023
  */
 public class CustomerClient {
@@ -20,7 +20,7 @@ public class CustomerClient {
 
     /**
      * Constructs a CustomerClient instance using the output and input streams passed in through Initial Client
-     * 
+     *
      * @param oos The object output stream to utilize to send data to the server
      * @param ois The object input stream to utilize to receive data from the server
      * @throws IOException
@@ -32,7 +32,7 @@ public class CustomerClient {
 
     /**
      * Launches the main menu GUI in response to a customer deleting their account or signing out.
-     * 
+     *
      * @throws IOException
      */
     public void handleAccountState() throws IOException {
@@ -42,7 +42,7 @@ public class CustomerClient {
 
     /**
      * Launches the Customer GUI
-     * 
+     *
      * @param customerEmail The customer's email to display on their home page
      */
     public void homepage(String customerEmail) {
@@ -61,8 +61,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch all the stores that exist in the application and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch all the stores that exist in the application and retrieves the result of
+     * the operation to be sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Stores] or ["ERROR", Error Message]
      */
     public Object[] fetchAllStores() {
@@ -78,8 +79,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch all the products that exist in the application and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch all the products that exist in the application and retrieves the result
+     * of the operation to be sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Products] or ["ERROR", Error Message]
      */
     public Object[] getAllProducts() {
@@ -95,8 +97,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch information for a product that a customer selects from the list of all products and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch information for a product that a customer selects from the list of all
+     * products and retrieves the result of the operation to be sent back to the CustomerGUI.
+     *
      * @param productSelection The index of the customer's product selection from the products menu
      * @return An object array in the form of ["SUCCESS", Product Information] or ["ERROR", Error Message]
      */
@@ -112,13 +115,14 @@ public class CustomerClient {
         return result;
     }
 
-   /**
-    * Makes a call to the server to add a product to a customer's cart and retrieves the result of the operation to be sent back to the CustomerGUI.
-    *
-    * @param index The index of the customer's product selection
-    * @param quantity The amount of the product the customer wants to add to cart
-    * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
-    */
+    /**
+     * Makes a call to the server to add a product to a customer's cart and retrieves the result of the operation to
+     * be sent back to the CustomerGUI.
+     *
+     * @param index The index of the customer's product selection
+     * @param quantity The amount of the product the customer wants to add to cart
+     * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
+     */
     public Object[] addToCart(int index, int quantity) {
         Object[] result;
         try {
@@ -133,8 +137,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to remove a product to a customer's cart and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to remove a product to a customer's cart and retrieves the result of the operation
+     * to be sent back to the CustomerGUI.
+     *
      * @param index The index of the customer's product selection
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -150,11 +155,12 @@ public class CustomerClient {
         return result;
     }
 
-   /**
-    * Makes a call to the server to fetch all items in a customer's shopping cart and retrieves the result of the operation to be sent back to the CustomerGUI.
-    * 
-    * @return An object array in the form of ["SUCCESS", Shopping Cart Items] or ["ERROR", Error Message]
-    */
+    /**
+     * Makes a call to the server to fetch all items in a customer's shopping cart and retrieves the result of the
+     * operation to be sent back to the CustomerGUI.
+     *
+     * @return An object array in the form of ["SUCCESS", Shopping Cart Items] or ["ERROR", Error Message]
+     */
     public Object[] getCart() {
         Object[] result;
         try {
@@ -168,8 +174,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch a customer's purchase history and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch a customer's purchase history and retrieves the result of the operation to
+     * be sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Purchase History Items] or ["ERROR", Error Message]
      */
     public Object[] getShoppingHistory() {
@@ -185,8 +192,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch products in the marketplace based on a query and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch products in the marketplace based on a query and retrieves the result of
+     * the operation to be sent back to the CustomerGUI.
+     *
      * @param query The parameter to use to search the marketplace for
      * @return An object array in the form of ["SUCCESS", Matched Products] or ["ERROR", Error Message]
      */
@@ -203,8 +211,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch an upated product list based on the sort parameter and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch an upated product list based on the sort parameter and retrieves the
+     * result of the operation to be sent back to the CustomerGUI.
+     *
      * @param choice The parameter to use to sort the marketplace
      * @return An object array in the form of ["SUCCESS", Sorted Product List] or ["ERROR", Error Message]
      */
@@ -221,8 +230,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to export the current customer's purchase history and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to export the current customer's purchase history and retrieves the result of the
+     * operation to be sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] exportPurchaseHistory() {
@@ -238,8 +248,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to purchase all the items in the current customer's shopping cart and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to purchase all the items in the current customer's shopping cart and retrieves the
+     * result of the operation to be sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] purchaseItems() {
@@ -255,8 +266,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch the stores dashboard and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch the stores dashboard and retrieves the result of the operation to be sent
+     * back to the CustomerGUI.
+     *
      * @param sortSelection The parameter to sort the dashboard by
      * @param ascending The order to sort the dashboard in
      * @return An object array in the form of ["SUCCESS", Stores Dashboard] or ["ERROR", Error Message]
@@ -275,8 +287,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to fetch the current customers purchase history dashboard and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to fetch the current customers purchase history dashboard and retrieves the result
+     * of the operation to be sent back to the CustomerGUI.
+     *
      * @param sortSelection The parameter to sort the dashboard by
      * @param ascending The order to sort the dashboard in
      * @return An object array in the form of ["SUCCESS", Purchase History Dashboard] or ["ERROR", Error Message]
@@ -295,8 +308,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to edit the current customer's email and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to edit the current customer's email and retrieves the result of the operation to
+     * be sent back to the CustomerGUI.
+     *
      * @param newEmail The new email to replace the previous email with
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -313,8 +327,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to edit the current customer's password and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to edit the current customer's password and retrieves the result of the operation
+     * to be sent back to the CustomerGUI.
+     *
      * @param newEmail The new password to replace the previous password with
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
@@ -329,10 +344,11 @@ public class CustomerClient {
         }
         return result;
     }
-    
+
     /**
-     * Makes a call to the server to delete the current customer's account and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to delete the current customer's account and retrieves the result of the operation
+     * to be sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] deleteAccount() {
@@ -348,8 +364,9 @@ public class CustomerClient {
     }
 
     /**
-     * Makes a call to the server to log the current customer out and retrieves the result of the operation to be sent back to the CustomerGUI.
-     * 
+     * Makes a call to the server to log the current customer out and retrieves the result of the operation to be
+     * sent back to the CustomerGUI.
+     *
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] signOut() {
