@@ -1,7 +1,8 @@
 # CS-180-Project5 - Online Product Marketplace
 
 # Instructions
-From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it. To acces the main application, you will either need to create a new account or log into an existing account, which will then redirect you to the corresponding page from where you can take a variety of actions.
+From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it. To run multiple instances of the program, keep one Server.java instance running and run multiple instances of InitialClient.java
+To access the main application, you will either need to create a new account or log into an existing account, which will then redirect you to the corresponding page from where you can take a variety of actions.
 
 # Project Submission Details
 
