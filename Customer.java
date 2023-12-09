@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 7, 2023
+ * @version December 8, 2023
  */
 public class Customer extends User {
 
@@ -111,7 +111,7 @@ public class Customer extends User {
 
             return sb.toString();
         } catch (IndexOutOfBoundsException e) {
-            throw new CustomerException("Invalid Index");
+            throw new CustomerException("Unable to retrieve information about this product. Please try again!");
         }
 
     }
@@ -128,7 +128,7 @@ public class Customer extends User {
         String[] info;
         ArrayList<String> output = new ArrayList<>();
         if (productList.isEmpty()) {
-            throw new CustomerException("No Products available");
+            throw new CustomerException("No sellers have added products to any of their stores yet");
         } else {
             for (String product : productList) {
                 sb = new StringBuilder();
@@ -211,7 +211,7 @@ public class Customer extends User {
             db.removeFromDatabase("shoppingCarts.csv", shoppingCart.get(index));
             shoppingCart.remove(index);
         } catch (IndexOutOfBoundsException e) {
-            throw new CustomerException("Invalid Index");
+            throw new CustomerException("Unable to remove this item from cart. Please try again!");
         }
 
     }
@@ -222,13 +222,22 @@ public class Customer extends User {
      * @param productID the index of the product the add
      * @throws CustomerException
      */
-    public void addToCart(int index, int quantity) throws CustomerException {
+    public void addToCart(int index, String desiredQuantity) throws CustomerException {
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
                     .split(",");
-            if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
-                throw new CustomerException("Invalid Quantity");
+                    
+            int quantity;
+            try {
+                quantity = Integer.parseInt(desiredQuantity);
+            } catch (NumberFormatException e) {
+                throw new CustomerException("The quantity has to be an integer and cannot be a string");
+            }
+            if (quantity <= 0) {
+                throw new CustomerException("The quantity selected must be greater than 0");
+            } else if (Integer.parseInt(target[5]) < quantity) {
+                throw new CustomerException("You cannot select more than " + Integer.parseInt(target[5]) + " items");
             }
 
             shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
@@ -251,8 +260,8 @@ public class Customer extends User {
 
             shoppingCart.add(output.toString());
             db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size() - 1));
-        } catch (IndexOutOfBoundsException e) {
-            throw new CustomerException("Invalid Index");
+        } catch (Exception e) {
+            throw new CustomerException(e.getMessage());
         }
     }
 
@@ -345,7 +354,7 @@ public class Customer extends User {
             }
             return formatProducts(sorted);
         } else {
-            throw new CustomerException("Invalid Choice");
+            throw new CustomerException("You can only choose to sort the price or quantity");
         }
 
     }
@@ -378,7 +387,7 @@ public class Customer extends User {
                 throw new CustomerException("Purchase History is Empty");
             }
         } catch (IOException e) {
-            throw new CustomerException("File Path DNE");
+            throw new CustomerException("An error occurred when exporting purchase history. Please try again");
         }
     }
 
@@ -389,7 +398,9 @@ public class Customer extends User {
      * @throws CustomerException
      */
     public String searchProducts(String query) throws CustomerException {
-        if (query.contains(",")) {
+        if (query == null || query.isBlank() || query.isEmpty()) {
+            throw new CustomerException("The query cannot be null, blank, or empty!");
+        } else if (query.contains(",")) {
             throw new CustomerException("The query cannot contain any commas!");
         }
         ArrayList<String> productsFound = new ArrayList<>();
