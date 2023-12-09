@@ -123,10 +123,10 @@ public class CustomerClient {
      * @param quantity The amount of the product the customer wants to add to cart
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
-    public Object[] addToCart(int index, int quantity) {
+    public Object[] addToCart(int index, String quantity) {
         Object[] result;
         try {
-            oos.writeObject(new String[]{"ADD_TO_CART", String.valueOf(index), String.valueOf(quantity)});
+            oos.writeObject(new String[]{"ADD_TO_CART", String.valueOf(index), quantity});
             oos.flush();
 
             result = (Object[]) ois.readObject();

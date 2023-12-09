@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 6, 2023
+ * @version December 8, 2023
  */
 public class Seller extends User {
 
@@ -140,8 +140,8 @@ public class Seller extends User {
      */
     public void createNewStore(String newStoreName) throws SellerException {
         ArrayList<String> matchedStoreEntries = db.getMatchedEntries("stores.csv", 2, newStoreName);
-        if (newStoreName == null || newStoreName.isEmpty()) {
-            throw new SellerException("Unable to create a new store. The name cannot be null or empty!");
+        if (newStoreName == null || newStoreName.isEmpty() || newStoreName.isBlank()) {
+            throw new SellerException("Unable to create a new store. The name cannot be null, blank, or empty!");
         } else if (newStoreName.contains(",")) {
             throw new SellerException("The store name cannot contain any commas");
         }
@@ -168,9 +168,6 @@ public class Seller extends User {
      */
     public void deleteStore(String storeName) throws SellerException {
         try {
-            if (storeName == null || storeName.isEmpty()) {
-                throw new SellerException("Unable to delete store. The store name cannot be null or empty!");
-            }
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 1,
                     matchedStore.split(",")[0]);
@@ -203,12 +200,10 @@ public class Seller extends User {
      */
     public void modifyStoreName(String prevStoreName, String newStoreName) throws SellerException {
         try {
-            if (prevStoreName == null || prevStoreName.isEmpty() || newStoreName == null || newStoreName.isEmpty()) {
+            if (newStoreName == null || newStoreName.isEmpty() || newStoreName.isBlank()) {
                 throw new SellerException(
-                        "Unable to modify store name. Either the previous store name and the new store name are null" +
-                                " or empty or both are null or empty");
-            }
-            if (newStoreName.contains(",")) {
+                        "Unable to modify store name. The new store name cannot be null, blank, or empty");
+            } else if (newStoreName.contains(",")) {
                 throw new SellerException("The new store name cannot contain any commas!");
             }
             String matchedPrevStoreName = db.getMatchedEntries("stores.csv", 2, prevStoreName).get(0);
@@ -271,29 +266,43 @@ public class Seller extends User {
     public void createNewProduct(String storeName, String productName, String availableQuantity, String price,
                                  String productDescription) throws SellerException {
         try {
-            if (storeName == null || storeName.isEmpty()) {
-                throw new SellerException("Unable to add product. The store name cannot be null or empty");
-            } else if (productName == null || productName.isEmpty()) {
-                throw new SellerException("Unable to add product. The product name cannot be null or empty");
-            } else if (availableQuantity == null || availableQuantity.isEmpty()) {
-                throw new SellerException("Unable to add product. The quantity cannot be null or empty");
-            } else if (price == null || price.isEmpty()) {
-                throw new SellerException("Unable to add product. The price cannot be null or empty");
-            } else if (productDescription == null || productDescription.isEmpty()) {
-                throw new SellerException("Unable to add product. The description cannot be null or empty");
+            if (productName == null || productName.isEmpty() || productName.isBlank()) {
+                throw new SellerException("Unable to add product. The product name cannot be null, blank, or empty");
+            } else if (productName.contains(",")) {
+                throw new SellerException("The product name cannot contain any commas!");
             }
-            int quantity = Integer.parseInt(availableQuantity);
-            double productPrice = Double.parseDouble(price);
+            if (availableQuantity == null || availableQuantity.isEmpty() || availableQuantity.isBlank()) {
+                throw new SellerException("Unable to add product. The quantity cannot be null, blank, or empty");
+            } else if (availableQuantity.contains(",")) {
+                throw new SellerException("The quantity cannot contain any commas!");
+            }
+            if (price == null || price.isEmpty() || price.isBlank()) {
+                throw new SellerException("Unable to add product. The price cannot be null, blank, or empty");
+            } else if (price.contains(",")) {
+                throw new SellerException("The price cannot contain any commas!");
+            }
+            if (productDescription == null || productDescription.isEmpty() || productDescription.isBlank()) {
+                throw new SellerException("Unable to add product. The description cannot be null, blank, or empty");
+            } else if (productDescription.contains(",")) {
+                throw new SellerException("The description cannot contain any commas!");
+            }
+            int quantity;
+            try {
+                quantity =  Integer.parseInt(availableQuantity);
+            } catch (NumberFormatException e) {
+                throw new SellerException("The quantity has to be an integer and cannot be a string");
+            }
+            double productPrice;
+            try {
+                productPrice = Double.parseDouble(price);
+            } catch (Exception e) {
+                throw new SellerException("price quantity has to be an integer and cannot be a string");
+            }
             if (quantity < 0) {
                 throw new SellerException("Unable to add product. The quantity cannot be negative");
             } else if (productPrice < 0) {
                 throw new SellerException("Unable to add product. The price cannot be negative");
             }
-            storeName = storeName.replace(",", "");
-            productName = productName.replace(",", "");
-            availableQuantity = availableQuantity.replace(",", "");
-            price = price.replace(",", "");
-            productDescription = productDescription.replace(",", "");
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
 
             // To ensure that the seller doesn't try adding a product with the same name in
@@ -323,7 +332,7 @@ public class Seller extends User {
                     newStoreRepresentation));
 
         } catch (Exception e) {
-            throw new SellerException("Unable to add product to the given store. Please try again");
+            throw new SellerException(e.getMessage());
         }
     }
 
@@ -347,22 +356,11 @@ public class Seller extends User {
     public void editProduct(String storeName, String productName, String editParam, String newValue)
             throws SellerException {
         try {
-            if (!editParam.equals("name") && !editParam.equals("price") && !editParam.equals("description")
-                    && !editParam.equals("quantity")) {
-                throw new SellerException(
-                        "Unable to edit product. Only the name, price, quantity, and description can be edited");
-            } else if (storeName == null || storeName.isEmpty()) {
-                throw new SellerException("Unable to edit product. The store name cannot be null or empty");
-            } else if (productName == null || productName.isEmpty()) {
-                throw new SellerException("Unable to edit product. The product name cannot be null or empty");
-            } else if (editParam == null || editParam.isEmpty()) {
-                throw new SellerException("Unable to edit product. The edit parameter cannot be null or empty");
-            } else if (newValue == null || newValue.isEmpty()) {
-                throw new SellerException("Unable to edit product. The new value cannot be null or empty");
+            if (newValue == null || newValue.isEmpty() || newValue.isBlank()) {
+                throw new SellerException("Unable to edit product. The new value cannot be null, blank, or empty");
+            } else if (newValue.contains(",")) {
+                throw new SellerException("The new value cannot contain any commas");
             }
-            storeName = storeName.replace(",", "");
-            productName = productName.replace(",", "");
-            newValue = newValue.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> productMatches = db.getMatchedEntries("products.csv", 3, storeName);
             if (productMatches.isEmpty()) { // there are no products associated with this given store
@@ -384,16 +382,33 @@ public class Seller extends User {
                                 }
                                 productRep[4] = newValue;
                             }
-                            case "price" -> productRep[6] = newValue;
+                            case "price" -> {
+                                double newPrice;
+                                try {
+                                    newPrice = Double.parseDouble(newValue);
+                                } catch (NumberFormatException e) {
+                                    throw new SellerException("The new price has to be an integer");
+                                }
+                                if (newPrice <= 0) {
+                                    throw new SellerException("The new price has to be greater than 0");
+                                }
+                                productRep[6] = String.valueOf(newPrice);
+                            }
                             case "description" -> productRep[7] = newValue;
                             case "quantity" -> {
                                 int prevQuantity = Integer.parseInt(productRep[5]);
+                                int newQuantity;
+                                try {
+                                    newQuantity = Integer.parseInt(newValue);
+                                } catch (NumberFormatException e) {
+                                    throw new SellerException("The new quantity has to be an integer");
+                                }
                                 // Prevent from modifying to a negative quantity
-                                if (Integer.parseInt(newValue) < 0) {
+                                if (newQuantity < 0) {
                                     throw new SellerException(
                                             "Unable to edit product. The new quantity cannot be negative.");
                                 }
-                                productRep[5] = String.valueOf(newValue);
+                                productRep[5] = String.valueOf(newQuantity);
                             }
                         }
                         db.modifyDatabase("products.csv", productMatches.get(i), String.join(",",
@@ -420,13 +435,6 @@ public class Seller extends User {
      */
     public void deleteProduct(String storeName, String productName) throws SellerException {
         try {
-            if (storeName == null || storeName.isEmpty()) {
-                throw new SellerException("Unable to delete product. The store name cannot be null or empty.");
-            } else if (productName == null || productName.isEmpty()) {
-                throw new SellerException("Unable to delete product. The product name cannot be null or empty.");
-            }
-            storeName = storeName.replace(",", "");
-            productName = productName.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProductsForGivenStore = db.getMatchedEntries("products.csv", 3,
                     storeName);
@@ -515,12 +523,9 @@ public class Seller extends User {
      */
     public void importProducts(String filePath, String storeName) throws SellerException {
         try {
-            if (filePath == null || filePath.isEmpty()) {
-                throw new SellerException("Unable to import products. The file path cannot be null or empty");
-            } else if (storeName == null || storeName.isEmpty()) {
-                throw new SellerException("Unable to import products. The store name cannot be null or empty");
+            if (filePath == null || filePath.isEmpty() || filePath.isBlank()) {
+                throw new SellerException("Unable to import products. The file path cannot be null, blank, or empty");
             }
-            storeName = storeName.replace(",", "");
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             File productFile = new File(filePath);
             BufferedReader br = new BufferedReader(new FileReader(productFile));
@@ -556,10 +561,6 @@ public class Seller extends User {
     @SuppressWarnings("unused")
     public void exportProducts(String storeName) throws SellerException {
         try {
-            if (storeName == null || storeName.isEmpty()) {
-                throw new SellerException("Unable to export products. Store name cannot be null or empty");
-            }
-            storeName = storeName.replace(",", "");
             String matchedStore = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
             if (!(matchedProducts.isEmpty())) {

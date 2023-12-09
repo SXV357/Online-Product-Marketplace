@@ -14,7 +14,7 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 7, 2023
+ * @version December 8, 2023
  */
 public class CustomerGUI extends JComponent {
 
@@ -76,7 +76,7 @@ public class CustomerGUI extends JComponent {
                     String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1, originalProducts.length);
                     String productChoice = (String) JOptionPane.showInputDialog(null,
                             "Which product\'s details would you like to view?", "Products",
-                            JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, null);
+                            JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
                     if (productChoice == null) {
                         return;
                     }
@@ -99,15 +99,14 @@ public class CustomerGUI extends JComponent {
                         String[] options = {"Yes", "No"};
                         String addToCart = (String) JOptionPane.showInputDialog(null,
                                 "Would you like to add this item to your cart?\n" + info, "Add Item",
-                                JOptionPane.QUESTION_MESSAGE, null, options, null);
+                                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (addToCart == null || addToCart.equals("No")) {
                             return;
                         } else {
-                            Integer desiredQuantity = Integer.parseInt(JOptionPane.showInputDialog(null,
-                                    "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE));
+                            String desiredQuantity = JOptionPane.showInputDialog(null,
+                                    "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE);
                             Object[] productAddedResult = customerClient.addToCart(productSelection, desiredQuantity);
-
                             if (productAddedResult[0].equals("SUCCESS")) {
                                 JOptionPane.showMessageDialog(null, productAddedResult[1],
                                         "Add To Cart", JOptionPane.INFORMATION_MESSAGE);
@@ -139,7 +138,7 @@ public class CustomerGUI extends JComponent {
                                 originalProducts.length);
                         String productChoice = (String) JOptionPane.showInputDialog(null,
                                 "Which product\'s details would you like to view?", "Products",
-                                JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, null);
+                                JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
                         if (productChoice == null) {
                             return;
                         }
@@ -213,13 +212,13 @@ public class CustomerGUI extends JComponent {
                     String[] sortChoices = {"Store name", "Number of product sales", "Total revenue"};
                     String sortChoice = (String) JOptionPane.showInputDialog(null,
                             "How would you like to sort the dashboard?", "Dashboard Sort Choice",
-                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, null);
+                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
                     if (sortChoice == null) {
                         return;
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, null);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
                     if (orderChoice == null) {
                         return;
                     }
@@ -254,13 +253,13 @@ public class CustomerGUI extends JComponent {
                     String[] sortChoices = {"Store name", "Number of products purchased", "Total spent"};
                     String sortChoice = (String) JOptionPane.showInputDialog(null,
                             "How would you like to sort the dashboard?", "Dashboard Sort Choice",
-                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, null);
+                            JOptionPane.QUESTION_MESSAGE, null, sortChoices, sortChoices[0]);
                     if (sortChoice == null) {
                         return;
                     }
                     String orderChoice = (String) JOptionPane.showInputDialog(null,
                             "In what order would you like to sort the dashboard?", "Sorting Order",
-                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, null);
+                            JOptionPane.QUESTION_MESSAGE, null, sortOrderChoices, sortOrderChoices[0]);
                     if (orderChoice == null) {
                         return;
                     }
@@ -307,7 +306,7 @@ public class CustomerGUI extends JComponent {
                     String[] modifiedCart = Arrays.copyOfRange(shoppingCartItems, 1, shoppingCartItems.length);
                     String itemChoice = (String) JOptionPane.showInputDialog(null,
                             "Which item would you like to remove?", "Shopping Cart",
-                            JOptionPane.QUESTION_MESSAGE, null, modifiedCart, null);
+                            JOptionPane.QUESTION_MESSAGE, null, modifiedCart, modifiedCart[0]);
                     if (itemChoice == null) {
                         return;
                     }

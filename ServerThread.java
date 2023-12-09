@@ -10,7 +10,7 @@ import java.net.Socket;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 7, 2023
+ * @version December 8, 2023
  */
 public class ServerThread extends Thread {
 
@@ -107,7 +107,7 @@ public class ServerThread extends Thread {
                                 case "GET_PRODUCT_INFO" -> output = c.getProductInfo(Integer.parseInt(response[1]));
                                 // Add Product to Cart
                                 case "ADD_TO_CART" -> {
-                                    c.addToCart(Integer.parseInt(response[1]), Integer.parseInt(response[2]));
+                                    c.addToCart(Integer.parseInt(response[1]), response[2]);
                                     output = "Successfully added item to cart.";
                                 }
                                 // Remove Product from Cart
@@ -126,7 +126,7 @@ public class ServerThread extends Thread {
                                 // Export Shopping History
                                 case "EXPORT_PURCHASE_HISTORY" -> {
                                     c.exportPurchaseHistory();
-                                    output = "Successfully exported purchsae history.";
+                                    output = "Successfully exported purchase history.";
                                 }
                                 // Purchase Items
                                 case "PURCHASE_ITEMS" -> {
