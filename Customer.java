@@ -7,12 +7,12 @@ import java.util.Arrays;
 
 /**
  * Project 5 - Customer.java
- * 
+ *
  * Class to represent the permissions and details associated with a customer
  *
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
- * 
+ *
  * @version December 9, 2023
  */
 public class Customer extends User {
@@ -227,7 +227,7 @@ public class Customer extends User {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
                     .split(",");
-                    
+
             int quantity;
             try {
                 quantity = Integer.parseInt(desiredQuantity);
@@ -299,7 +299,8 @@ public class Customer extends User {
                     if (item.split(",")[3].equals(purchasehistory.get(i).split(",")[3])) {
                         updatedEntry = purchasehistory.get(i).split(",");
                         updatedEntry[6] = String
-                                .valueOf(Integer.parseInt(updatedEntry[6]) + Integer.parseInt(item.split(",")[6]));
+                                .valueOf(Integer.parseInt(updatedEntry[6]) + Integer.parseInt(item.split(",")
+                                        [6]));
                         updatedEntry[7] = String
                                 .valueOf(Double.parseDouble(updatedEntry[7]) + Double.parseDouble(item.split(",")[7]));
                         db.modifyDatabase("purchaseHistories.csv", purchasehistory.get(i),
@@ -391,12 +392,13 @@ public class Customer extends User {
 
     /**
      * Updates the contents of the customer's purchase history file with the new values
-     * 
+     *
      * @param output The customer's exported purchase history file to write to
      * @param matchedPurchaseHistoryEntries The purchase history entries associated with the customer
      * @throws CustomerException
      */
-    public void writeToExportedHistory(File output, ArrayList<String> matchedPurchaseHistoryEntries) throws CustomerException {
+    public void writeToExportedHistory(File output, ArrayList<String> matchedPurchaseHistoryEntries)
+            throws CustomerException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(output, false))) {
             String headers = db.getFileHeaders("purchaseHistories.csv");
             bw.write(headers + "\n");
