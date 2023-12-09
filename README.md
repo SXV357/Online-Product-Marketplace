@@ -14,7 +14,7 @@ Presentation - Submitted by Nathan Miller
 
 # Testing
 
-Detailed testing information can be found in Tests.md in the project root directory. 
+Detailed testing information can be found in Tests.md in the project root directory. The test cases written for the major classes in Project 4 can be located in the PJ4 Testing directory, but commenting out the classes and running them will throw errors since several major refactors took place in the classes for which the tests were written, such as modifying return types, parameters, and even making it such that they're all throwing custom exceptions and the tests were previously not designed to handle those new changes since they hadn't been made previously. However, proper testing has been done application-wide to verify that all customer and seller-related behaviors are working as expected.
 
 NOTE: A limitation of this application is that it allows the same user to be logged in on two separate or multiple clients. As such, when choosing to delete the account from one of the clients, it doesn't affect the other one, similarly with signing out. The other client will remain unaffected by the changes from a visual perspective, but may crash if certain actions are taken, which holds true only if the account was deleted. On the same note, when choosing to edit email and the operation going through successfully, the email is not updated right away on the home page because of how real-time updates haven't been enabled for the application. Viewing the new change will require logging out and logging back in with the new credentials to view the new email. These are fixes that will be implemented in the near future in order to ensure a better user experience.
 
