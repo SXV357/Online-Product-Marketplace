@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 8, 2023
+ * @version December 9, 2023
  */
 public class Seller extends User {
 
@@ -569,30 +570,47 @@ public class Seller extends User {
                     targetDir.mkdir();
                 }
                 File output = new File(targetDir, storeName + ".csv");
-                output.createNewFile();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(output));
-                String headers = "Seller ID,Store ID,Product ID,Product Name,Available Quantity,Price,Description";
-                bw.write(headers + "\n");
-                for (int i = 0; i < matchedProducts.size(); i++) {
-                    String[] productEntry = matchedProducts.get(i).split(",");
-                    String sellerID = productEntry[0];
-                    String storeID = productEntry[1];
-                    String productID = productEntry[2];
-                    String productName = productEntry[4];
-                    int availableQuantity = Integer.parseInt(productEntry[5]);
-                    double price = Double.parseDouble(productEntry[6]);
-                    String description = productEntry[7];
-                    String formattedProduct = String.format("%s,%s,%s,%s,%d,%.2f,%s", sellerID, storeID, productID,
-                            productName, availableQuantity, price, description);
-                    bw.write(formattedProduct + "\n");
+                if (!output.exists()) {
+                    output.createNewFile();
+                    writeToExportedHistory(output, matchedProducts);
+                } else {
+                    File existing = new File(targetDir, storeName + ".csv");
+                    writeToExportedHistory(existing, matchedProducts);
                 }
-                bw.flush();
-                bw.close();
             } else {
                 throw new SellerException("Unable to export products. This store doesn\'t contain any products");
             }
         } catch (Exception e) {
             throw new SellerException("Unable to export products. Please try again");
+        }
+    }
+
+    /**
+     * Updates the contents of the seller's exported products file with the new values
+     * 
+     * @param output The seller's exported products file to write to
+     * @param matchedPurchaseHistoryEntries The products in a store associated with the seller
+     * @throws CustomerException
+     */
+    public void writeToExportedHistory(File output, ArrayList<String> matchedProducts) throws CustomerException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(output, false))) {
+            String headers = "Seller ID,Store ID,Product ID,Product Name,Available Quantity,Price,Description";
+            bw.write(headers + "\n");
+            for (int i = 0; i < matchedProducts.size(); i++) {
+                String[] productEntry = matchedProducts.get(i).split(",");
+                String sellerID = productEntry[0];
+                String storeID = productEntry[1];
+                String productID = productEntry[2];
+                String productName = productEntry[4];
+                int availableQuantity = Integer.parseInt(productEntry[5]);
+                double price = Double.parseDouble(productEntry[6]);
+                String description = productEntry[7];
+                String formattedProduct = String.format("%s,%s,%s,%s,%d,%.2f,%s", sellerID, storeID, productID,
+                                productName, availableQuantity, price, description);
+                bw.write(formattedProduct + "\n");
+            }
+        } catch (IOException e) {
+            throw new CustomerException("Unable to export products. Please try again");
         }
     }
 

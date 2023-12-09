@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author Shafer Anthony Hofmann, Qihang Gan, Shreyas Viswanathan, Nathan Pasic
  * Miller, Oliver Long
  * 
- * @version December 8, 2023
+ * @version December 9, 2023
  */
 public class Customer extends User {
 
@@ -374,17 +374,34 @@ public class Customer extends User {
                     targetDir.mkdir();
                 }
                 File output = new File(targetDir, getEmail() + ".csv");
-                output.createNewFile();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(output));
-                String headers = db.getFileHeaders("purchaseHistories.csv");
-                bw.write(headers + "\n");
-                for (int i = 0; i < purchasehistory.size(); i++) {
-                    bw.write(purchasehistory.get(i) + "\n");
+                if (!output.exists()) {
+                    output.createNewFile();
+                    writeToExportedHistory(output, purchasehistory);
+                } else {
+                    File existing = new File(targetDir, getEmail() + ".csv");
+                    writeToExportedHistory(existing, purchasehistory);
                 }
-                bw.flush();
-                bw.close();
             } else {
                 throw new CustomerException("Purchase History is Empty");
+            }
+        } catch (IOException e) {
+            throw new CustomerException("An error occurred when exporting purchase history. Please try again");
+        }
+    }
+
+    /**
+     * Updates the contents of the customer's purchase history file with the new values
+     * 
+     * @param output The customer's exported purchase history file to write to
+     * @param matchedPurchaseHistoryEntries The purchase history entries associated with the customer
+     * @throws CustomerException
+     */
+    public void writeToExportedHistory(File output, ArrayList<String> matchedPurchaseHistoryEntries) throws CustomerException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(output, false))) {
+            String headers = db.getFileHeaders("purchaseHistories.csv");
+            bw.write(headers + "\n");
+            for (int i = 0; i < matchedPurchaseHistoryEntries.size(); i++) {
+                bw.write(matchedPurchaseHistoryEntries.get(i) + "\n");
             }
         } catch (IOException e) {
             throw new CustomerException("An error occurred when exporting purchase history. Please try again");
