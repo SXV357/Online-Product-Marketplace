@@ -296,7 +296,7 @@ public class ServerThread extends Thread {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            new ErrorMessageGUI(e.getMessage());
         }
     }
 }
