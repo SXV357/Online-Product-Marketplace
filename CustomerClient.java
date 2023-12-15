@@ -54,7 +54,7 @@ public class CustomerClient {
                     cc = new CustomerClient(oos, ois);
                     new CustomerGUI(cc, customerEmail);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    new ErrorMessageGUI(e.getMessage());
                 }
             }
         });

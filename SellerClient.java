@@ -54,7 +54,7 @@ public class SellerClient {
                     sc = new SellerClient(oos, ois);
                     new SellerGUI(sc, sellerEmail);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    new ErrorMessageGUI(e.getMessage());
                 }
             }
         });

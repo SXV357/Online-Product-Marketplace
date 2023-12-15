@@ -310,7 +310,6 @@ import org.junit.Test;
 //                         System.out.println("exportPurchaseHistory ... OK");
 //                 } catch (IOException e) {
 //                         System.out.println("Exported Purchase History File Directory Does Not Exist");
-//                         e.printStackTrace();
 //                 }
 //         }
 

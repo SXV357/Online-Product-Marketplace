@@ -77,13 +77,10 @@ public class InitialClient {
                 new ErrorMessageGUI(response);
                 new LoginGUI(this);
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
             new ErrorMessageGUI(serverErrorMsg);
         } catch (Exception e) {
-            System.out.println("Internal Server Communication Error");
-            e.printStackTrace();
+            new ErrorMessageGUI("Internal Server Communication Error");
         }
     }
 
@@ -106,12 +103,10 @@ public class InitialClient {
                 new ErrorMessageGUI(response);
                 new SignUpGUI(this);
             }
-
         } catch (IOException e) {
             new ErrorMessageGUI(serverErrorMsg);
         } catch (Exception e) {
-            System.out.println("Internal Server Communication Error");
-            e.printStackTrace();
+            new ErrorMessageGUI("Internal Server Communication Error");
         }
     }
 
@@ -137,8 +132,7 @@ public class InitialClient {
         } catch (IOException e) {
             new ErrorMessageGUI(serverErrorMsg);
         } catch (Exception e) {
-            System.out.println("Internal Server Communication Error");
-            e.printStackTrace();
+            new ErrorMessageGUI("Internal Server Communication Error");
         }
     }
 }
