@@ -36,6 +36,8 @@ public class CustomerGUI extends JComponent {
     private JButton viewStoreDashboardButton;
     private JButton viewPurchaseDashboardButton;
     private JButton checkoutItemsButton;
+    private JButton returnItemButton;
+    private JButton leaveReviewButton;
     private JButton removeItemFromShoppingCartButton;
     private JButton viewPurchaseHistoryButton;
     private JButton viewShoppingCartButton;
@@ -157,8 +159,24 @@ public class CustomerGUI extends JComponent {
                             String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity:" +
                                     " %s%nPrice: %s%nDescription: %s%n", storeName, productName, availableQuantity,
                                     price, description);
-                            JOptionPane.showMessageDialog(null, info, "Product Information",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            String[] options = {"Yes", "No"};
+                            String addToCart = (String) JOptionPane.showInputDialog(null,
+                                "Would you like to add this item to your cart?\n" + info, "Add Item",
+                                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+                            if (addToCart == null || addToCart.equals("No")) {
+                                return;
+                            } else {
+                                String desiredQuantity = JOptionPane.showInputDialog(null,
+                                        "How many would you like?", "Quantity", JOptionPane.QUESTION_MESSAGE);
+                                Object[] productAddedResult = customerClient.addToCart(productSelection, desiredQuantity);
+                                if (productAddedResult[0].equals("SUCCESS")) {
+                                    JOptionPane.showMessageDialog(null, productAddedResult[1],
+                                            "Add To Cart", JOptionPane.INFORMATION_MESSAGE);
+                                } else {
+                                    displayErrorDialog((String) productAddedResult[1]);
+                                }
+                            }
                         }
                     }
                 }
@@ -296,6 +314,10 @@ public class CustomerGUI extends JComponent {
                     displayErrorDialog((String) purchaseItemsResult[1]);
                 }
 
+            } else if (e.getSource() == returnItemButton) {
+                // TO DO
+            } else if (e.getSource() == leaveReviewButton) {
+                // TO DO
             } else if (e.getSource() == removeItemFromShoppingCartButton) {
                 Object[] getShoppingCartResult = customerClient.getCart();
                 if (getShoppingCartResult[0].equals("ERROR")) {
@@ -310,8 +332,12 @@ public class CustomerGUI extends JComponent {
                     if (itemChoice == null) {
                         return;
                     }
+                    String removeQuantity = JOptionPane.showInputDialog(null, "How many of this item would you like to remove?", "Shopping Cart", JOptionPane.QUESTION_MESSAGE);
+                    if (removeQuantity == null) {
+                        return;
+                    }
                     int itemSelection = Arrays.binarySearch(modifiedCart, itemChoice);
-                    Object[] removeFromCartResult = customerClient.removeFromCart(itemSelection);
+                    Object[] removeFromCartResult = customerClient.removeFromCart(itemSelection, removeQuantity);
                     if (removeFromCartResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, removeFromCartResult[1],
                                 "Remove from cart", JOptionPane.INFORMATION_MESSAGE);
@@ -328,8 +354,10 @@ public class CustomerGUI extends JComponent {
                 }
                 Object[] editEmailResult = customerClient.editEmail(newEmail);
                 if (editEmailResult[0].equals("SUCCESS")) {
-                    JOptionPane.showMessageDialog(null, editEmailResult[1], "Edit Email",
+                    JOptionPane.showMessageDialog(null, "Email edited successfully!", "Edit Email",
                             JOptionPane.INFORMATION_MESSAGE);
+                    customerFrame.dispose();
+                    customerClient.homepage((String) editEmailResult[1]);
                 } else {
                     displayErrorDialog((String) editEmailResult[1]);
                 }
@@ -435,6 +463,12 @@ public class CustomerGUI extends JComponent {
 
         checkoutItemsButton = new JButton("Checkout Items");
         checkoutItemsButton.addActionListener(actionListener);
+
+        returnItemButton = new JButton("Return An Item");
+        returnItemButton.addActionListener(actionListener);
+
+        leaveReviewButton = new JButton("Leave A Review");
+        leaveReviewButton.addActionListener(actionListener);
 
         removeItemFromShoppingCartButton = new JButton("Remove Item From Shopping Cart");
         removeItemFromShoppingCartButton.addActionListener(actionListener);

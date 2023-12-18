@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Project 5 - Customer.java
@@ -201,7 +202,7 @@ public class Customer extends User {
     }
 
     /**
-     * Removes a given item from the cart
+     * Removes an item in its entirety from the cart
      *
      * @param index the index of the cart the remove
      * @throws CustomerException
@@ -216,6 +217,39 @@ public class Customer extends User {
 
     }
 
+    // Removes a certain quantity of an item in the cart
+    public void removeFromCart(int index, String desiredQuantity) throws CustomerException {
+        if (desiredQuantity.isBlank() || desiredQuantity.isEmpty()) {
+            throw new CustomerException("The modified quantity cannot be blank or empty");
+        }
+        int newQuantity;
+        // Case 1: They enter a string literal for how much they'd like to remove
+        try {
+            newQuantity = Integer.parseInt(desiredQuantity);
+        } catch (NumberFormatException e) {
+            throw new CustomerException("The quantity has to be an integer and cannot be a string");
+        }
+        if (newQuantity <= 0) {
+            throw new CustomerException("The quantity selected must be greater than 0");
+        } 
+
+        shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
+        String prevEntry = shoppingCart.get(index);
+        int originalQuantity = Integer.parseInt(prevEntry.split(",")[6]);
+        double price = Double.parseDouble(prevEntry.split(",")[7]);
+        // Case 2: They enter a quantity that exceeds what's already in cart
+        if (newQuantity >= originalQuantity) {
+            removeFromCart(index);
+        } else {
+            int modifiedQuantity = originalQuantity - newQuantity;
+            String[] newEntry = prevEntry.split(",");
+            newEntry[6] = String.valueOf(modifiedQuantity);
+            newEntry[7] = String.valueOf(String.format("%.2f", modifiedQuantity * price));
+            db.modifyDatabase("shoppingCarts.csv", prevEntry, String.join(",", newEntry));
+        }
+
+    }
+
     /**
      * Adds a given item from the cart
      *
@@ -225,8 +259,8 @@ public class Customer extends User {
     public void addToCart(int index, String desiredQuantity) throws CustomerException {
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
-            String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0)
-                    .split(",");
+            // get the product with that index in the products.csv file
+            String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0).split(",");
 
             int quantity;
             try {
@@ -244,6 +278,7 @@ public class Customer extends User {
             StringBuilder output = new StringBuilder();
             int updatedQuant = quantity;
             output.append(getUserID()).append(",");
+            // if they're adding more of the same item to their cart(quantity is just updated)
             for (String item : shoppingCart) {
                 if (item.contains(target[2])) {
                     updatedQuant = Integer.parseInt(item.split(",")[6]) + quantity;
@@ -285,14 +320,17 @@ public class Customer extends User {
         output.append(getUserID()).append(",");
         String item;
         boolean duplicate = false;
-        for (int i = 0; i < shoppingCart.size(); i++) {
+        for (int i = shoppingCart.size() - 1; i >= 0; i--) {
             item = shoppingCart.get(i);
+            // gets the product with the associated ID
             target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
             quantity = Integer.parseInt(item.split(",")[6]);
-            if (quantity <= 0 || Integer.parseInt(target[5]) < quantity) {
+            // the quantity being checked out is greater than what is actually available
+            // if its just for one product but everything else being checked out is within limits, no need to throw an exception
+            if (Integer.parseInt(target[5]) < quantity) {
                 db.removeFromDatabase("shoppingCarts.csv", item);
                 shoppingCart.remove(item);
-                throw new CustomerException("Not Enough Product Stocked");
+                // throw new CustomerException("Not Enough Product Stocked");
             } else {
                 duplicate = false;
                 for (int j = 0; j < purchasehistory.size(); j++) {
@@ -308,9 +346,11 @@ public class Customer extends User {
                         duplicate = true;
                     }
                 }
+                // Correctly updates it if more of the same item from the same store is purchased
                 if (!duplicate) {
                     db.addToDatabase("purchaseHistories.csv", item);
                 }
+                // updates the remaining quantity of the product in the products.csv file
                 target = db.getMatchedEntries("products.csv", 2, item.split(",")[3]).get(0).split(",");
                 target[5] = String.valueOf(Integer.parseInt(target[5]) - Integer.parseInt(item.split(",")[6]));
                 db.modifyDatabase("products.csv",
@@ -329,7 +369,7 @@ public class Customer extends User {
      * @return Returns the sorted string
      * @throws CustomerException
      */
-    public String sortProducts(String choice) throws CustomerException {
+    public String sortProducts(String choice, boolean ascending) throws CustomerException {
         ArrayList<String> sorted = db.getDatabaseContents("products.csv");
         int n = sorted.size();
         String temp = "";
@@ -353,11 +393,24 @@ public class Customer extends User {
                     }
                 }
             }
-            return formatProducts(sorted);
+            if (ascending) {
+                return formatProducts(sorted);
+            } else {
+                Collections.reverse(sorted);
+                return formatProducts(sorted);
+            }
         } else {
             throw new CustomerException("You can only choose to sort the price or quantity");
         }
 
+    }
+
+    public void returnItems() {
+        // TO DO: can select only one item to return at a time
+    }
+
+    public void leaveReview() {
+        // TO DO: can select only one product to leave a review for at a time
     }
 
     /**

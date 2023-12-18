@@ -1,0 +1,5 @@
+Seller ID,Store ID,Product ID,Product Name,Available Quantity,Price,Description
+S1000001,ST1000000,PR1000000,Bagles,10,12.00,A circular piece of bread
+S1000001,ST1000000,PR1000001,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick
+S1000001,ST1000000,PR1000002,Margherita Pizza,30,18.99,Classic pizza topped with fresh tomatoes mozzarella and basil
+S1000001,ST1000000,PR1000003,Pasta,10,14.70,Napoli pasta.

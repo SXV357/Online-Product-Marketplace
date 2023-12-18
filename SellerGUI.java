@@ -459,9 +459,12 @@ public class SellerGUI extends JComponent {
                     return;
                 }
                 Object[] editEmailResult = sellerClient.editEmail(newEmail);
+                // editEmailResult[1] now contains the modified email
                 if (editEmailResult[0].equals("SUCCESS")) {
-                    JOptionPane.showMessageDialog(null, editEmailResult[1], "Edit Email",
+                    JOptionPane.showMessageDialog(null, "Email edited successfully!", "Edit Email",
                             JOptionPane.INFORMATION_MESSAGE);
+                    sellerFrame.dispose();
+                    sellerClient.homepage((String) editEmailResult[1]);
                 } else {
                     displayErrorDialog((String) editEmailResult[1]);
                 }

@@ -20,7 +20,7 @@ public class LoginGUI {
     private JLabel passwordLabel;
     private JPasswordField passwordField;
     private JButton loginButton;
-    private JButton returnToMainMenuButton;
+    private JButton signUpButton;
     private InitialClient initialClient;
 
     /**
@@ -45,9 +45,9 @@ public class LoginGUI {
                 String password = new String(passwordChars);
                 loginFrame.dispose();
                 initialClient.attemptLogin(email, password);
-            } else if (e.getSource() == returnToMainMenuButton) {
+            } else if (e.getSource() == signUpButton) {
                 loginFrame.dispose();
-                new UserGUI(initialClient);
+                new SignUpGUI(initialClient);
             }
         }
     };
@@ -67,8 +67,8 @@ public class LoginGUI {
 
                 loginButton = new JButton("Log In");
                 loginButton.addActionListener(actionListener);
-                returnToMainMenuButton = new JButton("Main Menu");
-                returnToMainMenuButton.addActionListener(actionListener);
+                signUpButton = new JButton("Sign Up");
+                signUpButton.addActionListener(actionListener);
 
                 emailLabel = new JLabel("Email:");
                 emailField = new JTextField(15);
@@ -88,7 +88,7 @@ public class LoginGUI {
 
                 JPanel buttonPanel = new JPanel();
                 buttonPanel.add(loginButton);
-                buttonPanel.add(returnToMainMenuButton);
+                buttonPanel.add(signUpButton);
 
                 loginFrame.add(textPanel, BorderLayout.CENTER);
                 loginFrame.add(buttonPanel, BorderLayout.SOUTH);

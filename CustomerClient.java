@@ -143,10 +143,10 @@ public class CustomerClient {
      * @param index The index of the customer's product selection
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
-    public Object[] removeFromCart(int index) {
+    public Object[] removeFromCart(int index, String quantity) {
         Object[] result;
         try {
-            oos.writeObject(new String[]{"REMOVE_FROM_CART", String.valueOf(index)});
+            oos.writeObject(new String[]{"REMOVE_FROM_CART", String.valueOf(index), quantity});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
@@ -217,10 +217,10 @@ public class CustomerClient {
      * @param choice The parameter to use to sort the marketplace
      * @return An object array in the form of ["SUCCESS", Sorted Product List] or ["ERROR", Error Message]
      */
-    public Object[] sortProducts(String choice) {
+    public Object[] sortProducts(String choice, boolean ascending) {
         Object[] result;
         try {
-            oos.writeObject(new String[]{"SORT_PRODUCTS", choice});
+            oos.writeObject(new String[]{"SORT_PRODUCTS", choice, String.valueOf(ascending)});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {

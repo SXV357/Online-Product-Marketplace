@@ -266,6 +266,8 @@ public class Seller extends User {
      */
     public void createNewProduct(String storeName, String productName, String availableQuantity, String price,
                                  String productDescription) throws SellerException {
+        // TO DO: the seller even specifies a order quantity limit along with everything else
+        // TO DO: the sale price for the item is also specified which is based on how many of that item are sold
         try {
             if (productName == null || productName.isEmpty() || productName.isBlank()) {
                 throw new SellerException("Unable to add product. The product name cannot be null, blank, or empty");
@@ -528,6 +530,7 @@ public class Seller extends User {
                 throw new SellerException("Unable to import products. The file path cannot be null, blank, or empty");
             }
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
+            ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
             File productFile = new File(filePath);
             BufferedReader br = new BufferedReader(new FileReader(productFile));
             br.readLine(); // skip the headers
@@ -535,8 +538,12 @@ public class Seller extends User {
             int numProducts = 0;
             while ((line = br.readLine()) != null) {
                 String[] productLine = line.split(",");
-                this.createNewProduct(storeName, productLine[0], productLine[1], productLine[2], productLine[3]);
-                numProducts += 1;
+                String productName = productLine[0];
+                boolean productExists = findProductNameMatch(productName, matchedProducts);
+                if (!productExists) {
+                    this.createNewProduct(storeName, productLine[0], productLine[1], productLine[2], productLine[3]);
+                    numProducts += 1;
+                }
             }
             String[] matchedStore = matchedStoreEntry.split(",");
             int prevNumProducts = Integer.parseInt(matchedStore[3]);
@@ -548,6 +555,16 @@ public class Seller extends User {
         } catch (Exception e) {
             throw new SellerException("Unable to import products. Please try again!");
         }
+    }
+
+    public boolean findProductNameMatch(String productName, ArrayList<String> matchedProducts) {
+        for (String matchedProduct: matchedProducts) {
+            String name = matchedProduct.split(",")[4];
+            if (productName.equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

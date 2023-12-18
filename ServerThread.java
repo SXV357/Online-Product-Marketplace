@@ -112,7 +112,7 @@ public class ServerThread extends Thread {
                                 }
                                 // Remove Product from Cart
                                 case "REMOVE_FROM_CART" -> {
-                                    c.removeFromCart(Integer.parseInt(response[1]));
+                                    c.removeFromCart(Integer.parseInt(response[1]), response[2]);
                                     output = "Successfully removed item from cart.";
                                 }
                                 // View Cart
@@ -122,7 +122,7 @@ public class ServerThread extends Thread {
                                 // Search Products
                                 case "SEARCH_PRODUCTS" -> output = c.searchProducts(response[1]);
                                 // Sort Products
-                                case "SORT_PRODUCTS" -> output = c.sortProducts(response[1]);
+                                case "SORT_PRODUCTS" -> output = c.sortProducts(response[1], response[2].equals("true"));
                                 // Export Shopping History
                                 case "EXPORT_PURCHASE_HISTORY" -> {
                                     c.exportPurchaseHistory();
@@ -146,7 +146,7 @@ public class ServerThread extends Thread {
                                 // Modify Email
                                 case "EDIT_EMAIL" -> {
                                     c.setEmail(response[1]);
-                                    output = "Email edited successfully!";
+                                    output = c.getEmail();
                                 }
                                 // Modify Password
                                 case "EDIT_PASSWORD" -> {
@@ -258,7 +258,7 @@ public class ServerThread extends Thread {
                                 // Modify Email
                                 case "EDIT_EMAIL" -> {
                                     s.setEmail(response[1]);
-                                    output = "Email edited successfully!";
+                                    output = s.getEmail();
                                 }
                                 // Modify Password
                                 case "EDIT_PASSWORD" -> {
@@ -296,7 +296,7 @@ public class ServerThread extends Thread {
                 }
             }
         } catch (Exception e) {
-            new ErrorMessageGUI(e.getMessage());
+            new ErrorMessageGUI("A client shutdown occurred. Relaunch the client if you would like to continue using the application.");
         }
     }
 }
