@@ -172,8 +172,13 @@ public class SellerGUI extends JComponent {
                     if (description == null) {
                         return;
                     }
+                    String orderLimit = JOptionPane.showInputDialog(null, "What is the order limit of the product?",
+                            "Order Limit", JOptionPane.QUESTION_MESSAGE);
+                    if (orderLimit == null) {
+                        return;
+                    }
                     Object[] createProductResult = sellerClient.createNewProduct(storeName, productName,
-                            availableQuantity, price, description);
+                            availableQuantity, price, description, orderLimit);
                     if (createProductResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, createProductResult[1],
                                 "Create Product", JOptionPane.INFORMATION_MESSAGE);
@@ -211,7 +216,7 @@ public class SellerGUI extends JComponent {
                         if (productName == null) {
                             return;
                         }
-                        String[] editParameters = {"Name", "Price", "Description", "Quantity"};
+                        String[] editParameters = {"Name", "Price", "Description", "Quantity", "Order Limit"};
                         String editParam = (String) JOptionPane.showInputDialog(null,
                                 "Which parameter would you like to edit?", "Edit Parameter",
                                 JOptionPane.QUESTION_MESSAGE, null, editParameters, editParameters[0]);

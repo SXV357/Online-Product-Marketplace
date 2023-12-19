@@ -205,7 +205,7 @@ public class ServerThread extends Thread {
                                 // Create Product
                                 case "CREATE_NEW_PRODUCT" -> {
                                     s.createNewProduct(response[1], response[2], response[3], response[4],
-                                            response[5]);
+                                            response[5], response[6]);
                                     output = "Successfully created new product.";
                                 }
                                 // Edit Product

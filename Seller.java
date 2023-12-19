@@ -121,7 +121,7 @@ public class Seller extends User {
         for (int i = 0; i < productEntries.size(); i++) {
             String[] productEntry = productEntries.get(i).split(",");
             Product product = new Product(productEntry[2], productEntry[4], Integer.parseInt(productEntry[5]),
-                    Double.parseDouble(productEntry[6]), productEntry[7]);
+                    Double.parseDouble(productEntry[6]), productEntry[7], Integer.parseInt(productEntry[8]));
             products.add(product);
         }
         ArrayList<String> productNames = new ArrayList<>();
@@ -265,8 +265,7 @@ public class Seller extends User {
      * @throws SellerException
      */
     public void createNewProduct(String storeName, String productName, String availableQuantity, String price,
-                                 String productDescription) throws SellerException {
-        // TO DO: the seller even specifies a order quantity limit along with everything else
+                                 String productDescription, String orderLimit) throws SellerException {
         // TO DO: the sale price for the item is also specified which is based on how many of that item are sold
         try {
             if (productName == null || productName.isEmpty() || productName.isBlank()) {
@@ -289,22 +288,23 @@ public class Seller extends User {
             } else if (productDescription.contains(",")) {
                 throw new SellerException("The description cannot contain any commas!");
             }
+            if (orderLimit == null || orderLimit.isEmpty() || orderLimit.isBlank()) {
+                throw new SellerException("Unable to add product. The order limit cannot be null, blank, or empty");
+            } else if (orderLimit.contains(",")) {
+                throw new SellerException("The order limit cannot contain any commas!");
+            }
             int quantity;
+            double productPrice;
+            int limit;
             try {
                 quantity =  Integer.parseInt(availableQuantity);
-            } catch (NumberFormatException e) {
-                throw new SellerException("The quantity has to be an integer and cannot be a string");
-            }
-            double productPrice;
-            try {
                 productPrice = Double.parseDouble(price);
-            } catch (Exception e) {
-                throw new SellerException("price quantity has to be an integer and cannot be a string");
+                limit = Integer.parseInt(orderLimit);
+            } catch (NumberFormatException e) {
+                throw new SellerException("Make sure that the available quantity, price, and order limit are all integers and not strings");
             }
-            if (quantity < 0) {
-                throw new SellerException("Unable to add product. The quantity cannot be negative");
-            } else if (productPrice < 0) {
-                throw new SellerException("Unable to add product. The price cannot be negative");
+            if (quantity < 0 || productPrice < 0 || limit < 0) {
+                throw new SellerException("Unable to add product. Make sure that the available quantity, price, and order limit are all positive.");
             }
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
 
@@ -321,7 +321,7 @@ public class Seller extends User {
             }
 
             Product newProduct = new Product(productName, quantity, productPrice,
-                    productDescription.replace(",", ""));
+                    productDescription.replace(",", ""), limit);
 
             String entry = String.format("%s,%s,%s,%s", super.getUserID(), matchedStoreEntry.split(",")[0],
                     newProduct.getProductIdentificationNumber(), storeName) + "," + newProduct.toString();
@@ -412,6 +412,22 @@ public class Seller extends User {
                                             "Unable to edit product. The new quantity cannot be negative.");
                                 }
                                 productRep[5] = String.valueOf(newQuantity);
+                            }
+                            case "order limit" -> {
+                                int existingQuantity = Integer.parseInt(productRep[5]);
+                                int newLimit;
+                                try {
+                                    newLimit = Integer.parseInt(newValue);
+                                } catch (NumberFormatException e) {
+                                    throw new SellerException("The new limit has to be an integer!");
+                                }
+                                if (newLimit <= 0) {
+                                    throw new SellerException("Unable to edit product. The new limit has to be greater than 0");
+                                } else if (newLimit > existingQuantity) {
+                                    throw new SellerException("The order quantity cannot exceed the number of products for sale");
+                                }
+                                productRep[8] = String.valueOf(newLimit);
+
                             }
                         }
                         db.modifyDatabase("products.csv", productMatches.get(i), String.join(",",
@@ -541,7 +557,7 @@ public class Seller extends User {
                 String productName = productLine[0];
                 boolean productExists = findProductNameMatch(productName, matchedProducts);
                 if (!productExists) {
-                    this.createNewProduct(storeName, productLine[0], productLine[1], productLine[2], productLine[3]);
+                    this.createNewProduct(storeName, productLine[0], productLine[1], productLine[2], productLine[3], productLine[4]);
                     numProducts += 1;
                 }
             }

@@ -95,9 +95,10 @@ public class CustomerGUI extends JComponent {
                         String availableQuantity = productInfo[2];
                         String price = productInfo[3];
                         String description = productInfo[4];
+                        String orderLimit = productInfo[5];
                         String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity:" +
-                                " %s%nPrice: %s%nDescription: %s%n", storeName, productName,
-                                availableQuantity, price, description);
+                                " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%n", storeName, productName,
+                                availableQuantity, price, description, orderLimit);
                         String[] options = {"Yes", "No"};
                         String addToCart = (String) JOptionPane.showInputDialog(null,
                                 "Would you like to add this item to your cart?\n" + info, "Add Item",
@@ -156,9 +157,10 @@ public class CustomerGUI extends JComponent {
                             String availableQuantity = productInfo[2];
                             String price = productInfo[3];
                             String description = productInfo[4];
+                            String orderLimit = productInfo[5];
                             String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity:" +
-                                    " %s%nPrice: %s%nDescription: %s%n", storeName, productName, availableQuantity,
-                                    price, description);
+                                    " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%n", storeName, productName,
+                                    availableQuantity, price, description, orderLimit);
                             String[] options = {"Yes", "No"};
                             String addToCart = (String) JOptionPane.showInputDialog(null,
                                 "Would you like to add this item to your cart?\n" + info, "Add Item",
@@ -494,6 +496,8 @@ public class CustomerGUI extends JComponent {
         buttonPanel.add(viewStoreDashboardButton);
         buttonPanel.add(viewPurchaseDashboardButton);
         buttonPanel.add(checkoutItemsButton);
+        buttonPanel.add(returnItemButton);
+        buttonPanel.add(leaveReviewButton);
         buttonPanel.add(removeItemFromShoppingCartButton);
         buttonPanel.add(editEmailButton);
         buttonPanel.add(editPasswordButton);

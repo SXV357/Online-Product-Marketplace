@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Project 5 - Product.java
  * 
@@ -16,6 +18,8 @@ public class Product {
     private int availableQuantity;
     private double price;
     private String description;
+    private int orderLimit;
+    private ArrayList<String> reviews;
 
     /**
      * Creating a new product for the first time. Generates a unique ID and adds a
@@ -26,12 +30,13 @@ public class Product {
      * @param price             The new product's price
      * @param description       The new product's description
      */
-    public Product(String name, int availableQuantity, double price, String description) {
+    public Product(String name, int availableQuantity, double price, String description, int orderLimit) {
         this.productIdentificationNumber = "PR" + String.valueOf(generateProductIdentificationNumber());
         this.name = name;
         this.availableQuantity = availableQuantity;
         this.price = price;
         this.description = description;
+        this.orderLimit = orderLimit;
     }
 
     /**
@@ -44,12 +49,13 @@ public class Product {
      * @param description                 The existing product's description
      */
     public Product(String productIdentificationNumber, String name, int availableQuantity, double price,
-                   String description) {
+                   String description, int orderLimit) {
         this.productIdentificationNumber = productIdentificationNumber;
         this.name = name;
         this.availableQuantity = availableQuantity;
         this.price = price;
         this.description = description;
+        this.orderLimit = orderLimit;
     }
 
     /**
@@ -98,12 +104,30 @@ public class Product {
     }
 
     /**
+     * Gets the current product's order limit
+     *
+     * @return The order limit associated with this product
+     */
+    public int getOrderLimit() {
+        return this.orderLimit;
+    }
+
+    /**
+     * Gets the current product's reviews
+     *
+     * @return The reviews associated with this product
+     */
+    public ArrayList<String> getReviews() {
+        return this.reviews;
+    }
+
+    /**
      * Returns a string representation of the current product. Utilized in the
      * stores.csv database.
      */
     @Override
     public String toString() {
-        return String.format("%s,%d,%.2f,%s", this.name, this.availableQuantity, this.price, this.description);
+        return String.format("%s,%d,%.2f,%s,%d", this.name, this.availableQuantity, this.price, this.description, this.orderLimit);
     }
 
     /**

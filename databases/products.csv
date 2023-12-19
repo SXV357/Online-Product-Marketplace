@@ -1,2 +1,5 @@
-Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description
-S1000001,ST1000000,PR1000000,Ingles,Bagles,20,12.00,A circular piece of bread
+Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description,Order Limit
+S1000001,ST1000000,PR1000000,Walmart,brownie,100,5.99,triple chocolate chip brownie,5
+S1000001,ST1000000,PR1000001,Walmart,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick,3
+S1000001,ST1000000,PR1000002,Walmart,Margherita Pizza,30,18.99,Classic pizza topped with fresh tomatoes mozzarella and basil,2
+S1000001,ST1000000,PR1000003,Walmart,Pasta,10,14.70,Napoli pasta,1

@@ -54,7 +54,6 @@ public class Customer extends User {
      * @return String of array's contents
      */
     public String arrToString(ArrayList<String> array) {
-
         StringBuilder output = new StringBuilder();
         output.append("Product Name - Store Name - Quantity - Price\n");
         for (int i = 0; i < array.size(); i++) {
@@ -73,9 +72,7 @@ public class Customer extends User {
         String[] info;
         StringBuilder sb = new StringBuilder();
         ArrayList<String> output = new ArrayList<>();
-
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
-
         if (purchasehistory.isEmpty()) {
             throw new CustomerException("Shopping History is Empty");
         } else {
@@ -100,7 +97,6 @@ public class Customer extends User {
      */
     public String getProductInfo(int index) throws CustomerException {
         try {
-
             StringBuilder sb = new StringBuilder();
             String[] prodInfo = db.getDatabaseContents("products.csv").get(index).split(",");
 
@@ -108,13 +104,13 @@ public class Customer extends User {
             sb.append(prodInfo[4]).append(",");
             sb.append(prodInfo[5]).append(",");
             sb.append(prodInfo[6]).append(",");
-            sb.append(prodInfo[7]);
+            sb.append(prodInfo[7]).append(",");
+            sb.append(prodInfo[8]);
 
             return sb.toString();
         } catch (IndexOutOfBoundsException e) {
             throw new CustomerException("Unable to retrieve information about this product. Please try again!");
         }
-
     }
 
     /**
@@ -142,7 +138,6 @@ public class Customer extends User {
             }
         }
         return arrToString(output);
-
     }
 
     /**
@@ -155,7 +150,6 @@ public class Customer extends User {
         StringBuilder sb = new StringBuilder();
         String[] info;
         ArrayList<String> output = new ArrayList<>();
-
         if (productList.isEmpty()) {
             throw new CustomerException("No Products Available");
         } else {
@@ -170,7 +164,6 @@ public class Customer extends User {
             }
         }
         return arrToString(output);
-
     }
 
     /**
@@ -214,7 +207,6 @@ public class Customer extends User {
         } catch (IndexOutOfBoundsException e) {
             throw new CustomerException("Unable to remove this item from cart. Please try again!");
         }
-
     }
 
     // Removes a certain quantity of an item in the cart
@@ -247,7 +239,6 @@ public class Customer extends User {
             newEntry[7] = String.valueOf(String.format("%.2f", modifiedQuantity * price));
             db.modifyDatabase("shoppingCarts.csv", prevEntry, String.join(",", newEntry));
         }
-
     }
 
     /**
@@ -271,7 +262,9 @@ public class Customer extends User {
             if (quantity <= 0) {
                 throw new CustomerException("The quantity selected must be greater than 0");
             } else if (Integer.parseInt(target[5]) < quantity) {
-                throw new CustomerException("You cannot select more than " + Integer.parseInt(target[5]) + " items");
+                throw new CustomerException("There are only " + Integer.parseInt(target[5]) + " of this item for sale!");
+            } else if (quantity > Integer.parseInt(target[8])) {
+                throw new CustomerException("At a time, you can only add " + Integer.parseInt(target[8]) + " of this item to your cart");
             }
 
             shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
@@ -360,7 +353,6 @@ public class Customer extends User {
             db.removeFromDatabase("shoppingCarts.csv", item);
             shoppingCart.remove(item);
         }
-
     }
 
     /**
@@ -405,12 +397,18 @@ public class Customer extends User {
 
     }
 
-    public void returnItems() {
+    public void returnItems(int index) {
         // TO DO: can select only one item to return at a time
+        // Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
+        // Notes:
+            // They can only return purchased items
     }
 
-    public void leaveReview() {
+    public void leaveReview(int index) {
         // TO DO: can select only one product to leave a review for at a time
+        // Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
+        // Notes:
+            // They can only leave reviews on products they have purchased
     }
 
     /**
@@ -489,6 +487,5 @@ public class Customer extends User {
         } else {
             return formatProducts(productsFound);
         }
-
     }
 }
