@@ -647,6 +647,10 @@ public class Seller extends User {
         }
     }
 
+    public void viewProductReviews(String storeName) {
+        // TO DO
+    }
+
     /**
      * View customer's shopping carts associated with this sellers' stores, where
      * the seller can view customer information, product details, quantity added,

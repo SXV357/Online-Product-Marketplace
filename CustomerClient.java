@@ -247,6 +247,18 @@ public class CustomerClient {
         return result;
     }
 
+    public Object[] leaveReview(int index, String review) {
+        Object[] result;
+        try {
+            oos.writeObject(new String[]{"LEAVE_REVIEW", String.valueOf(index), review});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
     /**
      * Makes a call to the server to purchase all the items in the current customer's shopping cart and retrieves the
      * result of the operation to be sent back to the CustomerGUI.

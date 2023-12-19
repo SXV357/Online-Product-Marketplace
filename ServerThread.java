@@ -115,6 +115,10 @@ public class ServerThread extends Thread {
                                     c.removeFromCart(Integer.parseInt(response[1]), response[2]);
                                     output = "Successfully removed item from cart.";
                                 }
+                                case "LEAVE_REVIEW" -> {
+                                    c.leaveReview(Integer.parseInt(response[1]), response[2]);
+                                    output = "Review uploaded successfully";
+                                }
                                 // View Cart
                                 case "GET_CART" -> output = c.getCart();
                                 // View Shopping History

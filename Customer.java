@@ -402,13 +402,47 @@ public class Customer extends User {
         // Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
         // Notes:
             // They can only return purchased items
+            // They cannot choose how many of the item they want to return. The whole item and how many ever were purchases is taken into consideration
     }
 
-    public void leaveReview(int index) {
+    public void leaveReview(int index, String review) throws CustomerException {
         // TO DO: can select only one product to leave a review for at a time
         // Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
         // Notes:
             // They can only leave reviews on products they have purchased
+            // Duplicate reviews will not be allowed
+            // At the present time, customers cannot edit reviews or delete reviews. They can just provide one
+        if (review.isBlank() || review.isEmpty()) {
+            throw new CustomerException("The review cannot be blank or empty!");
+        } else if (review.contains(",")) {
+            throw new CustomerException("The review cannot contain any commas!");
+        }
+        purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
+        if (purchasehistory.isEmpty()) {
+            throw new CustomerException("You haven\'t purchased items from any stores yet!");
+        }
+        String productName = purchasehistory.get(index).split(",")[5];
+        String matchedProductEntry = db.getMatchedEntries("products.csv", 4, productName).get(0);
+        String[] matchedProductContents = matchedProductEntry.split(",");
+        // Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description,Order Limit,Reviews
+        // email-review;email-review...
+        if (matchedProductContents[9].equals("[]")) {
+            // The given product doesn't have any reviews yet
+            String newReview = getEmail() + "-" + review + ";";
+            matchedProductContents[9] = newReview;
+            db.modifyDatabase("products.csv", matchedProductEntry, String.join(",", matchedProductContents));
+        } else {
+            // It already contains reviews so just add to the end of the string
+            String[] reviews = matchedProductContents[9].split(";"); // one item is as such: email-review
+            for (String r: reviews) {
+                String feedback = r.substring(r.indexOf("-") + 1);
+                if (feedback.toLowerCase().equals(review)) {
+                    throw new CustomerException("Duplicate reviews are not allowed");
+                }
+            } 
+            matchedProductContents[9] += getEmail() + "-" + review + ";";
+            db.modifyDatabase("products.csv", matchedProductEntry, String.join(",", matchedProductContents));
+        }
     }
 
     /**

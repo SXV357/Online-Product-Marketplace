@@ -42,6 +42,7 @@ public class SellerGUI extends JComponent {
     private JButton viewSalesByStoreButton;
     private JButton viewCustomerDashboardButton;
     private JButton viewProductDashboardButton;
+    private JButton viewProductReviewsButton;
 
     /**
      * Invokes the error message dialog to display a custom error message when an action taken by this seller fails.
@@ -571,6 +572,9 @@ public class SellerGUI extends JComponent {
         exportProductsButton = new JButton("Export Products");
         exportProductsButton.addActionListener(actionListener);
 
+        viewProductReviewsButton = new JButton("View Product Reviews");
+        viewProductReviewsButton.addActionListener(actionListener);
+
         viewCustomerShoppingCartsButton = new JButton("View Customer Shopping Carts");
         viewCustomerShoppingCartsButton.addActionListener(actionListener);
 
@@ -603,6 +607,7 @@ public class SellerGUI extends JComponent {
         buttonPanel.add(deleteProductButton);
         buttonPanel.add(importProductsButton);
         buttonPanel.add(exportProductsButton);
+        buttonPanel.add(viewProductReviewsButton);
         buttonPanel.add(viewCustomerShoppingCartsButton);
         buttonPanel.add(viewSalesByStoreButton);
         buttonPanel.add(viewCustomerDashboardButton);

@@ -320,6 +320,33 @@ public class CustomerGUI extends JComponent {
                 // TO DO
             } else if (e.getSource() == leaveReviewButton) {
                 // TO DO
+                Object[] getPurchaseHistoryResult = customerClient.getShoppingHistory();
+                if (getPurchaseHistoryResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) getPurchaseHistoryResult[1]);
+                    return;
+                } else {
+                    String[] purchaseHistoryItems = ((String) getPurchaseHistoryResult[1]).split("\n");
+                    String[] modifiedHistory = Arrays.copyOfRange(purchaseHistoryItems, 1, purchaseHistoryItems.length);
+                    String itemChoice = (String) JOptionPane.showInputDialog(null,
+                            "Which item would you like to leave a review for?", "Leave Review",
+                            JOptionPane.QUESTION_MESSAGE, null, modifiedHistory, modifiedHistory[0]);
+                    if (itemChoice == null) {
+                        return;
+                    }
+                    String review = JOptionPane.showInputDialog(null, "What is the review?", "Review", JOptionPane.QUESTION_MESSAGE);
+                    if (review == null) {
+                        return;
+                    }
+                    int itemSelection = Arrays.binarySearch(modifiedHistory, itemChoice);
+                    Object[] leaveReviewResult = customerClient.leaveReview(itemSelection, review);
+                    if (leaveReviewResult[0].equals("SUCCESS")) {
+                        JOptionPane.showMessageDialog(null, leaveReviewResult[1],
+                                "Remove from cart", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        displayErrorDialog((String) leaveReviewResult[1]);
+                    }
+                }
+
             } else if (e.getSource() == removeItemFromShoppingCartButton) {
                 Object[] getShoppingCartResult = customerClient.getCart();
                 if (getShoppingCartResult[0].equals("ERROR")) {

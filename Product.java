@@ -19,7 +19,6 @@ public class Product {
     private double price;
     private String description;
     private int orderLimit;
-    private ArrayList<String> reviews;
 
     /**
      * Creating a new product for the first time. Generates a unique ID and adds a
@@ -113,21 +112,12 @@ public class Product {
     }
 
     /**
-     * Gets the current product's reviews
-     *
-     * @return The reviews associated with this product
-     */
-    public ArrayList<String> getReviews() {
-        return this.reviews;
-    }
-
-    /**
      * Returns a string representation of the current product. Utilized in the
      * stores.csv database.
      */
     @Override
     public String toString() {
-        return String.format("%s,%d,%.2f,%s,%d", this.name, this.availableQuantity, this.price, this.description, this.orderLimit);
+        return String.format("%s,%d,%.2f,%s,%d,%s", this.name, this.availableQuantity, this.price, this.description, this.orderLimit, "[]");
     }
 
     /**
