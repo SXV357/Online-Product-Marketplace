@@ -204,11 +204,11 @@ public class SellerClient {
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] createNewProduct(String storeName, String productName, String availableQuantity,
-                                     String price, String description) {
+                                     String price, String description, String orderLimit, String saleQuantity, String salePrice) {
         Object[] result;
         try {
             oos.writeObject(new String[]{"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity,
-                                         price, description});
+                                         price, description, orderLimit, saleQuantity, salePrice});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {
@@ -326,6 +326,18 @@ public class SellerClient {
         Object[] result;
         try {
             oos.writeObject(new String[]{"VIEW_SALES_BY_STORE"});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
+    public Object[] viewProductReviews(String storeName, String productName) {
+        Object[] result;
+        try {
+            oos.writeObject(new String[]{"VIEW_PRODUCT_REVIEWS", storeName, productName});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {

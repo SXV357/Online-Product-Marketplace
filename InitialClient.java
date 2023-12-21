@@ -1,5 +1,8 @@
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,12 +37,38 @@ public class InitialClient {
     }
 
     public static void main(String[] args) throws UnknownHostException, IOException {
-        Socket socket = new Socket("localhost", Server.PORT_NUMBER);
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-        oos.flush();
-        InitialClient initialClient = new InitialClient(oos, ois);
-        initialClient.start();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                List<String> validHosts = Arrays.asList("localhost", "192.168.1.183");
+                String hostName = JOptionPane.showInputDialog(null, "Enter the host name",
+                    "Host name", JOptionPane.QUESTION_MESSAGE);
+                if (hostName == null) {
+                    JOptionPane.showMessageDialog(null, "Thank you for using the program!", "Thank you", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                } else {
+                    if (hostName.isBlank() || hostName.isEmpty()) {
+                        new ErrorMessageGUI("The host name cannot be blank or empty!");
+                        return;
+                    } else if (!(validHosts.contains(hostName))) {
+                        // The application is run on just one device or the server is run on this device and other clients have to enter the IP of this device to connect
+                        new ErrorMessageGUI("Invalid host name!");
+                        return;
+                    }
+                    try {
+                        Socket socket = new Socket(hostName, Server.PORT_NUMBER);
+                        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                        oos.flush();
+                        InitialClient initialClient = new InitialClient(oos, ois);
+                        initialClient.start();
+                    } catch (IOException e) {
+                        new ErrorMessageGUI("An error occurred when connecting to the server.");
+                        return;
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -49,7 +78,7 @@ public class InitialClient {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new UserGUI(InitialClient.this);
+                new LoginGUI(InitialClient.this);
             }
         });
     }
@@ -68,11 +97,9 @@ public class InitialClient {
 
             String response = (String) ois.readObject();
             if (response.equals("Customer Connection to Server Established")) {
-                String userEmail = (String) ois.readObject();
-                new CustomerClient(oos, ois).homepage(userEmail);
+                new CustomerClient(oos, ois).homepage((String) ois.readObject());
             } else if (response.equals("Seller Connection to Server Established")) {
-                String userEmail = (String) ois.readObject();
-                new SellerClient(oos, ois).homepage(userEmail);
+                new SellerClient(oos, ois).homepage((String) ois.readObject());
             } else {
                 new ErrorMessageGUI(response);
                 new LoginGUI(this);

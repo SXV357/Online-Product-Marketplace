@@ -42,6 +42,7 @@ public class SellerGUI extends JComponent {
     private JButton viewSalesByStoreButton;
     private JButton viewCustomerDashboardButton;
     private JButton viewProductDashboardButton;
+    private JButton viewProductReviewsButton;
 
     /**
      * Invokes the error message dialog to display a custom error message when an action taken by this seller fails.
@@ -172,8 +173,23 @@ public class SellerGUI extends JComponent {
                     if (description == null) {
                         return;
                     }
+                    String orderLimit = JOptionPane.showInputDialog(null, "What is the order limit of the product?",
+                            "Order Limit", JOptionPane.QUESTION_MESSAGE);
+                    if (orderLimit == null) {
+                        return;
+                    }
+                    String saleQuantity = JOptionPane.showInputDialog(null, "What is the quantity after which a sale will be applied for this product?",
+                            "Sale Quantity", JOptionPane.QUESTION_MESSAGE);
+                    if (saleQuantity == null) {
+                        return;
+                    }
+                    String salePrice = JOptionPane.showInputDialog(null, "What is the sale price of the product?",
+                            "Sale Price", JOptionPane.QUESTION_MESSAGE);
+                    if (salePrice == null) {
+                        return;
+                    }
                     Object[] createProductResult = sellerClient.createNewProduct(storeName, productName,
-                            availableQuantity, price, description);
+                            availableQuantity, price, description, orderLimit, saleQuantity, salePrice);
                     if (createProductResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, createProductResult[1],
                                 "Create Product", JOptionPane.INFORMATION_MESSAGE);
@@ -211,7 +227,7 @@ public class SellerGUI extends JComponent {
                         if (productName == null) {
                             return;
                         }
-                        String[] editParameters = {"Name", "Price", "Description", "Quantity"};
+                        String[] editParameters = {"Name", "Price", "Description", "Quantity", "Order Limit"};
                         String editParam = (String) JOptionPane.showInputDialog(null,
                                 "Which parameter would you like to edit?", "Edit Parameter",
                                 JOptionPane.QUESTION_MESSAGE, null, editParameters, editParameters[0]);
@@ -327,6 +343,54 @@ public class SellerGUI extends JComponent {
                     }
                 }
 
+            } else if (e.getSource() == viewProductReviewsButton) {
+                Object[] getStoresResult = sellerClient.getStores();
+                // If this seller doesn't have any stores, display error message
+                if (getStoresResult[0].equals("ERROR")) { // Error
+                    String errorMessage = (String) getStoresResult[1];
+                    displayErrorDialog(errorMessage);
+                    return;
+                } else if (getStoresResult[0].equals("SUCCESS")) {
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
+                    String storeName = (String) JOptionPane.showInputDialog(null,
+                            "Which store contains the product you\'d like to view the review for?", "Stores",
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                    if (storeName == null) {
+                        return;
+                    }
+                    // Get the products associated with the selected store
+                    Object[] getProductsResult = sellerClient.getStoreProducts(storeName);
+                    if (getProductsResult[0].equals("ERROR")) {
+                        String errorMessage = (String) getProductsResult[1];
+                        displayErrorDialog(errorMessage);
+                        return;
+                    } else if (getProductsResult[0].equals("SUCCESS")) {
+                        ArrayList<String> productNames = (ArrayList<String>) getProductsResult[1];
+                        String productName = (String) JOptionPane.showInputDialog(null,
+                                "Which product\'s review would you like to view?", "Products",
+                                JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
+                        if (productName == null) {
+                            return;
+                        }
+                        Object[] viewProductReviewResult = sellerClient.viewProductReviews(storeName, productName);
+                        if (viewProductReviewResult[0].equals("SUCCESS")) {
+                            HashMap<String, ArrayList<String>> productReviews =
+                            (HashMap<String, ArrayList<String>>) viewProductReviewResult[1];
+                            String info = "";
+                            for (String customerEmail : productReviews.keySet()) {
+                                info += customerEmail + "\n";
+                                for (String review : productReviews.get(customerEmail)) {
+                                    info += "\t" + review + "\n";
+                                }
+                            }
+                            JOptionPane.showMessageDialog(null, info, "Product Reviews",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            displayErrorDialog((String) viewProductReviewResult[1]);
+                        }
+                    }
+                }
+
             } else if (e.getSource() == viewCustomerShoppingCartsButton) {
                 Object[] getCustomerShoppingCartsResult = sellerClient.viewCustomerShoppingCarts();
                 if (getCustomerShoppingCartsResult[0].equals("ERROR")) {
@@ -340,7 +404,7 @@ public class SellerGUI extends JComponent {
                     for (String store : shoppingCarts.keySet()) {
                         info += store + "\n";
                         for (String saleInformation : shoppingCarts.get(store)) {
-                            info += saleInformation + "\n";
+                            info += "\t" + saleInformation + "\n";
                         }
                     }
                     JOptionPane.showMessageDialog(null, info, "Customer Shopping Carts",
@@ -360,7 +424,7 @@ public class SellerGUI extends JComponent {
                     for (String store : salesByStore.keySet()) {
                         info += store + "\n";
                         for (String saleInformation : salesByStore.get(store)) {
-                            info += saleInformation + "\n";
+                            info += "\t" + saleInformation + "\n";
                         }
                     }
                     JOptionPane.showMessageDialog(null, info, "Sales by Store",
@@ -459,9 +523,12 @@ public class SellerGUI extends JComponent {
                     return;
                 }
                 Object[] editEmailResult = sellerClient.editEmail(newEmail);
+                // editEmailResult[1] now contains the modified email
                 if (editEmailResult[0].equals("SUCCESS")) {
-                    JOptionPane.showMessageDialog(null, editEmailResult[1], "Edit Email",
+                    JOptionPane.showMessageDialog(null, "Email edited successfully!", "Edit Email",
                             JOptionPane.INFORMATION_MESSAGE);
+                    sellerFrame.dispose();
+                    sellerClient.homepage((String) editEmailResult[1]);
                 } else {
                     displayErrorDialog((String) editEmailResult[1]);
                 }
@@ -563,6 +630,9 @@ public class SellerGUI extends JComponent {
         exportProductsButton = new JButton("Export Products");
         exportProductsButton.addActionListener(actionListener);
 
+        viewProductReviewsButton = new JButton("View Product Reviews");
+        viewProductReviewsButton.addActionListener(actionListener);
+
         viewCustomerShoppingCartsButton = new JButton("View Customer Shopping Carts");
         viewCustomerShoppingCartsButton.addActionListener(actionListener);
 
@@ -595,6 +665,7 @@ public class SellerGUI extends JComponent {
         buttonPanel.add(deleteProductButton);
         buttonPanel.add(importProductsButton);
         buttonPanel.add(exportProductsButton);
+        buttonPanel.add(viewProductReviewsButton);
         buttonPanel.add(viewCustomerShoppingCartsButton);
         buttonPanel.add(viewSalesByStoreButton);
         buttonPanel.add(viewCustomerDashboardButton);

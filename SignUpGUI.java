@@ -22,7 +22,7 @@ public class SignUpGUI extends JFrame {
     private JLabel roleLabel;
     private JComboBox<String> roleComboBox;
     private JButton signupButton;
-    private JButton returnToMainMenuButton;
+    private JButton loginButton;
     private InitialClient initialClient;
 
     /**
@@ -58,9 +58,9 @@ public class SignUpGUI extends JFrame {
                         initialClient.attemptCreateNewSellerAccount(email, password);
                     }
                 }
-            } else if (e.getSource() == returnToMainMenuButton) {
+            } else if (e.getSource() == loginButton) {
                 signupFrame.dispose();
-                new UserGUI(initialClient);
+                new LoginGUI(initialClient);
             }
         }
     };
@@ -79,8 +79,8 @@ public class SignUpGUI extends JFrame {
 
                 signupButton = new JButton("Sign Up");
                 signupButton.addActionListener(actionListener);
-                returnToMainMenuButton = new JButton("Main Menu");
-                returnToMainMenuButton.addActionListener(actionListener);
+                loginButton = new JButton("Log In");
+                loginButton.addActionListener(actionListener);
 
                 emailLabel = new JLabel("Email:");
                 emailField = new JTextField(15);
@@ -106,7 +106,7 @@ public class SignUpGUI extends JFrame {
 
                 JPanel buttonPanel = new JPanel();
                 buttonPanel.add(signupButton);
-                buttonPanel.add(returnToMainMenuButton);
+                buttonPanel.add(loginButton);
 
                 signupFrame.add(textPanel, BorderLayout.CENTER);
                 signupFrame.add(buttonPanel, BorderLayout.SOUTH);
