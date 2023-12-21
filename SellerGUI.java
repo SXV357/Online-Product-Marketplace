@@ -178,8 +178,18 @@ public class SellerGUI extends JComponent {
                     if (orderLimit == null) {
                         return;
                     }
+                    String saleQuantity = JOptionPane.showInputDialog(null, "What is the quantity after which a sale will be applied for this product?",
+                            "Sale Quantity", JOptionPane.QUESTION_MESSAGE);
+                    if (saleQuantity == null) {
+                        return;
+                    }
+                    String salePrice = JOptionPane.showInputDialog(null, "What is the sale price of the product?",
+                            "Sale Price", JOptionPane.QUESTION_MESSAGE);
+                    if (salePrice == null) {
+                        return;
+                    }
                     Object[] createProductResult = sellerClient.createNewProduct(storeName, productName,
-                            availableQuantity, price, description, orderLimit);
+                            availableQuantity, price, description, orderLimit, saleQuantity, salePrice);
                     if (createProductResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, createProductResult[1],
                                 "Create Product", JOptionPane.INFORMATION_MESSAGE);

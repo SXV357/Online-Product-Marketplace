@@ -1,4 +1,4 @@
-Product Name,Available Quantity,Price,Description,Order Limit
-Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick,3
-Margherita Pizza,30,18.99,Classic pizza topped with fresh tomatoes mozzarella and basil,2
-Pasta,10,14.70,Napoli pasta,1
+Product Name,Available Quantity,Price,Description,Order Limit,Sale Quantity,Sale Price
+Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick,3,25,6.99
+Margherita Pizza,30,18.99,Classic pizza topped with fresh tomatoes mozzarella and basil,2,10,11.50
+Pasta,10,14.70,Napoli pasta,1,6,8.75

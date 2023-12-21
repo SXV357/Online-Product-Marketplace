@@ -22,7 +22,7 @@ public class Database {
     private final String usersDatabaseHeaders = "ID,Email,Password,Role";
     private final String storesDatabaseHeaders = "Store ID,Seller ID,Store Name,Number of Products";
     private final String productsDatabaseHeaders = "Seller ID,Store ID,Product ID,Store Name,Product Name," +
-            "Available Quantity,Price,Description,Order Limit,Reviews";
+            "Available Quantity,Price,Description,Order Limit,Reviews,Sale Quantity,Sale Price";
     private final String purchaseHistoryDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store "
             + "Name,Product Name,Purchase Quantity,Price";
     private final String shoppingCartDatabaseHeaders = "Customer ID,Seller ID,Store ID,Product ID,Store Name,"

@@ -1,5 +1,5 @@
-Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description,Order Limit,Reviews
-S1000001,ST1000000,PR1000000,Walmart,brownie,100,5.99,triple chocolate chip brownie,5,test_customer1@yahoo.com-simply amazing and would definitely buy again;test_customer@gmail.com-amazing once again!!;
-S1000001,ST1000000,PR1000001,Walmart,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick,3,[]
-S1000001,ST1000000,PR1000002,Walmart,Margherita Pizza,30,18.99,Classic pizza topped with fresh tomatoes mozzarella and basil,2,[]
-S1000001,ST1000000,PR1000003,Walmart,Pasta,10,14.70,Napoli pasta,1,[]
+Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description,Order Limit,Reviews,Sale Quantity,Sale Price
+S1000001,ST1000000,PR1000000,Walmart,lasagna,100,10.99,fresh home-baked lasagna,6,[],50,5.00
+S1000001,ST1000000,PR1000001,Walmart,Spicy Chicken Wings,50,12.99,Deliciously seasoned and crispy chicken wings with a spicy kick,3,[],25,6.99
+S1000001,ST1000000,PR1000002,Walmart,Margherita Pizza,30,18.99,Classic pizza topped with fresh tomatoes mozzarella and basil,2,[],10,11.50
+S1000001,ST1000000,PR1000003,Walmart,Pasta,10,14.70,Napoli pasta,1,[],6,8.75

@@ -107,10 +107,11 @@ public class Customer extends User {
             sb.append(prodInfo[7]).append(",");
             sb.append(prodInfo[8]).append(",");
             if (prodInfo[9].equals("[]")) {
-                sb.append("No Reviews");
+                sb.append("No Reviews").append(",");
             } else {
-                sb.append(prodInfo[9]);
+                sb.append(prodInfo[9]).append(",");
             }
+            sb.append(prodInfo[11]).append(","); // sale price
 
             return sb.toString();
         } catch (IndexOutOfBoundsException e) {
@@ -289,7 +290,14 @@ public class Customer extends User {
                 output.append(target[i]).append(",");
             }
             output.append(updatedQuant).append(",");
-            output.append(String.format("%.2f", Double.parseDouble(target[6]) * (double) updatedQuant));
+            double actualPrice = 0.0;
+            // check if the current quantity equals the sale quantity
+            if (Integer.parseInt(target[5]) <= Integer.parseInt(target[10])) {
+                actualPrice = Double.parseDouble(target[11]);
+            } else {
+                actualPrice = Double.parseDouble(target[6]);
+            }
+            output.append(String.format("%.2f", actualPrice * (double) updatedQuant));
 
             shoppingCart.add(output.toString());
             db.addToDatabase("shoppingCarts.csv", shoppingCart.get(shoppingCart.size() - 1));

@@ -204,11 +204,11 @@ public class SellerClient {
      * @return An object array in the form of ["SUCCESS", Success Message] or ["ERROR", Error Message]
      */
     public Object[] createNewProduct(String storeName, String productName, String availableQuantity,
-                                     String price, String description, String orderLimit) {
+                                     String price, String description, String orderLimit, String saleQuantity, String salePrice) {
         Object[] result;
         try {
             oos.writeObject(new String[]{"CREATE_NEW_PRODUCT", storeName, productName, availableQuantity,
-                                         price, description, orderLimit});
+                                         price, description, orderLimit, saleQuantity, salePrice});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {

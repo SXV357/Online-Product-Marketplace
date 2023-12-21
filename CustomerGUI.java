@@ -103,6 +103,7 @@ public class CustomerGUI extends JComponent {
                         String description = productInfo[4];
                         String orderLimit = productInfo[5];
                         String reviews = productInfo[6];
+                        String salePrice = productInfo[7];
                         String reviewDisplay = "";
                         if (reviews.length() == 10) {
                             reviewDisplay = reviews;
@@ -116,7 +117,7 @@ public class CustomerGUI extends JComponent {
                             reviewDisplay = info;
                         }
                         String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity:" +
-                                " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%nReviews: %s", storeName, productName, availableQuantity, price, description, orderLimit, reviewDisplay);
+                                " %s%nOriginal Price: %s%nDescription: %s%nOrder Limit: %s%nReviews: %s%nSale Price: %s", storeName, productName, availableQuantity, price, description, orderLimit, reviewDisplay, salePrice);
                         String[] options = {"Yes", "No"};
                         String addToCart = (String) JOptionPane.showInputDialog(null,
                                 "Would you like to add this item to your cart?\n\n" + info, "Add Item",
@@ -193,6 +194,7 @@ public class CustomerGUI extends JComponent {
                             String description = productInfo[4];
                             String orderLimit = productInfo[5];
                             String reviews = productInfo[6];
+                            String salePrice = productInfo[7];
                             String reviewDisplay = "";
                             if (reviews.length() == 10) {
                                 reviewDisplay = reviews;
@@ -206,7 +208,7 @@ public class CustomerGUI extends JComponent {
                                 reviewDisplay = info;
                             }
                             String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity:" +
-                                    " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%nReviews: %s", storeName, productName, availableQuantity, price, description, orderLimit, reviewDisplay);
+                                    " %s%nOriginal Price: %s%nDescription: %s%nOrder Limit: %s%nReviews: %s%nSale Price: %s", storeName, productName, availableQuantity, price, description, orderLimit, reviewDisplay, salePrice);
                             String[] options = {"Yes", "No"};
                             String addToCart = (String) JOptionPane.showInputDialog(null,
                                     "Would you like to add this item to your cart?\n\n" + info, "Add Item",
