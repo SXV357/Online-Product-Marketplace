@@ -333,6 +333,54 @@ public class SellerGUI extends JComponent {
                     }
                 }
 
+            } else if (e.getSource() == viewProductReviewsButton) {
+                Object[] getStoresResult = sellerClient.getStores();
+                // If this seller doesn't have any stores, display error message
+                if (getStoresResult[0].equals("ERROR")) { // Error
+                    String errorMessage = (String) getStoresResult[1];
+                    displayErrorDialog(errorMessage);
+                    return;
+                } else if (getStoresResult[0].equals("SUCCESS")) {
+                    ArrayList<String> storeNames = (ArrayList<String>) getStoresResult[1];
+                    String storeName = (String) JOptionPane.showInputDialog(null,
+                            "Which store contains the product you\'d like to view the review for?", "Stores",
+                            JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
+                    if (storeName == null) {
+                        return;
+                    }
+                    // Get the products associated with the selected store
+                    Object[] getProductsResult = sellerClient.getStoreProducts(storeName);
+                    if (getProductsResult[0].equals("ERROR")) {
+                        String errorMessage = (String) getProductsResult[1];
+                        displayErrorDialog(errorMessage);
+                        return;
+                    } else if (getProductsResult[0].equals("SUCCESS")) {
+                        ArrayList<String> productNames = (ArrayList<String>) getProductsResult[1];
+                        String productName = (String) JOptionPane.showInputDialog(null,
+                                "Which product\'s review would you like to view?", "Products",
+                                JOptionPane.QUESTION_MESSAGE, null, productNames.toArray(), productNames.get(0));
+                        if (productName == null) {
+                            return;
+                        }
+                        Object[] viewProductReviewResult = sellerClient.viewProductReviews(storeName, productName);
+                        if (viewProductReviewResult[0].equals("SUCCESS")) {
+                            HashMap<String, ArrayList<String>> productReviews =
+                            (HashMap<String, ArrayList<String>>) viewProductReviewResult[1];
+                            String info = "";
+                            for (String customerEmail : productReviews.keySet()) {
+                                info += customerEmail + "\n";
+                                for (String review : productReviews.get(customerEmail)) {
+                                    info += "\t" + review + "\n";
+                                }
+                            }
+                            JOptionPane.showMessageDialog(null, info, "Product Reviews",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            displayErrorDialog((String) viewProductReviewResult[1]);
+                        }
+                    }
+                }
+
             } else if (e.getSource() == viewCustomerShoppingCartsButton) {
                 Object[] getCustomerShoppingCartsResult = sellerClient.viewCustomerShoppingCarts();
                 if (getCustomerShoppingCartsResult[0].equals("ERROR")) {
@@ -346,7 +394,7 @@ public class SellerGUI extends JComponent {
                     for (String store : shoppingCarts.keySet()) {
                         info += store + "\n";
                         for (String saleInformation : shoppingCarts.get(store)) {
-                            info += saleInformation + "\n";
+                            info += "\t" + saleInformation + "\n";
                         }
                     }
                     JOptionPane.showMessageDialog(null, info, "Customer Shopping Carts",
@@ -366,7 +414,7 @@ public class SellerGUI extends JComponent {
                     for (String store : salesByStore.keySet()) {
                         info += store + "\n";
                         for (String saleInformation : salesByStore.get(store)) {
-                            info += saleInformation + "\n";
+                            info += "\t" + saleInformation + "\n";
                         }
                     }
                     JOptionPane.showMessageDialog(null, info, "Sales by Store",

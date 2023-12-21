@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Project 5 - Product.java
  * 

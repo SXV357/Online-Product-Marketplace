@@ -82,7 +82,13 @@ public class CustomerGUI extends JComponent {
                     if (productChoice == null) {
                         return;
                     }
-                    int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
+                    int productSelection = -1;
+                    for (int i = 0; i < modifiedProducts.length; i++) {
+                        if (modifiedProducts[i].equals(productChoice)) {
+                            productSelection = i;
+                            break;
+                        }
+                    }
                     Object[] incoming = customerClient.getProductInfo(productSelection);
 
                     if (incoming[0].equals("ERROR")) {
@@ -96,12 +102,24 @@ public class CustomerGUI extends JComponent {
                         String price = productInfo[3];
                         String description = productInfo[4];
                         String orderLimit = productInfo[5];
+                        String reviews = productInfo[6];
+                        String reviewDisplay = "";
+                        if (reviews.length() == 10) {
+                            reviewDisplay = reviews;
+                        } else {
+                            String info = "";
+                            info += "\n";
+                            String[] feedback = reviews.split(";");
+                            for (String review: feedback) {
+                                info += "\t" + review + "\n";
+                            }
+                            reviewDisplay = info;
+                        }
                         String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity:" +
-                                " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%n", storeName, productName,
-                                availableQuantity, price, description, orderLimit);
+                                " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%nReviews: %s", storeName, productName, availableQuantity, price, description, orderLimit, reviewDisplay);
                         String[] options = {"Yes", "No"};
                         String addToCart = (String) JOptionPane.showInputDialog(null,
-                                "Would you like to add this item to your cart?\n" + info, "Add Item",
+                                "Would you like to add this item to your cart?\n\n" + info, "Add Item",
                                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (addToCart == null || addToCart.equals("No")) {
@@ -136,16 +154,32 @@ public class CustomerGUI extends JComponent {
                         displayErrorDialog((String) searchProductsResult[1]);
                         return;
                     } else {
-                        String[] originalProducts = ((String) searchProductsResult[1]).split("\n");
-                        String[] modifiedProducts = Arrays.copyOfRange(originalProducts, 1,
+                        String[] originalProducts = ((String) viewAllProductsResult[1]).split("\n");
+                        String[] modifiedOriginalProducts = Arrays.copyOfRange(originalProducts, 1,
                                 originalProducts.length);
+
+                        for (int i = 0; i < modifiedOriginalProducts.length; i++) {
+                            modifiedOriginalProducts[i] = modifiedOriginalProducts[i].substring(3).trim();
+                        }
+
+                        String[] searchedProducts = ((String) searchProductsResult[1]).split("\n");
+                        String[] modifiedSearchedProducts = Arrays.copyOfRange(searchedProducts, 1,
+                                searchedProducts.length);   
+                        
                         String productChoice = (String) JOptionPane.showInputDialog(null,
                                 "Which product\'s details would you like to view?", "Products",
-                                JOptionPane.QUESTION_MESSAGE, null, modifiedProducts, modifiedProducts[0]);
+                                JOptionPane.QUESTION_MESSAGE, null, modifiedSearchedProducts, modifiedSearchedProducts[0]);
                         if (productChoice == null) {
                             return;
                         }
-                        int productSelection = Arrays.binarySearch(modifiedProducts, productChoice);
+                        int productSelection = -1;
+                        for (int j = 0; j < modifiedOriginalProducts.length; j++) {
+                            if (modifiedOriginalProducts[j].equals(productChoice.substring(3).trim())) {
+                                productSelection = j;
+                                break;
+                            }
+                        }
+                        // if there's only one search result, the index sent will always be 0
                         Object[] incoming = customerClient.getProductInfo(productSelection);
                         if (incoming[0].equals("ERROR")) {
                             displayErrorDialog((String) incoming[1]);
@@ -158,13 +192,25 @@ public class CustomerGUI extends JComponent {
                             String price = productInfo[3];
                             String description = productInfo[4];
                             String orderLimit = productInfo[5];
+                            String reviews = productInfo[6];
+                            String reviewDisplay = "";
+                            if (reviews.length() == 10) {
+                                reviewDisplay = reviews;
+                            } else {
+                                String info = "";
+                                info += "\n";
+                                String[] feedback = reviews.split(";");
+                                for (String review: feedback) {
+                                    info += "\t" + review + "\n";
+                                }
+                                reviewDisplay = info;
+                            }
                             String info = String.format("Store Name: %s%nProduct Name: %s%nAvailable Quantity:" +
-                                    " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%n", storeName, productName,
-                                    availableQuantity, price, description, orderLimit);
+                                    " %s%nPrice: %s%nDescription: %s%nOrder Limit: %s%nReviews: %s", storeName, productName, availableQuantity, price, description, orderLimit, reviewDisplay);
                             String[] options = {"Yes", "No"};
                             String addToCart = (String) JOptionPane.showInputDialog(null,
-                                "Would you like to add this item to your cart?\n" + info, "Add Item",
-                                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                                    "Would you like to add this item to your cart?\n\n" + info, "Add Item",
+                                    JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                             if (addToCart == null || addToCart.equals("No")) {
                                 return;
@@ -243,7 +289,13 @@ public class CustomerGUI extends JComponent {
                         return;
                     }
                     boolean ascending = orderChoice.equals("Ascending") ? true : false;
-                    int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
+                    int sortSelection = -1;
+                    for (int i = 0; i < sortChoices.length; i++) {
+                        if (sortChoices[i].equals(sortChoice)) {
+                            sortSelection = i;
+                            break;
+                        }
+                    }
                     Object[] storeDashboardResult = customerClient.customerGetStoresDashboard(sortSelection, ascending);
 
                     if (storeDashboardResult[0].equals("ERROR")) {
@@ -284,7 +336,13 @@ public class CustomerGUI extends JComponent {
                         return;
                     }
                     boolean ascending = orderChoice.equals("Ascending") ? true : false;
-                    int sortSelection = Arrays.binarySearch(sortChoices, sortChoice);
+                    int sortSelection = -1;
+                    for (int i = 0; i < sortChoices.length; i++) {
+                        if (sortChoices[i].equals(sortChoice)) {
+                            sortSelection = i;
+                            break;
+                        }
+                    }
                     Object[] purchasesDashboardResult =
                             customerClient.customerGetPersonalPurchasesDashboard(sortSelection, ascending);
 
@@ -317,9 +375,35 @@ public class CustomerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == returnItemButton) {
-                // TO DO
+                Object[] getPurchaseHistoryResult = customerClient.getShoppingHistory();
+                if (getPurchaseHistoryResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) getPurchaseHistoryResult[1]);
+                    return;
+                } else {
+                    String[] purchaseHistoryItems = ((String) getPurchaseHistoryResult[1]).split("\n");
+                    String[] modifiedHistory = Arrays.copyOfRange(purchaseHistoryItems, 1, purchaseHistoryItems.length);
+                    String itemChoice = (String) JOptionPane.showInputDialog(null,
+                            "Which item would you like to return?", "Return Item",
+                            JOptionPane.QUESTION_MESSAGE, null, modifiedHistory, modifiedHistory[0]);
+                    if (itemChoice == null) {
+                        return;
+                    }
+                    int itemSelection = -1;
+                    for (int i = 0; i < modifiedHistory.length; i++) {
+                        if (modifiedHistory[i].equals(itemChoice)) {
+                            itemSelection = i;
+                            break;
+                        }
+                    }
+                    Object[] returnItemResult = customerClient.returnItem(itemSelection);
+                    if (returnItemResult[0].equals("SUCCESS")) {
+                        JOptionPane.showMessageDialog(null, returnItemResult[1],
+                                "Remove from cart", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        displayErrorDialog((String) returnItemResult[1]);
+                    }
+                }
             } else if (e.getSource() == leaveReviewButton) {
-                // TO DO
                 Object[] getPurchaseHistoryResult = customerClient.getShoppingHistory();
                 if (getPurchaseHistoryResult[0].equals("ERROR")) {
                     displayErrorDialog((String) getPurchaseHistoryResult[1]);
@@ -337,7 +421,13 @@ public class CustomerGUI extends JComponent {
                     if (review == null) {
                         return;
                     }
-                    int itemSelection = Arrays.binarySearch(modifiedHistory, itemChoice);
+                    int itemSelection = -1;
+                    for (int i = 0; i < modifiedHistory.length; i++) {
+                        if (modifiedHistory[i].equals(itemChoice)) {
+                            itemSelection = i;
+                            break;
+                        }
+                    }
                     Object[] leaveReviewResult = customerClient.leaveReview(itemSelection, review);
                     if (leaveReviewResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, leaveReviewResult[1],
@@ -365,7 +455,13 @@ public class CustomerGUI extends JComponent {
                     if (removeQuantity == null) {
                         return;
                     }
-                    int itemSelection = Arrays.binarySearch(modifiedCart, itemChoice);
+                    int itemSelection = -1;
+                    for (int i = 0; i < modifiedCart.length; i++) {
+                        if (modifiedCart[i].equals(itemChoice)) {
+                            itemSelection = i;
+                            break;
+                        }
+                    }
                     Object[] removeFromCartResult = customerClient.removeFromCart(itemSelection, removeQuantity);
                     if (removeFromCartResult[0].equals("SUCCESS")) {
                         JOptionPane.showMessageDialog(null, removeFromCartResult[1],

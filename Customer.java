@@ -105,7 +105,12 @@ public class Customer extends User {
             sb.append(prodInfo[5]).append(",");
             sb.append(prodInfo[6]).append(",");
             sb.append(prodInfo[7]).append(",");
-            sb.append(prodInfo[8]);
+            sb.append(prodInfo[8]).append(",");
+            if (prodInfo[9].equals("[]")) {
+                sb.append("No Reviews");
+            } else {
+                sb.append(prodInfo[9]);
+            }
 
             return sb.toString();
         } catch (IndexOutOfBoundsException e) {
@@ -397,12 +402,25 @@ public class Customer extends User {
 
     }
 
-    public void returnItems(int index) {
+    public void returnItems(int index) throws CustomerException {
         // TO DO: can select only one item to return at a time
-        // Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
+        // PH: Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
+        // Products.csv: Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description,Order Limit,Reviews
         // Notes:
             // They can only return purchased items
             // They cannot choose how many of the item they want to return. The whole item and how many ever were purchases is taken into consideration
+        purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
+        if (purchasehistory.isEmpty()) {
+            throw new CustomerException("You haven\'t purchased any items yet!");
+        }
+        int purchasedQuantity = Integer.parseInt(purchasehistory.get(index).split(",")[6]);
+        String productName = purchasehistory.get(index).split(",")[5];
+        String matchedProductEntry = db.getMatchedEntries("products.csv", 4, productName).get(0);
+        String[] matchedProductContents = matchedProductEntry.split(",");
+        int newQuantity = Integer.parseInt(matchedProductContents[5]) + purchasedQuantity;
+        matchedProductContents[5] = String.valueOf(newQuantity);
+        db.modifyDatabase("products.csv", matchedProductEntry, String.join(",", matchedProductContents));
+        db.removeFromDatabase("purchaseHistories.csv", purchasehistory.get(index));
     }
 
     public void leaveReview(int index, String review) throws CustomerException {
@@ -510,7 +528,7 @@ public class Customer extends User {
         ArrayList<String> productsFound = new ArrayList<>();
         for (String product : db.getDatabaseContents("products.csv")) {
             String[] productEntry = product.split(",");
-            productEntry = Arrays.copyOfRange(productEntry, 3, productEntry.length);
+            productEntry = Arrays.copyOfRange(productEntry, 3, productEntry.length - 1);
             String queryLine = String.join(",", productEntry);
             if (queryLine.toLowerCase().contains(query.toLowerCase())) {
                 productsFound.add(product);

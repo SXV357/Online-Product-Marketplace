@@ -119,6 +119,10 @@ public class ServerThread extends Thread {
                                     c.leaveReview(Integer.parseInt(response[1]), response[2]);
                                     output = "Review uploaded successfully";
                                 }
+                                case "RETURN_ITEM" -> {
+                                    c.returnItems(Integer.parseInt(response[1]));
+                                    output = "Item returned successfully!";
+                                }
                                 // View Cart
                                 case "GET_CART" -> output = c.getCart();
                                 // View Shopping History
@@ -247,6 +251,8 @@ public class ServerThread extends Thread {
                                     s.importProducts(response[1], response[2]);
                                     output = "Successfully imported products.";
                                 }
+                                // View product reviews
+                                case "VIEW_PRODUCT_REVIEWS" -> output = s.viewProductReviews(response[1], response[2]);
                                 // View Customer Shopping Cart
                                 case "VIEW_CUSTOMER_SHOPPING_CARTS" -> output = s.viewCustomerShoppingCarts();
                                 // View Sales by Store

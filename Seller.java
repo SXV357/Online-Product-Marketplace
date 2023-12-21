@@ -647,8 +647,28 @@ public class Seller extends User {
         }
     }
 
-    public void viewProductReviews(String storeName) {
-        // TO DO
+    public HashMap<String, ArrayList<String>> viewProductReviews(String storeName, String productName) throws SellerException {
+        HashMap<String, ArrayList<String>> productReviews = new HashMap<>();
+        ArrayList<String> matchedStoreEntries = db.getMatchedEntries("products.csv", 3, storeName);
+        for (String storeEntry: matchedStoreEntries) {
+            String[] entry = storeEntry.split(",");
+            if (entry[4].equals(productName)) {
+                if (entry[9].equals("[]")) {
+                    throw new SellerException("This product hasn\'t been purchased yet and thus doesn\'t have any reviews!");
+                } else {
+                    String[] reviews = entry[9].split(";");
+                    for (String review: reviews) {
+                        String customer = review.substring(0, review.indexOf("-"));
+                        String feedback = review.substring(review.indexOf("-") + 1);
+                        if (!productReviews.containsKey(customer)) {
+                            productReviews.put(customer, new ArrayList<String>());
+                        }
+                        productReviews.get(customer).add(feedback);
+                    }
+                }
+            }
+        }
+        return productReviews;
     }
 
     /**

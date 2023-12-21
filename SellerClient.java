@@ -334,6 +334,18 @@ public class SellerClient {
         return result;
     }
 
+    public Object[] viewProductReviews(String storeName, String productName) {
+        Object[] result;
+        try {
+            oos.writeObject(new String[]{"VIEW_PRODUCT_REVIEWS", storeName, productName});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
     /**
      * Makes a call to the server to fetch the customers dashboard and retrieves the result of the operation to be
      * sent back to the SellerGUI.

@@ -259,6 +259,18 @@ public class CustomerClient {
         return result;
     }
 
+    public Object[] returnItem(int index) {
+        Object[] result;
+        try {
+            oos.writeObject(new String[]{"RETURN_ITEM", String.valueOf(index)});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
     /**
      * Makes a call to the server to purchase all the items in the current customer's shopping cart and retrieves the
      * result of the operation to be sent back to the CustomerGUI.
