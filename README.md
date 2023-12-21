@@ -1,8 +1,7 @@
 # CS-180-Project5 - Online Product Marketplace
 
 # Instructions
-From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it. To run multiple instances of the program, keep one Server.java instance running and run multiple instances of InitialClient.java
-To access the main application, you will either need to create a new account or log into an existing account, which will then redirect you to the corresponding page from where you can take a variety of actions.
+From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it. To run multiple instances of the program, keep one Server.java instance running and run multiple instances of InitialClient.java. To access the main application, you will first need to enter the host to connect to, whether it is another device or local to the computer. Then you will need to create a new account or log into an existing account, which will then redirect you to the corresponding page from where you can take a variety of actions.
 
 # Project Submission Details
 
@@ -16,7 +15,7 @@ Presentation - Submitted by Nathan Miller
 
 Detailed testing information can be found in Tests.md in the project root directory. The test cases written for the major classes in Project 4 can be located in the PJ4 Testing directory, but commenting out the classes and running them will throw errors since several major refactors took place in the classes for which the tests were written, such as modifying return types, parameters, and even making it such that they're all throwing custom exceptions and the tests were previously not designed to handle those new changes since they hadn't been made previously. However, proper testing has been done application-wide to verify that all customer and seller-related behaviors are working as expected.
 
-NOTE: A limitation of this application is that it allows the same user to be logged in on two separate or multiple clients. As such, when choosing to delete the account from one of the clients, it doesn't affect the other one, similarly with signing out. The other client will remain unaffected by the changes from a visual perspective, but may crash if certain actions are taken, which holds true only if the account was deleted. On the same note, when choosing to edit email and the operation going through successfully, the email is not updated right away on the home page because of how real-time updates haven't been enabled for the application. Viewing the new change will require logging out and logging back in with the new credentials to view the new email. These are fixes that will be implemented in the near future in order to ensure a better user experience.
+NOTE: A limitation of this application is that it allows the same user to be logged in on two separate or multiple clients. As such, when choosing to delete the account from one of the clients, it doesn't affect the other one, similarly with signing out. The other client will remain unaffected by the changes from a visual perspective, but may crash if certain actions are taken, which holds true only if the account was deleted.
 
 # Class Information
 
@@ -83,12 +82,6 @@ The interface associated with user signup.
 - Includes a button that the user can select to return back to the main menu
 
 Relationship to other classes: Interacts with the InitialClient class to handle users creating a new customer account or seller account.
-
-## UserGUI
-The interface associated with allowing users to either create an account or log into an existing account
-- Constructs the GUI containing two buttons, one for allowing the user to create a new account, and one for allowing the user to log in with an existing account
-
-Relationship to other classes: This GUI is invoked through InitialClient when the user launches the application and is linked to the SignUpGUI and LoginGUI classes since the user can choose to go back to this GUI from either menu.
 
 ## Server
 Class that handles server host and port connection and thread allocation.
