@@ -36,8 +36,9 @@ public class Product {
         this.availableQuantity = availableQuantity;
         this.price = price;
         this.description = description;
-        this.orderLimit = orderLimit;
+        this.orderLimit = orderLimit; // Maybe make this optional later
         this.reviews = "[]";
+        // Optional: If the seller doesn't wish to hold a sale, they must enter 0 for both fields
         this.saleQuantity = saleQuantity;
         this.salePrice = salePrice;
     }

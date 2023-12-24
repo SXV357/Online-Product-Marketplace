@@ -38,6 +38,8 @@ public class CustomerGUI extends JComponent {
     private JButton checkoutItemsButton;
     private JButton returnItemButton;
     private JButton leaveReviewButton;
+    private JButton modifyReviewButton;
+    private JButton deleteReviewButton;
     private JButton removeItemFromShoppingCartButton;
     private JButton viewPurchaseHistoryButton;
     private JButton viewShoppingCartButton;
@@ -439,6 +441,86 @@ public class CustomerGUI extends JComponent {
                     }
                 }
 
+            } else if (e.getSource() == modifyReviewButton) {
+                // TO DO
+                Object[] getPurchaseHistoryResult = customerClient.getShoppingHistory();
+                if (getPurchaseHistoryResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) getPurchaseHistoryResult[1]);
+                    return;
+                } else {
+                    Object[] getReviewsResult = customerClient.fetchReviews();
+                    if (getReviewsResult[0].equals("SUCCESS")) {
+                        ArrayList<String> reviews = (ArrayList<String>) getReviewsResult[1];
+                        String itemChoice = (String) JOptionPane.showInputDialog(null,
+                            "Which review would you like to edit", "Edit Review",
+                            JOptionPane.QUESTION_MESSAGE, null, reviews.toArray(), reviews.get(0));
+                        int itemSelection = -1;
+                        for (int i = 0; i < reviews.size(); i++) {
+                            if (itemChoice.equals(reviews.get(i))) {
+                                itemSelection = i;
+                                break;
+                            }
+                        }
+                        if (itemSelection == 0) {
+                            displayErrorDialog("Invalid selection. Please try again");
+                            return;
+                        } else {
+                            itemSelection--;
+                            String modifiedReview = JOptionPane.showInputDialog(null,
+                            "What is the new review?", "Modified Review",
+                            JOptionPane.QUESTION_MESSAGE);
+                            Object[] editReviewResult = customerClient.editReview(itemSelection, modifiedReview);
+                            if (editReviewResult[0].equals("SUCCESS")) {
+                                JOptionPane.showMessageDialog(null, editReviewResult[1], "Edit Review", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                displayErrorDialog((String) editReviewResult[1]);
+                            }
+                        }
+                    } else {
+                        displayErrorDialog((String) getReviewsResult[1]);
+                    }
+                }
+
+
+            } else if (e.getSource() == deleteReviewButton) {
+                // TO DO
+                Object[] getPurchaseHistoryResult = customerClient.getShoppingHistory();
+                if (getPurchaseHistoryResult[0].equals("ERROR")) {
+                    displayErrorDialog((String) getPurchaseHistoryResult[1]);
+                    return;
+                } else {
+                    Object[] getReviewsResult = customerClient.fetchReviews();
+                    if (getReviewsResult[0].equals("SUCCESS")) {
+                        ArrayList<String> reviews = (ArrayList<String>) getReviewsResult[1];
+                        String itemChoice = (String) JOptionPane.showInputDialog(null,
+                            "Which review would you like to delete", "Delete Review",
+                            JOptionPane.QUESTION_MESSAGE, null, reviews.toArray(), reviews.get(0));
+                        int itemSelection = -1;
+                        for (int i = 0; i < reviews.size(); i++) {
+                            if (itemChoice.equals(reviews.get(i))) {
+                                itemSelection = i;
+                                break;
+                            }
+                        }
+                        if (itemSelection == 0) {
+                            displayErrorDialog("Invalid selection. Please try again");
+                            return;
+                        } else {
+                            itemSelection--;
+                            Object[] deleteReviewResult = customerClient.deleteReview(itemSelection);
+                            if (deleteReviewResult[0].equals("SUCCESS")) {
+                                JOptionPane.showMessageDialog(null, deleteReviewResult[1], "Delete Review", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                displayErrorDialog((String) deleteReviewResult[1]);
+                            }
+                        }
+                        
+                    } else {
+                        displayErrorDialog((String) getReviewsResult[1]);
+                    }
+                }
+
+
             } else if (e.getSource() == removeItemFromShoppingCartButton) {
                 Object[] getShoppingCartResult = customerClient.getCart();
                 if (getShoppingCartResult[0].equals("ERROR")) {
@@ -594,8 +676,14 @@ public class CustomerGUI extends JComponent {
         returnItemButton = new JButton("Return An Item");
         returnItemButton.addActionListener(actionListener);
 
-        leaveReviewButton = new JButton("Leave A Review");
+        leaveReviewButton = new JButton("Add Review");
         leaveReviewButton.addActionListener(actionListener);
+
+        modifyReviewButton = new JButton("Modify Review");
+        modifyReviewButton.addActionListener(actionListener);
+
+        deleteReviewButton = new JButton("Delete Review");
+        deleteReviewButton.addActionListener(actionListener);
 
         removeItemFromShoppingCartButton = new JButton("Remove Item From Shopping Cart");
         removeItemFromShoppingCartButton.addActionListener(actionListener);
@@ -623,6 +711,8 @@ public class CustomerGUI extends JComponent {
         buttonPanel.add(checkoutItemsButton);
         buttonPanel.add(returnItemButton);
         buttonPanel.add(leaveReviewButton);
+        buttonPanel.add(modifyReviewButton);
+        buttonPanel.add(deleteReviewButton);
         buttonPanel.add(removeItemFromShoppingCartButton);
         buttonPanel.add(editEmailButton);
         buttonPanel.add(editPasswordButton);

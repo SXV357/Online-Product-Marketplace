@@ -260,13 +260,15 @@ public class Seller extends User {
      * @param availableQuantity  The number of products going on sale
      * @param price              The price of the product
      * @param productDescription A description associated with the product
+     * @param orderLimit         The amount of this item that customers are restricted to adding to their cart
+     * @param saleQuantity       The quantity of this item after which a sale will be applied
+     * @param salePrice          The sale price of the product once a given number of this item are sold
      * @return An indication of whether the product was succcessfully added to the
      * selected store or not.
      * @throws SellerException
      */
     public void createNewProduct(String storeName, String productName, String availableQuantity, String price,
                                  String productDescription, String orderLimit, String saleQuantity, String salePrice) throws SellerException {
-        // TO DO: the sale price for the item is also specified which is based on how many of that item are sold
         try {
             if (productName == null || productName.isEmpty() || productName.isBlank()) {
                 throw new SellerException("Unable to add product. The product name cannot be null, blank, or empty");
@@ -319,18 +321,28 @@ public class Seller extends User {
             }
             if (quantity < 0 || productPrice < 0 || limit < 0 || saleQty < 0 || saleAmount < 0) {
                 throw new SellerException("Unable to add product. Make sure that the available quantity, price, order limit, sale quantity, and sale amount are all positive.");
+            } else if (saleQty == 0 && saleAmount > 0) {
+                throw new SellerException("A sale cannot be applied once this item is out of stock!");
+            } else if (saleQty > 0 && saleAmount >= productPrice) {
+                throw new SellerException("The sale price has to be lesser than the original price provided");
+            } else if (saleQty > 0 && saleAmount == 0) {
+                throw new SellerException("A sale price must be provided since a quantity after which sales will be applied was specified");
+            } else if (saleQty > 0 && saleQty > quantity) {
+                throw new SellerException("The sale quantity cannot be greater than the available quantity");
             }
             String matchedStoreEntry = db.getMatchedEntries("stores.csv", 2, storeName).get(0);
 
-            // To ensure that the seller doesn't try adding a product with the same name in
-            // one of their existing stores
+            // Seller can't add product with same name as an existing one in the given store
             ArrayList<String> matchedProducts = db.getMatchedEntries("products.csv", 3, storeName);
-            for (int i = 0; i < matchedProducts.size(); i++) {
-                String[] productEntry = matchedProducts.get(i).split(",");
-                if (productEntry[4].equals(productName)) {
-                    throw new SellerException(
-                            "Unable to add product. The name of this product is already associated with an existing" +
-                                    " product in the given store");
+            if (matchedProducts.isEmpty()) {
+                // Handle case where a product is being added for the first time(Non-manually)
+            } else {
+                for (int i = 0; i < matchedProducts.size(); i++) {
+                    String[] productEntry = matchedProducts.get(i).split(",");
+                    if (productEntry[4].equals(productName)) {
+                        throw new SellerException(
+                                "Unable to add product. The name of this product is already associated with an existing product in the given store");
+                    }
                 }
             }
 
@@ -443,11 +455,49 @@ public class Seller extends User {
                                 productRep[8] = String.valueOf(newLimit);
 
                             }
-                            case "sale quantity" -> {
-
+                            case "sale quantity" -> { // 10
+                                int currentQuantity = Integer.parseInt(productRep[5]);
+                                int newSaleQuantity;
+                                try {
+                                    newSaleQuantity = Integer.parseInt(newValue);
+                                } catch (NumberFormatException e) {
+                                    throw new SellerException("The new sale quantity must be an integer");
+                                } 
+                                if (newSaleQuantity < 0) {
+                                    throw new SellerException("The new sale quantity cannot be negative");
+                                } else if (newSaleQuantity > currentQuantity) {
+                                    throw new SellerException("The new sale quantity cannot be greater than the available quantity");
+                                }
+                                productRep[10] = String.valueOf(newSaleQuantity);
+                                // restrictions:
+                                    // the sale quantity cannot be negative
+                                    // the sale quantity cannot be greater than the available quantity
                             }
-                            case "sale price" -> {
-
+                            case "sale price" -> { // 11
+                                int originalPrice = Integer.parseInt(productRep[6]);
+                                int currentSaleQuantity = Integer.parseInt(productRep[10]);
+                                int newSalePrice;
+                                try {
+                                    newSalePrice = Integer.parseInt(newValue);
+                                } catch (NumberFormatException e) {
+                                    throw new SellerException("The new sale price must be an integer");
+                                }
+                                if (newSalePrice < 0) {
+                                    throw new SellerException("The new sale price cannot be negative");
+                                } else if (currentSaleQuantity == 0 && newSalePrice > 0) {
+                                    throw new SellerException("A sale cannot be applied once this product is out of stock");
+                                } else if (currentSaleQuantity > 0) {
+                                    if (newSalePrice >= originalPrice) {
+                                        throw new SellerException("The new sale price must be less than the original price");
+                                    } else if (newSalePrice == 0) {
+                                        throw new SellerException("A sale price must be provided since a sale quantity was specified");
+                                    }
+                                }
+                                productRep[11] = String.valueOf(newSalePrice);
+                                // restrictions
+                                    // if sale qty is 0, then sale price cannot be greater than 0
+                                    // if sale qty > 0, then sale price has to be less than current price
+                                    // if sale qty > 0, then sale price cannot be 0
                             }
                         }
                         db.modifyDatabase("products.csv", productMatches.get(i), String.join(",",
@@ -479,7 +529,7 @@ public class Seller extends User {
                     storeName);
             // If the store exists but it doesn't contain any products
             if (matchedProductsForGivenStore.isEmpty()) {
-                throw new SellerException("Unable to delete product. This store doesn\'t contain any products.");
+                throw new SellerException("Unable to delete product. This store doesn\'t contain any products");
             }
             for (int i = 0; i < matchedProductsForGivenStore.size(); i++) {
                 String[] productEntry = matchedProductsForGivenStore.get(i).split(",");
@@ -625,10 +675,10 @@ public class Seller extends User {
                 File output = new File(targetDir, storeName + ".csv");
                 if (!output.exists()) {
                     output.createNewFile();
-                    writeToExportedHistory(output, matchedProducts);
+                    writeToExportedProducts(output, matchedProducts);
                 } else {
                     File existing = new File(targetDir, storeName + ".csv");
-                    writeToExportedHistory(existing, matchedProducts);
+                    writeToExportedProducts(existing, matchedProducts);
                 }
             } else {
                 throw new SellerException("Unable to export products. This store doesn\'t contain any products");
@@ -645,9 +695,9 @@ public class Seller extends User {
      * @param matchedPurchaseHistoryEntries The products in a store associated with the seller
      * @throws CustomerException
      */
-    public void writeToExportedHistory(File output, ArrayList<String> matchedProducts) throws CustomerException {
+    public void writeToExportedProducts(File output, ArrayList<String> matchedProducts) throws CustomerException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(output, false))) {
-            String headers = "Seller ID,Store ID,Product ID,Product Name,Available Quantity,Price,Description";
+            String headers = "Seller ID,Store ID,Product ID,Store Name,Product Name,Available Quantity,Price,Description,Order Limit,Reviews,Sale Quantity,Sale Price";
             bw.write(headers + "\n");
             for (int i = 0; i < matchedProducts.size(); i++) {
                 String[] productEntry = matchedProducts.get(i).split(",");
@@ -655,11 +705,14 @@ public class Seller extends User {
                 String storeID = productEntry[1];
                 String productID = productEntry[2];
                 String productName = productEntry[4];
-                int availableQuantity = Integer.parseInt(productEntry[5]);
-                double price = Double.parseDouble(productEntry[6]);
+                String availableQuantity = productEntry[5];
+                String price = productEntry[6];
                 String description = productEntry[7];
-                String formattedProduct = String.format("%s,%s,%s,%s,%d,%.2f,%s", sellerID, storeID, productID,
-                                productName, availableQuantity, price, description);
+                String orderLimit = productEntry[8];
+                String reviews = productEntry[9];
+                String saleQuantity = productEntry[10];
+                String salePrice = productEntry[11];
+                String formattedProduct = String.format("%s,%s,%s,%s,%s,%.2f,%s,%s,%s,%s,%.2f", sellerID, storeID, productID, productName, availableQuantity, price, description, orderLimit, reviews, saleQuantity, salePrice);
                 bw.write(formattedProduct + "\n");
             }
         } catch (IOException e) {

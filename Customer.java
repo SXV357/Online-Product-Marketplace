@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Project 5 - Customer.java
@@ -257,7 +258,7 @@ public class Customer extends User {
         try {
             ArrayList<String> products = db.getDatabaseContents("products.csv");
             // get the product with that index in the products.csv file
-            String[] target = db.getMatchedEntries("products.csv", 2, products.get(index).split(",")[2]).get(0).split(",");
+            String[] target = products.get(index).split(",");
 
             int quantity;
             try {
@@ -269,8 +270,14 @@ public class Customer extends User {
                 throw new CustomerException("The quantity selected must be greater than 0");
             } else if (Integer.parseInt(target[5]) < quantity) {
                 throw new CustomerException("There are only " + Integer.parseInt(target[5]) + " of this item for sale!");
-            } else if (quantity > Integer.parseInt(target[8])) {
-                throw new CustomerException("At a time, you can only add " + Integer.parseInt(target[8]) + " of this item to your cart");
+            }
+            int orderLimit = Integer.parseInt(target[8]);
+            if (orderLimit == 0) {
+                // This is a possibility
+            } else if (orderLimit > 0) {
+                if (quantity > orderLimit) {
+                    throw new CustomerException("At a time, you can only add " + Integer.parseInt(target[8]) + " of this item to your cart");
+                }
             }
 
             shoppingCart = db.getMatchedEntries("shoppingCarts.csv", 0, getUserID());
@@ -278,24 +285,28 @@ public class Customer extends User {
             int updatedQuant = quantity;
             output.append(getUserID()).append(",");
             // if they're adding more of the same item to their cart(quantity is just updated)
-            for (String item : shoppingCart) {
+            Iterator<String> iterator = shoppingCart.iterator();
+            while (iterator.hasNext()) {
+                String item = iterator.next();
                 if (item.contains(target[2])) {
                     updatedQuant = Integer.parseInt(item.split(",")[6]) + quantity;
                     db.removeFromDatabase("shoppingCarts.csv", item);
-                    shoppingCart.remove(item);
+                    iterator.remove();
                     break;
                 }
             }
+
             for (int i = 0; i < 5; i++) {
                 output.append(target[i]).append(",");
             }
             output.append(updatedQuant).append(",");
-            double actualPrice = 0.0;
+            double actualPrice = Double.parseDouble(target[6]);
+
             // check if the current quantity equals the sale quantity
-            if (Integer.parseInt(target[5]) <= Integer.parseInt(target[10])) {
+            int saleQty = Integer.parseInt(target[10]);
+            if (saleQty > 0 && Integer.parseInt(target[5]) <= saleQty) {
                 actualPrice = Double.parseDouble(target[11]);
-            } else {
-                actualPrice = Double.parseDouble(target[6]);
+                System.out.println("Sale Price Applied: " + actualPrice);
             }
             output.append(String.format("%.2f", actualPrice * (double) updatedQuant));
 
@@ -431,7 +442,7 @@ public class Customer extends User {
         db.removeFromDatabase("purchaseHistories.csv", purchasehistory.get(index));
     }
 
-    public void leaveReview(int index, String review) throws CustomerException {
+    public void addReview(int index, String review) throws CustomerException {
         // TO DO: can select only one product to leave a review for at a time
         // Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
         // Notes:
@@ -444,9 +455,6 @@ public class Customer extends User {
             throw new CustomerException("The review cannot contain any commas!");
         }
         purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
-        if (purchasehistory.isEmpty()) {
-            throw new CustomerException("You haven\'t purchased items from any stores yet!");
-        }
         String productName = purchasehistory.get(index).split(",")[5];
         String matchedProductEntry = db.getMatchedEntries("products.csv", 4, productName).get(0);
         String[] matchedProductContents = matchedProductEntry.split(",");
@@ -458,17 +466,97 @@ public class Customer extends User {
             matchedProductContents[9] = newReview;
             db.modifyDatabase("products.csv", matchedProductEntry, String.join(",", matchedProductContents));
         } else {
-            // It already contains reviews so just add to the end of the string
-            String[] reviews = matchedProductContents[9].split(";"); // one item is as such: email-review
-            for (String r: reviews) {
-                String feedback = r.substring(r.indexOf("-") + 1);
-                if (feedback.toLowerCase().equals(review)) {
-                    throw new CustomerException("Duplicate reviews are not allowed");
-                }
-            } 
-            matchedProductContents[9] += getEmail() + "-" + review + ";";
+            matchedProductContents[9] += (getEmail() + "-" + review + ";");
             db.modifyDatabase("products.csv", matchedProductEntry, String.join(",", matchedProductContents));
         }
+    }
+
+    // fetches all the reviews provided by this customer
+    public ArrayList<String> fetchReviews() throws CustomerException {
+        ArrayList<String> reviewsProvided = new ArrayList<>();
+        reviewsProvided.add("Store Name-Product Name-Review");
+        purchasehistory = db.getMatchedEntries("purchaseHistories.csv", 0, getUserID());
+        for (int i = 0; i < purchasehistory.size(); i++) {
+            String productName = purchasehistory.get(i).split(",")[5];
+            String matchedProductEntry = db.getMatchedEntries("products.csv", 4, productName).get(0);
+            String reviews = matchedProductEntry.split(",")[9];
+            if (reviews.equals("[]")) {
+                continue;
+            } else {
+                String[] reviewContents = reviews.split(";");
+                for (int j = 0; j < reviewContents.length; j++) {
+                    String review = reviewContents[j];
+                    if (review.substring(0, review.indexOf("-")).equals(getEmail())) {
+                        // storeName-productName-review
+                        reviewsProvided.add(matchedProductEntry.split(",")[3] + "-" + matchedProductEntry.split(",")[4] + "-" + review.substring(review.indexOf("-") + 1));
+                    }
+                }
+            }
+        }
+        return reviewsProvided;
+    }
+
+    // format: email-review;email-review ...
+    public void modifyReview(int index, String modifiedReview) throws CustomerException {
+        if (modifiedReview.isBlank() || modifiedReview.isEmpty()) {
+            throw new CustomerException("The modified review cannot be blank or empty");
+        } else if (modifiedReview.contains(",")) {
+            throw new CustomerException("The modified review cannot contain any commas");
+        }
+        ArrayList<String> allReviews = fetchReviews();
+        String[] reviewToEdit = allReviews.get(index).split("-"); // storeName-productName-review
+        String productEntry = db.getMatchedEntries("products.csv", 4, reviewToEdit[1]).get(0);
+        String[] productEntryContents = productEntry.split(",");
+        String[] reviews = productEntryContents[9].split(";");
+
+        for (int i = 0; i < reviews.length; i++) { // email-review;email-review;email-review
+            String[] currReview = reviews[i].split("-");
+            if (currReview[1].equals(reviewToEdit[2])) {
+                currReview[1] = modifiedReview;
+                reviews[i] = String.join("-", currReview);
+                if (reviews.length == 1) {
+                    productEntryContents[9] = reviews[0] + ";";
+                } else if (reviews.length > 1) {
+                    productEntryContents[9] = String.join(";", reviews);
+                }
+                db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
+                break;
+            }
+        }
+
+    }
+
+    public void deleteReview(int index) throws CustomerException {
+        ArrayList<String> allReviews = fetchReviews();
+        String[] reviewToDelete = allReviews.get(index).split("-"); // storeName-productName-review
+        String productEntry = db.getMatchedEntries("products.csv", 4, reviewToDelete[1]).get(0);
+        String[] productEntryContents = productEntry.split(",");
+        String[] reviews = productEntryContents[9].split(";");
+        // reviews: [email-review, email-review, email-review]
+        for (int i = 0; i < reviews.length; i++) { // email-review;email-review;email-review
+            String[] currReview = reviews[i].split("-");
+            if (currReview[1].equals(reviewToDelete[2])) {
+                if (i == 0) {
+                    String[] modifiedArr = Arrays.copyOfRange(reviews, 1, reviews.length);
+                    if (modifiedArr.length == 1) {
+                        productEntryContents[9] = modifiedArr[0] + ";";
+                    } else if (modifiedArr.length > 1) {
+                        productEntryContents[9] = String.join(";", modifiedArr);
+                    }
+                    db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
+                    break;
+                } else {
+                    String[] prevContents = Arrays.copyOfRange(reviews, 0, i);
+                    String[] remainingContents = Arrays.copyOfRange(reviews, i + 1, reviews.length);
+                    String[] res = new String[prevContents.length + remainingContents.length];
+                    System.arraycopy(prevContents, 0, res, 0, prevContents.length);
+                    System.arraycopy(remainingContents, 0, res, prevContents.length, remainingContents.length);
+                    productEntryContents[9] = String.join(";", res);
+                    db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
+                    break;
+                }
+            }
+        }        
     }
 
     /**
@@ -536,7 +624,8 @@ public class Customer extends User {
         ArrayList<String> productsFound = new ArrayList<>();
         for (String product : db.getDatabaseContents("products.csv")) {
             String[] productEntry = product.split(",");
-            productEntry = Arrays.copyOfRange(productEntry, 3, productEntry.length - 1);
+            // They can search by store name, product name, quantity, price, and description ONLY
+            productEntry = Arrays.copyOfRange(productEntry, 3, 8);
             String queryLine = String.join(",", productEntry);
             if (queryLine.toLowerCase().contains(query.toLowerCase())) {
                 productsFound.add(product);

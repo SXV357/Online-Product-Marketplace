@@ -83,6 +83,26 @@ public class InitialClient {
         });
     }
 
+    public void resetPassword(String email, String password) {
+        try {
+            String[] request = {"RESET_PASSWORD", email, password};
+            oos.writeObject(request);
+            oos.flush();
+
+            String response = (String) ois.readObject();
+            if (response.equals("Password reset successfully!")) {
+                JOptionPane.showMessageDialog(null, response, "Password Reset", JOptionPane.INFORMATION_MESSAGE);
+                new LoginGUI(this);
+            } else {
+                new ErrorMessageGUI(response);
+                new LoginGUI(this);
+            }
+
+        } catch (Exception e) {
+            new ErrorMessageGUI(serverErrorMsg);
+        }
+    }
+
     /**
      * Handles communication with the server for a logging an existing user back into the application
      * 
