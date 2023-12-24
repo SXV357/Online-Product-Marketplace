@@ -1,3 +1,3 @@
 ID,Email,Password,Role
 C1000000,test_customer@gmail.com,test,CUSTOMER
-S1000001,test_seller@gmail.com,test,SELLER
+S1000001,test_seller@gmail.com,blabla,SELLER

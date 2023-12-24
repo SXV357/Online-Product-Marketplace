@@ -172,6 +172,22 @@ public class User {
         db.modifyDatabase("users.csv", prevUserString, this.toString());
     }
 
+    public void resetPassword(String email, String newPassword) throws Exception {
+        if (checkDuplicateEmail(email)) { // The email is existent
+            String oldEntry = db.retrieveUserMatchForSignUp(email);
+            String[] prevComponents = oldEntry.split(",");
+            if (newPassword == null || newPassword.isBlank() || newPassword.isEmpty()) {
+                throw new Exception("The new password cannot be null, blank or empty!");
+            } else if (newPassword.contains(",")) {
+                throw new Exception("New password cannot contain commas.");
+            }
+            prevComponents[2] = newPassword;
+            db.modifyDatabase("users.csv", oldEntry, String.join(",", prevComponents));
+        } else {
+            throw new Exception("You cannot reset the password for a non-existent email");
+        }
+    }
+
     /**
      * Takes in the user's email and returns whether it is associated with an existing user
      *

@@ -247,10 +247,46 @@ public class CustomerClient {
         return result;
     }
 
+    public Object[] fetchReviews() {
+        Object[] result;
+        try {
+            oos.writeObject(new String[]{"FETCH_REVIEWS"});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
     public Object[] leaveReview(int index, String review) {
         Object[] result;
         try {
             oos.writeObject(new String[]{"LEAVE_REVIEW", String.valueOf(index), review});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
+    public Object[] editReview(int index, String modifiedReview) {
+        Object[] result;
+        try {
+            oos.writeObject(new String[]{"EDIT_REVIEW", String.valueOf(index), modifiedReview});
+            oos.flush();
+            result = (Object[]) ois.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
+    public Object[] deleteReview(int index) {
+        Object[] result;
+        try {
+            oos.writeObject(new String[]{"DELETE_REVIEW", String.valueOf(index)});
             oos.flush();
             result = (Object[]) ois.readObject();
         } catch (Exception e) {

@@ -85,6 +85,17 @@ public class ServerThread extends Thread {
                             oos.flush();
                         }
                     }
+                    // Reset password
+                    case "RESET_PASSWORD" -> {
+                        try {
+                            u.resetPassword(userInfo[1], userInfo[2]);
+                            oos.writeObject("Password reset successfully!");
+                            oos.flush();
+                        } catch (Exception e) {
+                            oos.writeObject(e.getMessage());
+                            oos.flush();
+                        }
+                    }
                     default -> oos.writeObject("ERROR");
                 }
                 // Handle communication with the customer client
@@ -103,6 +114,8 @@ public class ServerThread extends Thread {
                                 case "FETCH_ALL_STORES" -> output = c.fetchAllStores();
                                 // View All Products
                                 case "GET_ALL_PRODUCTS" -> output = c.getAllProducts();
+                                // Get all reviews
+                                case "FETCH_REVIEWS" -> output = c.fetchReviews();
                                 // Get Product Info
                                 case "GET_PRODUCT_INFO" -> output = c.getProductInfo(Integer.parseInt(response[1]));
                                 // Add Product to Cart
@@ -116,8 +129,16 @@ public class ServerThread extends Thread {
                                     output = "Successfully removed item from cart.";
                                 }
                                 case "LEAVE_REVIEW" -> {
-                                    c.leaveReview(Integer.parseInt(response[1]), response[2]);
+                                    c.addReview(Integer.parseInt(response[1]), response[2]);
                                     output = "Review uploaded successfully";
+                                }
+                                case "EDIT_REVIEW" -> {
+                                    c.modifyReview(Integer.parseInt(response[1]), response[2]);
+                                    output = "Review modified successfully!";
+                                }
+                                case "DELETE_REVIEW" -> {
+                                    c.deleteReview(Integer.parseInt(response[1]));
+                                    output = "Review deleted successfully!";
                                 }
                                 case "RETURN_ITEM" -> {
                                     c.returnItems(Integer.parseInt(response[1]));

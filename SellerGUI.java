@@ -152,49 +152,8 @@ public class SellerGUI extends JComponent {
                             JOptionPane.QUESTION_MESSAGE, null, storeNames.toArray(), storeNames.get(0));
                     if (storeName == null) {
                         return;
-                    }
-                    String productName = JOptionPane.showInputDialog(null, "What is the name of the product?",
-                            "Product Name", JOptionPane.QUESTION_MESSAGE);
-                    if (productName == null) {
-                        return;
-                    }
-                    String availableQuantity = JOptionPane.showInputDialog(null,
-                            "How many of this product are for sale?", "Product Quantity", JOptionPane.QUESTION_MESSAGE);
-                    if (availableQuantity == null) {
-                        return;
-                    }
-                    String price = JOptionPane.showInputDialog(null, "What is the price of this product?",
-                            "Product Price", JOptionPane.QUESTION_MESSAGE);
-                    if (price == null) {
-                        return;
-                    }
-                    String description = JOptionPane.showInputDialog(null, "What is the description of the product?",
-                            "Product Description", JOptionPane.QUESTION_MESSAGE);
-                    if (description == null) {
-                        return;
-                    }
-                    String orderLimit = JOptionPane.showInputDialog(null, "What is the order limit of the product?",
-                            "Order Limit", JOptionPane.QUESTION_MESSAGE);
-                    if (orderLimit == null) {
-                        return;
-                    }
-                    String saleQuantity = JOptionPane.showInputDialog(null, "What is the quantity after which a sale will be applied for this product?",
-                            "Sale Quantity", JOptionPane.QUESTION_MESSAGE);
-                    if (saleQuantity == null) {
-                        return;
-                    }
-                    String salePrice = JOptionPane.showInputDialog(null, "What is the sale price of the product?",
-                            "Sale Price", JOptionPane.QUESTION_MESSAGE);
-                    if (salePrice == null) {
-                        return;
-                    }
-                    Object[] createProductResult = sellerClient.createNewProduct(storeName, productName,
-                            availableQuantity, price, description, orderLimit, saleQuantity, salePrice);
-                    if (createProductResult[0].equals("SUCCESS")) {
-                        JOptionPane.showMessageDialog(null, createProductResult[1],
-                                "Create Product", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        displayErrorDialog((String) createProductResult[1]);
+                        new CreateProductGUI(sellerClient, storeName);
                     }
                 }
 
@@ -227,7 +186,7 @@ public class SellerGUI extends JComponent {
                         if (productName == null) {
                             return;
                         }
-                        String[] editParameters = {"Name", "Price", "Description", "Quantity", "Order Limit"};
+                        String[] editParameters = {"Name", "Price", "Description", "Quantity", "Order Limit", "Sale Quantity, Sale Price"};
                         String editParam = (String) JOptionPane.showInputDialog(null,
                                 "Which parameter would you like to edit?", "Edit Parameter",
                                 JOptionPane.QUESTION_MESSAGE, null, editParameters, editParameters[0]);

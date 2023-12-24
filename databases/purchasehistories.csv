@@ -1,1 +1,3 @@
 Customer ID,Seller ID,Store ID,Product ID,Store Name,Product Name,Purchase Quantity,Price
+C1000000,S1000001,ST1000000,PR1000001,Walmart,Margherita Pizza,2,37.98
+C1000000,S1000001,ST1000000,PR1000000,Walmart,Spicy Chicken Wings,6,77.94
