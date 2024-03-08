@@ -442,7 +442,6 @@ public class CustomerGUI extends JComponent {
                 }
 
             } else if (e.getSource() == modifyReviewButton) {
-                // TO DO
                 Object[] getPurchaseHistoryResult = customerClient.getShoppingHistory();
                 if (getPurchaseHistoryResult[0].equals("ERROR")) {
                     displayErrorDialog((String) getPurchaseHistoryResult[1]);
@@ -454,6 +453,9 @@ public class CustomerGUI extends JComponent {
                         String itemChoice = (String) JOptionPane.showInputDialog(null,
                             "Which review would you like to edit", "Edit Review",
                             JOptionPane.QUESTION_MESSAGE, null, reviews.toArray(), reviews.get(0));
+                        if (itemChoice == null) {
+                            return;
+                        }
                         int itemSelection = -1;
                         for (int i = 0; i < reviews.size(); i++) {
                             if (itemChoice.equals(reviews.get(i))) {
@@ -461,14 +463,17 @@ public class CustomerGUI extends JComponent {
                                 break;
                             }
                         }
+                        System.out.println(itemSelection);
                         if (itemSelection == 0) {
                             displayErrorDialog("Invalid selection. Please try again");
                             return;
                         } else {
-                            itemSelection--;
                             String modifiedReview = JOptionPane.showInputDialog(null,
                             "What is the new review?", "Modified Review",
                             JOptionPane.QUESTION_MESSAGE);
+                            if (modifiedReview == null) {
+                                return;
+                            }
                             Object[] editReviewResult = customerClient.editReview(itemSelection, modifiedReview);
                             if (editReviewResult[0].equals("SUCCESS")) {
                                 JOptionPane.showMessageDialog(null, editReviewResult[1], "Edit Review", JOptionPane.INFORMATION_MESSAGE);
@@ -483,7 +488,6 @@ public class CustomerGUI extends JComponent {
 
 
             } else if (e.getSource() == deleteReviewButton) {
-                // TO DO
                 Object[] getPurchaseHistoryResult = customerClient.getShoppingHistory();
                 if (getPurchaseHistoryResult[0].equals("ERROR")) {
                     displayErrorDialog((String) getPurchaseHistoryResult[1]);
@@ -495,6 +499,9 @@ public class CustomerGUI extends JComponent {
                         String itemChoice = (String) JOptionPane.showInputDialog(null,
                             "Which review would you like to delete", "Delete Review",
                             JOptionPane.QUESTION_MESSAGE, null, reviews.toArray(), reviews.get(0));
+                        if (itemChoice == null) {
+                            return;
+                        }
                         int itemSelection = -1;
                         for (int i = 0; i < reviews.size(); i++) {
                             if (itemChoice.equals(reviews.get(i))) {
@@ -506,7 +513,6 @@ public class CustomerGUI extends JComponent {
                             displayErrorDialog("Invalid selection. Please try again");
                             return;
                         } else {
-                            itemSelection--;
                             Object[] deleteReviewResult = customerClient.deleteReview(itemSelection);
                             if (deleteReviewResult[0].equals("SUCCESS")) {
                                 JOptionPane.showMessageDialog(null, deleteReviewResult[1], "Delete Review", JOptionPane.INFORMATION_MESSAGE);

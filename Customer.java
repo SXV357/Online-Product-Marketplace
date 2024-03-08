@@ -493,6 +493,9 @@ public class Customer extends User {
                 }
             }
         }
+        if (reviewsProvided.size() == 1) {
+            throw new CustomerException("You haven\'t provided reviews for any purchased products yet!");
+        }
         return reviewsProvided;
     }
 
@@ -517,13 +520,12 @@ public class Customer extends User {
                 if (reviews.length == 1) {
                     productEntryContents[9] = reviews[0] + ";";
                 } else if (reviews.length > 1) {
-                    productEntryContents[9] = String.join(";", reviews);
+                    productEntryContents[9] = (String.join(";", reviews) + ";");
                 }
                 db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
                 break;
             }
         }
-
     }
 
     public void deleteReview(int index) throws CustomerException {
@@ -532,31 +534,46 @@ public class Customer extends User {
         String productEntry = db.getMatchedEntries("products.csv", 4, reviewToDelete[1]).get(0);
         String[] productEntryContents = productEntry.split(",");
         String[] reviews = productEntryContents[9].split(";");
-        // reviews: [email-review, email-review, email-review]
-        for (int i = 0; i < reviews.length; i++) { // email-review;email-review;email-review
-            String[] currReview = reviews[i].split("-");
-            if (currReview[1].equals(reviewToDelete[2])) {
-                if (i == 0) {
-                    String[] modifiedArr = Arrays.copyOfRange(reviews, 1, reviews.length);
-                    if (modifiedArr.length == 1) {
-                        productEntryContents[9] = modifiedArr[0] + ";";
-                    } else if (modifiedArr.length > 1) {
-                        productEntryContents[9] = String.join(";", modifiedArr);
+        if (reviews.length == 1) {
+            productEntryContents[9] = "[]";
+            db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
+            return;
+        } else {
+            for (int i = 0; i < reviews.length; i++) { 
+                String[] currReview = reviews[i].split("-");
+                if (currReview[1].equals(reviewToDelete[2])) {
+                    if (i == 0) {
+                        String[] modifiedArr = Arrays.copyOfRange(reviews, 1, reviews.length);
+                        if (modifiedArr.length == 1) {
+                            productEntryContents[9] = modifiedArr[0] + ";";
+                        } else if (modifiedArr.length > 1) {
+                            productEntryContents[9] = (String.join(";", modifiedArr) + ";");
+                        }
+                        db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
+                        break;
+                    } else if (i == reviews.length - 1) {
+                        String[] modifiedArr = Arrays.copyOfRange(reviews, 0, reviews.length - 1);
+                        if (modifiedArr.length == 1) {
+                            productEntryContents[9] = modifiedArr[0] + ";";
+                        } else if (modifiedArr.length > 1) {
+                            productEntryContents[9] = (String.join(";", modifiedArr) + ";");
+                        }
+                        db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
+                        break;
+                    } else {
+                        // i is the index of the review to delete
+                        String[] prevContents = Arrays.copyOfRange(reviews, 0, i);
+                        String[] remainingContents = Arrays.copyOfRange(reviews, i + 1, reviews.length);
+                        String[] res = new String[prevContents.length + remainingContents.length];
+                        System.arraycopy(prevContents, 0, res, 0, prevContents.length);
+                        System.arraycopy(remainingContents, 0, res, prevContents.length, remainingContents.length);
+                        productEntryContents[9] = String.join(";", res);
+                        db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
+                        break;
                     }
-                    db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
-                    break;
-                } else {
-                    String[] prevContents = Arrays.copyOfRange(reviews, 0, i);
-                    String[] remainingContents = Arrays.copyOfRange(reviews, i + 1, reviews.length);
-                    String[] res = new String[prevContents.length + remainingContents.length];
-                    System.arraycopy(prevContents, 0, res, 0, prevContents.length);
-                    System.arraycopy(remainingContents, 0, res, prevContents.length, remainingContents.length);
-                    productEntryContents[9] = String.join(";", res);
-                    db.modifyDatabase("products.csv", productEntry, String.join(",", productEntryContents));
-                    break;
                 }
-            }
-        }        
+            }        
+        }
     }
 
     /**
