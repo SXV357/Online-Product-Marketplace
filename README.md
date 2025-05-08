@@ -1,5 +1,8 @@
 # CS-180-Project5 - Online Product Marketplace
 
+# Note
+For further in-depth technical documentation including system architecture details, please visit this link: [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/SXV357/Online-Product-Marketplace)
+
 # Instructions
 From the root directory of the project, compile Server.java and execute it, then compile InitialClient.java and execute it. To run multiple instances of the program, keep one Server.java instance running and run multiple instances of InitialClient.java. To access the main application, you will first need to enter the host to connect to, whether it is another device or local to the computer. Then you will need to create a new account or log into an existing account, which will then redirect you to the corresponding page from where you can take a variety of actions.
 
