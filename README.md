@@ -39,9 +39,9 @@ Relationship to other classes: When a user selects that they would like to be a 
 Class that handles a seller's connection and requests to the database server.
 - Contains functionality to make requests to the server for the various actions that sellers choose to take
 - Sends over data containing the action to be taken along with any related data passed on from the SellerGUI
-- Retrives a status from the server to indicate whether the action was a success, along with either a success message or any output data, or whether the action was a failure, along with a descriptive error message
+- Retrieves a status from the server to indicate whether the action was a success, along with either a success message or any output data, or whether the action was a failure, along with a descriptive error message
 
-Relationship to other classes: It directly communicated with ServerThread, sending data received for various actions from the SellerGUI and then subsequently retrieving a response to be sent back to the SellerGUI for further processing.
+Relationship to other classes: It directly communicates with ServerThread, sending data received for various actions from the SellerGUI and then subsequently retrieving a response to be sent back to the SellerGUI for further processing.
 
 ## CustomerGUI
 The interface associated with a customer in the application.
@@ -57,9 +57,9 @@ Relationship to other classes: When a user selects that they would like to be a 
 Class that handles a customer's connection and requests to the database server.
 - Contains functionality to make requests to the server for the various actions that customers choose to take
 - Sends over data containing the action to be taken along with any related data passed on from the CustomerGUI
-- Retrives a status from the server to indicate whether the action was a success, along with either a success message or any output data, or whether the action was a failure, along with a descriptive error message
+- Retrieves a status from the server to indicate whether the action was a success, along with either a success message or any output data, or whether the action was a failure, along with a descriptive error message
 
-Relationship to other classes: It directly communicated with ServerThread, sending data received for various actions from the CustomerGUI and then subsequently retrieving a response to be sent back to the CustomerGUI for further processing.
+Relationship to other classes: It directly communicates with ServerThread, sending data received for various actions from the CustomerGUI and then subsequently retrieving a response to be sent back to the CustomerGUI for further processing.
 
 ## DisplayDashboardGUI
 The interface associated with displaying dashboards for both customers and sellers.
@@ -73,7 +73,7 @@ The driver class that users can execute to launch the main application.
 - Process a user creating either a customer account or a seller account
 - Initialize a socket, create the corresponding input and output streams, then launch the window that allows users to sign up or log in
 
-Relationship to other classes: It contains functionality that is used by the LoginGUI and SignUp GUI classes and also contains the streams that all other clients in the application, such as the SellerClient and CustomerClient utilize to write and receive data from the server
+Relationship to other classes: It contains functionality that is used by the LoginGUI and SignUpGUI classes and also contains the streams that all other clients in the application, such as the SellerClient and CustomerClient utilize to write and receive data from the server
 
 ## LoginGUI
 Class that constructs the GUI for a user that is logging in
@@ -82,7 +82,7 @@ Class that constructs the GUI for a user that is logging in
 
 Relationship to other classes: Interacts with the InitialClient class to handle users logging back into the application.
 
-## SignupGUI
+## SignUpGUI
 The interface associated with user signup.
 - Constructs the GUI containing fields to enter the email, password, including a menu to select which role they'd like to take, including the button to sign up
 - Includes a button that the user can select to return back to the main menu
@@ -120,7 +120,7 @@ Relationship to other classes: This exception is thrown by most methods in the S
 The interface associated with displaying error messages caused due to actions taken by both customers and sellers.
 - Contains a constructor which when invoked with the error message passed in, displays an error dialog with the corresponding message
 
-Relationship to other classes: This GUI is invoked in several places in both the CustomerGUI and SellerGUI clases with error messages returned back from the server as a result of Seller exceptions or Customer exceptions occurring.
+Relationship to other classes: This GUI is invoked in several places in both the CustomerGUI and SellerGUI classes with error messages returned back from the server as a result of Seller exceptions or Customer exceptions occurring.
 
 ## SortProductsGUI
 The interface associated with a customer wanting to sort products in the application.
@@ -144,6 +144,7 @@ Class that encompasses functionality for customers to view store and seller info
 - Customers can sort the dashboard in alphabetical ascending and reverse order as well as numerically ascending and reverse order
 - Dashboard has implemented the extra functionality of displaying the total revenue for each type of dashboard.
 (Ex: Sellers can view how much a customer has spent in total when viewing customers.)
+
 Relationship to other classes: Dashboard contains four static methods that generate a list that can be printed to display a database. It also contains a method to display the resulting data to the terminal. Other classes call Dashboard's methods to generate the data required to display a dashboard.
 
 ## Database
@@ -153,7 +154,7 @@ Class that handles all database access and modification functionality related to
 - Remove an existing entry from any of the databases
 - Modify an existing entry in any of the databases
 - Check if an entry exists in any of the databases
-- Retrive entries that contain a specific search parameter from any of the databases
+- Retrieve entries that contain a specific search parameter from any of the databases
 - Retrieve all the entries from any of the databases
 - Update the contents of any of the databases in response to an addition, deletion, or modification
 
@@ -163,7 +164,7 @@ Relationship to other classes: Interacts with all other classes to retrieve, add
 Superclass that represents the characteristics associated with all users in the application. When a new user is created, they are assigned a unique 7-digit ID which also has a marker associated with it to signify if the current user is a seller or a customer.
 - Getters for retrieving all the users' attributes(Identification Number, Email, Password, Role)
 - Setters for the customer's email and password for account modification
-    - Functionality to check if the new email that the user wants to modify their current email to is already associated with   an existing account in the users.csv database
+    - Functionality to check if the new email that the user wants to modify their current email to is already associated with an existing account in the users.csv database
 - Initialize a newly created user with a new unique ID
 - Initialize an already existing user when they log back into the application with their identification number, email, password, and role
 - Delete account and all corresponding database entries
@@ -201,7 +202,7 @@ Relationship to other classes: Related to the store and product classes since it
 ## Store
 Class that represents an individual store that belongs to a seller in the application. When a new store is created, it is assigned a unique 7-digit ID which also has a marker associated with it to signify a store.
 - Retrieve all the products associated with the given store
-- Getter's for retrieving all the store's attributes(Identification number, Name)
+- Getters for retrieving all the store's attributes(Identification number, Name)
 - Initialize a newly created store with a new unique ID
 - Initialize an already existing store with its associated identification number and name
 
@@ -209,7 +210,7 @@ Relationship to other classes: Related to the seller and product class since it 
 
 ## Product
 Class that represents an individual product available in a seller's store. When a new product is created, it is assigned a unique 7-digit ID which also has a marker associated with it to signify a product.
-- Getter's for retrieving all the product's attributes(Identification number, Name, Available Quantity, Price, Description)
+- Getters for retrieving all the product's attributes(Identification number, Name, Available Quantity, Price, Description)
 - Initialize a newly created product with a new unique ID
 - Initialize an already existing product with its associated identification number, name, quantity, price, and description
 
